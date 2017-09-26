@@ -1,0 +1,27 @@
+{
+  "main": "smscode.js",
+  "scripts": {
+    "start": "nodejs create_form_attributes.js",
+    "start3": "nodejs smscode.js",
+    "start1": "nodejs auth_code.js",
+    "start2": "nodejs get_credentials.js"
+  },
+  "dependencies": {
+    "node-localstorage": "^1.3.0",
+    "promise": ""
+  },
+  "name": "sms-code-generator",
+  "version": "1.0.0",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hisptz/brn-code-for-sms-creator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hisptz/brn-code-for-sms-creator/issues"
+  },
+  "homepage": "https://github.com/hisptz/brn-code-for-sms-creator#readme",
+  "description": ""
+}

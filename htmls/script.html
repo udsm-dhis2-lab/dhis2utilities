@@ -1,0 +1,81 @@
+<script>
+    if (dhis2.dsr){
+        function calculateReportIndicators() {
+            $('input[name="indicatorFormula"]').css('border','none');
+            $('input[name="indicatorFormula"]').css('background-color','#FFFFFF');
+            $('input[name="indicatorFormula"]').css('font-weight','600');
+            $('input[name ="indicatorFormula"]').each(function (i, form) {
+                var elementComboArr = form.id.replace("/",",").split("(").join("").split(")").join("").split(",")[0].split("+")
+                var sum = 0;
+                for (var count = 0; count < elementComboArr.length; count++) {
+                    var elementCombo = elementComboArr[count].split(".");
+                    console.log(elementCombo[0].replace('#{',""));
+                    if (isNaN(parseInt($("span[data-co="+elementCombo[1].replace("}","")+"][data-de="+elementCombo[0].replace("#{","")+"]").text()))== false) {
+                        sum += parseInt($("span[data-co="+elementCombo[1].replace("}","")+"][data-de="+elementCombo[0].replace("#{","")+"]").text());
+                    }
+                }
+                $('input[id= "'+form.id+'" ]').val(sum);
+            });
+        }
+
+        $(document).ready(function(){
+            calculateReportIndicators();
+        });
+    }else {
+        dhis2.util.on('dhis2.de.event.dataValuesLoaded', function () {
+            $('input[name="indicatorFormula"]').css('background-color','#FFFFFF');
+            $('input[name="indicatorFormula"]').css('font-weight','600');
+            calculateIndicatorValue();
+            addListerners();
+        });
+
+        function addListerners(){
+            $('.entryfield').each(function (i) {
+                $(this).change(function () {
+                    //codes for on changes
+                    calculateIndicatorValue();
+                });
+            });
+        }
+
+        function calculateIndicatorValue() {
+            $('input[name ="indicatorFormula"]').each(function (i, form) {
+                var unReplacedFormula = form.id;
+                var res = form.id.replace("/",",").split("(").join("").split(")").join("").split("+").join(",").split(",");
+                for (var index in res ) {
+                    if(res[index].length > 14) {
+                        var formula = unReplacedFormula.replace(res[index],"Number($('#"+res[index].replace("#{","").replace("}","").replace(".","-") + "-val').val())");
+                        unReplacedFormula = formula;
+                    }
+                }
+                if (isNaN(eval("("+formula+")")) !=true) {
+                    $('input[id= "'+form.id+'" ]').val(parseInt(eval(formula)));
+                } else {
+                    $('input[id= "'+form.id+'" ]').val(0);
+                }
+            });
+        }
+
+    }
+
+</script>
+<p>
+    <style type="text/css">#cde table {
+        border-collapse: collapse;
+    }
+
+    #cde table, #cde th, #cde td {
+        border: 1px solid #c0c0c0;
+    }
+
+    #cde td, #cde th {
+        height: 30px;
+        padding: 10px;
+        margin: 10px;
+    }
+
+    .cde-greyfield {
+        background-color: #e0e0e0;
+    }
+    </style>
+</p>
