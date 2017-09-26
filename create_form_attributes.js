@@ -131,6 +131,7 @@ function dataLoaded(err, data) {
           $(val).removeAttr('indicatorid');
           $(val).removeAttr('value');
           $(val).attr('name', 'indicatorFormula');
+          $(val).attr('disabled','disabled');
       });
 
     var id = $(elem).attr('id'),
