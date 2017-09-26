@@ -81,7 +81,7 @@ function dataLoaded(err, data) {
       var indAggregations = {};
       // console.log(tmpData);
       for (var counter = 0; counter < Object.keys(JSON.parse(arr)).length; counter++) {
-          if (JSON.parse(arr)[counter].numerator.split("+")[0].length < 15){
+          if (JSON.parse(arr)[counter].numerator.split("+")[0].length < 18){
               var originalNumerator = JSON.parse(arr)[counter].numerator;
               for (var elementCounter = 0; elementCounter < JSON.parse(arr)[counter].numerator.split("+").length; elementCounter++) {
                   for (var index in tmpData) {
@@ -93,11 +93,12 @@ function dataLoaded(err, data) {
               // Recheck if there is still dataelements in the indicator definition
               var finalRes = originalNumerator;
               for (var orCounter =0; orCounter < originalNumerator.replace("(","").replace(")","").split("+").length; orCounter++) {
-                  console.log();
                   var newIndDefStr = '';
-                  if (originalNumerator.replace("(","").replace(")","").split("+")[orCounter].length < 15) {
+                  // console.log("CHECK "+originalNumerator.replace("(","").replace(")","").split("+")[orCounter].replace("#{","").replace("}",""))
+                  if (originalNumerator.replace("(","").replace(")","").split("+")[orCounter].length < 18) {
                       $('input[name="entryfield"]').each(function (i, field) {
-                          if (field.attribs.id.split("-")[0] === originalNumerator.replace("(","").replace(")","").split("+")[orCounter].replace("#{","").replace("}","")) {
+                          // console.log(field.attribs.id.split("-")[0]+ "  "+i);
+                          if (field.attribs.id.split("-")[0] === originalNumerator.replace("(","").replace(")","").split("+")[orCounter].replace("#{","").replace("}","").replace(" ","").replace(" ","")) {
                               newIndDefStr += "#{"+field.attribs.id.replace("-",".").replace("-val","")+"}+";
                           }
                       });
