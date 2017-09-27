@@ -9,7 +9,6 @@
                 var sum = 0;
                 for (var count = 0; count < elementComboArr.length; count++) {
                     var elementCombo = elementComboArr[count].split(".");
-                    console.log(elementCombo[0].replace('#{',""));
                     if (isNaN(parseInt($("span[data-co="+elementCombo[1].replace("}","")+"][data-de="+elementCombo[0].replace("#{","")+"]").text()))== false) {
                         sum += parseInt($("span[data-co="+elementCombo[1].replace("}","")+"][data-de="+elementCombo[0].replace("#{","")+"]").text());
                     }

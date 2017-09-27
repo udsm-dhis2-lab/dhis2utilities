@@ -1,79 +1,4 @@
-<script>
-    if (dhis2.dsr){
-        function calculateReportIndicators() {
-            $('input[name="indicatorFormula"]').css('border','none');
-            $('input[name="indicatorFormula"]').css('background-color','#FFFFFF');
-            $('input[name="indicatorFormula"]').css('font-weight','600');
-            $('input[name ="indicatorFormula"]').each(function (i, form) {
-                var elementComboArr = form.id.replace("/",",").split("(").join("").split(")").join("").split(",")[0].split("+")
-                var sum = 0;
-                for (var count = 0; count < elementComboArr.length; count++) {
-                    var elementCombo = elementComboArr[count].split(".");
-                    console.log(elementCombo[0].replace('#{',""));
-                    if (isNaN(parseInt($("span[data-co="+elementCombo[1].replace("}","")+"][data-de="+elementCombo[0].replace("#{","")+"]").text()))== false) {
-                        sum += parseInt($("span[data-co="+elementCombo[1].replace("}","")+"][data-de="+elementCombo[0].replace("#{","")+"]").text());
-                    }
-                }
-                $('input[id= "'+form.id+'" ]').val(sum);
-            });
-        }
-
-        $(document).ready(function(){
-            calculateReportIndicators();
-        });
-    }else {
-        dhis2.util.on('dhis2.de.event.dataValuesLoaded', function () {
-            $('input[name="indicatorFormula"]').css('background-color','#FFFFFF');
-            $('input[name="indicatorFormula"]').css('font-weight','600');
-            $('input[name="indicatorFormula"]').css('border','1px grey solid');
-            $('input[name="indicatorFormula"]').css('text-align','center');
-            calculateIndicatorValue();
-            addListerners();
-        });
-
-        function addListerners(){
-            $('.entryfield').each(function (i) {
-                $(this).change(function () {
-                    //codes for on changes
-                    calculateIndicatorValue();
-                });
-            });
-        }
-
-        function calculateIndicatorValue() {
-            $('input[name ="indicatorFormula"]').each(function (i, form) {
-                var unReplacedFormula = form.id;
-                var res = form.id.replace("/",",").split("(").join("").split(")").join("").split("+").join(",").split(",");
-                for (var index in res ) {
-                    if(res[index].length > 14) {
-                        var formula = unReplacedFormula.replace(res[index],"Number($('#"+res[index].replace("#{","").replace("}","").replace(".","-").replace(" ","").replace(" ","") + "-val').val())");
-                        unReplacedFormula = formula;
-                    }
-                }
-                if (isNaN(eval("("+formula+")")) !=true) {
-                    $('input[id= "'+form.id+'" ]').val(parseInt(eval(formula)));
-                } else {
-                    $('input[id= "'+form.id+'" ]').val(0);
-                }
-            });
-        }
-
-    }
-
-</script>
-
-<style type="text/css">#cde table { border-collapse: collapse; }
-#cde table, #cde th, #cde td { border: 1px solid #c0c0c0; }
-#cde th {text-align:center;}
-#cde td,#cde th { height: 30px; padding: 10px; margin: 10px; }
-.cde-greyfield { background-color: #e0e0e0; }
-table.noborders {border-style:hidden;padding:-10px;margin:-10px;}
-table.noborders tbody{border-style:hidden;}
-</style>
-<div id="cde">
-    <h2>Taarifa ya Wagonjwa wa Kinywa</h2>
-
-    <table border="0" cellpadding="0" cellspacing="0" width="800">
+<table border="0" cellpadding="0" cellspacing="0" width="800">
         <thead>
         <tr class="cde-greyfield">
             <th rowspan="2">Na.</th>
@@ -192,15 +117,14 @@ table.noborders tbody{border-style:hidden;}
             <td>7a</td>
             <td>Abrasion</td>
             <td><input id="iZ3nsXfgxj4-qZbTMjk9Mul-val" name="entryfield" style="width:3.5em;text-align:center/" title="Abrasion Umri wa miaka chini ya 5, ME" value="[ Abrasion Umri wa miaka chini ya 5, ME ]"></td>
-            <td><input id="iZ3nsXfgxj4-bva8CgDLg1e-val" name="entryfield" style="width:3.5em;text-align:center/" title="Abrasion Umri wa miaka chini ya 5, KE" value="[ Abrasion Umri wa miaka chini ya 5, KE ]"></td>
-            <td><input id="(#{iZ3nsXfgxj4.qZbTMjk9Mul}+#{iZ3nsXfgxj4.bva8CgDLg1e})/(1)" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center/" title="X_DE Abrasion Umri chini ya miaka 5" disabled="disabled"></td>
+            <td><input id="(#{iZ3nsXfgxj4.qZbTMjk9Mul})/(1)" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center/" title="X_DE Abrasion Umri chini ya miaka 5" disabled="disabled"></td>
             <td><input id="iZ3nsXfgxj4-QKhnOTIX8Q9-val" name="entryfield" style="width:3.5em;text-align:center/" title="Abrasion Umri wa miaka 5 hadi umri chini ya miaka 15, ME" value="[ Abrasion Umri wa miaka 5 hadi umri chini ya miaka 15, ME ]"></td>
             <td><input id="iZ3nsXfgxj4-M8xPREGQ218-val" name="entryfield" style="width:3.5em;text-align:center/" title="Abrasion Umri wa miaka 5 hadi umri chini ya miaka 15, KE" value="[ Abrasion Umri wa miaka 5 hadi umri chini ya miaka 15, KE ]"></td>
             <td><input id="(#{iZ3nsXfgxj4.QKhnOTIX8Q9}+#{iZ3nsXfgxj4.M8xPREGQ218})/(1)" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center/" title="X_DE Abrasion Umri miaka 5 hadi miaka 14" disabled="disabled"></td>
             <td><input id="iZ3nsXfgxj4-SncTF5y7F4K-val" name="entryfield" style="width:3.5em;text-align:center/" title="Abrasion Umri wa miaka 15 au zaidi, ME" value="[ Abrasion Umri wa miaka 15 au zaidi, ME ]"></td>
             <td><input id="iZ3nsXfgxj4-P84AB6QO7n6-val" name="entryfield" style="width:3.5em;text-align:center/" title="Abrasion Umri wa miaka 15 au zaidi, KE" value="[ Abrasion Umri wa miaka 15 au zaidi, KE ]"></td>
             <td><input id="(#{iZ3nsXfgxj4.SncTF5y7F4K}+#{iZ3nsXfgxj4.P84AB6QO7n6})/(1)" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center/" title="X_DE Abrasion Umri miaka 15 na kuendelea" disabled="disabled"></td>
-            <td><input id="(#{iZ3nsXfgxj4.qZbTMjk9Mul}+#{iZ3nsXfgxj4.bva8CgDLg1e}+#{iZ3nsXfgxj4.QKhnOTIX8Q9}+#{iZ3nsXfgxj4.M8xPREGQ218}+#{iZ3nsXfgxj4.SncTF5y7F4K}+#{iZ3nsXfgxj4.P84AB6QO7n6})" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center/" title="Abrasion (Total)" disabled="disabled"></td>
+            <td><input id="(#{iZ3nsXfgxj4.qZbTMjk9Mul}+#{iZ3nsXfgxj4.QKhnOTIX8Q9}+#{iZ3nsXfgxj4.M8xPREGQ218}+#{iZ3nsXfgxj4.SncTF5y7F4K}+#{iZ3nsXfgxj4.P84AB6QO7n6})" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center/" title="Abrasion (Total)" disabled="disabled"></td>
         </tr>
         <tr>
             <td>7b</td>
@@ -924,4 +848,3 @@ table.noborders tbody{border-style:hidden;}
         </tr>
         </tbody>
     </table>
-</div>

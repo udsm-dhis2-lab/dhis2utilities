@@ -107,7 +107,20 @@ function dataLoaded(err, data) {
               }
               indAggregations[JSON.parse(arr)[counter].id] = '('+finalRes+')';
           } else {
-              indAggregations[JSON.parse(arr)[counter].id] = '('+JSON.parse(arr)[counter].numerator+ ')/('+JSON.parse(arr)[counter].denominator+')';
+              //remove input ids which are not in the form
+              var beforeReplacement = JSON.parse(arr)[counter].numerator;
+              for (var idCount=0; idCount < JSON.parse(arr)[counter].numerator.split("+").length; idCount++) {
+                  var inputId = JSON.parse(arr)[counter].numerator.split("+")[idCount].replace("#{","").replace("}","").replace(" ","").replace(" ","").replace(".","-")+"-val";
+                  if ($('input[id="' + inputId + '" ]').length > 0) {
+                      // the id is in the html file
+                  } else {
+                      // id not in the html file
+                      var AfterReplacement = beforeReplacement.replace(beforeReplacement.split("+")[idCount]+"+","").replace("+"+beforeReplacement.split("+")[idCount],"");
+                      beforeReplacement = AfterReplacement;
+                      console.log("The id which is not in the inputs but in the indicator formula from api is "+JSON.parse(arr)[counter].numerator.split("+")[idCount].replace("#{","").replace("}","").replace(".","-")+"-val");
+                  }
+              }
+              indAggregations[JSON.parse(arr)[counter].id] = '('+AfterReplacement+ ')/('+JSON.parse(arr)[counter].denominator+')';
           }
       }
 
