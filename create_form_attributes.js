@@ -75,17 +75,22 @@ function dataLoaded(err, data) {
         tmpData[totalsArr[index]] = '('+arrIndId.substring(0, arrIndId.length - 1).split(",").join("+")+')';
     }
 
-  $('table').each(function(i, elem) {
+  $('div').each(function(i, elem) {
       //get indicators from local storage
       var arr = localStorage.getItem('indicatorsData');
       var indAggregations = {};
       // console.log(tmpData);
+      console.log(Object.keys(JSON.parse(arr)))
       for (var counter = 0; counter < Object.keys(JSON.parse(arr)).length; counter++) {
-          if (JSON.parse(arr)[counter].numerator.split("+")[0].length < 18){
+          if (JSON.parse(arr)[counter].numerator.split("+")[0].length < 18) {
               var originalNumerator = JSON.parse(arr)[counter].numerator;
+              console.log("START "+originalNumerator)
+              console.log(JSON.parse(arr)[counter].numerator.split("+")[0].length);
               for (var elementCounter = 0; elementCounter < JSON.parse(arr)[counter].numerator.split("+").length; elementCounter++) {
                   for (var index in tmpData) {
                       if (index.substr(5) === JSON.parse(arr)[counter].numerator.split("+")[elementCounter].replace("#{", "").replace("}", "")) {
+                          console.log(JSON.parse(arr)[counter].numerator);
+                          console.log("CHECK "+originalNumerator);
                           originalNumerator = originalNumerator.replace(JSON.parse(arr)[counter].numerator.split("+")[elementCounter], tmpData[index].replace("(","").replace(")",""));
                       }
                   }
@@ -108,22 +113,26 @@ function dataLoaded(err, data) {
               indAggregations[JSON.parse(arr)[counter].id] = '('+finalRes+')';
           } else {
               //remove input ids which are not in the form
+              var check =false;
               var beforeReplacement = JSON.parse(arr)[counter].numerator;
-              for (var idCount=0; idCount < JSON.parse(arr)[counter].numerator.split("+").length; idCount++) {
-                  var inputId = JSON.parse(arr)[counter].numerator.split("+")[idCount].replace("#{","").replace("}","").replace(" ","").replace(" ","").replace(".","-")+"-val";
+              console.log("THIS "+beforeReplacement)
+              for (var idCount=0; idCount < beforeReplacement.split("+").length; idCount++) {
+                  var inputId = beforeReplacement.split("+")[idCount].replace("#{","").replace("}","").replace(" ","").replace(" ","").replace(".","-")+"-val";
                   if ($('input[id="' + inputId + '" ]').length > 0) {
                       // the id is in the html file
                   } else {
                       // id not in the html file
+                      check = true;
                       var AfterReplacement = beforeReplacement.replace(beforeReplacement.split("+")[idCount]+"+","").replace("+"+beforeReplacement.split("+")[idCount],"");
                       beforeReplacement = AfterReplacement;
                       console.log("The id which is not in the inputs but in the indicator formula from api is "+JSON.parse(arr)[counter].numerator.split("+")[idCount].replace("#{","").replace("}","").replace(".","-")+"-val");
                   }
               }
-              indAggregations[JSON.parse(arr)[counter].id] = '('+AfterReplacement+ ')/('+JSON.parse(arr)[counter].denominator+')';
+              indAggregations[JSON.parse(arr)[counter].id] = '('+beforeReplacement+ ')/('+JSON.parse(arr)[counter].denominator+')';
+              // console.log("THAT "+beforeReplacement);
           }
       }
-
+    console.log(indAggregations);
       $('input[dataelementid]').each(function (index, val) {
          //  var test = $(val).attr('name');
           for (var aggr in tmpData){
