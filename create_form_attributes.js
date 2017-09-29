@@ -75,7 +75,7 @@ function dataLoaded(err, data) {
         tmpData[totalsArr[index]] = '('+arrIndId.substring(0, arrIndId.length - 1).split(",").join("+")+')';
     }
 
-  $('div').each(function(i, elem) {
+  $('section').each(function(i, elem) {
       //get indicators from local storage
       var arr = localStorage.getItem('indicatorsData');
       var indAggregations = {};
