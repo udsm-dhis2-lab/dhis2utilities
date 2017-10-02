@@ -3,7 +3,7 @@
         function calculateReportIndicators() {
             $('input[name="indicatorFormula"]').css('border','none');
             $('input[name="indicatorFormula"]').css('background-color','#FFFFFF');
-            $('input[name="indicatorFormula"]').css('font-weight','600');
+            $('input[name="indicatorFormula"]').css('font-weight','500');
             $('input[name ="indicatorFormula"]').each(function (i, form) {
                 var elementComboArr = form.id.replace("/",",").split("(").join("").split(")").join("").split(",")[0].split("+")
                 var sum = 0;

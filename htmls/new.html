@@ -1,259 +1,70 @@
-<script>
-    if (dhis2.dsr){
-        function calculateReportIndicators() {
-            $('input[name="indicatorFormula"]').css('border','none');
-            $('input[name="indicatorFormula"]').css('background-color','#FFFFFF');
-            $('input[name="indicatorFormula"]').css('font-weight','600');
-            $('input[name ="indicatorFormula"]').each(function (i, form) {
-                var elementComboArr = form.id.replace("/",",").split("(").join("").split(")").join("").split(",")[0].split("+")
-                var sum = 0;
-                for (var count = 0; count < elementComboArr.length; count++) {
-                    var elementCombo = elementComboArr[count].split(".");
-                    if (isNaN(parseInt($("span[data-co="+elementCombo[1].replace("}","")+"][data-de="+elementCombo[0].replace("#{","")+"]").text()))== false) {
-                        sum += parseInt($("span[data-co="+elementCombo[1].replace("}","")+"][data-de="+elementCombo[0].replace("#{","")+"]").text());
-                    }
-                }
-                $('input[id= "'+form.id+'" ]').val(sum);
-            });
-        }
+<section>
+    <script type="text/javascript">
+        dhis2.util.on( 'dhis2.de.event.formReady', function( event, ds ) {
+            jQuery( "#formLoad" ).html( "Form loaded successfully: " + ds );
+        } );
 
-        $(document).ready(function(){
-            calculateReportIndicators();
-        });
-    }else {
-        dhis2.util.on('dhis2.de.event.dataValuesLoaded', function () {
-            $('input[name="indicatorFormula"]').css('background-color','#FFFFFF');
-            $('input[name="indicatorFormula"]').css('font-weight','600');
-            $('input[name="indicatorFormula"]').css('border','1px grey solid');
-            $('input[name="indicatorFormula"]').css('text-align','center');
-            calculateIndicatorValue();
-            addListerners();
-        });
+        dhis2.util.on( 'dhis2.de.event.dataValueSaved', function( event, ds, dv ) {
+            jQuery( "#valueSave" ).html( "Value was saved: " + dv.value );
+        } );
+    </script>
+    <h2>EPI Stock</h2>
 
-        function addListerners(){
-            $('.entryfield').each(function (i) {
-                $(this).change(function () {
-                    //codes for on changes
-                    calculateIndicatorValue();
-                });
-            });
-        }
+    <div style="padding-bottom: 20px; color: #aaa;"><span id="formLoad">&#xA0;</span> &#xA0; <span id="valueSave">&#xA0;</span></div>
 
-        function calculateIndicatorValue() {
-            $('input[name ="indicatorFormula"]').each(function (i, form) {
-                var unReplacedFormula = form.id;
-                var res = form.id.replace("/",",").split("(").join("").split(")").join("").split("+").join(",").split(",");
-                for (var index in res ) {
-                    if(res[index].length > 14) {
-                        var formula = unReplacedFormula.replace(res[index],"Number($('#"+res[index].replace("#{","").replace("}","").replace(".","-").replace(" ","").replace(" ","") + "-val').val())");
-                        unReplacedFormula = formula;
-                    }
-                }
-                if (isNaN(eval("("+formula+")")) !=true) {
-                    $('input[id= "'+form.id+'" ]').val(parseInt(eval(formula)));
-                } else {
-                    $('input[id= "'+form.id+'" ]').val(0);
-                }
-            });
-        }
+    <div id="cde">
+        <table style="width: 1100px; ">
+            <thead>
+            <tr>
+                <th>Commodity</th>
+                <th>Start Balance</th>
+                <th>Quantity Received</th>
+                <th>Quantity Dispensed</th>
+                <th>Discarded (Expired)</th>
+                <th>Discarded (Damages)</th>
+                <th>Discarded (VVM change)</th>
+                <th>End Balance</th>
+                <th>Total Discarded</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>BCG Doses</td>
+                <td style="text-align: center; "><input id="t99PL3gUxIl-bRowv6yZOF2-val" name="entryfield" title="Stock PHU start balance BCG" value="[ Stock PHU start balance BCG ]"></td>
+                <td style="text-align: center; "><input id="axVhq1itoQD-bRowv6yZOF2-val" name="entryfield" title="Stock PHU received  BCG" value="[ Stock PHU received  BCG ]"></td>
+                <td style="text-align: center; "><input id="p1MDHOT6ENy-bRowv6yZOF2-val" name="entryfield" title="Stock PHU dispensed  BCG" value="[ Stock PHU dispensed  BCG ]"></td>
+                <td style="text-align: center; "><input id="cZnQDuF3IDz-fsFN9T4ck3E-val" name="entryfield" title="Stock PHU discarded BCG Expired" value="[ Stock PHU discarded BCG Expired ]"></td>
+                <td style="text-align: center; "><input id="cZnQDuF3IDz-pn1upwnbxfn-val" name="entryfield" title="Stock PHU discarded BCG Damages" value="[ Stock PHU discarded BCG Damages ]"></td>
+                <td style="text-align: center; "><input id="cZnQDuF3IDz-TxaWpw1pN5G-val" name="entryfield" title="Stock PHU discarded BCG VVM Change" value="[ Stock PHU discarded BCG VVM Change ]"></td>
+                <td style="text-align: center; "><input id="(#{t99PL3gUxIl.bRowv6yZOF2})/(1)" name="indicatorFormula" readonly="readonly" title="BCG Stock PHU" disabled="disabled"></td>
+                <td style="text-align: center; "><input id="(#{cZnQDuF3IDz.fsFN9T4ck3E}+#{cZnQDuF3IDz.pn1upwnbxfn}+#{cZnQDuF3IDz.TxaWpw1pN5G})" name="indicatorFormula" readonly="readonly" title="Stock PHU discarded BCG" disabled="disabled"></td>
+            </tr>
+            <tr>
+                <td>OPV Doses</td>
+                <td style="text-align: center; "><input id="iuSIObmKutb-bRowv6yZOF2-val" name="entryfield" title="Stock PHU start balance OPV" value="[ Stock PHU start balance OPV ]"></td>
+                <td style="text-align: center; "><input id="nGCLjZDn0Q4-bRowv6yZOF2-val" name="entryfield" title="Stock PHU received OPV" value="[ Stock PHU received OPV ]"></td>
+                <td style="text-align: center; "><input id="FTINmL2lehN-bRowv6yZOF2-val" name="entryfield" title="Stock PHU dispensed OPV" value="[ Stock PHU dispensed OPV ]"></td>
+                <td style="text-align: center; "><input id="WVrH6j3Wfye-fsFN9T4ck3E-val" name="entryfield" title="Stock PHU discarded OPV Expired" value="[ Stock PHU discarded OPV Expired ]"></td>
+                <td style="text-align: center; "><input id="WVrH6j3Wfye-pn1upwnbxfn-val" name="entryfield" title="Stock PHU discarded OPV Damages" value="[ Stock PHU discarded OPV Damages ]"></td>
+                <td style="text-align: center; "><input id="WVrH6j3Wfye-TxaWpw1pN5G-val" name="entryfield" title="Stock PHU discarded OPV VVM Change" value="[ Stock PHU discarded OPV VVM Change ]"></td>
+                <td style="text-align: center; "><input id="(#{iuSIObmKutb.bRowv6yZOF2})/(1)" name="indicatorFormula" readonly="readonly" title="OPV Stock PHU" disabled="disabled"></td>
+                <td style="text-align: center; "><input id="(#{WVrH6j3Wfye.fsFN9T4ck3E}+#{WVrH6j3Wfye.pn1upwnbxfn}+#{WVrH6j3Wfye.TxaWpw1pN5G})" name="indicatorFormula" readonly="readonly" title="Stock PHU discarded OPV" disabled="disabled"></td>
+            </tr>
+            <tr>
+                <td>Measles Doses</td>
+                <td style="text-align: center; "><input id="vEAo4KwsAzl-bRowv6yZOF2-val" name="entryfield" title="Stock PHU start balance Measles" value="[ Stock PHU start balance Measles ]"></td>
+                <td style="text-align: center; "><input id="XNrjXqZrHD8-bRowv6yZOF2-val" name="entryfield" title="Stock PHU received Measles" value="[ Stock PHU received Measles ]"></td>
+                <td style="text-align: center; "><input id="lVknokmR4Ip-bRowv6yZOF2-val" name="entryfield" title="Stock PHU dispensed Measles" value="[ Stock PHU dispensed Measles ]"></td>
+                <td style="text-align: center; "><input id="FvKdfA2SuWI-fsFN9T4ck3E-val" name="entryfield" title="Stock PHU discarded Measles Expired" value="[ Stock PHU discarded Measles Expired ]"></td>
+                <td style="text-align: center; "><input id="FvKdfA2SuWI-pn1upwnbxfn-val" name="entryfield" title="Stock PHU discarded Measles Damages" value="[ Stock PHU discarded Measles Damages ]"></td>
+                <td style="text-align: center; "><input id="FvKdfA2SuWI-TxaWpw1pN5G-val" name="entryfield" title="Stock PHU discarded Measles VVM Change" value="[ Stock PHU discarded Measles VVM Change ]"></td>
+                <td style="text-align: center; "><input id="(#{vEAo4KwsAzl.bRowv6yZOF2})/(1)" name="indicatorFormula" readonly="readonly" title="Measles Stock End Balance" disabled="disabled"></td>
+                <td style="text-align: center; "><input id="(#{FvKdfA2SuWI.fsFN9T4ck3E}+#{FvKdfA2SuWI.pn1upwnbxfn}+#{FvKdfA2SuWI.TxaWpw1pN5G})" name="indicatorFormula" readonly="readonly" title="Stock PHU discarded Measles" disabled="disabled"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
-    }
+    <p>&#xA0;</p>
 
-</script>
-<p>
-    <style type="text/css">th, thead tr {
-        background-color: #CBDDEB;
-        background-repeat: repeat-x;
-        text-align: left;
-        color: #39547D;
-        padding: 3px 0px 2px 6px;
-        border-style: solid;
-        border-width: 1px;
-        border-color: #C8DBEA;
-        font-family: LiberationSansBold, arial;
-        font-size: 13px;
-        font-weight: normal;
-    }
-    .center {
-        text-align:center;
-    }
-    #cde table {
-        border-collapse: collapse;
-    }
-
-    #cde table, #cde th, #cde td {
-        border: 1px solid #c0c0c0;
-    }
-
-    #cde td, #cde th {
-        height: 30px;
-        padding: 10px;
-        margin: 10px;
-    }
-
-    .cde-greyfield {
-        background-color: #e0e0e0;
-    }
-    </style>
-</p>
-
-<div id="cde">
-    <h2 class="center">Taarifa ya DTC</h2>
-
-    <table border="1" cellpadding="0" cellspacing="0" width="1000">
-        <tbody>
-        <tr>
-            <th rowspan="2">Na.</th>
-            <th colspan="2" rowspan="2">Maelezo</th>
-            <th colspan="3">Umri chini ya mwezi 1</th>
-            <th colspan="3">Umri mwezi 1 hadi umri chini ya mwaka 1</th>
-            <th colspan="3">Umri mwaka 1 hadi umri&#xA0;miaka 5</th>
-            <th>Jumla</th>
-        </tr>
-        <tr>
-            <th>Me</th>
-            <th>Ke</th>
-            <th>Jumla</th>
-            <th>Me</th>
-            <th>Ke</th>
-            <th>Jumla</th>
-            <th>Me</th>
-            <th>Ke</th>
-            <th>Jumla</th>
-            <th>Jumla Kuu</th>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td colspan="2">Idadi ya wagonjwa waliotibiwaDTC</td>
-            <td><input id="RK4Tve3mDt1-XxnkJ6llKw1-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliotibiwa Kona ya Magonjwa ya Kuhara  Umri chini ya mwezi 1, ME" value="[ Waliotibiwa Kona ya Magonjwa ya Kuhara  Umri chini ya mwezi 1, ME ]"></td>
-            <td><input id="RK4Tve3mDt1-BkCsslyhIGP-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliotibiwa Kona ya Magonjwa ya Kuhara  Umri chini ya mwezi 1, KE" value="[ Waliotibiwa Kona ya Magonjwa ya Kuhara  Umri chini ya mwezi 1, KE ]"></td>
-            <td><input id="(#{RK4Tve3mDt1.BkCsslyhIGP}+#{RK4Tve3mDt1.XxnkJ6llKw1})/(1)" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="X_DTC2012 Waliotibiwa DTC Umri chini ya mwezi 1" disabled="disabled"></td>
-            <td>
-                <div style="text-align: center;"><input id="RK4Tve3mDt1-uyT47B1c9a6-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliotibiwa Kona ya Magonjwa ya Kuhara  Umri mwezi 1 hadi umri chini ya mwaka 1, ME" value="[ Waliotibiwa Kona ya Magonjwa ya Kuhara  Umri mwezi 1 hadi umri chini ya mwaka 1, ME ]"></div>
-            </td>
-            <td><input id="RK4Tve3mDt1-iObmmghq1JR-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliotibiwa Kona ya Magonjwa ya Kuhara  Umri mwezi 1 hadi umri chini ya mwaka 1, KE" value="[ Waliotibiwa Kona ya Magonjwa ya Kuhara  Umri mwezi 1 hadi umri chini ya mwaka 1, KE ]"></td>
-            <td style="text-align: center;"><input id="(#{RK4Tve3mDt1.uyT47B1c9a6}+#{RK4Tve3mDt1.iObmmghq1JR})/(1)" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="X_DTC2012 Waliotibiwa DTC Umri mwezi 1 hadi umri chini ya mwaka 1" disabled="disabled"></td>
-            <td><input id="RK4Tve3mDt1-TEsRdQV61Ms-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliotibiwa Kona ya Magonjwa ya Kuhara  Umri mwaka 1 hadi umri chini ya miaka 5, ME" value="[ Waliotibiwa Kona ya Magonjwa ya Kuhara  Umri mwaka 1 hadi umri chini ya miaka 5, ME ]"></td>
-            <td><input id="RK4Tve3mDt1-hSu00g8Crdf-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliotibiwa Kona ya Magonjwa ya Kuhara  Umri mwaka 1 hadi umri chini ya miaka 5, KE" value="[ Waliotibiwa Kona ya Magonjwa ya Kuhara  Umri mwaka 1 hadi umri chini ya miaka 5, KE ]"></td>
-            <td style="text-align: center;"><input id="(#{RK4Tve3mDt1.hSu00g8Crdf}+#{RK4Tve3mDt1.TEsRdQV61Ms})/(1)" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="X_DTC2012 Waliotibiwa DTC Umri mwaka 1 hadi umri chini ya miaka 5" disabled="disabled"></td>
-            <td><input id="(#{RK4Tve3mDt1.XxnkJ6llKw1}+#{RK4Tve3mDt1.BkCsslyhIGP}+#{RK4Tve3mDt1.uyT47B1c9a6}+#{RK4Tve3mDt1.iObmmghq1JR}+#{RK4Tve3mDt1.TEsRdQV61Ms}+#{RK4Tve3mDt1.hSu00g8Crdf})" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="Waliotibiwa Kona ya Magonjwa ya Kuhara  (Total)" disabled="disabled"></td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td colspan="2">Idadi ya wagonjwa waliotibiwa DTC walio na upungufu mkubwa wa maji na chumvichumvi mwilini</td>
-            <td><input id="R8ZrbCG82Oy-XxnkJ6llKw1-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliotibiwa DTC Walio na Upungufu Mkubwa wa Maji na Chumvichumvi Mwilini Umri chini ya mwezi 1, ME" value="[ Waliotibiwa DTC Walio na Upungufu Mkubwa wa Maji na Chumvichumvi Mwilini Umri chini ya mwezi 1, ME ]"></td>
-            <td><input id="R8ZrbCG82Oy-BkCsslyhIGP-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliotibiwa DTC Walio na Upungufu Mkubwa wa Maji na Chumvichumvi Mwilini Umri chini ya mwezi 1, KE" value="[ Waliotibiwa DTC Walio na Upungufu Mkubwa wa Maji na Chumvichumvi Mwilini Umri chini ya mwezi 1, KE ]"></td>
-            <td><input id="(#{R8ZrbCG82Oy.BkCsslyhIGP}+#{R8ZrbCG82Oy.XxnkJ6llKw1})/(1)" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="X_DTC2012 Waliotibiwa DTC walio na upungufu mkubwa wa maji mwilini Umri chini ya mwezi 1" disabled="disabled"></td>
-            <td><input id="R8ZrbCG82Oy-uyT47B1c9a6-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliotibiwa DTC Walio na Upungufu Mkubwa wa Maji na Chumvichumvi Mwilini Umri mwezi 1 hadi umri chini ya mwaka 1, ME" value="[ Waliotibiwa DTC Walio na Upungufu Mkubwa wa Maji na Chumvichumvi Mwilini Umri mwezi 1 hadi umri chini ya mwaka 1, ME ]"></td>
-            <td><input id="R8ZrbCG82Oy-iObmmghq1JR-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliotibiwa DTC Walio na Upungufu Mkubwa wa Maji na Chumvichumvi Mwilini Umri mwezi 1 hadi umri chini ya mwaka 1, KE" value="[ Waliotibiwa DTC Walio na Upungufu Mkubwa wa Maji na Chumvichumvi Mwilini Umri mwezi 1 hadi umri chini ya mwaka 1, KE ]"></td>
-            <td><input id="(#{R8ZrbCG82Oy.iObmmghq1JR}+#{R8ZrbCG82Oy.uyT47B1c9a6})/(1)" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="X_DTC2012 Waliotibiwa DTC walio na upungufu mkubwa wa maji mwilini Umri mwezi 1 hadi umri chini ya mwaka 1" disabled="disabled"></td>
-            <td><input id="R8ZrbCG82Oy-TEsRdQV61Ms-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliotibiwa DTC Walio na Upungufu Mkubwa wa Maji na Chumvichumvi Mwilini Umri mwaka 1 hadi umri chini ya miaka 5, ME" value="[ Waliotibiwa DTC Walio na Upungufu Mkubwa wa Maji na Chumvichumvi Mwilini Umri mwaka 1 hadi umri chini ya miaka 5, ME ]"></td>
-            <td><input id="R8ZrbCG82Oy-hSu00g8Crdf-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliotibiwa DTC Walio na Upungufu Mkubwa wa Maji na Chumvichumvi Mwilini Umri mwaka 1 hadi umri chini ya miaka 5, KE" value="[ Waliotibiwa DTC Walio na Upungufu Mkubwa wa Maji na Chumvichumvi Mwilini Umri mwaka 1 hadi umri chini ya miaka 5, KE ]"></td>
-            <td><input id="(#{R8ZrbCG82Oy.hSu00g8Crdf}+#{R8ZrbCG82Oy.TEsRdQV61Ms})/(1)" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="X_DTC2012 Waliotibiwa DTC walio na upungufu mkubwa wa maji mwilini (Umri mwaka 1 hadi umri chini ya miaka 5" disabled="disabled"></td>
-            <td><input id="(#{R8ZrbCG82Oy.XxnkJ6llKw1}+#{R8ZrbCG82Oy.BkCsslyhIGP}+#{R8ZrbCG82Oy.uyT47B1c9a6}+#{R8ZrbCG82Oy.iObmmghq1JR}+#{R8ZrbCG82Oy.TEsRdQV61Ms}+#{R8ZrbCG82Oy.hSu00g8Crdf})" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="Waliotibiwa DTC Walio na Upungufu Mkubwa wa Maji na Chumvichumvi Mwilini (Total)" disabled="disabled"></td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td colspan="2">Idadi ya wagonjwa waliotibiwa DTC walio na upungufu kiasi wa maji na chumvichumvi mwilini</td>
-            <td><input id="rPgFct7U7VI-XxnkJ6llKw1-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliotibiwa DTC Walio na Upungufu Kiasi wa Maji na Chumvichumvi Mwilini Umri chini ya mwezi 1, ME" value="[ Waliotibiwa DTC Walio na Upungufu Kiasi wa Maji na Chumvichumvi Mwilini Umri chini ya mwezi 1, ME ]"></td>
-            <td><input id="rPgFct7U7VI-BkCsslyhIGP-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliotibiwa DTC Walio na Upungufu Kiasi wa Maji na Chumvichumvi Mwilini Umri chini ya mwezi 1, KE" value="[ Waliotibiwa DTC Walio na Upungufu Kiasi wa Maji na Chumvichumvi Mwilini Umri chini ya mwezi 1, KE ]"></td>
-            <td><input id="(#{rPgFct7U7VI.BkCsslyhIGP}+#{rPgFct7U7VI.XxnkJ6llKw1})/(1)" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="X_DTC2012 Waliotibiwa DTC walio na upungufu kiasi wa maji mwilini Umri chini ya mwezi 1" disabled="disabled"></td>
-            <td><input id="rPgFct7U7VI-uyT47B1c9a6-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliotibiwa DTC Walio na Upungufu Kiasi wa Maji na Chumvichumvi Mwilini Umri mwezi 1 hadi umri chini ya mwaka 1, ME" value="[ Waliotibiwa DTC Walio na Upungufu Kiasi wa Maji na Chumvichumvi Mwilini Umri mwezi 1 hadi umri chini ya mwaka 1, ME ]"></td>
-            <td><input id="rPgFct7U7VI-iObmmghq1JR-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliotibiwa DTC Walio na Upungufu Kiasi wa Maji na Chumvichumvi Mwilini Umri mwezi 1 hadi umri chini ya mwaka 1, KE" value="[ Waliotibiwa DTC Walio na Upungufu Kiasi wa Maji na Chumvichumvi Mwilini Umri mwezi 1 hadi umri chini ya mwaka 1, KE ]"></td>
-            <td><input id="(#{rPgFct7U7VI.iObmmghq1JR}+#{rPgFct7U7VI.uyT47B1c9a6})/(1)" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="X_DTC2012 Waliotibiwa DTC walio na upungufu kiasi wa maji mwilini Umri mwezi 1 hadi umri chini ya mwaka 1" disabled="disabled"></td>
-            <td><input id="rPgFct7U7VI-TEsRdQV61Ms-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliotibiwa DTC Walio na Upungufu Kiasi wa Maji na Chumvichumvi Mwilini Umri mwaka 1 hadi umri chini ya miaka 5, ME" value="[ Waliotibiwa DTC Walio na Upungufu Kiasi wa Maji na Chumvichumvi Mwilini Umri mwaka 1 hadi umri chini ya miaka 5, ME ]"></td>
-            <td><input id="rPgFct7U7VI-hSu00g8Crdf-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliotibiwa DTC Walio na Upungufu Kiasi wa Maji na Chumvichumvi Mwilini Umri mwaka 1 hadi umri chini ya miaka 5, KE" value="[ Waliotibiwa DTC Walio na Upungufu Kiasi wa Maji na Chumvichumvi Mwilini Umri mwaka 1 hadi umri chini ya miaka 5, KE ]"></td>
-            <td><input id="(#{rPgFct7U7VI.hSu00g8Crdf}+#{rPgFct7U7VI.TEsRdQV61Ms})/(1)" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="X_DTC2012 Waliotibiwa DTC walio na upungufu kiasi wa maji mwilini Umri mwaka 1 hadi umri chini ya miaka 5" disabled="disabled"></td>
-            <td><input id="(#{rPgFct7U7VI.XxnkJ6llKw1}+#{rPgFct7U7VI.BkCsslyhIGP}+#{rPgFct7U7VI.uyT47B1c9a6}+#{rPgFct7U7VI.iObmmghq1JR}+#{rPgFct7U7VI.TEsRdQV61Ms}+#{rPgFct7U7VI.hSu00g8Crdf})" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="Waliotibiwa DTC Walio na Upungufu Kiasi wa Maji na Chumvichumvi Mwilini (Total)" disabled="disabled"></td>
-        </tr>
-        <tr>
-            <td>4</td>
-            <td colspan="2">Idadi ya wagonjwa walio na damu katika kinyesi</td>
-            <td><input id="pWm4CiT6RoK-XxnkJ6llKw1-val" name="entryfield" style="width:3.5em;text-align:center///" title="Walio na Damu Katika Kinyesi Umri chini ya mwezi 1, ME" value="[ Walio na Damu Katika Kinyesi Umri chini ya mwezi 1, ME ]"></td>
-            <td><input id="pWm4CiT6RoK-BkCsslyhIGP-val" name="entryfield" style="width:3.5em;text-align:center///" title="Walio na Damu Katika Kinyesi Umri chini ya mwezi 1, KE" value="[ Walio na Damu Katika Kinyesi Umri chini ya mwezi 1, KE ]"></td>
-            <td><input id="(#{pWm4CiT6RoK.BkCsslyhIGP}+#{pWm4CiT6RoK.XxnkJ6llKw1})/(1)" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="X_DTC2012 Walio na damu katika kinyesi Umri chini ya mwezi 1" disabled="disabled"></td>
-            <td><input id="pWm4CiT6RoK-uyT47B1c9a6-val" name="entryfield" style="width:3.5em;text-align:center///" title="Walio na Damu Katika Kinyesi Umri mwezi 1 hadi umri chini ya mwaka 1, ME" value="[ Walio na Damu Katika Kinyesi Umri mwezi 1 hadi umri chini ya mwaka 1, ME ]"></td>
-            <td><input id="pWm4CiT6RoK-iObmmghq1JR-val" name="entryfield" style="width:3.5em;text-align:center///" title="Walio na Damu Katika Kinyesi Umri mwezi 1 hadi umri chini ya mwaka 1, KE" value="[ Walio na Damu Katika Kinyesi Umri mwezi 1 hadi umri chini ya mwaka 1, KE ]"></td>
-            <td><input id="(#{pWm4CiT6RoK.iObmmghq1JR}+#{pWm4CiT6RoK.uyT47B1c9a6})/(1)" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="X_DTC2012 Walio na damu katika kinyesi Umri mwezi 1 hadi umri chini ya mwaka 1" disabled="disabled"></td>
-            <td><input id="pWm4CiT6RoK-TEsRdQV61Ms-val" name="entryfield" style="width:3.5em;text-align:center///" title="Walio na Damu Katika Kinyesi Umri mwaka 1 hadi umri chini ya miaka 5, ME" value="[ Walio na Damu Katika Kinyesi Umri mwaka 1 hadi umri chini ya miaka 5, ME ]"></td>
-            <td><input id="pWm4CiT6RoK-hSu00g8Crdf-val" name="entryfield" style="width:3.5em;text-align:center///" title="Walio na Damu Katika Kinyesi Umri mwaka 1 hadi umri chini ya miaka 5, KE" value="[ Walio na Damu Katika Kinyesi Umri mwaka 1 hadi umri chini ya miaka 5, KE ]"></td>
-            <td><input id="(#{pWm4CiT6RoK.hSu00g8Crdf}+#{pWm4CiT6RoK.TEsRdQV61Ms})/(1)" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="X_DTC2012 Walio na damu katika kinyesi Umri mwaka 1 hadi umri chini ya miaka 5" disabled="disabled"></td>
-            <td><input id="(#{pWm4CiT6RoK.XxnkJ6llKw1}+#{pWm4CiT6RoK.BkCsslyhIGP}+#{pWm4CiT6RoK.uyT47B1c9a6}+#{pWm4CiT6RoK.iObmmghq1JR}+#{pWm4CiT6RoK.TEsRdQV61Ms}+#{pWm4CiT6RoK.hSu00g8Crdf})" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="Walio na Damu Katika Kinyesi (Total)" disabled="disabled"></td>
-        </tr>
-        <tr>
-            <td>5</td>
-            <td colspan="2">Idadi ya wagonjwa waliopewa rufaa</td>
-            <td><input id="qbcTxAGXiX3-XxnkJ6llKw1-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliopewa Rufaa Kutoka Magonjwa ya Kuhara Umri chini ya mwezi 1, ME" value="[ Waliopewa Rufaa Kutoka Magonjwa ya Kuhara Umri chini ya mwezi 1, ME ]"></td>
-            <td><input id="qbcTxAGXiX3-BkCsslyhIGP-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliopewa Rufaa Kutoka Magonjwa ya Kuhara Umri chini ya mwezi 1, KE" value="[ Waliopewa Rufaa Kutoka Magonjwa ya Kuhara Umri chini ya mwezi 1, KE ]"></td>
-            <td><input id="(#{qbcTxAGXiX3.BkCsslyhIGP}+#{qbcTxAGXiX3.XxnkJ6llKw1})/(1)" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="X_DTC2012 Waliopewa rufaa kutoka DTC Umri chini ya mwezi 1" disabled="disabled"></td>
-            <td><input id="qbcTxAGXiX3-uyT47B1c9a6-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliopewa Rufaa Kutoka Magonjwa ya Kuhara Umri mwezi 1 hadi umri chini ya mwaka 1, ME" value="[ Waliopewa Rufaa Kutoka Magonjwa ya Kuhara Umri mwezi 1 hadi umri chini ya mwaka 1, ME ]"></td>
-            <td><input id="qbcTxAGXiX3-iObmmghq1JR-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliopewa Rufaa Kutoka Magonjwa ya Kuhara Umri mwezi 1 hadi umri chini ya mwaka 1, KE" value="[ Waliopewa Rufaa Kutoka Magonjwa ya Kuhara Umri mwezi 1 hadi umri chini ya mwaka 1, KE ]"></td>
-            <td><input id="(#{qbcTxAGXiX3.iObmmghq1JR}+#{qbcTxAGXiX3.uyT47B1c9a6})/(1)" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="X_DTC2012 Waliopewa rufaa kutoka DTC Umri mwezi 1 hadi umri chini ya mwaka 1" disabled="disabled"></td>
-            <td><input id="qbcTxAGXiX3-TEsRdQV61Ms-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliopewa Rufaa Kutoka Magonjwa ya Kuhara Umri mwaka 1 hadi umri chini ya miaka 5, ME" value="[ Waliopewa Rufaa Kutoka Magonjwa ya Kuhara Umri mwaka 1 hadi umri chini ya miaka 5, ME ]"></td>
-            <td><input id="qbcTxAGXiX3-hSu00g8Crdf-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliopewa Rufaa Kutoka Magonjwa ya Kuhara Umri mwaka 1 hadi umri chini ya miaka 5, KE" value="[ Waliopewa Rufaa Kutoka Magonjwa ya Kuhara Umri mwaka 1 hadi umri chini ya miaka 5, KE ]"></td>
-            <td><input id="(#{qbcTxAGXiX3.hSu00g8Crdf}+#{qbcTxAGXiX3.TEsRdQV61Ms})/(1)" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="X_DTC2012 Waliopewa rufaa kutoka DTC Umri mwaka 1 hadi umri chini ya miaka 5" disabled="disabled"></td>
-            <td><input id="(#{qbcTxAGXiX3.XxnkJ6llKw1}+#{qbcTxAGXiX3.BkCsslyhIGP}+#{qbcTxAGXiX3.uyT47B1c9a6}+#{qbcTxAGXiX3.iObmmghq1JR}+#{qbcTxAGXiX3.TEsRdQV61Ms}+#{qbcTxAGXiX3.hSu00g8Crdf})" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="Waliopewa Rufaa Kutoka Magonjwa ya Kuhara (Total)" disabled="disabled"></td>
-        </tr>
-        <tr>
-            <td>6</td>
-            <td colspan="2">Idadi ya wagonjwa waliopatiwa zinki</td>
-            <td><input id="j9iPBg2hfhK-XxnkJ6llKw1-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliopatiwa Zinki Umri chini ya mwezi 1, ME" value="[ Waliopatiwa Zinki Umri chini ya mwezi 1, ME ]"></td>
-            <td><input id="j9iPBg2hfhK-BkCsslyhIGP-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliopatiwa Zinki Umri chini ya mwezi 1, KE" value="[ Waliopatiwa Zinki Umri chini ya mwezi 1, KE ]"></td>
-            <td><input id="(#{j9iPBg2hfhK.BkCsslyhIGP}+#{j9iPBg2hfhK.XxnkJ6llKw1})/(1)" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="X_DTC2012 Waliopewa Zinki Umri chini ya mwezi 1" disabled="disabled"></td>
-            <td><input id="j9iPBg2hfhK-uyT47B1c9a6-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliopatiwa Zinki Umri mwezi 1 hadi umri chini ya mwaka 1, ME" value="[ Waliopatiwa Zinki Umri mwezi 1 hadi umri chini ya mwaka 1, ME ]"></td>
-            <td><input id="j9iPBg2hfhK-iObmmghq1JR-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliopatiwa Zinki Umri mwezi 1 hadi umri chini ya mwaka 1, KE" value="[ Waliopatiwa Zinki Umri mwezi 1 hadi umri chini ya mwaka 1, KE ]"></td>
-            <td><input id="(#{j9iPBg2hfhK.iObmmghq1JR}+#{j9iPBg2hfhK.uyT47B1c9a6})/(1)" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="X_DTC2012 Waliopewa Zinki Umri mwezi 1 hadi umri chini ya mwaka 1" disabled="disabled"></td>
-            <td><input id="j9iPBg2hfhK-TEsRdQV61Ms-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliopatiwa Zinki Umri mwaka 1 hadi umri chini ya miaka 5, ME" value="[ Waliopatiwa Zinki Umri mwaka 1 hadi umri chini ya miaka 5, ME ]"></td>
-            <td><input id="j9iPBg2hfhK-hSu00g8Crdf-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliopatiwa Zinki Umri mwaka 1 hadi umri chini ya miaka 5, KE" value="[ Waliopatiwa Zinki Umri mwaka 1 hadi umri chini ya miaka 5, KE ]"></td>
-            <td><input id="(#{j9iPBg2hfhK.hSu00g8Crdf}+#{j9iPBg2hfhK.TEsRdQV61Ms})/(1)" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="X_DTC2012 Waliopewa Zinki Umri mwaka 1 hadi umri chini ya miaka 5" disabled="disabled"></td>
-            <td><input id="(#{j9iPBg2hfhK.XxnkJ6llKw1}+#{j9iPBg2hfhK.BkCsslyhIGP}+#{j9iPBg2hfhK.uyT47B1c9a6}+#{j9iPBg2hfhK.iObmmghq1JR}+#{j9iPBg2hfhK.TEsRdQV61Ms}+#{j9iPBg2hfhK.hSu00g8Crdf})" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="Waliopatiwa Zinki (Total)" disabled="disabled"></td>
-        </tr>
-        <tr>
-            <td>7</td>
-            <td colspan="2">Idadi ya wagonjwa waliopatiwa paketi za ORS</td>
-            <td><input id="IUVn5bFkzkt-XxnkJ6llKw1-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliopatiwa Paketi za ORS Umri chini ya mwezi 1, ME" value="[ Waliopatiwa Paketi za ORS Umri chini ya mwezi 1, ME ]"></td>
-            <td><input id="IUVn5bFkzkt-BkCsslyhIGP-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliopatiwa Paketi za ORS Umri chini ya mwezi 1, KE" value="[ Waliopatiwa Paketi za ORS Umri chini ya mwezi 1, KE ]"></td>
-            <td><input id="(#{IUVn5bFkzkt.BkCsslyhIGP}+#{IUVn5bFkzkt.XxnkJ6llKw1})/(1)" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="X_DTC2012 Waliopatiwa paketi za ORS Umri chini ya mwezi 1" disabled="disabled"></td>
-            <td>
-                <div style="text-align: center;"><input id="IUVn5bFkzkt-uyT47B1c9a6-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliopatiwa Paketi za ORS Umri mwezi 1 hadi umri chini ya mwaka 1, ME" value="[ Waliopatiwa Paketi za ORS Umri mwezi 1 hadi umri chini ya mwaka 1, ME ]"></div>
-            </td>
-            <td><input id="IUVn5bFkzkt-iObmmghq1JR-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliopatiwa Paketi za ORS Umri mwezi 1 hadi umri chini ya mwaka 1, KE" value="[ Waliopatiwa Paketi za ORS Umri mwezi 1 hadi umri chini ya mwaka 1, KE ]"></td>
-            <td><input id="(#{IUVn5bFkzkt.iObmmghq1JR}+#{IUVn5bFkzkt.uyT47B1c9a6})/(1)" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="X_DTC2012 Waliopatiwa paketi za ORS Umri mwezi 1 hadi umri chini ya mwaka 1" disabled="disabled"></td>
-            <td><input id="IUVn5bFkzkt-TEsRdQV61Ms-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliopatiwa Paketi za ORS Umri mwaka 1 hadi umri chini ya miaka 5, ME" value="[ Waliopatiwa Paketi za ORS Umri mwaka 1 hadi umri chini ya miaka 5, ME ]"></td>
-            <td><input id="IUVn5bFkzkt-hSu00g8Crdf-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliopatiwa Paketi za ORS Umri mwaka 1 hadi umri chini ya miaka 5, KE" value="[ Waliopatiwa Paketi za ORS Umri mwaka 1 hadi umri chini ya miaka 5, KE ]"></td>
-            <td><input id="(#{IUVn5bFkzkt.hSu00g8Crdf}+#{IUVn5bFkzkt.TEsRdQV61Ms})/(1)" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="X_DTC2012 Waliopatiwa paketi za ORS Umri mwaka 1 hadi umri chini ya miaka 5" disabled="disabled"></td>
-            <td><input id="(#{IUVn5bFkzkt.XxnkJ6llKw1}+#{IUVn5bFkzkt.BkCsslyhIGP}+#{IUVn5bFkzkt.uyT47B1c9a6}+#{IUVn5bFkzkt.iObmmghq1JR}+#{IUVn5bFkzkt.TEsRdQV61Ms}+#{IUVn5bFkzkt.hSu00g8Crdf})" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="Waliopatiwa Paketi za ORS (Total)" disabled="disabled"></td>
-        </tr>
-        <tr>
-            <td>8</td>
-            <td colspan="2">Idadi ya wagonjwa waliolazwa</td>
-            <td><input id="wHY1ioNptDx-XxnkJ6llKw1-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliolazwa Kutokea Matibabu ya Kuhara Umri chini ya mwezi 1, ME" value="[ Waliolazwa Kutokea Matibabu ya Kuhara Umri chini ya mwezi 1, ME ]"></td>
-            <td><input id="wHY1ioNptDx-BkCsslyhIGP-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliolazwa Kutokea Matibabu ya Kuhara Umri chini ya mwezi 1, KE" value="[ Waliolazwa Kutokea Matibabu ya Kuhara Umri chini ya mwezi 1, KE ]"></td>
-            <td><input id="(#{wHY1ioNptDx.BkCsslyhIGP}+#{wHY1ioNptDx.XxnkJ6llKw1})/(1)" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="X_DTC2012 Waliolazwa DTC Umri chini ya mwezi 1" disabled="disabled"></td>
-            <td><input id="wHY1ioNptDx-uyT47B1c9a6-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliolazwa Kutokea Matibabu ya Kuhara Umri mwezi 1 hadi umri chini ya mwaka 1, ME" value="[ Waliolazwa Kutokea Matibabu ya Kuhara Umri mwezi 1 hadi umri chini ya mwaka 1, ME ]"></td>
-            <td><input id="wHY1ioNptDx-iObmmghq1JR-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliolazwa Kutokea Matibabu ya Kuhara Umri mwezi 1 hadi umri chini ya mwaka 1, KE" value="[ Waliolazwa Kutokea Matibabu ya Kuhara Umri mwezi 1 hadi umri chini ya mwaka 1, KE ]"></td>
-            <td><input id="(#{wHY1ioNptDx.iObmmghq1JR}+#{wHY1ioNptDx.uyT47B1c9a6})/(1)" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="X_DTC2012 Waliolazwa DTC Umri mwezi 1 hadi umri chini ya mwaka 1" disabled="disabled"></td>
-            <td><input id="wHY1ioNptDx-TEsRdQV61Ms-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliolazwa Kutokea Matibabu ya Kuhara Umri mwaka 1 hadi umri chini ya miaka 5, ME" value="[ Waliolazwa Kutokea Matibabu ya Kuhara Umri mwaka 1 hadi umri chini ya miaka 5, ME ]"></td>
-            <td><input id="wHY1ioNptDx-hSu00g8Crdf-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliolazwa Kutokea Matibabu ya Kuhara Umri mwaka 1 hadi umri chini ya miaka 5, KE" value="[ Waliolazwa Kutokea Matibabu ya Kuhara Umri mwaka 1 hadi umri chini ya miaka 5, KE ]"></td>
-            <td><input id="(#{wHY1ioNptDx.hSu00g8Crdf}+#{wHY1ioNptDx.TEsRdQV61Ms})/(1)" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="X_DTC2012 Waliolazwa DTC Umri mwaka 1 hadi umri chini ya miaka 5" disabled="disabled"></td>
-            <td><input id="(#{wHY1ioNptDx.XxnkJ6llKw1}+#{wHY1ioNptDx.BkCsslyhIGP}+#{wHY1ioNptDx.uyT47B1c9a6}+#{wHY1ioNptDx.iObmmghq1JR}+#{wHY1ioNptDx.TEsRdQV61Ms}+#{wHY1ioNptDx.hSu00g8Crdf})" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="Waliolazwa Kutokea Matibabu ya Kuhara (Total)" disabled="disabled"></td>
-        </tr>
-        <tr>
-            <td>9</td>
-            <td colspan="2">Idadi ya wagonjwa waliofia DTC</td>
-            <td><input id="fnp6v5oxFxx-XxnkJ6llKw1-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliofia Kwenye Matibabu ya Kuhara Umri chini ya mwezi 1, ME" value="[ Waliofia Kwenye Matibabu ya Kuhara Umri chini ya mwezi 1, ME ]"></td>
-            <td><input id="fnp6v5oxFxx-BkCsslyhIGP-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliofia Kwenye Matibabu ya Kuhara Umri chini ya mwezi 1, KE" value="[ Waliofia Kwenye Matibabu ya Kuhara Umri chini ya mwezi 1, KE ]"></td>
-            <td><input id="(#{fnp6v5oxFxx.BkCsslyhIGP}+#{fnp6v5oxFxx.XxnkJ6llKw1})/(1)" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="X_DTC2012 Waliofia DTC Umri chini ya mwezi 1" disabled="disabled"></td>
-            <td><input id="fnp6v5oxFxx-uyT47B1c9a6-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliofia Kwenye Matibabu ya Kuhara Umri mwezi 1 hadi umri chini ya mwaka 1, ME" value="[ Waliofia Kwenye Matibabu ya Kuhara Umri mwezi 1 hadi umri chini ya mwaka 1, ME ]"></td>
-            <td><input id="fnp6v5oxFxx-iObmmghq1JR-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliofia Kwenye Matibabu ya Kuhara Umri mwezi 1 hadi umri chini ya mwaka 1, KE" value="[ Waliofia Kwenye Matibabu ya Kuhara Umri mwezi 1 hadi umri chini ya mwaka 1, KE ]"></td>
-            <td><input id="(#{fnp6v5oxFxx.iObmmghq1JR}+#{fnp6v5oxFxx.uyT47B1c9a6})/(1)" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="X_DTC2012 Waliofia DTC Umri mwezi 1 hadi umri chini ya mwaka 1" disabled="disabled"></td>
-            <td><input id="fnp6v5oxFxx-TEsRdQV61Ms-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliofia Kwenye Matibabu ya Kuhara Umri mwaka 1 hadi umri chini ya miaka 5, ME" value="[ Waliofia Kwenye Matibabu ya Kuhara Umri mwaka 1 hadi umri chini ya miaka 5, ME ]"></td>
-            <td><input id="fnp6v5oxFxx-hSu00g8Crdf-val" name="entryfield" style="width:3.5em;text-align:center///" title="Waliofia Kwenye Matibabu ya Kuhara Umri mwaka 1 hadi umri chini ya miaka 5, KE" value="[ Waliofia Kwenye Matibabu ya Kuhara Umri mwaka 1 hadi umri chini ya miaka 5, KE ]"></td>
-            <td><input id="(#{fnp6v5oxFxx.hSu00g8Crdf}+#{fnp6v5oxFxx.TEsRdQV61Ms})/(1)" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="X_DTC2012 Waliofia DTC Umri mwaka 1 hadi umri chini ya miaka 5" disabled="disabled"></td>
-            <td><input id="(#{fnp6v5oxFxx.XxnkJ6llKw1}+#{fnp6v5oxFxx.BkCsslyhIGP}+#{fnp6v5oxFxx.uyT47B1c9a6}+#{fnp6v5oxFxx.iObmmghq1JR}+#{fnp6v5oxFxx.TEsRdQV61Ms}+#{fnp6v5oxFxx.hSu00g8Crdf})" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center;///" title="Waliofia Kwenye Matibabu ya Kuhara (Total)" disabled="disabled"></td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-
-<p>&#xA0;</p>
+</section>
