@@ -1,5 +1,5 @@
 <section>
-<input datasetname="dataSetName" name="originalHtmls/BRN_Dispensary Scoring.html">
+<div class="toBeRemoved" style="display: none"><input datasetname="dataSetName" name="originalHtmls/nqKkegk1y8U.html"></div>
 <script>
     if (dhis2.dsr){
         function calculateReportIndicators() {
@@ -15,7 +15,7 @@
                         sum += parseInt($("span[data-co="+elementCombo[1].replace("}","")+"][data-de="+elementCombo[0].replace("#{","")+"]").text());
                     }
                 }
-                $('input[id= "'+form.id+'" ]').val(sum);
+                $('input[indicatorFormula= "'+form.id+'" ]').val(sum);
             });
         }
 
@@ -52,9 +52,9 @@
                     }
                 }
                 if (isNaN(eval("("+formula+")")) !=true) {
-                    $('input[id= "'+form.id+'" ]').val(parseInt(eval(formula)));
+                    $('input[indicatorFormula= "'+form.id+'" ]').val(parseInt(eval(formula)));
                 } else {
-                    $('input[id= "'+form.id+'" ]').val(0);
+                    $('input[indicatorFormula= "'+form.id+'" ]').val(0);
                 }
             });
         }
@@ -436,7 +436,7 @@ dhis2.util.on('dhis2.de.event.formReady', function (event, ds) {
 
 			<p>Month 2 Outpatient:<input id="JGaQdVs9FHH-uGIJ6IdkP7Q-val" title="" value=""></p>
 
-			<p>Average number of outpatient per day: &#xA0; &#xA0;<input id="indicatorf1vEa0lbcHp" name="indicatorFormula" readonly="readonly" title="" disabled="disabled"></p>
+			<p>Average number of outpatient per day: &#xA0; &#xA0;<input id="indicatorf1vEa0lbcHp" name="indicatorFormula" readonly="readonly" title="" indicatorFormula="(#{JGaQdVs9FHH.uGIJ6IdkP7Q})/44)/(1)" disabled="disabled"></p>
 			</td>
 			<td>&#xA0;</td>
 		</tr>

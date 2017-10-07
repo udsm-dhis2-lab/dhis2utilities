@@ -1,5 +1,5 @@
 <section>
-<input dataSetName ="dataSetName" name = "originalHtmls/BRN_Dispensary Scoring.html" />
+<div class="toBeRemoved"><input dataSetName ="dataSetName" name = "originalHtmls/nqKkegk1y8U.html" /></div>
 <script>
     if (dhis2.dsr){
         function calculateReportIndicators() {
@@ -15,7 +15,7 @@
                         sum += parseInt($("span[data-co="+elementCombo[1].replace("}","")+"][data-de="+elementCombo[0].replace("#{","")+"]").text());
                     }
                 }
-                $('input[id= "'+form.id+'" ]').val(sum);
+                $('input[indicatorFormula= "'+form.id+'" ]').val(sum);
             });
         }
 
@@ -52,9 +52,9 @@
                     }
                 }
                 if (isNaN(eval("("+formula+")")) !=true) {
-                    $('input[id= "'+form.id+'" ]').val(parseInt(eval(formula)));
+                    $('input[indicatorFormula= "'+form.id+'" ]').val(parseInt(eval(formula)));
                 } else {
-                    $('input[id= "'+form.id+'" ]').val(0);
+                    $('input[indicatorFormula= "'+form.id+'" ]').val(0);
                 }
             });
         }

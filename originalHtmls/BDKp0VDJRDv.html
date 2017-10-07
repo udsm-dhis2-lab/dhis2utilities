@@ -1,0 +1,207 @@
+<section>
+<div class="toBeRemoved"><input dataSetName ="dataSetName" name = "originalHtmls/BDKp0VDJRDv.html" /></div>
+<script>
+    if (dhis2.dsr){
+        function calculateReportIndicators() {
+            $('input[name="indicatorFormula"]').css('border','none');
+            $('input[name="indicatorFormula"]').css('background-color','#FFFFFF');
+            $('input[name="indicatorFormula"]').css('font-weight','500');
+            $('input[name ="indicatorFormula"]').each(function (i, form) {
+                var elementComboArr = form.id.replace("/",",").split("(").join("").split(")").join("").split(",")[0].split("+")
+                var sum = 0;
+                for (var count = 0; count < elementComboArr.length; count++) {
+                    var elementCombo = elementComboArr[count].split(".");
+                    if (isNaN(parseInt($("span[data-co="+elementCombo[1].replace("}","")+"][data-de="+elementCombo[0].replace("#{","")+"]").text()))== false) {
+                        sum += parseInt($("span[data-co="+elementCombo[1].replace("}","")+"][data-de="+elementCombo[0].replace("#{","")+"]").text());
+                    }
+                }
+                $('input[indicatorFormula= "'+form.id+'" ]').val(sum);
+            });
+        }
+
+        $(document).ready(function(){
+            calculateReportIndicators();
+        });
+    }else {
+        dhis2.util.on('dhis2.de.event.dataValuesLoaded', function () {
+            $('input[name="indicatorFormula"]').css('background-color','#FFFFFF');
+            $('input[name="indicatorFormula"]').css('font-weight','600');
+            $('input[name="indicatorFormula"]').css('border','1px grey solid');
+            $('input[name="indicatorFormula"]').css('text-align','center');
+            calculateIndicatorValue();
+            addListerners();
+        });
+
+        function addListerners(){
+            $('.entryfield').each(function (i) {
+                $(this).change(function () {
+                    //codes for on changes
+                    calculateIndicatorValue();
+                });
+            });
+        }
+
+        function calculateIndicatorValue() {
+            $('input[name ="indicatorFormula"]').each(function (i, form) {
+                var unReplacedFormula = form.id;
+                var res = form.id.replace("/",",").split("(").join("").split(")").join("").split("+").join(",").split(",");
+                for (var index in res ) {
+                    if(res[index].length > 14) {
+                        var formula = unReplacedFormula.replace(res[index],"Number($('#"+res[index].replace("#{","").replace("}","").replace(".","-").replace(" ","").replace(" ","") + "-val').val())");
+                        unReplacedFormula = formula;
+                    }
+                }
+                if (isNaN(eval("("+formula+")")) !=true) {
+                    $('input[indicatorFormula= "'+form.id+'" ]').val(parseInt(eval(formula)));
+                } else {
+                    $('input[indicatorFormula= "'+form.id+'" ]').val(0);
+                }
+            });
+        }
+
+    }
+
+</script><p>
+<style type="text/css"><!-- 
+		BODY,DIV,TABLE,THEAD,TBODY,TFOOT,TR,TH,TD,P { font-family:"Arial"; font-size:x-small }
+		 -->
+</style>
+</p>
+
+<p>
+<style type="text/css"><!-- 
+		BODY,DIV,TABLE,THEAD,TBODY,TFOOT,TR,TH,TD,P { font-family:"Arial"; font-size:x-small }
+		 -->
+</style>
+</p>
+
+<p>
+<style type="text/css"><!-- 
+		BODY,DIV,TABLE,THEAD,TBODY,TFOOT,TR,TH,TD,P { font-family:"Arial"; font-size:x-small }
+		 -->
+</style>
+</p>
+
+<table border="0" cellspacing="0" cols="6">
+	<colgroup width="37">
+	</colgroup>
+	<colgroup width="48">
+	</colgroup>
+	<colgroup width="198">
+	</colgroup>
+	<colgroup width="233">
+	</colgroup>
+	<colgroup width="195">
+	</colgroup>
+	<colgroup width="163">
+	</colgroup>
+	<tbody>
+		<tr>
+			<td align="LEFT" height="22" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000"><font face="Times New Roman" size="3">Q1</font></td>
+			<td align="LEFT" colspan="5" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" valign="MIDDLE"><b><font face="Times New Roman" size="3">Availability of Tools</font></b></td>
+		</tr>
+		<tr>
+			<td align="CENTER" colspan="6" height="21" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" valign="MIDDLE"><font face="Times New Roman" size="3">Select <strong>1</strong> for <strong>Adequate</strong>, <strong>2</strong> for <strong>Inadequate</strong>, or <strong>3</strong> for <strong>Poor</strong></font></td>
+		</tr>
+		<tr>
+			<td align="CENTER" height="88" rowspan="4" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" valign="MIDDLE">&nbsp;</td>
+			<td align="LEFT" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000"><b><font face="Times New Roman" size="3">S/n</font></b></td>
+			<td align="CENTER" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000"><b><font face="Times New Roman" size="3">Tool</font></b></td>
+			<td align="CENTER" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000"><b><font face="Times New Roman" size="3">Response</font></b></td>
+			<td align="CENTER" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000"><b><font face="Times New Roman" size="3">Timely?</font></b></td>
+			<td align="CENTER" bgcolor="#C0C0C0" rowspan="4" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" valign="MIDDLE">&nbsp;</td>
+		</tr>
+		<tr>
+			<td align="CENTER" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000"><font face="Times New Roman" size="3">i.</font></td>
+			<td align="JUSTIFY" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000"><font face="Times New Roman" size="3">Registers </font></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;"><input id="fDsUcHs56Gq-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value="" /></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;"><input id="mdl32wt9pln-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value="" /></td>
+		</tr>
+		<tr>
+			<td align="CENTER" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000"><font face="Times New Roman" size="3">ii.</font></td>
+			<td align="JUSTIFY" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000"><font face="Times New Roman" size="3">Tally Sheets</font></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;"><input id="zfYzTtKpEka-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value="" /></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;"><input id="weVokgC0nWl-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value="" /></td>
+		</tr>
+		<tr>
+			<td align="CENTER" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000"><font face="Times New Roman" size="3">iii.</font></td>
+			<td align="JUSTIFY" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000"><font face="Times New Roman" size="3">Summary Forms</font></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;"><input id="baXBfKShLf3-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value="" /></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;"><input id="omr0YKvEdmP-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value="" /></td>
+		</tr>
+		<tr>
+			<td align="CENTER" colspan="6" height="19" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" valign="MIDDLE">&nbsp;</td>
+		</tr>
+		<tr>
+			<td align="LEFT" height="22" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000"><font face="Times New Roman" size="3">Q2</font></td>
+			<td align="LEFT" colspan="5" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" valign="MIDDLE"><b><font face="Times New Roman" size="3">Data Quality</font></b></td>
+		</tr>
+		<tr>
+			<td align="CENTER" height="154" rowspan="7" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" valign="MIDDLE">&nbsp;</td>
+			<td align="LEFT" colspan="4" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" valign="MIDDLE"><font face="Times New Roman" size="3">Has the facility filled all compulsory fields on registers, tally sheets and summary forms?</font></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;" valign="MIDDLE"><input id="uRdnGYGmUnU-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value="" /></td>
+		</tr>
+		<tr>
+			<td align="LEFT" colspan="4" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" valign="MIDDLE"><font face="Times New Roman" size="3">Degree of correlation between data in registers, tally sheets and summary forms</font></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;" valign="MIDDLE"><input id="idKElaCKsiG-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value="" /></td>
+		</tr>
+		<tr>
+			<td align="LEFT" colspan="4" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" valign="MIDDLE"><font face="Times New Roman" size="3">Has the facility compiled data from all tools for sending to the council ?</font></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;" valign="MIDDLE"><input id="HIbFtlbEOna-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value="" /></td>
+		</tr>
+		<tr>
+			<td align="LEFT" colspan="4" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" valign="MIDDLE"><font face="Times New Roman" size="3">Does the facility verify data before sending them to the council?</font></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;" valign="MIDDLE"><input id="NXuXLR0QlES-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value="" /></td>
+		</tr>
+		<tr>
+			<td align="LEFT" colspan="5" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" valign="MIDDLE"><font face="Times New Roman" size="3">If Yes, what are the verification mechanisms used?</font></td>
+		</tr>
+		<tr>
+			<td colspan="2" style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;" valign="MIDDLE"><input id="XTNN6XdgZqv-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value="" /></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;" valign="MIDDLE"><input id="TcEQnc3qwi7-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value="" /></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;" valign="MIDDLE"><input id="sk1XeN07w5U-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value="" /></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;" valign="MIDDLE"><input id="Pf2KZyx7jw5-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value="" /></td>
+		</tr>
+		<tr>
+			<td align="LEFT" colspan="4" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" valign="MIDDLE"><font face="Times New Roman" size="3">When was the last compiled report from the facility sent to the council?</font></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;" valign="MIDDLE"><input id="Szizzv9dHgn-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value="" /></td>
+		</tr>
+		<tr>
+			<td align="CENTER" colspan="5" height="19" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" valign="MIDDLE">&nbsp;</td>
+			<td align="CENTER" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" valign="MIDDLE">&nbsp;</td>
+		</tr>
+		<tr>
+			<td align="LEFT" height="22" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000"><font face="Times New Roman" size="3">Q3</font></td>
+			<td align="LEFT" colspan="4" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" valign="MIDDLE"><font face="Times New Roman" size="3">How many people from this facility have received training on HMIS data collection, analysis and use?</font></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;" valign="MIDDLE"><input id="sKpY1p9LJ6h-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value="" /></td>
+		</tr>
+		<tr>
+			<td align="LEFT" height="44" rowspan="2" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" valign="MIDDLE"><font face="Times New Roman" size="3">Q4</font></td>
+			<td align="LEFT" colspan="5" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" valign="MIDDLE"><font face="Times New Roman" size="3">How does the facility make use of the analyzed data?</font></td>
+		</tr>
+		<tr>
+			<td align="CENTER" colspan="2" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" valign="MIDDLE"><input id="yfhbqWzYtJT-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value="" /></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;" valign="MIDDLE"><input id="lVzxWV1DOEy-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value="" /></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;" valign="MIDDLE"><input id="HRpKZ6oHv9R-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value="" /></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;" valign="MIDDLE"><input id="LLDHmkUQmTs-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value="" /></td>
+		</tr>
+		<tr>
+			<td align="LEFT" height="22" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000"><font face="Times New Roman" size="3">Q5</font></td>
+			<td align="LEFT" colspan="4" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" valign="MIDDLE"><font face="Times New Roman" size="3">Has the facility received feedback report from the council d<font face="Times New Roman" size="3">uring the past three months</font>?</font></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;" valign="MIDDLE"><input id="CzUBJK9ZZP2-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value="" /></td>
+		</tr>
+		<tr>
+			<td align="LEFT" height="41" rowspan="2" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" valign="MIDDLE"><font face="Times New Roman" size="3">Q6</font></td>
+			<td align="LEFT" colspan="5" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" valign="MIDDLE"><font face="Times New Roman" size="3">General Recommendations:</font></td>
+		</tr>
+		<tr>
+			<td colspan="2" style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;" valign="MIDDLE"><input id="AMFMRVBQCy7-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value="" /></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;"><input id="vPikcmMNTUa-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value="" /></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;"><input id="LjQcjdDCSJe-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value="" /></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;" valign="MIDDLE"><input id="vUD1xjr0fh2-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value="" /></td>
+		</tr>
+	</tbody>
+</table>
+
+<p>&nbsp;</p>
+</section>

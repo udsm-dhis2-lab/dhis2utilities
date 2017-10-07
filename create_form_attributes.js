@@ -2,11 +2,14 @@
  * Created by josephat on 9/21/17.
  */
 
-
+// curl -d @datavalueset.json "https://play.dhis2.org/demo/api/26/dataValueSets"
+// -H "Content-Type:application/json" -u admin:district -v
 // npm start https://test.hisptz.org/dhis josephatjulius:Jovan2013
 var URL = process.argv[2];
 var credentials = process.argv[3];
 var request = require('request');
+var http = require('http');
+var querystring = require('querystring');
 if (typeof localStorage === "undefined" || localStorage === null) {
     var LocalStorage = require('node-localstorage').LocalStorage;
     localStorage = new LocalStorage('./store');
@@ -19,11 +22,15 @@ var headers = {
     "Authorization": 'Basic ' + new Buffer(credentials).toString('base64')
 }
 
+var headers2 = {
+    'Content-Type': 'text/html',
+    "Authorization": 'Basic ' + new Buffer(credentials).toString('base64')
+}
+
 // call and store dataSets
 function storeDataSets(headers) {
     var formArr = [];
-    var Path = "/api/dataSets.json?pageSize=2&fields=id,name,indicators[numerator,denominator,indicatorType[factor]],dataEntryForm[htmlCode]&filter=formType:eq:CUSTOM";
-    console.log(Path)
+    var Path = "/api/dataSets.json?pageSize=1&fields=id,name,indicators[id,numerator,denominator,indicatorType[factor]],dataEntryForm[htmlCode]&filter=formType:eq:CUSTOM";
     var Promise = require('promise');
     var promise = new Promise(function (resolve, reject) {
         request({
@@ -33,8 +40,8 @@ function storeDataSets(headers) {
             },
             function (error, response, body) {
                 if (!error && response.statusCode == 200) {
-                    var res = JSON.parse(body).dataSets;
-                    res.forEach(function (form) {
+                    var resDataSets = JSON.parse(body).dataSets;
+                    resDataSets.forEach(function (form) {
                         formArr.push(form);
                         resolve(formArr);
                     })
@@ -65,11 +72,11 @@ function retrieveDataSetsObjectsAndStoreBackup() {
             $('script').each(function (index, element) {
                 calculatingScript += $.html(element);
             });
-            var filename = 'originalHtmls/'+dataSet.name+'.html';
-            var content = '<section>\r\n<input dataSetName ="dataSetName" name = "'+ filename +'" />\r\n'+calculatingScript+dataSet.dataEntryForm.htmlCode+'</section>';
+            var filename = 'originalHtmls/'+dataSet.id+'.html';
+            var content = '<section>\r\n<div class="toBeRemoved"><input dataSetName ="dataSetName" name = "'+ filename +'" /></div>\r\n'+calculatingScript + dataSet.dataEntryForm.htmlCode+'</section>';
             filesArr.push(filename);
             fs.writeFile(filename, content, function (err) {
-                console.log('backup made for ' + filename);
+                console.log('backup made for ' + 'originalHtmls/'+dataSet.name+'.html');
             });
             fs.readFile(filename, 'utf8', formatHtml);
         }
@@ -94,7 +101,6 @@ function formatHtml(error, data) {
     var calledIndArr = [];
 
         var Path = "/api/indicators.json?paging=false&filter=id:in:[" + indStr.substr(0, indStr.length - 1) + "]&fields=id,numerator,denominator";
-        console.log(Path);
         var Promise = require('promise');
         var promise = new Promise(function (resolve, reject) {
             request({
@@ -107,7 +113,6 @@ function formatHtml(error, data) {
                         var res = JSON.parse(body).indicators;
                         res.forEach(function (indicator) {
                             calledIndArr.push(indicator);
-                            console.log(indicator)
                             resolve(calledIndArr);
                         })
                     } else {
@@ -139,6 +144,18 @@ function formatHtml(error, data) {
       var arr = localStorage.getItem('indicatorsData');
       var indAggregations = {};
       // console.log(tmpData);
+      var formName = '';
+      $('input[dataSetName = "dataSetName"]').each(function (index, obj) {
+          formName += obj.attribs.name
+      });
+
+      var dataSetArr = localStorage.getItem('formStore');
+      JSON.parse(dataSetArr).forEach(function (dataSet) {
+          if (dataSet.name === formName.replace('originalHtmls/','').replace('.html','')) {
+              // console.log(dataSet.name);
+          }
+      });
+
       for (var counter = 0; counter < Object.keys(JSON.parse(arr)).length; counter++) {
           if (JSON.parse(arr)[counter].numerator.split("+")[0].length < 18) {
               var originalNumerator = JSON.parse(arr)[counter].numerator;
@@ -185,12 +202,12 @@ function formatHtml(error, data) {
               // console.log("THAT "+beforeReplacement);
           }
       }
-    console.log(indAggregations);
+
       $('input[dataelementid]').each(function (index, val) {
          //  var test = $(val).attr('name');
           for (var aggr in tmpData){
               if ($(val).attr('id') === aggr){
-                  $(val).attr('id', tmpData[aggr]);
+                  $(val).attr('indicatorFormula', tmpData[aggr]);
               }
           }
           $(val).removeAttr('dataelementid');
@@ -201,13 +218,19 @@ function formatHtml(error, data) {
       $('input[indicatorid]').each(function (index, val) {
           for (var indAggr in indAggregations){
               if ($(val).attr('id').substr(9) === indAggr){
-                  $(val).attr('id', indAggregations[indAggr]);
+                  $(val).attr('indicatorFormula', indAggregations[indAggr]);
               }
           }
           $(val).removeAttr('indicatorid');
           $(val).removeAttr('value');
           $(val).attr('name', 'indicatorFormula');
           $(val).attr('disabled','disabled');
+      });
+
+      $('div[class = "toBeRemoved"]').each(function (index, val) {
+          $(val).removeAttr("input");
+          $(val).attr('style','display: none');
+          console.log("Have been Removed")
       });
 
       var formName = '';
@@ -221,6 +244,42 @@ function formatHtml(error, data) {
     fs.writeFile(filename, content, function (err) {
         console.log('Written html to ' + filename);
     });
+
+      fs.readFile(filename, 'utf-8', function (err, data) {
+          data = data.replace('<section>',"").replace('</section>',"")
+
+          var formName = '';
+          $('input[dataSetName = "dataSetName"]').each(function (index, obj) {
+              formName += obj.attribs.name
+          });
+          console.log(formName.replace("originalHtmls","").replace(".html",""))
+          var apiPath = "/api/26/dataSets/"+ formName.replace("originalHtmls","").replace(".html","")+"/form"
+          var options = {
+              host: "localhost",
+              port: "8181",
+              path: apiPath,
+              method: "POST",
+              headers: headers2
+          };
+
+          var authRequest = http.request(options, function (authResponse) {
+              var responseString = "";
+
+              authResponse.on('data', function (data) {
+                  responseString += data;
+              });
+              authResponse.on("end", function () {
+                  console.log(responseString); // print token response to console
+              });
+          });
+
+          authRequest.on('error', function (error) {
+              console.log('error handler' + error);
+          });
+
+          authRequest.write(data);
+          authRequest.end();
+      });
   });
 }
 
