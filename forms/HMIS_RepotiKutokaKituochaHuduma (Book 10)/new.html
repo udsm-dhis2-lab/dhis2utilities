@@ -1,0 +1,2465 @@
+
+	<script>
+    if (dhis2.dsr){
+        function calculateReportIndicators() {
+            $('input[name="indicatorFormula"]').css('border','none'); $('input[name="indicatorFormula"]').css('background-color','#FFFFFF'); $('input[name="indicatorFormula"]').css('font-weight','500');
+            $('input[name ="indicatorFormula"]').each(function (i, form) {
+                var unReplacedFormula = $(this).attr('indicatorFormula');
+                var elementComboArr = unReplacedFormula.replace("/",",").split("(").join("").split(")").join("").split(",")[0].split("+")
+                var sum = 0;
+                for (var count = 0; count < elementComboArr.length; count++) {
+                    if (elementComboArr[count].length > 18) {
+                        var toReplace='';
+                        var elementCombo = elementComboArr[count].split(".");
+                        if (isNaN(parseInt($("span[data-co="+elementCombo[1].replace("}","")+"][data-de="+elementCombo[0].replace("#{","")+"]").text()))=== false) {
+                            sum += parseInt($("span[data-co="+elementCombo[1].replace("}","")+"][data-de="+elementCombo[0].replace("#{","")+"]").text());
+                            toReplace += elementCombo[0]+'.'+elementCombo[1];
+                        }
+                        unReplacedFormula = unReplacedFormula.replace(toReplace, sum);
+                    }
+                }
+                if (parseInt(eval(unReplacedFormula))){
+                    $('#'+form.id).val(parseInt(eval(unReplacedFormula)));
+                }
+            });
+        }
+        $(document).ready(function(){
+            calculateReportIndicators();
+        });
+    }else {
+        dhis2.util.on('dhis2.de.event.dataValuesLoaded', function () {
+            $('input[name="indicatorFormula"]').css('background-color','#FFFFFF'); $('input[name="indicatorFormula"]').css('font-weight','500'); $('input[name="indicatorFormula"]').css('border','1px grey solid'); $('input[name="indicatorFormula"]').css('text-align','center');
+            calculateIndicatorValue();
+            addListerners();
+        });
+
+        function addListerners(){
+            $('input[name ="entryfield"]').each(function (i) {
+                $(this).change(function () {
+                    //codes for on changes
+                    calculateIndicatorValue();
+                });
+            });
+        }
+
+        function calculateIndicatorValue() {
+            $('input[name ="indicatorFormula"]').each( function (i, form) {
+                var unReplacedFormula = $(this).attr('indicatorFormula');
+                var newFormula = unReplacedFormula;
+                unReplacedFormula.split("/").forEach(function(entryStr){
+                    if (entryStr.length > 18 && entryStr.length < 30 ) {
+                        if (entryStr.indexOf("*") > 1) {
+                            newFormula = newFormula.replace(entryStr.split("*")[0].split("(").join("").split(")").join(""), 'Number($("#'+entryStr.split("*")[0].split("(").join("").split(")").join("").split("#{").join("").split("}").join("").replace(".","-")+'-val").val())');
+                        } else {
+                            newFormula = newFormula.replace(entryStr.split("(").join("").split(")").join(""),'Number($("#'+entryStr.split("(").join("").split(")").join("").split("#{").join("").split("}").join("").replace(".","-")+'-val").val())');
+                        }
+                    } else if(entryStr.length > 30) {
+                        entryStr.split("+").forEach(function(entryStr2){
+                            if (entryStr2.indexOf("*") > 1) {
+                                newFormula = newFormula.replace(entryStr2.split("*")[0].split("(").join("").split(")").join(""), 'Number($("#'+entryStr2.split("*")[0].split("(").join("").split(")").join("").split("#{").join("").split("}").join("").replace(".","-")+'-val").val())');
+                            } else {
+                                newFormula = newFormula.replace(entryStr2.split("(").join("").split(")").join(""),'Number($("#'+entryStr2.split("(").join("").split(")").join("").split("#{").join("").split("}").join("").replace(".","-")+'-val").val())');
+                            }
+                        })
+                    }
+                });
+
+                if (newFormula !== undefined) {
+                    if (isNaN(eval("("+newFormula+")")) !== true) {
+                        $('#'+form.id).val(eval("("+newFormula+")").toFixed(2));
+                    } else {
+                        $('#'+form.id).val(0);
+                    }
+                }
+            });
+        }
+    }
+</script>
+
+<script>
+	 var indicatorAggregations = {"YPyKz71qARu":"(#{QIG1V4BwkA9.X0Me7ygpiUT}+#{QIG1V4BwkA9.MqMQnGOqLuY})/(1)*(1)","VT632r5lbJa":"(#{b7icpYlapVN.X0Me7ygpiUT}+#{b7icpYlapVN.MqMQnGOqLuY})/(1)*(1)","a2my9GZI7BO":"(#{jVsmnrzkW1p.X0Me7ygpiUT}+#{jVsmnrzkW1p.MqMQnGOqLuY})/(1)*(1)","QmJMd54kHYd":"(#{co6N8S0kuxQ.X0Me7ygpiUT}+#{co6N8S0kuxQ.MqMQnGOqLuY})/(1)*(1)","wu0PDuEW0Av":"(#{uzlXt5dYzAi.X0Me7ygpiUT}+#{uzlXt5dYzAi.MqMQnGOqLuY})/(1)*(1)","VfnFqOXlkvb":"(#{SFS5LpshcbJ.X0Me7ygpiUT}+#{SFS5LpshcbJ.MqMQnGOqLuY})/(1)*(1)","ArEeeKWMDNP":"(#{GoL1xbchE8W.X0Me7ygpiUT}+#{GoL1xbchE8W.MqMQnGOqLuY})/(1)*(1)","GNBFcK57tv7":"(#{Zg3IpfgMOQK.X0Me7ygpiUT}+#{Zg3IpfgMOQK.MqMQnGOqLuY})/(1)*(1)","Gyqxbi6QEX0":"(#{gRX9WB1Q2z0.X0Me7ygpiUT}+#{gRX9WB1Q2z0.MqMQnGOqLuY})/(1)*(1)","IdA48TNOunc":"(#{QIG1V4BwkA9.X0Me7ygpiUT}+#{b7icpYlapVN.X0Me7ygpiUT}+#{jVsmnrzkW1p.X0Me7ygpiUT}+#{co6N8S0kuxQ.X0Me7ygpiUT}+#{uzlXt5dYzAi.X0Me7ygpiUT}+#{SFS5LpshcbJ.X0Me7ygpiUT}+#{GoL1xbchE8W.X0Me7ygpiUT}+#{Zg3IpfgMOQK.X0Me7ygpiUT}+#{gRX9WB1Q2z0.X0Me7ygpiUT}+#{QuE3JAV7QAp.X0Me7ygpiUT})/(1)*(1)","oJtIxzFxV72":"(#{QIG1V4BwkA9.MqMQnGOqLuY}+#{b7icpYlapVN.MqMQnGOqLuY}+#{jVsmnrzkW1p.MqMQnGOqLuY}+#{co6N8S0kuxQ.MqMQnGOqLuY}+#{uzlXt5dYzAi.MqMQnGOqLuY}+#{SFS5LpshcbJ.MqMQnGOqLuY}+#{GoL1xbchE8W.MqMQnGOqLuY}+#{Zg3IpfgMOQK.MqMQnGOqLuY}+#{gRX9WB1Q2z0.MqMQnGOqLuY}+#{QuE3JAV7QAp.MqMQnGOqLuY})/(1)*(1)","hBNEbCvLRJA":"(#{QIG1V4BwkA9.X0Me7ygpiUT}+#{QIG1V4BwkA9.MqMQnGOqLuY}+#{b7icpYlapVN.X0Me7ygpiUT}+#{b7icpYlapVN.MqMQnGOqLuY}+#{jVsmnrzkW1p.X0Me7ygpiUT}+#{jVsmnrzkW1p.MqMQnGOqLuY}+#{co6N8S0kuxQ.X0Me7ygpiUT}+#{co6N8S0kuxQ.MqMQnGOqLuY}+#{uzlXt5dYzAi.X0Me7ygpiUT}+#{uzlXt5dYzAi.MqMQnGOqLuY}+#{SFS5LpshcbJ.X0Me7ygpiUT}+#{SFS5LpshcbJ.MqMQnGOqLuY}+#{GoL1xbchE8W.X0Me7ygpiUT}+#{GoL1xbchE8W.MqMQnGOqLuY}+#{Zg3IpfgMOQK.X0Me7ygpiUT}+#{Zg3IpfgMOQK.MqMQnGOqLuY}+#{gRX9WB1Q2z0.X0Me7ygpiUT}+#{gRX9WB1Q2z0.MqMQnGOqLuY}+#{QuE3JAV7QAp.X0Me7ygpiUT}+#{QuE3JAV7QAp.MqMQnGOqLuY})/(1)*(1)","zauc5Rr5unE":"(#{i15VHKQnAJq.uGIJ6IdkP7Q}+#{Li1BdOIwZG0.uGIJ6IdkP7Q}+\n#{FYVxQCPJTxK.uGIJ6IdkP7Q}+#{HrNEENUzbJO.uGIJ6IdkP7Q}+#{nBEaaksVvGS.uGIJ6IdkP7Q}+#{IVy3wdQmRbf.uGIJ6IdkP7Q}+#{Ai5cmIIoNbf.uGIJ6IdkP7Q}+#{IxJkEVJ6j8D.uGIJ6IdkP7Q}+#{c9N14a9DfNy.uGIJ6IdkP7Q}+#{xqXsCi8iUc5.uGIJ6IdkP7Q}+#{B7Ow8X8NcBz.uGIJ6IdkP7Q}+#{a6BjYPBAhPp.uGIJ6IdkP7Q}+#{X2v7fZBf1Xw.uGIJ6IdkP7Q}+#{Ywbwkd6USdu.uGIJ6IdkP7Q}+#{ZTjnQkKJQls.uGIJ6IdkP7Q}+#{J1qGI0dSzKJ.uGIJ6IdkP7Q}\n)/(1)*(1)","ZaEO96kHwsk":"(#{ycT38VH9N6I.uGIJ6IdkP7Q}+#{P8DlDOcjeHy.uGIJ6IdkP7Q}+#{UcPJ1MXBqxj.uGIJ6IdkP7Q}+#{tbb1iL14I21.uGIJ6IdkP7Q}+#{qSBJnfnvTVN.uGIJ6IdkP7Q}+#{UMJcl2NwCXg.uGIJ6IdkP7Q}+#{XN1FyHo1jQ1.uGIJ6IdkP7Q}+#{lVvJmJUALU0.uGIJ6IdkP7Q}+#{trKLuce0JN8.uGIJ6IdkP7Q}+#{zgJ5Q8uNVfd.uGIJ6IdkP7Q}+#{Y4MgOXKCIqy.uGIJ6IdkP7Q}+#{sIkpMpqvPZE.uGIJ6IdkP7Q}+#{nW6aMA1nimc.uGIJ6IdkP7Q}+#{ItvilYvGDs1.uGIJ6IdkP7Q}+#{LVAmwiLdR2F.uGIJ6IdkP7Q}+#{U3G8xwrY4se.uGIJ6IdkP7Q}+#{B6QZT1Kkve3.uGIJ6IdkP7Q}+#{UjtyufGJt6t.uGIJ6IdkP7Q}+#{dCUYdooPgcw.uGIJ6IdkP7Q})/(1)*(1)","UXFy9vFCK7q":"(#{JZ4M3uSR3PE.uGIJ6IdkP7Q}+#{e4BR2K65AsN.uGIJ6IdkP7Q}+#{SmctwDbwsqS.uGIJ6IdkP7Q}+#{gilBFtmMMla.uGIJ6IdkP7Q}+#{oFayNGfvR5J.uGIJ6IdkP7Q}+#{lTAKDT5jhIW.uGIJ6IdkP7Q}+#{LX5qwodgzJb.uGIJ6IdkP7Q}+#{cSEMj5LLo8R.uGIJ6IdkP7Q})/(1)*(1)","bG62xOxI2n9":"(#{euIf213Nv95.enf2scEpPVB}+#{euIf213Nv95.njmjlMhmGfC})/(1)*(1)"};
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$(function() {
+			$( "#mod2_tabs" ).tabs();
+		  });
+	});
+</script>
+<p>
+<style type="text/css">#cde table {
+  border-collapse: collapse;
+}
+
+#cde table, #cde th, #cde td {
+  border: 1px solid #c0c0c0;
+}
+
+#cde td, #cde th {
+  height: 30px;
+  padding: 10px;
+  margin: 10px;
+}
+
+.cde-greyfield {
+  background-color: #e0e0e0;
+}
+.small-field {
+	width: 3.5em; 
+}
+</style>
+</p>
+
+<div id="cde">
+<h1>Repoti Kutoka Kituo cha Huduma (Book 10)</h1>
+
+<div id="mod2_tabs">
+<ul>
+	<li><a href="#tab0">Jedwali 1</a></li>
+	<li><a href="#tab1">Jedwali 2</a></li>
+	<li><a href="#tab2">Jedwali 3</a></li>
+	<li><a href="#tab3">Jedwali 4</a></li>
+	<li><a href="#tab4">Jedwali 5</a></li>
+	<li><a href="#tab5">Jedwali 6</a></li>
+	<li><a href="#tab6">Jedwali 7</a></li>
+	<li><a href="#tab7">Jedwali 8</a></li>
+	<li><a href="#tab8">Jedwali 9</a></li>
+	<li><a href="#tab9">Jedwali 10</a></li>
+	<li><a href="#tab10">Jedwali 11</a></li>
+	<li><a href="#tab11">Jedwali 12</a></li>
+	<li><a href="#tab12">Jedwali 13</a></li>
+	<li><a href="#tab13">Jedwali 14</a></li>
+</ul>
+
+<div id="tab0">&#xA0;<span style="font-size:18px;"> &#xA0;<strong>1.1: IDADI YA WAKAZI WALIOPO KWENYE ENEO LA KITUO<br>
+&#xA0; &#xA0;CHA KUTOLEA HUDUMA YA AFYA</strong></span>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td>Na</td>
+			<td>Wakazi</td>
+			<td>ME</td>
+			<td>KE</td>
+			<td>JUMLA</td>
+		</tr>
+		<tr>
+			<td>1</td>
+			<td>Jumla ya vizazi hai</td>
+			<td><input 3.5em="" id="QIG1V4BwkA9-X0Me7ygpiUT-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="QIG1V4BwkA9-MqMQnGOqLuY-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="YPyKz71qARu" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="((#{QIG1V4BwkA9.X0Me7ygpiUT}+#{QIG1V4BwkA9.MqMQnGOqLuY})/(1)*(1))"></td>
+		</tr>
+		<tr>
+			<td>2</td>
+			<td>mwaka 0*</td>
+			<td><input 3.5em="" id="b7icpYlapVN-X0Me7ygpiUT-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="b7icpYlapVN-MqMQnGOqLuY-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="VT632r5lbJa" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="((#{b7icpYlapVN.X0Me7ygpiUT}+#{b7icpYlapVN.MqMQnGOqLuY})/(1)*(1))"></td>
+		</tr>
+		<tr>
+			<td>3</td>
+			<td>Mwaka 0 hadi chini ya mwezi 1</td>
+			<td><input 3.5em="" id="jVsmnrzkW1p-X0Me7ygpiUT-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="jVsmnrzkW1p-MqMQnGOqLuY-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="a2my9GZI7BO" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="((#{jVsmnrzkW1p.X0Me7ygpiUT}+#{jVsmnrzkW1p.MqMQnGOqLuY})/(1)*(1))"></td>
+		</tr>
+		<tr>
+			<td>4</td>
+			<td>Mwaka 0 hadi miezi 59</td>
+			<td><input 3.5em="" id="co6N8S0kuxQ-X0Me7ygpiUT-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="co6N8S0kuxQ-MqMQnGOqLuY-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="QmJMd54kHYd" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="((#{co6N8S0kuxQ.X0Me7ygpiUT}+#{co6N8S0kuxQ.MqMQnGOqLuY})/(1)*(1))"></td>
+		</tr>
+		<tr>
+			<td>5</td>
+			<td>chini ya miaka 15</td>
+			<td><input 3.5em="" id="uzlXt5dYzAi-X0Me7ygpiUT-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="uzlXt5dYzAi-MqMQnGOqLuY-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="wu0PDuEW0Av" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="((#{uzlXt5dYzAi.X0Me7ygpiUT}+#{uzlXt5dYzAi.MqMQnGOqLuY})/(1)*(1))"></td>
+		</tr>
+		<tr>
+			<td>6</td>
+			<td>miaka 10 hadi 19</td>
+			<td><input 3.5em="" id="SFS5LpshcbJ-X0Me7ygpiUT-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="SFS5LpshcbJ-MqMQnGOqLuY-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="VfnFqOXlkvb" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="((#{SFS5LpshcbJ.X0Me7ygpiUT}+#{SFS5LpshcbJ.MqMQnGOqLuY})/(1)*(1))"></td>
+		</tr>
+		<tr>
+			<td>7</td>
+			<td>miaka 20 hadi 24</td>
+			<td><input 3.5em="" id="GoL1xbchE8W-X0Me7ygpiUT-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="GoL1xbchE8W-MqMQnGOqLuY-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="ArEeeKWMDNP" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="((#{GoL1xbchE8W.X0Me7ygpiUT}+#{GoL1xbchE8W.MqMQnGOqLuY})/(1)*(1))"></td>
+		</tr>
+		<tr>
+			<td>8</td>
+			<td>miaka 15 hadi 49</td>
+			<td><input 3.5em="" id="Zg3IpfgMOQK-X0Me7ygpiUT-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Zg3IpfgMOQK-MqMQnGOqLuY-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="GNBFcK57tv7" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="((#{Zg3IpfgMOQK.X0Me7ygpiUT}+#{Zg3IpfgMOQK.MqMQnGOqLuY})/(1)*(1))"></td>
+		</tr>
+		<tr>
+			<td>9</td>
+			<td>miaka 50 hadi 59</td>
+			<td><input 3.5em="" id="gRX9WB1Q2z0-X0Me7ygpiUT-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="gRX9WB1Q2z0-MqMQnGOqLuY-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Gyqxbi6QEX0" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="((#{gRX9WB1Q2z0.X0Me7ygpiUT}+#{gRX9WB1Q2z0.MqMQnGOqLuY})/(1)*(1))"></td>
+		</tr>
+		<tr>
+			<td>10</td>
+			<td>miaka 60 na zaidi</td>
+			<td><input 3.5em="" id="QuE3JAV7QAp-X0Me7ygpiUT-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="QuE3JAV7QAp-MqMQnGOqLuY-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="QuE3JAV7QAp" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{QuE3JAV7QAp.X0Me7ygpiUT}+#{QuE3JAV7QAp.MqMQnGOqLuY})"></td>
+		</tr>
+		<tr>
+			<td>&#xA0;</td>
+			<td>Jumla ya idadi ya wakazi kwa umri na jinsia</td>
+			<td><input 3.5em="" id="IdA48TNOunc" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="((#{QIG1V4BwkA9.X0Me7ygpiUT}+#{b7icpYlapVN.X0Me7ygpiUT}+#{jVsmnrzkW1p.X0Me7ygpiUT}+#{co6N8S0kuxQ.X0Me7ygpiUT}+#{uzlXt5dYzAi.X0Me7ygpiUT}+#{SFS5LpshcbJ.X0Me7ygpiUT}+#{GoL1xbchE8W.X0Me7ygpiUT}+#{Zg3IpfgMOQK.X0Me7ygpiUT}+#{gRX9WB1Q2z0.X0Me7ygpiUT}+#{QuE3JAV7QAp.X0Me7ygpiUT})/(1)*(1))"></td>
+			<td><input 3.5em="" id="oJtIxzFxV72" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="((#{QIG1V4BwkA9.MqMQnGOqLuY}+#{b7icpYlapVN.MqMQnGOqLuY}+#{jVsmnrzkW1p.MqMQnGOqLuY}+#{co6N8S0kuxQ.MqMQnGOqLuY}+#{uzlXt5dYzAi.MqMQnGOqLuY}+#{SFS5LpshcbJ.MqMQnGOqLuY}+#{GoL1xbchE8W.MqMQnGOqLuY}+#{Zg3IpfgMOQK.MqMQnGOqLuY}+#{gRX9WB1Q2z0.MqMQnGOqLuY}+#{QuE3JAV7QAp.MqMQnGOqLuY})/(1)*(1))"></td>
+			<td><input 3.5em="" id="hBNEbCvLRJA" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="((#{QIG1V4BwkA9.X0Me7ygpiUT}+#{QIG1V4BwkA9.MqMQnGOqLuY}+#{b7icpYlapVN.X0Me7ygpiUT}+#{b7icpYlapVN.MqMQnGOqLuY}+#{jVsmnrzkW1p.X0Me7ygpiUT}+#{jVsmnrzkW1p.MqMQnGOqLuY}+#{co6N8S0kuxQ.X0Me7ygpiUT}+#{co6N8S0kuxQ.MqMQnGOqLuY}+#{uzlXt5dYzAi.X0Me7ygpiUT}+#{uzlXt5dYzAi.MqMQnGOqLuY}+#{SFS5LpshcbJ.X0Me7ygpiUT}+#{SFS5LpshcbJ.MqMQnGOqLuY}+#{GoL1xbchE8W.X0Me7ygpiUT}+#{GoL1xbchE8W.MqMQnGOqLuY}+#{Zg3IpfgMOQK.X0Me7ygpiUT}+#{Zg3IpfgMOQK.MqMQnGOqLuY}+#{gRX9WB1Q2z0.X0Me7ygpiUT}+#{gRX9WB1Q2z0.MqMQnGOqLuY}+#{QuE3JAV7QAp.X0Me7ygpiUT}+#{QuE3JAV7QAp.MqMQnGOqLuY})/(1)*(1))"></td>
+		</tr>
+	</tbody>
+</table>
+</div>
+
+<div id="tab1">
+<h2>2.1:Orodha ya kada zilizopo kituo cha kutolea huduma ya afya</h2>
+
+<table border="1" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<th>Na.</th>
+			<th>Kituo hiki hakina watumishi</th>
+			<th>Ndio/Hapana</th>
+			<th>Maelezo</th>
+		</tr>
+		<tr>
+			<td>1</td>
+			<td>Watabibu</td>
+			<td><input id="PX7Mpqx1jKP-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+			<td><input id="OU8BhrwQV2N-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>2</td>
+			<td>Wauguzi</td>
+			<td><input id="VhgJnd5TsAq-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+			<td><input id="HUEBpynSPSs-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>3</td>
+			<td>Wafamasia</td>
+			<td><input id="WnHoIBsYgJn-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+			<td><input id="KXwxwZSSqUM-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>4</td>
+			<td>Wataalamu wa maabara</td>
+			<td><input id="LOXF99v94rb-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+			<td><input id="IKgtApQ4qJs-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+	</tbody>
+</table>
+
+<h2>2.2: Orodha ya majengo yalizopo kituo cha kutoa huduma ya afya</h2>
+
+<table border="1" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<th>Na.</th>
+			<th>Jina la jengo, chumba au uzio</th>
+			<th>Idadi</th>
+			<th>Maelezo ya hali na matumizi ya jengo</th>
+		</tr>
+		<tr>
+			<td>1</td>
+			<td>OPD - Chumba cha Sindano</td>
+			<td><input 3.5em="" id="s72O8t3fQg8-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="nh0e0IP4CCV-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>2</td>
+			<td><span style="line-height: 16.6399993896484px;">OPD - Chumba cha Dressing/Vidonda</span></td>
+			<td><input 3.5em="" id="YgTUWA58eHC-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td>&#xA0;<input id="DUjTpKYLkcZ-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""><br>
+			&#xA0;</td>
+		</tr>
+		<tr>
+			<td>3</td>
+			<td><span style="line-height: 16.6399993896484px;">OPD - Chumba cha Mganga</span></td>
+			<td><input 3.5em="" id="SA6QCBxb9mz-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="VJJOTSbNE2T-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>4</td>
+			<td><span style="line-height: 16.6399993896484px;">OPD - Dirisha la dawa</span></td>
+			<td><input 3.5em="" id="ionxBmifpJa-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="rdfErr6OH9G-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>5</td>
+			<td><span style="line-height: 16.6399993896484px;">OPD - Chumba cha Meno</span></td>
+			<td>&#xA0;<input 3.5em="" id="T8qhT9WUHvr-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="bVz3UTV9OTi-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>6</td>
+			<td><span style="line-height: 16.6399993896484px;">OPD - Chumba cha Mapokezi/Mafile</span></td>
+			<td><input 3.5em="" id="ctoHTPww1z7-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="JSFzcPmoLEK-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>7</td>
+			<td><span style="line-height: 16.6399993896484px;">OPD - Chumba cha TB</span></td>
+			<td><input 3.5em="" id="zD6UbmwPapQ-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="hzK1in46KhD-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>8</td>
+			<td><span style="line-height: 16.6399993896484px;">OPD - Chumba cha&#xA0;</span>Ushauri nasaha</td>
+			<td><input 3.5em="" id="IKKSwqmwFIG-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="wEsE1ADta44-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>9</td>
+			<td>RCH - Chumba cha FP</td>
+			<td><input 3.5em="" id="bNyYsmeurRS-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="qjkfbpV6hbw-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>10</td>
+			<td><span style="line-height: 16.6399993896484px;">RCH - Chumba cha ANC</span></td>
+			<td><input 3.5em="" id="ES6r0RFR47G-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="AhTxMyiQnzR-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>11</td>
+			<td><span style="line-height: 16.6399993896484px;">RCH - Chumba cha Chanjo</span></td>
+			<td><input 3.5em="" id="VC2Z9EWyxDB-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="T3k2hCSA9Fa-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>12</td>
+			<td><span style="line-height: 16.6399993896484px;">RCH - Chumba cha Kupima watoto</span></td>
+			<td><input 3.5em="" id="BYSmkju5wtp-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="zrRgIGdIN2o-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>13</td>
+			<td><span style="line-height: 16.6399993896484px;">RCH - Chumba cha uchunguzi wa cancer</span></td>
+			<td><input 3.5em="" id="j04R44iYbhC-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="OIgWA6z0HZT-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>14</td>
+			<td><span style="line-height: 16.6399993896484px;">RCH - Chumba cha&#xA0;</span>mganga</td>
+			<td><input 3.5em="" id="NTI2ftZhmmA-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="xjOL83140n2-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>15</td>
+			<td>IPD - Wodi ya wanaume</td>
+			<td><input 3.5em="" id="DlIcZ6lMM8e-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="EhCSdxqgaZd-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>16</td>
+			<td><span style="line-height: 16.6399993896484px;">IPD - Wodi ya&#xA0;</span>wanawake</td>
+			<td><input 3.5em="" id="lnTkzbku9WG-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="mhcSP12S06o-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>17</td>
+			<td><span style="line-height: 16.6399993896484px;">IPD - Wodi ya&#xA0;</span>watoto</td>
+			<td><input 3.5em="" id="DT4yqQd30Y1-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="YTbYiMxQdyC-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>18</td>
+			<td><span style="line-height: 16.6399993896484px;">IPD - Wodi ya&#xA0;</span>wazazi</td>
+			<td><input 3.5em="" id="MFL8fSKFAbE-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="dro3azJsO7V-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>19</td>
+			<td><span style="line-height: 16.6399993896484px;">IPD - Chumba cha&#xA0;</span>KMC</td>
+			<td><input 3.5em="" id="osQYIVHf7gg-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="ZWFUpSzdCXl-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>20</td>
+			<td><span style="line-height: 16.6399993896484px;">IPD - Chumba cha ICU</span></td>
+			<td><input 3.5em="" id="CxPbNYMdlal-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="RfUwiOxBrL9-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>21</td>
+			<td><span style="line-height: 16.6399993896484px;">IPD - Chumba cha&#xA0;</span></td>
+			<td><input 3.5em="" id="Hg8apYe7tuY-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="bNns8t2DUYW-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>22</td>
+			<td>IPD - Sluice Room</td>
+			<td><input 3.5em="" id="YuAqv4aNN1V-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="dnhw5B5EpS8-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>23</td>
+			<td>IPD - Nurses Room</td>
+			<td><input 3.5em="" id="YB8MwCNuUsv-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="A5g3vVau4gQ-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>24</td>
+			<td>LAB - Mapokezi</td>
+			<td><input 3.5em="" id="LeTfUwtu9sT-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="hNJEoCxIKHD-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>25</td>
+			<td><span style="line-height: 16.6399993896484px;">LAB -&#xA0;</span>Vipimo</td>
+			<td><input 3.5em="" id="jqsNj2mYXQz-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="D8pZRIVjWxn-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>26</td>
+			<td><span style="line-height: 16.6399993896484px;">LAB -&#xA0;</span>Store</td>
+			<td><input 3.5em="" id="XigJWAAu9Vm-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="VH41KKq5yc4-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>27</td>
+			<td>THEATER - Change Room</td>
+			<td><input 3.5em="" id="k1y915z8clS-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="PPqn8F31ziO-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>28</td>
+			<td><span style="line-height: 16.6399993896484px;">THEATER - Upasuaji</span></td>
+			<td><input 3.5em="" id="NMVBPLznAEo-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="BfHFJKiOH86-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>29</td>
+			<td><span style="line-height: 16.6399993896484px;">THEATER -&#xA0;</span>Recovery</td>
+			<td><input 3.5em="" id="sxlqr5airJq-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="nj2WRIk21EJ-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>30</td>
+			<td><span style="line-height: 16.6399993896484px;">THEATER -&#xA0;</span>Store</td>
+			<td><input 3.5em="" id="MeNkE4le52u-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="GXVSuk3zmc8-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>31</td>
+			<td>MORTUARY - Reception/Offense</td>
+			<td><input 3.5em="" id="lBTJCf43KlE-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="TtCCZRVgfso-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>32</td>
+			<td><span style="line-height: 16.6399993896484px;">MORTUARY -&#xA0;</span>Cold Room</td>
+			<td><input 3.5em="" id="EfXqjtjzEsR-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="WJ7TJNSw2oq-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>33</td>
+			<td><span style="line-height: 16.6399993896484px;">MORTUARY -&#xA0;</span>Sluice Room</td>
+			<td><input 3.5em="" id="tbvmfPdJJEQ-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="yMjZSt5zpmq-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>34</td>
+			<td>CTC - Doctors Room</td>
+			<td><input 3.5em="" id="Be9Zw44CmpW-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="uwhjjCYD6Re-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>35</td>
+			<td><span style="line-height: 16.6399993896484px;">CTC -&#xA0;</span>Weighing Room</td>
+			<td><input 3.5em="" id="vP7yvy5GyBt-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="Nm6QRNHLrEc-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>36</td>
+			<td><span style="line-height: 16.6399993896484px;">CTC -&#xA0;</span>Adherence</td>
+			<td><input 3.5em="" id="on3TJwTDman-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="frETfUmITlU-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>37</td>
+			<td><span style="line-height: 16.6399993896484px;">CTC -&#xA0;</span>Reception/Records</td>
+			<td><input 3.5em="" id="uQ9H1Jgndg2-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="jlxCwKOL57K-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>38</td>
+			<td><span style="line-height: 16.6399993896484px;">CTC -&#xA0;</span>Store</td>
+			<td><input 3.5em="" id="YBnMlpXjAfd-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="Dcbc6FXWyub-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>39</td>
+			<td>Uzio wa Kituo/Majengo</td>
+			<td><input 3.5em="" id="vy6WwzvvfOv-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input id="upADFGPU835-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""></td>
+		</tr>
+	</tbody>
+</table>
+
+<h2>2.3:Vyombo Vya Usafiri vilivyopo Kituo cha huduma ya Afya</h2>
+
+<table border="1" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<th rowspan="3">Na.</th>
+			<th rowspan="3">Aina ya vyombo vya usafiri</th>
+			<th rowspan="3">Idadi Kwa Jumla</th>
+			<th colspan="4" rowspan="1">Hali ya vyombo vya usafiri kwa idadi</th>
+			<th rowspan="3">Maelezo</th>
+		</tr>
+		<tr>
+			<th rowspan="2">Nzima</th>
+			<th rowspan="2">Mbovu</th>
+			<th colspan="2" rowspan="1">Kama ni mbovu</th>
+		</tr>
+		<tr>
+			<th>Inatengenezeka</th>
+			<th>Haitengenezeki</th>
+		</tr>
+		<tr>
+			<td>1.</td>
+			<td>Ambulance</td>
+			<td><input 3.5em="" id="c1lPzPphzMp" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{c1lPzPphzMp.gZVZmtxuJ7Q}+#{c1lPzPphzMp.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="c1lPzPphzMp-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="c1lPzPphzMp-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="GDkEHxPPny2-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="GDkEHxPPny2-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="G0T7ZZO5d9H-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>2.</td>
+			<td>Magari</td>
+			<td><input 3.5em="" id="BsJZCKThLfh" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{BsJZCKThLfh.gZVZmtxuJ7Q}+#{BsJZCKThLfh.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="BsJZCKThLfh-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="BsJZCKThLfh-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="QUHWhUyc3gu-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="QUHWhUyc3gu-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="CTBR5Yys5bd-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>3.</td>
+			<td>Pikipiki</td>
+			<td><input 3.5em="" id="HOFyPeJlTgT" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{HOFyPeJlTgT.gZVZmtxuJ7Q}+#{HOFyPeJlTgT.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="HOFyPeJlTgT-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="HOFyPeJlTgT-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="PE6lpP1xnPH-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="PE6lpP1xnPH-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="AOPTrIEfn8l-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>4.</td>
+			<td><span style="line-height: 20.7999992370605px;">Bajaji kwa matumizi ya ofisi</span></td>
+			<td><input 3.5em="" id="HD58IwnI6Po" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{HD58IwnI6Po.gZVZmtxuJ7Q}+#{HD58IwnI6Po.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="HD58IwnI6Po-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="HD58IwnI6Po-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Gombe49ErHQ-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Gombe49ErHQ-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="LxxpQa2JuP8-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>5.</td>
+			<td>Bajaji kwa ajili ya wazazi</td>
+			<td><input 3.5em="" id="HJshPIDcSJn" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{HJshPIDcSJn.gZVZmtxuJ7Q}+#{HJshPIDcSJn.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="HJshPIDcSJn-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="HJshPIDcSJn-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="RHDvH4GRURB-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="RHDvH4GRURB-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="qOHdumsaxN2-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>6.</td>
+			<td>Baiskeli</td>
+			<td><input 3.5em="" id="yp5Vy96JDRI" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{yp5Vy96JDRI.gZVZmtxuJ7Q}+#{yp5Vy96JDRI.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="yp5Vy96JDRI-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="yp5Vy96JDRI-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="oDbRW38tzT0-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="oDbRW38tzT0-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="rJDauUSQV2p-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+	</tbody>
+</table>
+
+<h2>2.4:Vifaa Vya Kudumu vilivyopo Kituo cha huduma ya Afya</h2>
+
+<table border="1" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<th rowspan="3">Na.</th>
+			<th rowspan="3">Aina ya vyombo vya usafiri</th>
+			<th rowspan="3">Idadi Kwa Jumla</th>
+			<th colspan="4" rowspan="1">Hali ya vyombo vya usafiri kwa idadi</th>
+			<th rowspan="3">Maelezo</th>
+		</tr>
+		<tr>
+			<th rowspan="2">Nzima</th>
+			<th rowspan="2">Mbovu</th>
+			<th colspan="2" rowspan="1">Kama ni mbovu</th>
+		</tr>
+		<tr>
+			<th>Inatengenezeka</th>
+			<th>Haitengenezeki</th>
+		</tr>
+		<tr>
+			<td>1.</td>
+			<td>BP machine</td>
+			<td><input 3.5em="" id="iyFzATjicWx" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{iyFzATjicWx.gZVZmtxuJ7Q}+#{iyFzATjicWx.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="iyFzATjicWx-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="iyFzATjicWx-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="wLe5Rp4dFZi-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="wLe5Rp4dFZi-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="meRuij7HBRo-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>2.</td>
+			<td>Thermometer</td>
+			<td><input 3.5em="" id="tfVtcrcMKEy" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{tfVtcrcMKEy.gZVZmtxuJ7Q}+#{tfVtcrcMKEy.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="tfVtcrcMKEy-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="tfVtcrcMKEy-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="uBXXPmtp7eM-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="uBXXPmtp7eM-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="pukBvqZVo6S-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>3.</td>
+			<td>Microscope</td>
+			<td><input 3.5em="" id="b9NeV3jfpWO" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{b9NeV3jfpWO.gZVZmtxuJ7Q}+#{b9NeV3jfpWO.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="b9NeV3jfpWO-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="b9NeV3jfpWO-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="RQekRpVJEv8-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="RQekRpVJEv8-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="FxQDIirYl2M-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>4.</td>
+			<td>Laryngoscope</td>
+			<td><input 3.5em="" id="BuDes1ax68d" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{BuDes1ax68d.gZVZmtxuJ7Q}+#{BuDes1ax68d.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="BuDes1ax68d-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="BuDes1ax68d-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="cZjtFC2w7Ip-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="cZjtFC2w7Ip-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Gy4yasjDx2Q-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>5.</td>
+			<td>Stetoscope</td>
+			<td><input 3.5em="" id="r7ye2bLCIHV" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{r7ye2bLCIHV.gZVZmtxuJ7Q}+#{r7ye2bLCIHV.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="r7ye2bLCIHV-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="r7ye2bLCIHV-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="IgiWloMGGrf-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="IgiWloMGGrf-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="vsoHTiatVqs-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>6.</td>
+			<td>Autoclave</td>
+			<td><input 3.5em="" id="Aa0WZ8vKelV" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{Aa0WZ8vKelV.gZVZmtxuJ7Q}+#{Aa0WZ8vKelV.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="Aa0WZ8vKelV-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Aa0WZ8vKelV-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="lLMqMvxQ67z-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="lLMqMvxQ67z-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="ZrzclvGCCx5-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>7.</td>
+			<td>Hot air oven</td>
+			<td><input 3.5em="" id="wvtaEaXbd8v" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{wvtaEaXbd8v.gZVZmtxuJ7Q}+#{wvtaEaXbd8v.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="wvtaEaXbd8v-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="wvtaEaXbd8v-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="iGd0vWddrgf-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="iGd0vWddrgf-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Ni1LD26IrgL-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>8.</td>
+			<td>Sterilizer</td>
+			<td><input 3.5em="" id="ou9vWivLd0t" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{ou9vWivLd0t.gZVZmtxuJ7Q}+#{ou9vWivLd0t.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="ou9vWivLd0t-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="ou9vWivLd0t-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="pI52wkw1Jxh-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="pI52wkw1Jxh-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="YZjUvlzwt8b-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>9.</td>
+			<td>Drums</td>
+			<td><input 3.5em="" id="uCl6uDndZBo" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{uCl6uDndZBo.gZVZmtxuJ7Q}+#{uCl6uDndZBo.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="uCl6uDndZBo-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="uCl6uDndZBo-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="SlpvB5pBopW-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="SlpvB5pBopW-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="e3Oodwb2YU5-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>10.</td>
+			<td>CD4 machines</td>
+			<td><input 3.5em="" id="PjXT2cdBnfM" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{PjXT2cdBnfM.gZVZmtxuJ7Q}+#{PjXT2cdBnfM.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="PjXT2cdBnfM-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="PjXT2cdBnfM-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="abPaAqLBbut-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="abPaAqLBbut-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="a8WAi0qQY91-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>11.</td>
+			<td>Viral load machine</td>
+			<td><input 3.5em="" id="i0L31Wq4ZVA" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{i0L31Wq4ZVA.gZVZmtxuJ7Q}+#{i0L31Wq4ZVA.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="i0L31Wq4ZVA-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="i0L31Wq4ZVA-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="eL4W1kSOEOJ-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="eL4W1kSOEOJ-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="FG0XmbB0zX6-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>12.</td>
+			<td>DBS</td>
+			<td><input 3.5em="" id="SOLcHxkeY0u" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{SOLcHxkeY0u.gZVZmtxuJ7Q}+#{SOLcHxkeY0u.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="SOLcHxkeY0u-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="SOLcHxkeY0u-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="EUeB6mK4N48-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="EUeB6mK4N48-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="J0GnGDZ9TU8-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>13.</td>
+			<td>X-ray machines</td>
+			<td><input 3.5em="" id="Y9w2YjTMPod" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{Y9w2YjTMPod.gZVZmtxuJ7Q}+#{Y9w2YjTMPod.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="Y9w2YjTMPod-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Y9w2YjTMPod-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="sFAOYjIrOG2-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="sFAOYjIrOG2-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="vTTFwsZ24iI-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>14.</td>
+			<td>Ultrasound&#xA0;machine</td>
+			<td><input 3.5em="" id="rBfrXOYaysF" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{rBfrXOYaysF.gZVZmtxuJ7Q}+#{rBfrXOYaysF.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="rBfrXOYaysF-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="rBfrXOYaysF-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="iPyRR8RmmHL-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="iPyRR8RmmHL-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="ZJ2q4wDnCJ8-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>15.</td>
+			<td>ECG machine</td>
+			<td><input 3.5em="" id="mNjUz7Bu2EV" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{mNjUz7Bu2EV.gZVZmtxuJ7Q}+#{mNjUz7Bu2EV.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="mNjUz7Bu2EV-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="mNjUz7Bu2EV-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="JWsbnmw893z-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="JWsbnmw893z-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="qpKxNKCqOlD-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>16.</td>
+			<td>EEG</td>
+			<td><input 3.5em="" id="i4R1H1OalUZ" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{i4R1H1OalUZ.gZVZmtxuJ7Q}+#{i4R1H1OalUZ.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="i4R1H1OalUZ-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="i4R1H1OalUZ-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="YFDrym0CzMF-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="YFDrym0CzMF-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="xfCTk0pDVR6-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>17.</td>
+			<td>CT-Scan</td>
+			<td><input 3.5em="" id="FPKDpEpT2tZ" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{FPKDpEpT2tZ.gZVZmtxuJ7Q}+#{FPKDpEpT2tZ.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="FPKDpEpT2tZ-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="FPKDpEpT2tZ-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="gWwFDq4hskS-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="gWwFDq4hskS-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="iTJ2ZQ9fJFV-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>18.</td>
+			<td>MRI</td>
+			<td><input 3.5em="" id="S85zg56TtDZ" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{S85zg56TtDZ.gZVZmtxuJ7Q}+#{S85zg56TtDZ.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="S85zg56TtDZ-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="S85zg56TtDZ-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="BmKOK7Z1Tuk-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="BmKOK7Z1Tuk-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="HYELtZTPXY5-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>19.</td>
+			<td>Adult scale</td>
+			<td><input 3.5em="" id="XRjRG9IChPa" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{XRjRG9IChPa.gZVZmtxuJ7Q}+#{XRjRG9IChPa.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="XRjRG9IChPa-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="XRjRG9IChPa-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="MbHJmqS6ZZM-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="MbHJmqS6ZZM-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="vkzxhSicSMX-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>20.</td>
+			<td>Child scale</td>
+			<td><input 3.5em="" id="wnBfEA0nkgO" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{wnBfEA0nkgO.gZVZmtxuJ7Q}+#{wnBfEA0nkgO.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="wnBfEA0nkgO-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="wnBfEA0nkgO-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="hgwMVNqVoSx-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="hgwMVNqVoSx-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="qhQfCqQMY5J-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>21.</td>
+			<td>Haemoque machine</td>
+			<td><input 3.5em="" id="wcF7cTTQq5w" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{wcF7cTTQq5w.gZVZmtxuJ7Q}+#{wcF7cTTQq5w.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="wcF7cTTQq5w-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="wcF7cTTQq5w-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="bsJ8zSQJutz-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="bsJ8zSQJutz-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="MryYprKD1LB-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>22.</td>
+			<td>Haematology analyzer</td>
+			<td><input 3.5em="" id="FyZ1gZsKclA" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{FyZ1gZsKclA.gZVZmtxuJ7Q}+#{FyZ1gZsKclA.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="FyZ1gZsKclA-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="FyZ1gZsKclA-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Qksn7eklKWa-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Qksn7eklKWa-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="lztDBL8PPXp-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>23.</td>
+			<td>Biochemistry analyzer</td>
+			<td><input 3.5em="" id="wOpoBfWMRWB" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{wOpoBfWMRWB.gZVZmtxuJ7Q}+#{wOpoBfWMRWB.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="wOpoBfWMRWB-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="wOpoBfWMRWB-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="NHRdSzCVrwB-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="NHRdSzCVrwB-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="o1No3ZuNyPs-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>24.</td>
+			<td>Glucometer</td>
+			<td><input 3.5em="" id="ZUzcDX0P2NO" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{ZUzcDX0P2NO.gZVZmtxuJ7Q}+#{ZUzcDX0P2NO.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="ZUzcDX0P2NO-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="ZUzcDX0P2NO-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Kbjf70vvgz0-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Kbjf70vvgz0-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="hu4DcRYCiJU-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>25.</td>
+			<td>Glucosticks</td>
+			<td><input 3.5em="" id="XDWhMFkkfjC" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{XDWhMFkkfjC.gZVZmtxuJ7Q}+#{XDWhMFkkfjC.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="XDWhMFkkfjC-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="XDWhMFkkfjC-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="ln8SLgaDZSQ-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="ln8SLgaDZSQ-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="CCQ8ruZg0lE-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>26.</td>
+			<td>Nebulizer machine</td>
+			<td><input 3.5em="" id="oOPmtKFXnFa" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{oOPmtKFXnFa.gZVZmtxuJ7Q}+#{oOPmtKFXnFa.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="oOPmtKFXnFa-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="oOPmtKFXnFa-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="oAyD7vFHmea-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="oAyD7vFHmea-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="zek8Ogjd1Z5-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>27.</td>
+			<td>Spacers for inhelers</td>
+			<td><input 3.5em="" id="qzDyQIpDV3S" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{qzDyQIpDV3S.gZVZmtxuJ7Q}+#{qzDyQIpDV3S.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="qzDyQIpDV3S-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="qzDyQIpDV3S-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="arGSm2rZ4Mv-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="arGSm2rZ4Mv-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="ktTlYqBOpyx-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>28.</td>
+			<td>Peak flow meter</td>
+			<td><input 3.5em="" id="CpOtJQ3wYdK" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{CpOtJQ3wYdK.gZVZmtxuJ7Q}+#{CpOtJQ3wYdK.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="CpOtJQ3wYdK-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="CpOtJQ3wYdK-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="jqvfOM3Clej-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="jqvfOM3Clej-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="hk8a0NsRm4F-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>29.</td>
+			<td>Oxygen cylinders and&#xA0;flowmeters</td>
+			<td><input 3.5em="" id="jWxdPE6zTKJ" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{jWxdPE6zTKJ.gZVZmtxuJ7Q}+#{jWxdPE6zTKJ.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="jWxdPE6zTKJ-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="jWxdPE6zTKJ-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="PwqFg6XNeRy-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="PwqFg6XNeRy-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="p4J96kqZe9H-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>30.</td>
+			<td>Oxygen concentrator</td>
+			<td><input 3.5em="" id="ffynEb2Zhr2" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{ffynEb2Zhr2.gZVZmtxuJ7Q}+#{ffynEb2Zhr2.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="ffynEb2Zhr2-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="ffynEb2Zhr2-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="o8NrhDn5R9O-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="o8NrhDn5R9O-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="MLnEWjxTVm1-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>31.</td>
+			<td>Ambubags</td>
+			<td><input 3.5em="" id="H10yD4vXPyw" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{H10yD4vXPyw.gZVZmtxuJ7Q}+#{H10yD4vXPyw.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="H10yD4vXPyw-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="H10yD4vXPyw-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="KnRVkMW2beu-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="KnRVkMW2beu-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="TH6b9lb0XDx-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>32.</td>
+			<td>Delivery beds</td>
+			<td><input 3.5em="" id="jhSuBPGGMxp" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{jhSuBPGGMxp.gZVZmtxuJ7Q}+#{jhSuBPGGMxp.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="jhSuBPGGMxp-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="jhSuBPGGMxp-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="LSFEHndqrfd-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="LSFEHndqrfd-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="z6LnaZhkIFt-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>33.</td>
+			<td>Examination beds</td>
+			<td><input 3.5em="" id="B1O1dMwR7qw" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{B1O1dMwR7qw.gZVZmtxuJ7Q}+#{B1O1dMwR7qw.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="B1O1dMwR7qw-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="B1O1dMwR7qw-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="SKJvS5mP5QP-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="SKJvS5mP5QP-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="aYYW7TppO2M-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>34.</td>
+			<td>Operating table</td>
+			<td><input 3.5em="" id="koYCtrQTU57" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{koYCtrQTU57.gZVZmtxuJ7Q}+#{koYCtrQTU57.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="koYCtrQTU57-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="koYCtrQTU57-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="kP9FFW1ZfsK-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="kP9FFW1ZfsK-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="akgG2wrKG1a-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>35.</td>
+			<td>Hospital beds</td>
+			<td><input 3.5em="" id="qXlmtrtcHbo" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{qXlmtrtcHbo.gZVZmtxuJ7Q}+#{qXlmtrtcHbo.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="qXlmtrtcHbo-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="qXlmtrtcHbo-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="RxQTULxH6Gh-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="RxQTULxH6Gh-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="unDa4ufc77k-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>36.</td>
+			<td>Baby cot</td>
+			<td><input 3.5em="" id="FRBKaC2OHL1" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{FRBKaC2OHL1.gZVZmtxuJ7Q}+#{FRBKaC2OHL1.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="FRBKaC2OHL1-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="FRBKaC2OHL1-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="T0mQpqVpufm-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="T0mQpqVpufm-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="gKLjJAdMRls-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>37.</td>
+			<td>Screen</td>
+			<td><input 3.5em="" id="XvMLUkjUoKU" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{XvMLUkjUoKU.gZVZmtxuJ7Q}+#{XvMLUkjUoKU.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="XvMLUkjUoKU-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="XvMLUkjUoKU-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="qGKA42E42tK-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="qGKA42E42tK-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="M3MOjEWxyOx-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>38.</td>
+			<td>mRDT (Boxes)</td>
+			<td><input 3.5em="" id="AdWL6dyoqsd" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{AdWL6dyoqsd.gZVZmtxuJ7Q}+#{AdWL6dyoqsd.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="AdWL6dyoqsd-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="AdWL6dyoqsd-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="r81PGrNuvJ2-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="r81PGrNuvJ2-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="YG06h02n9q3-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>39.</td>
+			<td>Unigold</td>
+			<td><input 3.5em="" id="Tpu92s3PkDC" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{Tpu92s3PkDC.gZVZmtxuJ7Q}+#{Tpu92s3PkDC.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="Tpu92s3PkDC-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Tpu92s3PkDC-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="lf1aoK7LD9L-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="lf1aoK7LD9L-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="STyJwdoie06-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>40.</td>
+			<td>Determine</td>
+			<td><input 3.5em="" id="V1emmuhLtnL" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{V1emmuhLtnL.gZVZmtxuJ7Q}+#{V1emmuhLtnL.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="V1emmuhLtnL-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="V1emmuhLtnL-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="y0pojcRwbNq-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="y0pojcRwbNq-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="D2wdhP1juCz-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>41.</td>
+			<td>ELISA for HIV</td>
+			<td><input 3.5em="" id="Et385LdfjDm" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{Et385LdfjDm.gZVZmtxuJ7Q}+#{Et385LdfjDm.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="Et385LdfjDm-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Et385LdfjDm-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="yccVG6SGnF0-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="yccVG6SGnF0-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="HAaZCUBqmh4-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>42.</td>
+			<td>RPR</td>
+			<td><input 3.5em="" id="nZvrsVyTIh1" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{nZvrsVyTIh1.gZVZmtxuJ7Q}+#{nZvrsVyTIh1.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="nZvrsVyTIh1-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="nZvrsVyTIh1-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="R3vZRYp0x0s-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="R3vZRYp0x0s-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="xg0Y8QPRrZq-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>43.</td>
+			<td>VDRL</td>
+			<td><input 3.5em="" id="mojXT6hMEX2" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{mojXT6hMEX2.gZVZmtxuJ7Q}+#{mojXT6hMEX2.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="mojXT6hMEX2-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="mojXT6hMEX2-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Qww74uNOsHj-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Qww74uNOsHj-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="ITqhypMPAS5-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>44.</td>
+			<td>Multsticks</td>
+			<td><input 3.5em="" id="gV2cj3mPdBk" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{gV2cj3mPdBk.gZVZmtxuJ7Q}+#{gV2cj3mPdBk.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="gV2cj3mPdBk-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="gV2cj3mPdBk-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="eEn99FGqyIG-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="eEn99FGqyIG-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="XfElGZasfAi-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>45.</td>
+			<td>C/S kit</td>
+			<td><input 3.5em="" id="iwEJw3QxTmw" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{iwEJw3QxTmw.gZVZmtxuJ7Q}+#{iwEJw3QxTmw.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="iwEJw3QxTmw-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="iwEJw3QxTmw-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="uGlLn2UWbdh-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="uGlLn2UWbdh-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="u7PjhIjMSI3-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>46.</td>
+			<td>MVA</td>
+			<td><input 3.5em="" id="bLczaeT6RAD" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{bLczaeT6RAD.gZVZmtxuJ7Q}+#{bLczaeT6RAD.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="bLczaeT6RAD-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="bLczaeT6RAD-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="CEBeMlpVfpF-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="CEBeMlpVfpF-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="yU6VrFxKEf7-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>47.</td>
+			<td>D&amp;C kit</td>
+			<td><input 3.5em="" id="vzdkKaVzzQL" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{vzdkKaVzzQL.gZVZmtxuJ7Q}+#{vzdkKaVzzQL.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="vzdkKaVzzQL-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="vzdkKaVzzQL-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="HTvsBtFncVQ-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="HTvsBtFncVQ-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="sysbP2qH3kU-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>48.</td>
+			<td>Delivery kits</td>
+			<td><input 3.5em="" id="suuppWBqqws" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{suuppWBqqws.gZVZmtxuJ7Q}+#{suuppWBqqws.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="suuppWBqqws-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="suuppWBqqws-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="lPHgglUoncu-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="lPHgglUoncu-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Rd7Xvb9hIlj-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>49.</td>
+			<td>Suction machine&#xA0;with apparatus</td>
+			<td><input 3.5em="" id="pQk9CAg7JzR" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{pQk9CAg7JzR.gZVZmtxuJ7Q}+#{pQk9CAg7JzR.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="pQk9CAg7JzR-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="pQk9CAg7JzR-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="c7Z7tcvIXf7-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="c7Z7tcvIXf7-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="iaA2hRiqpvI-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>50.</td>
+			<td>Foetoscope</td>
+			<td><input 3.5em="" id="pZs3xiEPsP7" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{pZs3xiEPsP7.gZVZmtxuJ7Q}+#{pZs3xiEPsP7.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="pZs3xiEPsP7-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="pZs3xiEPsP7-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="tH9Vqff5cnd-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="tH9Vqff5cnd-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="f8bCFSObq1O-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>51.</td>
+			<td>Vacuum extractor</td>
+			<td><input 3.5em="" id="lhDxD9eQKUB" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{lhDxD9eQKUB.gZVZmtxuJ7Q}+#{lhDxD9eQKUB.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="lhDxD9eQKUB-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="lhDxD9eQKUB-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="uBX7ewkCzfb-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="uBX7ewkCzfb-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="BSvbrUGNDO1-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>52.</td>
+			<td>Delivery pack</td>
+			<td><input 3.5em="" id="eyHaWDt5JvS" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{eyHaWDt5JvS.gZVZmtxuJ7Q}+#{eyHaWDt5JvS.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="eyHaWDt5JvS-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="eyHaWDt5JvS-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="EyfFzsW4XEN-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="EyfFzsW4XEN-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="hicx5EMwD4O-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>53.</td>
+			<td>Neonatal bag and&#xA0;mask</td>
+			<td><input 3.5em="" id="GcJlyyYJ1E5" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{GcJlyyYJ1E5.gZVZmtxuJ7Q}+#{GcJlyyYJ1E5.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="GcJlyyYJ1E5-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="GcJlyyYJ1E5-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="LspucLSPshb-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="LspucLSPshb-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="EFl26iWJCjm-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>54.</td>
+			<td>Examination light</td>
+			<td><input 3.5em="" id="yIpEqcaeltE" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{yIpEqcaeltE.gZVZmtxuJ7Q}+#{yIpEqcaeltE.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="yIpEqcaeltE-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="yIpEqcaeltE-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="L8n2PA9F0Im-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="L8n2PA9F0Im-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Ijc9LRfh3HD-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>55.</td>
+			<td>Operating lamp</td>
+			<td><input 3.5em="" id="Jxls6PJ9jb2" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{Jxls6PJ9jb2.gZVZmtxuJ7Q}+#{Jxls6PJ9jb2.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="Jxls6PJ9jb2-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Jxls6PJ9jb2-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="cH121Upq33l-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="cH121Upq33l-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Jj8g1oXQkTN-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>56.</td>
+			<td>VA charts distant and near</td>
+			<td><input 3.5em="" id="YVy6eGN2ktL" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{YVy6eGN2ktL.gZVZmtxuJ7Q}+#{YVy6eGN2ktL.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="YVy6eGN2ktL-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="YVy6eGN2ktL-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="HKMFMiK9iVk-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="HKMFMiK9iVk-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="dcSND88d2fD-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>57.</td>
+			<td>Slit lamp biomicroscope with<br>
+			applanation tonometer</td>
+			<td><input 3.5em="" id="Ik4Y6SIDJNB" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{Ik4Y6SIDJNB.gZVZmtxuJ7Q}+#{Ik4Y6SIDJNB.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="Ik4Y6SIDJNB-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Ik4Y6SIDJNB-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="IUnx0FdQE9u-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="IUnx0FdQE9u-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="ijUw0pu9woH-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>58.</td>
+			<td>Operating microscope</td>
+			<td><input 3.5em="" id="SQay7KwBXed" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{SQay7KwBXed.gZVZmtxuJ7Q}+#{SQay7KwBXed.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="SQay7KwBXed-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="SQay7KwBXed-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="MOzTFd9JjzF-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="MOzTFd9JjzF-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="xJP1wFfB8gc-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>59.</td>
+			<td>Surgical set for Etracapsular<br>
+			cataract extraction(ECCE/SICS)</td>
+			<td><input 3.5em="" id="AkfyZnP5zFT" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{AkfyZnP5zFT.gZVZmtxuJ7Q}+#{AkfyZnP5zFT.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="AkfyZnP5zFT-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="AkfyZnP5zFT-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="bohZ3fGWNrn-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="bohZ3fGWNrn-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Yx3QsiVPfVy-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>60.</td>
+			<td>A scan</td>
+			<td><input 3.5em="" id="t9iYdFCom7X" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{t9iYdFCom7X.gZVZmtxuJ7Q}+#{t9iYdFCom7X.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="t9iYdFCom7X-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="t9iYdFCom7X-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="yF7fC9cFx6o-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="yF7fC9cFx6o-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="ltUrL3uuPJ9-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>61.</td>
+			<td>Minor lid surgical set</td>
+			<td><input 3.5em="" id="O7Q734U2Sql" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{O7Q734U2Sql.gZVZmtxuJ7Q}+#{O7Q734U2Sql.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="O7Q734U2Sql-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="O7Q734U2Sql-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="ac37aLT4BDM-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="ac37aLT4BDM-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="VdNZ1SEFcpA-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>62.</td>
+			<td>ENT diagnostic kit</td>
+			<td><input 3.5em="" id="NUUDzQZitYZ" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{NUUDzQZitYZ.gZVZmtxuJ7Q}+#{NUUDzQZitYZ.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="NUUDzQZitYZ-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="NUUDzQZitYZ-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="BUDD6M1xLGw-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="BUDD6M1xLGw-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="jZCWKp0e6wd-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>63.</td>
+			<td>Dental unit</td>
+			<td><input 3.5em="" id="xlE9K0Sgx0l" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{xlE9K0Sgx0l.gZVZmtxuJ7Q}+#{xlE9K0Sgx0l.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="xlE9K0Sgx0l-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="xlE9K0Sgx0l-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="xNpqugZYXMK-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="xNpqugZYXMK-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="BryBcicbuPl-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>64.</td>
+			<td>Dental chair</td>
+			<td><input 3.5em="" id="rbl70Qf5S5E" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{rbl70Qf5S5E.gZVZmtxuJ7Q}+#{rbl70Qf5S5E.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="rbl70Qf5S5E-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="rbl70Qf5S5E-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="gJqPjNnGf83-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="gJqPjNnGf83-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="tJ0aJkMoX4w-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>65.</td>
+			<td>Dental extraction kit</td>
+			<td><input 3.5em="" id="v1fbhRDgkrW" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{v1fbhRDgkrW.gZVZmtxuJ7Q}+#{v1fbhRDgkrW.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="v1fbhRDgkrW-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="v1fbhRDgkrW-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="nWqm9rU5OJn-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="nWqm9rU5OJn-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="SRMm3hL9yjE-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>66.</td>
+			<td>Oral examination kit</td>
+			<td><input 3.5em="" id="c1fsnC90PfH" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{c1fsnC90PfH.gZVZmtxuJ7Q}+#{c1fsnC90PfH.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="c1fsnC90PfH-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="c1fsnC90PfH-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="YHSpaqPzwWs-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="YHSpaqPzwWs-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="xpzy2Z2u2X3-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>67.</td>
+			<td>Basic dental restorative kit</td>
+			<td><input 3.5em="" id="zE6bKXgp9DD" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{zE6bKXgp9DD.gZVZmtxuJ7Q}+#{zE6bKXgp9DD.Pzhs23Q2jST})"></td>
+			<td><input 3.5em="" id="zE6bKXgp9DD-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="zE6bKXgp9DD-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Iynr7xAKqy6-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Iynr7xAKqy6-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="aH7RNaOUcr7-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+	</tbody>
+</table>
+
+<h2>2.5: Ziara za Usimamizi na Vikao vya Usimamizi Kituoni</h2>
+
+<table border="1" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<th>&#xA0;</th>
+			<th>Robo mwaka<br>
+			Januari hadi Machi</th>
+			<th>Robo mwaka<br>
+			Aprili hadi Juni</th>
+			<th>Robo mwaka<br>
+			Julai hadi Septemba</th>
+			<th>Robo mwaka<br>
+			October hadi Disemba</th>
+			<th>Jumla ya<br>
+			mwaka mzima</th>
+		</tr>
+		<tr>
+			<td>Ziara za usimamizi</td>
+			<td><input 3.5em="" id="Sv8HCgt60DY-YyK8KfOzUJ6-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Sv8HCgt60DY-JxtkPBC8GHZ-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Sv8HCgt60DY-DFwumtIzfK3-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Sv8HCgt60DY-N4P9oRcngTC-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Sv8HCgt60DY" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{Sv8HCgt60DY.YyK8KfOzUJ6}+#{Sv8HCgt60DY.JxtkPBC8GHZ}+#{Sv8HCgt60DY.DFwumtIzfK3}+#{Sv8HCgt60DY.N4P9oRcngTC})"></td>
+		</tr>
+		<tr>
+			<td>Vikao vya&#xA0;usimamizi</td>
+			<td><input 3.5em="" id="jfqXzrZfx91-YyK8KfOzUJ6-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="jfqXzrZfx91-JxtkPBC8GHZ-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="jfqXzrZfx91-DFwumtIzfK3-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="jfqXzrZfx91-N4P9oRcngTC-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="jfqXzrZfx91" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{jfqXzrZfx91.YyK8KfOzUJ6}+#{jfqXzrZfx91.JxtkPBC8GHZ}+#{jfqXzrZfx91.DFwumtIzfK3}+#{jfqXzrZfx91.N4P9oRcngTC})"></td>
+		</tr>
+	</tbody>
+</table>
+</div>
+
+<div id="tab2">
+<h2>3.1:Idadi Wanaotoa huduma nyinginezo za afya katika kijiji/mtaa</h2>
+
+<table border="1" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<th rowspan="2">Na.</th>
+			<th rowspan="2">Jumla ya idadi ya wahudumu<br>
+			wa Tiba Asili kwa mwaka husika</th>
+			<th rowspan="2">Jumla ya idadi ya Maduka ya<br>
+			Dawa kwa mwaka husika</th>
+			<th colspan="3">Jumla ya idadi ya TBAs</th>
+		</tr>
+		<tr>
+			<th>Wenye Mafunzo</th>
+			<th>Wasio na Mafunzo</th>
+			<th>Jumla</th>
+		</tr>
+		<tr>
+			<td>Ziara za usimamizi</td>
+			<td><input 3.5em="" id="aseos22l5DL-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="BEaL3ApSpXu-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="ydgXfMg4i3e-otCFqOriWOX-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="ydgXfMg4i3e-OnfalkJ8HUH-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="ydgXfMg4i3e" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{ydgXfMg4i3e.otCFqOriWOX}+#{ydgXfMg4i3e.OnfalkJ8HUH})"></td>
+		</tr>
+	</tbody>
+</table>
+
+<h2>3.2:Taarifa Kuhusu Huduma za Uzazi Kutoka kwa Wakunga wa Jadi (TBAs)</h2>
+
+<table border="1" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<th rowspan="2">Idadi ya mama<br>
+			waliozalishwa na TBAs</th>
+			<th rowspan="2">Idadi ya watoto<br>
+			waliozaliwa hai</th>
+			<th colspan="2">Idadi ya watoto<br>
+			walizaliwa wamekufa</th>
+			<th rowspan="2">Idadi ya vifo vya wazazi wajawazito<br>
+			vilivyo tokea kwa TBAs</th>
+		</tr>
+		<tr>
+			<th>Idadi ya FSB</th>
+			<th>Idadi ya MSB</th>
+		</tr>
+		<tr>
+			<td><input 3.5em="" id="qNnK2ZdCvIq-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="vIpYt1ikox4-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="niX0Ntj98hK-rHY12WXCNMA-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="niX0Ntj98hK-VIKgBLTgOD6-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="DuPTtaaxWBi-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+	</tbody>
+</table>
+</div>
+
+<div id="tab3">
+<h2>4.1:Vifo Katika Jamii Kwenye Kijiji/Mtaa</h2>
+
+<table border="1" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<th>Na.</th>
+			<th>Maelezo</th>
+			<th>Idadi</th>
+		</tr>
+		<tr>
+			<td>1.</td>
+			<td>Vifo vya watoto wakati wa kuzaliwa (FSB)</td>
+			<td><input 3.5em="" id="vvqy6NtpwEm-rHY12WXCNMA-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>2.</td>
+			<td>Watoto waliofia tumboni (MSB)</td>
+			<td><input 3.5em="" id="vvqy6NtpwEm-VIKgBLTgOD6-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>3.</td>
+			<td>Vifo vya watoto wa umri chini ya siku 7</td>
+			<td><input 3.5em="" id="b0NVIAEZJE4-CPSepJXxikO-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>4.</td>
+			<td>Vifo vya watoto wa umri siku 28</td>
+			<td><input 3.5em="" id="b0NVIAEZJE4-AmxtXXQzxyV-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>5.</td>
+			<td>Vifo vya watoto wa umri siku 29 hadi &#x2013; miezi 11</td>
+			<td><input 3.5em="" id="b0NVIAEZJE4-OPiJUYYH28D-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>6.</td>
+			<td>Vifo vya watoto umri miezi 12 hadi miezi 59</td>
+			<td><input 3.5em="" id="b0NVIAEZJE4-xV9HGhW6pzO-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>7.</td>
+			<td>Vifo vya watu umri wa miaka 5 na zaidi</td>
+			<td><input 3.5em="" id="b0NVIAEZJE4-eqKNx6Dsiil-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>8.</td>
+			<td>Vifo vinavyotokana na uzazi (ujauzito/uzazi/siku 42 baada ya kujifungua)</td>
+			<td><input 3.5em="" id="LZ5TIPY3jf8-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+	</tbody>
+</table>
+
+<h2>4.2:Vifo Vya Wajawazito/Wazazi Katika Jamii Kijijini/Mtaani</h2>
+
+<table border="1" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<th>Na.</th>
+			<th>Sababu ya Vifo</th>
+			<th>Idadi</th>
+		</tr>
+		<tr>
+			<td>1.</td>
+			<td>Abortion</td>
+			<td><input 3.5em="" id="i15VHKQnAJq-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>2.</td>
+			<td>Severe Hypertension in pregnancy/ eclampsia</td>
+			<td><input 3.5em="" id="Li1BdOIwZG0-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>3.</td>
+			<td>Antepartum Haemorrhage</td>
+			<td><input 3.5em="" id="FYVxQCPJTxK-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>4.</td>
+			<td>Obstructed Labour</td>
+			<td><input 3.5em="" id="HrNEENUzbJO-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>5.</td>
+			<td>Rupture uterus</td>
+			<td><input 3.5em="" id="nBEaaksVvGS-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>6.</td>
+			<td>Post-partum haemorrhage</td>
+			<td><input 3.5em="" id="IVy3wdQmRbf-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>7.</td>
+			<td>Unknown fever</td>
+			<td><input 3.5em="" id="Ai5cmIIoNbf-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>8.</td>
+			<td>Local herbs</td>
+			<td><input 3.5em="" id="IxJkEVJ6j8D-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>9.</td>
+			<td>Puerperal Sepsis /Septicaemia</td>
+			<td><input 3.5em="" id="c9N14a9DfNy-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>10.</td>
+			<td>Malaria in pregnancy</td>
+			<td><input 3.5em="" id="xqXsCi8iUc5-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>11.</td>
+			<td>Pneumonia</td>
+			<td><input 3.5em="" id="B7Ow8X8NcBz-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>12.</td>
+			<td>Anaemia in Pregnancy</td>
+			<td><input 3.5em="" id="a6BjYPBAhPp-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>13.</td>
+			<td>Pulmonary oedema</td>
+			<td><input 3.5em="" id="X2v7fZBf1Xw-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>14.</td>
+			<td>Meningitis</td>
+			<td><input 3.5em="" id="Ywbwkd6USdu-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>15.</td>
+			<td>Cardiomyopathy</td>
+			<td><input 3.5em="" id="ZTjnQkKJQls-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>16.</td>
+			<td>Asymptomatic HIV</td>
+			<td><input 3.5em="" id="J1qGI0dSzKJ-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>&#xA0;</td>
+			<td><b>Jumla</b></td>
+			<td><input id="zauc5Rr5unE" name="indicatorFormula" readonly="readonly" title="" indicatorFormula="((#{i15VHKQnAJq.uGIJ6IdkP7Q}+#{Li1BdOIwZG0.uGIJ6IdkP7Q}+
+#{FYVxQCPJTxK.uGIJ6IdkP7Q}+#{HrNEENUzbJO.uGIJ6IdkP7Q}+#{nBEaaksVvGS.uGIJ6IdkP7Q}+#{IVy3wdQmRbf.uGIJ6IdkP7Q}+#{Ai5cmIIoNbf.uGIJ6IdkP7Q}+#{IxJkEVJ6j8D.uGIJ6IdkP7Q}+#{c9N14a9DfNy.uGIJ6IdkP7Q}+#{xqXsCi8iUc5.uGIJ6IdkP7Q}+#{B7Ow8X8NcBz.uGIJ6IdkP7Q}+#{a6BjYPBAhPp.uGIJ6IdkP7Q}+#{X2v7fZBf1Xw.uGIJ6IdkP7Q}+#{Ywbwkd6USdu.uGIJ6IdkP7Q}+#{ZTjnQkKJQls.uGIJ6IdkP7Q}+#{J1qGI0dSzKJ.uGIJ6IdkP7Q}
+)/(1)*(1))"></td>
+		</tr>
+	</tbody>
+</table>
+
+<h2>4.3:Vifo Vya Watoto Wachanga Chini ya Siku 28 Katika Jamii Kijijini/Mtaani</h2>
+
+<table border="1" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<th>Na.</th>
+			<th>Sababu ya Vifo</th>
+			<th>Idadi</th>
+		</tr>
+		<tr>
+			<td>1.</td>
+			<td>Paediatric AIDS</td>
+			<td><input 3.5em="" id="ycT38VH9N6I-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>2.</td>
+			<td>Low birth weight or Prematurity Complication</td>
+			<td><input 3.5em="" id="P8DlDOcjeHy-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>3.</td>
+			<td>Birth trauma</td>
+			<td><input 3.5em="" id="UcPJ1MXBqxj-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>4.</td>
+			<td>Neonatal Asphyxia</td>
+			<td><input 3.5em="" id="tbb1iL14I21-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>5.</td>
+			<td>Respiratory distress</td>
+			<td><input 3.5em="" id="qSBJnfnvTVN-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>6.</td>
+			<td>Pneumonia</td>
+			<td><input 3.5em="" id="UMJcl2NwCXg-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>7.</td>
+			<td>Neonatal Septicaemia</td>
+			<td><input 3.5em="" id="XN1FyHo1jQ1-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>8.</td>
+			<td>Malaria</td>
+			<td><input 3.5em="" id="lVvJmJUALU0-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>9.</td>
+			<td>Haemorrhage</td>
+			<td><input 3.5em="" id="trKLuce0JN8-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>10.</td>
+			<td>Dehydration</td>
+			<td><input 3.5em="" id="zgJ5Q8uNVfd-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>11.</td>
+			<td>Diarrhoea</td>
+			<td><input 3.5em="" id="Y4MgOXKCIqy-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>12.</td>
+			<td>Stillbirth (fresh)</td>
+			<td><input 3.5em="" id="sIkpMpqvPZE-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>13.</td>
+			<td>Stillbirth (macerated)</td>
+			<td><input 3.5em="" id="nW6aMA1nimc-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>14.</td>
+			<td>Congenital hydrocephalus and spinal bifida</td>
+			<td><input 3.5em="" id="ItvilYvGDs1-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>15.</td>
+			<td>Congenital malformation of the heart</td>
+			<td><input 3.5em="" id="LVAmwiLdR2F-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>16.</td>
+			<td>Other congenital malformation</td>
+			<td><input 3.5em="" id="U3G8xwrY4se-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>17.</td>
+			<td>Sudden infant death syndrome</td>
+			<td><input 3.5em="" id="B6QZT1Kkve3-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>18.</td>
+			<td>Accidental poisoning by and exposure to noxious substances</td>
+			<td><input 3.5em="" id="UjtyufGJt6t-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>19.</td>
+			<td>Assault</td>
+			<td><input 3.5em="" id="dCUYdooPgcw-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>&#xA0;</td>
+			<td><b>Jumla</b></td>
+			<td><input id="ZaEO96kHwsk" name="indicatorFormula" readonly="readonly" title="" indicatorFormula="((#{ycT38VH9N6I.uGIJ6IdkP7Q}+#{P8DlDOcjeHy.uGIJ6IdkP7Q}+#{UcPJ1MXBqxj.uGIJ6IdkP7Q}+#{tbb1iL14I21.uGIJ6IdkP7Q}+#{qSBJnfnvTVN.uGIJ6IdkP7Q}+#{UMJcl2NwCXg.uGIJ6IdkP7Q}+#{XN1FyHo1jQ1.uGIJ6IdkP7Q}+#{lVvJmJUALU0.uGIJ6IdkP7Q}+#{trKLuce0JN8.uGIJ6IdkP7Q}+#{zgJ5Q8uNVfd.uGIJ6IdkP7Q}+#{Y4MgOXKCIqy.uGIJ6IdkP7Q}+#{sIkpMpqvPZE.uGIJ6IdkP7Q}+#{nW6aMA1nimc.uGIJ6IdkP7Q}+#{ItvilYvGDs1.uGIJ6IdkP7Q}+#{LVAmwiLdR2F.uGIJ6IdkP7Q}+#{U3G8xwrY4se.uGIJ6IdkP7Q}+#{B6QZT1Kkve3.uGIJ6IdkP7Q}+#{UjtyufGJt6t.uGIJ6IdkP7Q}+#{dCUYdooPgcw.uGIJ6IdkP7Q})/(1)*(1))"></td>
+		</tr>
+	</tbody>
+</table>
+</div>
+
+<div id="tab4">
+<h2>5.1:Taarifa ya Usafi Wa Mazingira Katika Jamii Kwenye Kijiji/Mtaa</h2>
+
+<table border="1" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<th>Na.</th>
+			<th>Kiashiria ya usafi wa mazingira katika jamii</th>
+			<th>Jumla ya idadi<br>
+			kwenye mwaka</th>
+		</tr>
+		<tr>
+			<td>1.</td>
+			<td>Kiasi cha taka ngumu kilichozalishwa kwa siku kwa tani (tone)</td>
+			<td><input 3.5em="" id="Ipo8erpFbpO-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>2.</td>
+			<td>Kiasi cha taka ngumu kilichotupwa kwa siku kwa tani</td>
+			<td><input 3.5em="" id="EMMNShtT7Ki-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>3.</td>
+			<td>Kaya zenye mashimo ya taka</td>
+			<td><input 3.5em="" id="ca0G5jJTNog-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>4.</td>
+			<td>Kaya zenye mapipa ya taka</td>
+			<td><input 3.5em="" id="ceNLZf9ZPON-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>5.</td>
+			<td>Kaya hazina mashimo, mapipa ya taka</td>
+			<td><input 3.5em="" id="Ju7on5ybW0W-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>&#xA0;</td>
+			<td>Jumla ya Kaya</td>
+			<td>&#xA0;</td>
+		</tr>
+	</tbody>
+</table>
+
+<h2>5.2: Ukaguzi Wa Usafi wa Mazingira Katika Jamii</h2>
+
+<table border="1" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<th>Na.</th>
+			<th>Taarifa za ukaguzi na usafi</th>
+			<th>Jumla ya idadi<br>
+			kwenye mwaka</th>
+		</tr>
+		<tr>
+			<td>1.</td>
+			<td>Jumla ya kaya</td>
+			<td><input 3.5em="" id="bfxN9Vl8G4Y-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>2.</td>
+			<td>Idadi ya kaya zilizokaguliwa</td>
+			<td><input 3.5em="" id="COliAxaeadI-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>3.</td>
+			<td>Idadi ya kaya zilizo na vyoo bora</td>
+			<td><input 3.5em="" id="zvmnHVK5dUq-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>4.</td>
+			<td>Idadi ya kaya zisizo na vyoo bora</td>
+			<td><input 3.5em="" id="dWu3ca9ewNC-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>5.</td>
+			<td>Idadi ya kaya zisizo na vyoo</td>
+			<td><input 3.5em="" id="oyNd9pw7O4z-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>6.</td>
+			<td>Idadi ya kaya zilizo na mashimo/mapipa ya takataka</td>
+			<td><input 3.5em="" id="VtxlxmfxXfb-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>7.</td>
+			<td>Idadi ya kaya zilizo na vichanja vya kuanikia vyombo</td>
+			<td><input 3.5em="" id="eIEFEOWMJNh-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>8.</td>
+			<td>Idadi ya kaya zilizo karibu na chanzo cha maji safi</td>
+			<td><input 3.5em="" id="T3MBV27ux1N-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>9.</td>
+			<td>Idadi ya kaya zilizo na matatizo ya kiuchumi</td>
+			<td><input 3.5em="" id="LyHlXx1mG0b-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>10.</td>
+			<td>Idadi ya kaya zilizo na matatizo ya kijamii</td>
+			<td><input 3.5em="" id="DB9ZvdG8rsM-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>11.</td>
+			<td>Idadi ya kaya zilizo na watoto yatima</td>
+			<td><input 3.5em="" id="VcNgNXbza9a-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>12.</td>
+			<td>Idadi ya kaya&#xA0;zenye chandarua</td>
+			<td><input 3.5em="" id="ihnWqkPjPED-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>13.</td>
+			<td>Idadi ya kaya zilizopuliziwa dawa ya kuangamiza wadudu waambukizao<br>
+			magonjwa</td>
+			<td><input 3.5em="" id="p2D0N8p9Irb-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+	</tbody>
+</table>
+</div>
+
+<div id="tab5">
+<h2>6.1&#xA0;AINA YA MAENEO YA KAZI YALIYOTEMBELEWA<br>
+&#xA0; &#xA0; &#xA0;NA KUKAGULIWA KWENYE MWAKA&#xA0;</h2>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td colspan="1" rowspan="2">Na</td>
+			<td colspan="1" rowspan="2">Aina ya sehemu za kazi</td>
+			<td colspan="2" rowspan="1">Jumla ua idadi zilizokaguliwa kwa mwaka</td>
+		</tr>
+		<tr>
+			<td>Idadi za sehemu za<br>
+			kazi&#xA0;</td>
+			<td>Idadi zilizokaguliwa&#xA0;</td>
+		</tr>
+		<tr>
+			<td>1</td>
+			<td><input id="cFM4Xwddruz-vYkcqoEIaMR-val" name="entryfield" title="" value=""></td>
+			<td><input 3.5em="" id="Dq4Vhwk12gz-vYkcqoEIaMR-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="rIQTX2BlObP-vYkcqoEIaMR-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>2</td>
+			<td><input id="cFM4Xwddruz-ffVdZwMXovO-val" name="entryfield" title="" value=""></td>
+			<td><input 3.5em="" id="Dq4Vhwk12gz-ffVdZwMXovO-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="rIQTX2BlObP-ffVdZwMXovO-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>3</td>
+			<td><input id="cFM4Xwddruz-WUwd9Wrq3IN-val" name="entryfield" title="" value=""></td>
+			<td><input 3.5em="" id="Dq4Vhwk12gz-WUwd9Wrq3IN-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="rIQTX2BlObP-WUwd9Wrq3IN-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>4</td>
+			<td><input id="cFM4Xwddruz-KkukOvy6yxr-val" name="entryfield" title="" value=""></td>
+			<td><input 3.5em="" id="Dq4Vhwk12gz-KkukOvy6yxr-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="rIQTX2BlObP-KkukOvy6yxr-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>5</td>
+			<td><input id="cFM4Xwddruz-Czsa0WTmfYE-val" name="entryfield" title="" value=""></td>
+			<td><input 3.5em="" id="Dq4Vhwk12gz-Czsa0WTmfYE-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="rIQTX2BlObP-Czsa0WTmfYE-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+	</tbody>
+</table>
+
+<h2>6.2: Sababu Hasi Mbalimbali za Kiafya zilizoathiri Watu katika maeneo ya Kazi</h2>
+
+<table border="1" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<th>Na.</th>
+			<th>Aina ya athari</th>
+			<th>Jumla ya sehemu zilizoripotiwa<br>
+			athari kwa mwaka</th>
+		</tr>
+		<tr>
+			<td>1.</td>
+			<td>Magonjwa ya njia ya hewa</td>
+			<td><input 3.5em="" id="JZ4M3uSR3PE-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>2.</td>
+			<td>Kemikali zenye sumu</td>
+			<td><input 3.5em="" id="e4BR2K65AsN-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>3.</td>
+			<td>Kuungua</td>
+			<td><input 3.5em="" id="SmctwDbwsqS-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>4.</td>
+			<td>Ajali</td>
+			<td><input 3.5em="" id="gilBFtmMMla-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>5.</td>
+			<td>Kupoteza usikivu</td>
+			<td><input 3.5em="" id="oFayNGfvR5J-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>6.</td>
+			<td>Matatizo ya macho</td>
+			<td><input 3.5em="" id="lTAKDT5jhIW-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>7.</td>
+			<td>Saratani</td>
+			<td><input 3.5em="" id="LX5qwodgzJb-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>8.</td>
+			<td>Pneumoconiosis</td>
+			<td><input 3.5em="" id="cSEMj5LLo8R-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>&#xA0;</td>
+			<td><b>Jumla</b></td>
+			<td><input id="UXFy9vFCK7q" name="indicatorFormula" readonly="readonly" title="" indicatorFormula="((#{JZ4M3uSR3PE.uGIJ6IdkP7Q}+#{e4BR2K65AsN.uGIJ6IdkP7Q}+#{SmctwDbwsqS.uGIJ6IdkP7Q}+#{gilBFtmMMla.uGIJ6IdkP7Q}+#{oFayNGfvR5J.uGIJ6IdkP7Q}+#{lTAKDT5jhIW.uGIJ6IdkP7Q}+#{LX5qwodgzJb.uGIJ6IdkP7Q}+#{cSEMj5LLo8R.uGIJ6IdkP7Q})/(1)*(1))"></td>
+		</tr>
+	</tbody>
+</table>
+</div>
+
+<div id="tab6">
+<h2>7.1: Upatikanaji wa Miongozo ya Utoaji wa Huduma za Afya Katika Kituo cha Huduma za Afya</h2>
+
+<table border="1" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<th>Na.</th>
+			<th>MIONGOZO</th>
+			<th>PROGRAM</th>
+			<th>IPO/HAIPO</th>
+			<th>MAONI</th>
+		</tr>
+		<tr>
+			<td>1.</td>
+			<td>TREATMENT OF MALARIA</td>
+			<td>NMCP</td>
+			<td><input 3.5em="" id="VG62vjWCFjo-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="B303OWUsAEL-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>2.</td>
+			<td>IMCI</td>
+			<td>RCH</td>
+			<td><input 3.5em="" id="BhJoDiAMxFQ-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="boJ9O3VrCf5-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>3.</td>
+			<td>INFECTION PREVENTION CONTROL</td>
+			<td>ENVIRONMENTAL<br>
+			SANITATION</td>
+			<td><input 3.5em="" id="ig6lcE4uu4h-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="hq1WK3xgmsJ-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>4.</td>
+			<td>TB &amp; LEPROSY</td>
+			<td>NTLP</td>
+			<td><input 3.5em="" id="bSOZ06mKE3y-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="zgydmzKPzio-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>5.</td>
+			<td>MTUHA</td>
+			<td>M&amp;E</td>
+			<td><input 3.5em="" id="NiSc2jBiwUu-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="CAr59dcuDlf-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>6.</td>
+			<td>TREATMENT OF HIV/AIDS</td>
+			<td>NACP</td>
+			<td><input 3.5em="" id="MRf9ozMBfxP-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="PRyZkDI2nqM-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>7.</td>
+			<td>TREATMENT OF STI</td>
+			<td>NACP</td>
+			<td><input 3.5em="" id="PVO5hiK1dGv-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="i6QNwyHGdsE-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>8.</td>
+			<td>ARV</td>
+			<td>NACP</td>
+			<td><input 3.5em="" id="JqXvoRjNicU-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="wJmcM26UW3z-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>9.</td>
+			<td>PMTCT</td>
+			<td>NACP</td>
+			<td><input 3.5em="" id="I5VdZo5HQBV-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Oz8z2XOCQlb-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>10.</td>
+			<td>ILS</td>
+			<td>PHARMACY</td>
+			<td><input 3.5em="" id="oMTiunu4yfi-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="ffvJA0hsn9s-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>11.</td>
+			<td>IMMUNIZATION</td>
+			<td>NIP</td>
+			<td><input 3.5em="" id="oIc4JmKl1Et-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="xeWJaf9sx2N-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>12.</td>
+			<td>LSS</td>
+			<td>RCH</td>
+			<td><input 3.5em="" id="WWmuSowMU6x-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="fzxWHi1sDQs-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>13.</td>
+			<td>FANC</td>
+			<td>RCH</td>
+			<td><input 3.5em="" id="ywPw2NGoclD-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="DQtqbTMJIrF-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>14.</td>
+			<td>CCHP</td>
+			<td>PLANNING</td>
+			<td><input 3.5em="" id="Qm1fKox0V0u-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Szd06ReHGGQ-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>15.</td>
+			<td>CHF</td>
+			<td>HEALTH INSURANCE</td>
+			<td><input 3.5em="" id="qf8O08F0I3x-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Rc2EkSqCq7b-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>16.</td>
+			<td>ORAL HEALTH</td>
+			<td>&#xA0;</td>
+			<td><input 3.5em="" id="cfpM5mmNkx6-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="IOW7tQMUJle-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>17.</td>
+			<td>NATIONAL STADARD TREATMENT<br>
+			GUIDELINE</td>
+			<td>&#xA0;</td>
+			<td><input 3.5em="" id="db5ksLufsdw-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="ofDsV4WHQ44-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>18.</td>
+			<td>IDSR</td>
+			<td>EPIDEMIOLOGY</td>
+			<td><input 3.5em="" id="INSFb3qRo7t-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="y1Bqb7Ulla8-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>19.</td>
+			<td>NATIONAL EYE CARE STRATEGIC<br>
+			PLAN</td>
+			<td>NECP</td>
+			<td><input 3.5em="" id="shWsKUcd0wk-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="zl0rhVRVAN3-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>20.</td>
+			<td>NATIONAL HEALTH POLICY</td>
+			<td>MoHSW</td>
+			<td><input 3.5em="" id="B07ANkRo1af-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="hQBvyKeAGcO-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>21.</td>
+			<td>MENTAL HEALTH GUIDELINE</td>
+			<td>NCD</td>
+			<td><input 3.5em="" id="lcEvxcbim0W-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="RG1Qc2QgDfM-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>22.</td>
+			<td>CANCER GUIDELINE</td>
+			<td>NCD</td>
+			<td><input 3.5em="" id="rO4mSC066li-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="emK4RoUA1DD-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>23.</td>
+			<td>DIABETES TREATMENT GUIDELINE</td>
+			<td>NCD</td>
+			<td><input 3.5em="" id="nArMwSYizt9-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="JMVSK838qJt-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>24.</td>
+			<td>HYPERTENSION TREATMENT<br>
+			GUIDELINE</td>
+			<td>NCD</td>
+			<td><input 3.5em="" id="S7ZWgJVRx5Z-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="MFDQjQeJQvM-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>25.</td>
+			<td>SUBSTANCE ABUSE GUIDELINE</td>
+			<td>NCD</td>
+			<td><input 3.5em="" id="IRScafZXbGn-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="DW5RGh1Oq11-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>26.</td>
+			<td>NATIONAL TRADITIONAL AND<br>
+			ALTENATIVE TREATMENT</td>
+			<td>ALTERNATIVE<br>
+			MEDICINE</td>
+			<td><input 3.5em="" id="bvXYAVUe8if-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="WOIIK7ia3Ej-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>27.</td>
+			<td>MANAGEMENT OF KIDNEY DISEASES</td>
+			<td>NCD</td>
+			<td><input 3.5em="" id="KC69PMYotZK-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="kxXUznlGFQ7-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>28.</td>
+			<td>MSD CATALOGUE</td>
+			<td>MSD</td>
+			<td><input 3.5em="" id="DyiVpNeCSsn-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="x9JuPQA89gY-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>29.</td>
+			<td>CHRONIC RESPIRATORY DISEASE</td>
+			<td>NCD</td>
+			<td><input 3.5em="" id="vg7vBNtzlN0-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="VFg6YVW9BxB-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>30.</td>
+			<td>TFDA</td>
+			<td>TFDA</td>
+			<td><input 3.5em="" id="URe1gZXhzlN-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="ZIkKDkyoEYr-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>31.</td>
+			<td>ONE PLAN</td>
+			<td>RCH</td>
+			<td><input 3.5em="" id="sUFhn9KCSH7-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="XGowMdqlv1e-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+	</tbody>
+</table>
+</div>
+
+<div id="tab7">
+<h2>8: Huduma za Radiologia</h2>
+
+<table border="1" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<th rowspan="2">Jumla ya<br>
+			Wagonjwa/<br>
+			wateja wote</th>
+			<th rowspan="2">Idadi ya<br>
+			films</th>
+			<th colspan="9">X - RAY</th>
+			<th rowspan="2">Ultra Sound</th>
+			<th rowspan="2">CT Scan</th>
+			<th rowspan="2">MRI</th>
+			<th rowspan="2">Others</th>
+		</tr>
+		<tr>
+			<th>Skull</th>
+			<th>Chest</th>
+			<th>Abdomen</th>
+			<th>Spine</th>
+			<th>Pelvis</th>
+			<th>Extremities</th>
+			<th>Obs &amp;</th>
+			<th>Barium Meal</th>
+			<th>Urology</th>
+		</tr>
+		<tr>
+			<td><input 3.5em="" id="G8HVPbDRojX-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="xaAQQy2on82-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="iuIjLmur5aa-X3nBRkONLM2-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="iuIjLmur5aa-Vh2RzAjgRzB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="iuIjLmur5aa-DBawCmI5xNY-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="iuIjLmur5aa-U4u5EOz80m1-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="iuIjLmur5aa-RTOzgbQ5aeu-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="iuIjLmur5aa-uBBOxMExneN-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="iuIjLmur5aa-zagEF3s2L3d-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="iuIjLmur5aa-KxHTMLPuonn-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="iuIjLmur5aa-ki9EtOOcIoK-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="C5KgkrvUKUi-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="JwygWgihwOP-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="wXi5c3NLmkG-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="VSXc8GQoa5X-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+	</tbody>
+</table>
+</div>
+
+<div id="tab8">
+<h2>9: Huduma za Benki ya Damu</h2>
+
+<table border="1" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<th>Jumla ya<br>
+			Wateja wote</th>
+			<th>Units<br>
+			zilizopatikana</th>
+			<th>Units<br>
+			zilizotumika</th>
+			<th>Units Zilizoharibika</th>
+			<th>Units zilizobaki</th>
+		</tr>
+		<tr>
+			<td><input 3.5em="" id="t6Sc84990eA-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="S5lidDs43VQ-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="C2nD6ELD2aq-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="WjZffCGjgpI-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="fdBN9HTFPtF-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+	</tbody>
+</table>
+</div>
+
+<div id="tab9">
+<h2>10: Huduma za Maabara ya Histopatholojia</h2>
+
+<table border="1" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<th rowspan="2">Jumla ya<br>
+			Specimen&#xA0;zote</th>
+			<th colspan="2" rowspan="1">Idadi ya Specimen&#xA0;zilizopokelewa</th>
+			<th rowspan="2">Jumla ya specimen<br>
+			zilizokuwa Positive</th>
+			<th rowspan="2">Idadi ya ripoti zilizotumwa<br>
+			kwa wahusika</th>
+			<th rowspan="2">Idadi ya ripoti<br>
+			ambazo hazijatumwa</th>
+		</tr>
+		<tr>
+			<th>Kutoka&#xA0;Hospitali</th>
+			<th>Kutoka Kwingineko</th>
+		</tr>
+		<tr>
+			<td>&#xA0;<input 3.5em="" id="bG62xOxI2n9" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="((#{euIf213Nv95.enf2scEpPVB}+#{euIf213Nv95.njmjlMhmGfC})/(1)*(1))"></td>
+			<td><input 3.5em="" id="euIf213Nv95-enf2scEpPVB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="euIf213Nv95-njmjlMhmGfC-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="c9ASPtdS3Kc-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="VUzs9WR0E1d-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="GBIfKDIHO52-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+	</tbody>
+</table>
+</div>
+
+<div id="tab10">
+<h2>11: Huduma za Maabara ya Pathologia</h2>
+
+<table border="1" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<th rowspan="2">Mwezi</th>
+			<th colspan="2">Idadi ya maiti kutoka</th>
+			<th>Idadi ya<br>
+			Chunguzi</th>
+			<th>Idadi ya specimen<br>
+			zilizopekwa</th>
+		</tr>
+		<tr>
+			<th>Kituo cha kutolea huduma ya afya</th>
+			<th>Kwingineko</th>
+			<th>(Postmortem)</th>
+			<th>idara ya Patholojia</th>
+		</tr>
+		<tr>
+			<td>&#xA0;</td>
+			<td><input 3.5em="" id="KHOMPnlmBrh-enf2scEpPVB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="KHOMPnlmBrh-njmjlMhmGfC-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="PMXwFajvmIC-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="A4rgHgcTLVZ-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+	</tbody>
+</table>
+</div>
+
+<div id="tab11">
+<h2>12.1: Vyanzo Vya Mapato Vinavyokusanywa Vituoni</h2>
+
+<table border="1" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<th>CHF/TIKA</th>
+			<th>NHIF</th>
+			<th>PAPO KWA<br>
+			PAPO(COST<br>
+			SHARING)</th>
+			<th>SERIKALI</th>
+			<th>WAHISANI</th>
+			<th>VINGINEVYO</th>
+			<th>JUMLA TSH.</th>
+		</tr>
+		<tr>
+			<td><input 3.5em="" id="z7z7l48CPPw-ikzH42K4mew-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="z7z7l48CPPw-edRNt7zi8eB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="z7z7l48CPPw-jRu7wu4RZsP-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="z7z7l48CPPw-IauOCKQQpni-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="z7z7l48CPPw-u2h8O1qz1w2-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="z7z7l48CPPw-gxTNOV647iO-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="z7z7l48CPPw" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{z7z7l48CPPw.ikzH42K4mew}+#{z7z7l48CPPw.edRNt7zi8eB}+#{z7z7l48CPPw.jRu7wu4RZsP}+#{z7z7l48CPPw.IauOCKQQpni}+#{z7z7l48CPPw.u2h8O1qz1w2}+#{z7z7l48CPPw.gxTNOV647iO})"></td>
+		</tr>
+	</tbody>
+</table>
+
+<h2>12.2: Matumizi ya Mapato ya Kituo</h2>
+
+<table border="1" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<th>CHF/TIKA</th>
+			<th>NHIF</th>
+			<th>PAPO KWA<br>
+			PAPO(COST<br>
+			SHARING)</th>
+			<th>SERIKALI</th>
+			<th>WAHISANI</th>
+			<th>VINGINEVYO</th>
+			<th>JUMLA TSH.</th>
+		</tr>
+		<tr>
+			<td><input 3.5em="" id="Ojec9vYsSAO-ikzH42K4mew-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Ojec9vYsSAO-edRNt7zi8eB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Ojec9vYsSAO-jRu7wu4RZsP-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Ojec9vYsSAO-IauOCKQQpni-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Ojec9vYsSAO-u2h8O1qz1w2-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Ojec9vYsSAO-gxTNOV647iO-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Ojec9vYsSAO" name="indicatorFormula" readonly="readonly" style="width:" title="" indicatorFormula="(#{Ojec9vYsSAO.ikzH42K4mew}+#{Ojec9vYsSAO.edRNt7zi8eB}+#{Ojec9vYsSAO.jRu7wu4RZsP}+#{Ojec9vYsSAO.IauOCKQQpni}+#{Ojec9vYsSAO.u2h8O1qz1w2}+#{Ojec9vYsSAO.gxTNOV647iO})"></td>
+		</tr>
+	</tbody>
+</table>
+</div>
+
+<div>&#xA0;</div>
+
+<div id="tab12"><span style="font-size:18px;">13: WADAU WA MAENDELEO YA AFYA</span>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width: 500px;">
+	<tbody>
+		<tr>
+			<td colspan="1" rowspan="2">Na</td>
+			<td colspan="1" rowspan="2">ORODHA YA<br>
+			WADAU WA<br>
+			MAENDELEO YA<br>
+			AFYA</td>
+			<td colspan="1" rowspan="2">MAENEO YA<br>
+			MSAADA /<br>
+			UTEKELEZAJI</td>
+			<td colspan="1" rowspan="2">ENEO<br>
+			WANALOFAN<br>
+			YIA KAZI<br>
+			(WILAYA<br>
+			NZIMA, IDADI<br>
+			YA KATA AU<br>
+			IDADI YA<br>
+			VIJIJI)</td>
+			<td colspan="1" rowspan="2">MUDA WA<br>
+			MRADI</td>
+			<td>MUDA WA<br>
+			UTEKELEZAJI<br>
+			WA MRADI</td>
+		</tr>
+		<tr>
+			<td>&#xA0;</td>
+		</tr>
+		<tr>
+			<td>&#xA0;</td>
+			<td><input id="usthH9Pm5Ls-kVo6UDv4FZO-val" name="entryfield" style="width:15em" title="" value=""></td>
+			<td><input id="M4IeL9uVJUs-kVo6UDv4FZO-val" name="entryfield" title="" value=""></td>
+			<td><input id="hngA39SdlJj-kVo6UDv4FZO-val" name="entryfield" title="" value=""></td>
+			<td><input 3.5em="" id="zyMPd1JBV7Z-kVo6UDv4FZO-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="N4D28vJNWuK-kVo6UDv4FZO-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>&#xA0;</td>
+			<td><input id="usthH9Pm5Ls-zEoEsT8jrvq-val" name="entryfield" style="width:15em" title="" value=""></td>
+			<td><input id="M4IeL9uVJUs-zEoEsT8jrvq-val" name="entryfield" title="" value=""></td>
+			<td><input id="hngA39SdlJj-zEoEsT8jrvq-val" name="entryfield" title="" value=""></td>
+			<td><input 3.5em="" id="zyMPd1JBV7Z-zEoEsT8jrvq-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="N4D28vJNWuK-zEoEsT8jrvq-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>&#xA0;</td>
+			<td><input id="usthH9Pm5Ls-tg437jaea5R-val" name="entryfield" style="width:15em" title="" value=""></td>
+			<td><input id="M4IeL9uVJUs-tg437jaea5R-val" name="entryfield" title="" value=""></td>
+			<td><input id="hngA39SdlJj-tg437jaea5R-val" name="entryfield" title="" value=""></td>
+			<td><input 3.5em="" id="zyMPd1JBV7Z-tg437jaea5R-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="N4D28vJNWuK-tg437jaea5R-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>&#xA0;</td>
+			<td><input id="usthH9Pm5Ls-bI2w0CX4tPm-val" name="entryfield" style="width:15em" title="" value=""></td>
+			<td><input id="M4IeL9uVJUs-bI2w0CX4tPm-val" name="entryfield" title="" value=""></td>
+			<td><input id="hngA39SdlJj-bI2w0CX4tPm-val" name="entryfield" title="" value=""></td>
+			<td><input 3.5em="" id="zyMPd1JBV7Z-bI2w0CX4tPm-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="N4D28vJNWuK-bI2w0CX4tPm-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>&#xA0;</td>
+			<td><input id="usthH9Pm5Ls-kd40J9iqRkV-val" name="entryfield" style="width:15em" title="" value=""></td>
+			<td><input id="M4IeL9uVJUs-kd40J9iqRkV-val" name="entryfield" title="" value=""></td>
+			<td><input id="hngA39SdlJj-kd40J9iqRkV-val" name="entryfield" title="" value=""></td>
+			<td><input 3.5em="" id="zyMPd1JBV7Z-kd40J9iqRkV-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="N4D28vJNWuK-kd40J9iqRkV-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+	</tbody>
+</table>
+
+<p>&#xA0;</p>
+</div>
+
+<div id="tab13">
+<h2>14: STANDARD PRECAUTION FOR INFECTION PREVENTION</h2>
+
+<table border="1" cellpadding="0" cellspacing="0">
+	<tbody>
+		<tr>
+			<th rowspan="3">HUDUMA</th>
+			<th rowspan="3">AINA</th>
+			<th colspan="4" rowspan="1">HALI KIFAA</th>
+			<th rowspan="3">Maelezo</th>
+		</tr>
+		<tr>
+			<th rowspan="2">Nzima</th>
+			<th rowspan="2">Mbovu</th>
+			<th colspan="2" rowspan="1">Kama ni mbovu</th>
+		</tr>
+		<tr>
+			<th>Kinatengenezeka</th>
+			<th>Hakitengenezeki</th>
+		</tr>
+		<tr>
+			<td rowspan="3">APROPRIATE STORAGE OF<br>
+			INFECTIOUS WASTE</td>
+			<td>RED</td>
+			<td><input 3.5em="" id="p7MOKduBx9g-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="p7MOKduBx9g-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="f14rHuz6nFg-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="f14rHuz6nFg-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="gJMj9KSTUz3-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>YELLOW</td>
+			<td><input 3.5em="" id="Kx2l5Z3H3Ap-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="Kx2l5Z3H3Ap-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="GomUHpmxZcM-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="GomUHpmxZcM-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="IobrIOIPeId-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>GREEN/BLACK</td>
+			<td><input 3.5em="" id="LW3s9C0esb0-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="LW3s9C0esb0-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="ukVOyEFYgtb-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="ukVOyEFYgtb-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="MZ8VkoPRIVr-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>SHARP CONTAINER</td>
+			<td class="cde-greyfield">&#xA0;</td>
+			<td><input 3.5em="" id="DMVkiqRPrxn-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="DMVkiqRPrxn-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="vwvNcAix6T3-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="vwvNcAix6T3-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="dYXLIkVbPGt-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+		<tr>
+			<td>PLACENTA PITS</td>
+			<td class="cde-greyfield">&#xA0;</td>
+			<td><input 3.5em="" id="IwCE2XSkB55-gZVZmtxuJ7Q-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="IwCE2XSkB55-Pzhs23Q2jST-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="B1c7KGeMjXm-uyn9s8ewcXB-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="B1c7KGeMjXm-Oc7VvBZhcve-val" name="entryfield" style="width:" title="" value=""></td>
+			<td><input 3.5em="" id="kpULGdkeapH-uGIJ6IdkP7Q-val" name="entryfield" style="width:" title="" value=""></td>
+		</tr>
+	</tbody>
+</table>
+</div>
+
+<p>&#xA0;</p>
+</div>
+</div>
+
+

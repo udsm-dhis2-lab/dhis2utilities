@@ -1,0 +1,230 @@
+
+	<script>
+    if (dhis2.dsr){
+        function calculateReportIndicators() {
+            $('input[name="indicatorFormula"]').css('border','none'); $('input[name="indicatorFormula"]').css('background-color','#FFFFFF'); $('input[name="indicatorFormula"]').css('font-weight','500');
+            $('input[name ="indicatorFormula"]').each(function (i, form) {
+                var unReplacedFormula = $(this).attr('indicatorFormula');
+                var elementComboArr = unReplacedFormula.replace("/",",").split("(").join("").split(")").join("").split(",")[0].split("+")
+                var sum = 0;
+                for (var count = 0; count < elementComboArr.length; count++) {
+                    if (elementComboArr[count].length > 18) {
+                        var toReplace='';
+                        var elementCombo = elementComboArr[count].split(".");
+                        if (isNaN(parseInt($("span[data-co="+elementCombo[1].replace("}","")+"][data-de="+elementCombo[0].replace("#{","")+"]").text()))=== false) {
+                            sum += parseInt($("span[data-co="+elementCombo[1].replace("}","")+"][data-de="+elementCombo[0].replace("#{","")+"]").text());
+                            toReplace += elementCombo[0]+'.'+elementCombo[1];
+                        }
+                        unReplacedFormula = unReplacedFormula.replace(toReplace, sum);
+                    }
+                }
+                if (parseInt(eval(unReplacedFormula))){
+                    $('#'+form.id).val(parseInt(eval(unReplacedFormula)));
+                }
+            });
+        }
+        $(document).ready(function(){
+            calculateReportIndicators();
+        });
+    }else {
+        dhis2.util.on('dhis2.de.event.dataValuesLoaded', function () {
+            $('input[name="indicatorFormula"]').css('background-color','#FFFFFF'); $('input[name="indicatorFormula"]').css('font-weight','500'); $('input[name="indicatorFormula"]').css('border','1px grey solid'); $('input[name="indicatorFormula"]').css('text-align','center');
+            calculateIndicatorValue();
+            addListerners();
+        });
+
+        function addListerners(){
+            $('input[name ="entryfield"]').each(function (i) {
+                $(this).change(function () {
+                    //codes for on changes
+                    calculateIndicatorValue();
+                });
+            });
+        }
+
+        function calculateIndicatorValue() {
+            $('input[name ="indicatorFormula"]').each( function (i, form) {
+                var unReplacedFormula = $(this).attr('indicatorFormula');
+                var newFormula = unReplacedFormula;
+                unReplacedFormula.split("/").forEach(function(entryStr){
+                    if (entryStr.length > 18 && entryStr.length < 30 ) {
+                        if (entryStr.indexOf("*") > 1) {
+                            newFormula = newFormula.replace(entryStr.split("*")[0].split("(").join("").split(")").join(""), 'Number($("#'+entryStr.split("*")[0].split("(").join("").split(")").join("").split("#{").join("").split("}").join("").replace(".","-")+'-val").val())');
+                        } else {
+                            newFormula = newFormula.replace(entryStr.split("(").join("").split(")").join(""),'Number($("#'+entryStr.split("(").join("").split(")").join("").split("#{").join("").split("}").join("").replace(".","-")+'-val").val())');
+                        }
+                    } else if(entryStr.length > 30) {
+                        entryStr.split("+").forEach(function(entryStr2){
+                            if (entryStr2.indexOf("*") > 1) {
+                                newFormula = newFormula.replace(entryStr2.split("*")[0].split("(").join("").split(")").join(""), 'Number($("#'+entryStr2.split("*")[0].split("(").join("").split(")").join("").split("#{").join("").split("}").join("").replace(".","-")+'-val").val())');
+                            } else {
+                                newFormula = newFormula.replace(entryStr2.split("(").join("").split(")").join(""),'Number($("#'+entryStr2.split("(").join("").split(")").join("").split("#{").join("").split("}").join("").replace(".","-")+'-val").val())');
+                            }
+                        })
+                    }
+                });
+
+                if (newFormula !== undefined) {
+                    if (isNaN(eval("("+newFormula+")")) !== true) {
+                        $('#'+form.id).val(eval("("+newFormula+")").toFixed(2));
+                    } else {
+                        $('#'+form.id).val(0);
+                    }
+                }
+            });
+        }
+    }
+</script>
+
+<script>
+	 var indicatorAggregations = {"rMLlGi1FqEp":"(#{B4aqXDWCZtq.uGIJ6IdkP7Q})/(#{DyJsbZOZFwE.uGIJ6IdkP7Q})*(100)","l7JqBfHzCeC":"(#{kYAswvnGgYF.uGIJ6IdkP7Q})/(#{uMHPeOgwmht.uGIJ6IdkP7Q})*(100)","h4Fi5txD0LN":"(#{e63HAH85dM5.uGIJ6IdkP7Q})/(#{gxbHgTyWrZE.uGIJ6IdkP7Q})*(100)","BP2n6u10L7A":"(#{CCKDEHmlKiU.uGIJ6IdkP7Q})/(#{Z9KuiePXajN.uGIJ6IdkP7Q})*(100)","a0U11oUg27B":"(#{mPBKsetyqER.uGIJ6IdkP7Q})/(#{zqw02ygtUFP.uGIJ6IdkP7Q})*(100)","ULkpfQQdWXI":"(#{XmedQJBmEzv.uGIJ6IdkP7Q})/(#{KGnSQwIPSB1.uGIJ6IdkP7Q})*(100)","x85xFLK9qF3":"(#{DYbiGlJnLHn.uGIJ6IdkP7Q})/(#{JHdo86kSgKo.uGIJ6IdkP7Q})*(100)","PYPvF9Ww74U":"(#{vO773l5UxDr.uGIJ6IdkP7Q})/(#{iDVoWGddZ0P.uGIJ6IdkP7Q})*(100)","HF0Q38hW3PM":"(#{jVHhLMxZ3qu.uGIJ6IdkP7Q})/(#{N2Y3n4Hrx5v.uGIJ6IdkP7Q})*(100)","Ug6TVCMoWXu":"(#{qmXinA8HpmS.uGIJ6IdkP7Q})/(#{k4FqwMaDf6t.uGIJ6IdkP7Q})*(100)","ZlfNZLe4YKX":"(#{rqS8BEneN60.uGIJ6IdkP7Q})/(#{KTVdUuN1bc1.uGIJ6IdkP7Q})*(100)","HAmHPblpl2R":"(#{lcWXN2jTqdD.uGIJ6IdkP7Q})/(#{MLG5FCtSO0I.uGIJ6IdkP7Q})*(100)","AlVhZC2YswY":"(#{eHRCcDk0dKd.uGIJ6IdkP7Q})/(#{z6pHTYcNrKa.uGIJ6IdkP7Q})*(100)","Fl8ZiJZUSBO":"(#{Fu40XBH9MFK.uGIJ6IdkP7Q})/(#{CYBvPRVfZyQ.uGIJ6IdkP7Q})*(100)","ohw1MBklYkc":"(#{kJLseAaG22P.uGIJ6IdkP7Q})/(#{LTGHUrEPZVZ.uGIJ6IdkP7Q})*(100)"};
+</script>
+<style type="text/css">#cde table {border-collapse: collapse;}
+#cde table, #cde th, #cde td {border: 1px solid #c0c0c0;}
+#cde td, #cde th {height: 30px;padding: 10px;margin: 10px;}
+.cde-greyfield {background-color: #e0e0e0;}
+</style>
+<div id="cde">
+<h2>Summary of Strategy 1 District Health Services implementation</h2>
+
+<h2>Strategic Objectives as in HSSP III</h2>
+
+<table border="1" cellpadding="0" cellspacing="0" width="800">
+	<tbody>
+		<tr>
+			<th>No</th>
+			<th>Indicator</th>
+			<th>Total Plan</th>
+			<th>Total Number<br>
+			Implemented/<br>
+			Functional/<br>
+			Available</th>
+			<th>Percentage<br>
+			Implemented</th>
+			<th>Comments</th>
+		</tr>
+		<tr>
+			<td>1</td>
+			<td>Supervision routes/ visits</td>
+			<td><input id="DyJsbZOZFwE-uGIJ6IdkP7Q-val" style="width:3.5em;text-align:center" title="" value=""></td>
+			<td><input id="B4aqXDWCZtq-uGIJ6IdkP7Q-val" style="width:3.5em;text-align:center" title="" value=""></td>
+			<td><input id="rMLlGi1FqEp" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center" title="" indicatorFormula="((#{B4aqXDWCZtq.uGIJ6IdkP7Q})/(#{DyJsbZOZFwE.uGIJ6IdkP7Q})*(100))"></td>
+			<td>&#xA0;</td>
+		</tr>
+		<tr>
+			<td>2</td>
+			<td>Health facilities visited</td>
+			<td><input id="uMHPeOgwmht-uGIJ6IdkP7Q-val" style="width:3.5em;text-align:center" title="" value=""></td>
+			<td><input id="kYAswvnGgYF-uGIJ6IdkP7Q-val" style="width:3.5em;text-align:center" title="" value=""></td>
+			<td><input id="l7JqBfHzCeC" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center" title="" indicatorFormula="((#{kYAswvnGgYF.uGIJ6IdkP7Q})/(#{uMHPeOgwmht.uGIJ6IdkP7Q})*(100))"></td>
+			<td>&#xA0;</td>
+		</tr>
+		<tr>
+			<td>3</td>
+			<td>Outreach planned</td>
+			<td><input id="gxbHgTyWrZE-uGIJ6IdkP7Q-val" style="width:3.5em;text-align:center" title="" value=""></td>
+			<td><input id="e63HAH85dM5-uGIJ6IdkP7Q-val" style="width:3.5em;text-align:center" title="" value=""></td>
+			<td><input id="h4Fi5txD0LN" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center" title="" indicatorFormula="((#{e63HAH85dM5.uGIJ6IdkP7Q})/(#{gxbHgTyWrZE.uGIJ6IdkP7Q})*(100))"></td>
+			<td>&#xA0;</td>
+		</tr>
+		<tr>
+			<td>4</td>
+			<td>Health facilities providing NEHSWIP</td>
+			<td><input id="Z9KuiePXajN-uGIJ6IdkP7Q-val" style="width:3.5em;text-align:center" title="" value=""></td>
+			<td><input id="CCKDEHmlKiU-uGIJ6IdkP7Q-val" style="width:3.5em;text-align:center" title="" value=""></td>
+			<td><input id="BP2n6u10L7A" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center" title="" indicatorFormula="((#{CCKDEHmlKiU.uGIJ6IdkP7Q})/(#{Z9KuiePXajN.uGIJ6IdkP7Q})*(100))"></td>
+			<td>&#xA0;</td>
+		</tr>
+		<tr>
+			<td>5</td>
+			<td>Health Facilities with diagnostic capacity (with laboratory)</td>
+			<td><input id="zqw02ygtUFP-uGIJ6IdkP7Q-val" style="width:3.5em;text-align:center" title="" value=""></td>
+			<td><input id="mPBKsetyqER-uGIJ6IdkP7Q-val" style="width:3.5em;text-align:center" title="" value=""></td>
+			<td><input id="a0U11oUg27B" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center" title="" indicatorFormula="((#{mPBKsetyqER.uGIJ6IdkP7Q})/(#{zqw02ygtUFP.uGIJ6IdkP7Q})*(100))"></td>
+			<td>&#xA0;</td>
+		</tr>
+		<tr>
+			<td>6</td>
+			<td>Health facilities providing EmONC using communication &amp; ambulance</td>
+			<td><input id="KGnSQwIPSB1-uGIJ6IdkP7Q-val" style="width:3.5em;text-align:center" title="" value=""></td>
+			<td><input id="XmedQJBmEzv-uGIJ6IdkP7Q-val" style="width:3.5em;text-align:center" title="" value=""></td>
+			<td><input id="ULkpfQQdWXI" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center" title="" indicatorFormula="((#{XmedQJBmEzv.uGIJ6IdkP7Q})/(#{KGnSQwIPSB1.uGIJ6IdkP7Q})*(100))"></td>
+			<td>&#xA0;</td>
+		</tr>
+		<tr>
+			<td>7</td>
+			<td>Villages with functional Health Facilities (MMAM)</td>
+			<td><input id="JHdo86kSgKo-uGIJ6IdkP7Q-val" style="width:3.5em;text-align:center" title="" value=""></td>
+			<td><input id="DYbiGlJnLHn-uGIJ6IdkP7Q-val" style="width:3.5em;text-align:center" title="" value=""></td>
+			<td><input id="x85xFLK9qF3" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center" title="" indicatorFormula="((#{DYbiGlJnLHn.uGIJ6IdkP7Q})/(#{JHdo86kSgKo.uGIJ6IdkP7Q})*(100))"></td>
+			<td>&#xA0;</td>
+		</tr>
+		<tr>
+			<td>8</td>
+			<td>Village with Health Committee</td>
+			<td><input id="iDVoWGddZ0P-uGIJ6IdkP7Q-val" style="width:3.5em;text-align:center" title="" value=""></td>
+			<td><input id="vO773l5UxDr-uGIJ6IdkP7Q-val" style="width:3.5em;text-align:center" title="" value=""></td>
+			<td><input id="PYPvF9Ww74U" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center" title="" indicatorFormula="((#{vO773l5UxDr.uGIJ6IdkP7Q})/(#{iDVoWGddZ0P.uGIJ6IdkP7Q})*(100))"></td>
+			<td>&#xA0;</td>
+		</tr>
+		<tr>
+			<td>9</td>
+			<td>Accreditation system of health facilities</td>
+			<td><input id="N2Y3n4Hrx5v-uGIJ6IdkP7Q-val" style="width:3.5em;text-align:center" title="" value=""></td>
+			<td><input id="jVHhLMxZ3qu-uGIJ6IdkP7Q-val" style="width:3.5em;text-align:center" title="" value=""></td>
+			<td><input id="HF0Q38hW3PM" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center" title="" indicatorFormula="((#{jVHhLMxZ3qu.uGIJ6IdkP7Q})/(#{N2Y3n4Hrx5v.uGIJ6IdkP7Q})*(100))"></td>
+			<td>&#xA0;</td>
+		</tr>
+		<tr>
+			<td>10</td>
+			<td>Availability of LGAA strategic Healtht Plan</td>
+			<td><input id="k4FqwMaDf6t-uGIJ6IdkP7Q-val" style="width:3.5em;text-align:center" title="" value=""></td>
+			<td><input id="qmXinA8HpmS-uGIJ6IdkP7Q-val" style="width:3.5em;text-align:center" title="" value=""></td>
+			<td><input id="Ug6TVCMoWXu" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center" title="" indicatorFormula="((#{qmXinA8HpmS.uGIJ6IdkP7Q})/(#{k4FqwMaDf6t.uGIJ6IdkP7Q})*(100))"></td>
+			<td>&#xA0;</td>
+		</tr>
+		<tr>
+			<td>11</td>
+			<td>Meeting of WDCs and CHSB</td>
+			<td><input id="KTVdUuN1bc1-uGIJ6IdkP7Q-val" style="width:3.5em;text-align:center" title="" value=""></td>
+			<td><input id="rqS8BEneN60-uGIJ6IdkP7Q-val" style="width:3.5em;text-align:center" title="" value=""></td>
+			<td><input id="ZlfNZLe4YKX" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center" title="" indicatorFormula="((#{rqS8BEneN60.uGIJ6IdkP7Q})/(#{KTVdUuN1bc1.uGIJ6IdkP7Q})*(100))"></td>
+			<td>&#xA0;</td>
+		</tr>
+		<tr>
+			<td>12</td>
+			<td>Payment for Performance(P4P) Health workers/facilities rewarded</td>
+			<td><input id="MLG5FCtSO0I-uGIJ6IdkP7Q-val" style="width:3.5em;text-align:center" title="" value=""></td>
+			<td><input id="lcWXN2jTqdD-uGIJ6IdkP7Q-val" style="width:3.5em;text-align:center" title="" value=""></td>
+			<td><input id="HAmHPblpl2R" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center" title="" indicatorFormula="((#{lcWXN2jTqdD.uGIJ6IdkP7Q})/(#{MLG5FCtSO0I.uGIJ6IdkP7Q})*(100))"></td>
+			<td>&#xA0;</td>
+		</tr>
+		<tr>
+			<td>13</td>
+			<td>Health facility Plans (Disp &amp; Hcs) incorporated in the CCHP</td>
+			<td><input id="z6pHTYcNrKa-uGIJ6IdkP7Q-val" style="width:3.5em;text-align:center" title="" value=""></td>
+			<td><input id="eHRCcDk0dKd-uGIJ6IdkP7Q-val" style="width:3.5em;text-align:center" title="" value=""></td>
+			<td><input id="AlVhZC2YswY" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center" title="" indicatorFormula="((#{eHRCcDk0dKd.uGIJ6IdkP7Q})/(#{z6pHTYcNrKa.uGIJ6IdkP7Q})*(100))"></td>
+			<td>&#xA0;</td>
+		</tr>
+		<tr>
+			<td>14</td>
+			<td>Health Facilities with Bank accounts</td>
+			<td><input id="CYBvPRVfZyQ-uGIJ6IdkP7Q-val" style="width:3.5em;text-align:center" title="" value=""></td>
+			<td><input id="Fu40XBH9MFK-uGIJ6IdkP7Q-val" style="width:3.5em;text-align:center" title="" value=""></td>
+			<td><input id="Fl8ZiJZUSBO" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center" title="" indicatorFormula="((#{Fu40XBH9MFK.uGIJ6IdkP7Q})/(#{CYBvPRVfZyQ.uGIJ6IdkP7Q})*(100))"></td>
+			<td>&#xA0;</td>
+		</tr>
+		<tr>
+			<td>15</td>
+			<td>Skilled Human Resource recruited</td>
+			<td><input id="LTGHUrEPZVZ-uGIJ6IdkP7Q-val" style="width:3.5em;text-align:center" title="" value=""></td>
+			<td><input id="kJLseAaG22P-uGIJ6IdkP7Q-val" style="width:3.5em;text-align:center" title="" value=""></td>
+			<td><input id="ohw1MBklYkc" name="indicatorFormula" readonly="readonly" style="width:3.5em;text-align:center" title="" indicatorFormula="((#{kJLseAaG22P.uGIJ6IdkP7Q})/(#{LTGHUrEPZVZ.uGIJ6IdkP7Q})*(100))"></td>
+			<td>&#xA0;</td>
+		</tr>
+	</tbody>
+</table>
+</div>
+
+

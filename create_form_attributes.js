@@ -2,8 +2,6 @@
  * Created by josephat on 9/21/17.
  */
 
-// curl -d @datavalueset.json "https://play.dhis2.org/demo/api/26/dataValueSets"
-// -H "Content-Type:application/json" -u admin:district -v
 // npm start https://test.hisptz.org/dhis josephatjulius:Jovan2013
 var URL = process.argv[2];
 var credentials = process.argv[3];
@@ -30,7 +28,7 @@ var headers2 = {
 // call and store dataSets
 function storeDataSets(headers) {
     var formArr = [];
-    var Path = "/api/dataSets.json?pageSize=1&fields=id,name,indicators[id,numerator,denominator,indicatorType[factor]],dataEntryForm[htmlCode]&filter=formType:eq:CUSTOM";
+    var Path = "/api/dataSets.json?paging=false&fields=id,name,indicators[id,numerator,denominator,indicatorType[factor]],dataEntryForm[htmlCode]&filter=formType:eq:CUSTOM";
     var Promise = require('promise');
     var promise = new Promise(function (resolve, reject) {
         request({
@@ -73,7 +71,7 @@ function retrieveDataSetsObjectsAndStoreBackup() {
                 calculatingScript += $.html(element);
             });
             var filename = 'originalHtmls/'+dataSet.id+'.html';
-            var content = '<section>\r\n<div class="toBeRemoved"><input dataSetName ="dataSetName" name = "'+ filename +'" /></div>\r\n'+calculatingScript + dataSet.dataEntryForm.htmlCode+'</section>';
+            var content = '<sectionelem>\r\n<div class="toBeRemoved"><input dataSetName ="dataSetName" name = "'+ filename +'" /></div>\r\n'+calculatingScript + dataSet.dataEntryForm.htmlCode+'</sectionelem>';
             filesArr.push(filename);
             fs.writeFile(filename, content, function (err) {
                 console.log('backup made for ' + 'originalHtmls/'+dataSet.name+'.html');
@@ -100,7 +98,8 @@ function formatHtml(error, data) {
 
     var calledIndArr = [];
 
-        var Path = "/api/indicators.json?paging=false&filter=id:in:[" + indStr.substr(0, indStr.length - 1) + "]&fields=id,numerator,denominator";
+        var Path = "/api/indicators.json?paging=false&filter=id:in:[TiQcFefdkM3]&fields=id,numerator,denominator";
+        console.log('THE PATH: '+ URL + Path);
         var Promise = require('promise');
         var promise = new Promise(function (resolve, reject) {
             request({
@@ -139,7 +138,7 @@ function formatHtml(error, data) {
         tmpData[totalsArr[index]] = '('+arrIndId.substring(0, arrIndId.length - 1).split(",").join("+")+')';
     }
 
-  $('section').each(function(i, elem) {
+  $('sectionElem').each(function(i, elem) {
       //get indicators from local storage
       var arr = localStorage.getItem('indicatorsData');
       var indAggregations = {};
@@ -213,7 +212,6 @@ function formatHtml(error, data) {
           $(val).removeAttr('dataelementid');
           $(val).removeAttr('value');
           $(val).attr('name', 'indicatorFormula');
-          $(val).attr('disabled','disabled');
       });
       $('input[indicatorid]').each(function (index, val) {
           for (var indAggr in indAggregations){
@@ -224,13 +222,10 @@ function formatHtml(error, data) {
           $(val).removeAttr('indicatorid');
           $(val).removeAttr('value');
           $(val).attr('name', 'indicatorFormula');
-          $(val).attr('disabled','disabled');
       });
 
       $('div[class = "toBeRemoved"]').each(function (index, val) {
-          $(val).removeAttr("input");
           $(val).attr('style','display: none');
-          console.log("Have been Removed")
       });
 
       var formName = '';
@@ -246,7 +241,7 @@ function formatHtml(error, data) {
     });
 
       fs.readFile(filename, 'utf-8', function (err, data) {
-          data = data.replace('<section>',"").replace('</section>',"")
+          data = data.replace('<sectionelem>',"").replace('</sectionelem>',"");
 
           var formName = '';
           $('input[dataSetName = "dataSetName"]').each(function (index, obj) {

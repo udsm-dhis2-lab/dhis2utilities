@@ -1,0 +1,333 @@
+
+	<script>
+    if (dhis2.dsr){
+        function calculateReportIndicators() {
+            $('input[name="indicatorFormula"]').css('border','none'); $('input[name="indicatorFormula"]').css('background-color','#FFFFFF'); $('input[name="indicatorFormula"]').css('font-weight','500');
+            $('input[name ="indicatorFormula"]').each(function (i, form) {
+                var unReplacedFormula = $(this).attr('indicatorFormula');
+                var elementComboArr = unReplacedFormula.replace("/",",").split("(").join("").split(")").join("").split(",")[0].split("+")
+                var sum = 0;
+                for (var count = 0; count < elementComboArr.length; count++) {
+                    if (elementComboArr[count].length > 18) {
+                        var toReplace='';
+                        var elementCombo = elementComboArr[count].split(".");
+                        if (isNaN(parseInt($("span[data-co="+elementCombo[1].replace("}","")+"][data-de="+elementCombo[0].replace("#{","")+"]").text()))=== false) {
+                            sum += parseInt($("span[data-co="+elementCombo[1].replace("}","")+"][data-de="+elementCombo[0].replace("#{","")+"]").text());
+                            toReplace += elementCombo[0]+'.'+elementCombo[1];
+                        }
+                        unReplacedFormula = unReplacedFormula.replace(toReplace, sum);
+                    }
+                }
+                if (parseInt(eval(unReplacedFormula))){
+                    $('#'+form.id).val(parseInt(eval(unReplacedFormula)));
+                }
+            });
+        }
+        $(document).ready(function(){
+            calculateReportIndicators();
+        });
+    }else {
+        dhis2.util.on('dhis2.de.event.dataValuesLoaded', function () {
+            $('input[name="indicatorFormula"]').css('background-color','#FFFFFF'); $('input[name="indicatorFormula"]').css('font-weight','500'); $('input[name="indicatorFormula"]').css('border','1px grey solid'); $('input[name="indicatorFormula"]').css('text-align','center');
+            calculateIndicatorValue();
+            addListerners();
+        });
+
+        function addListerners(){
+            $('input[name ="entryfield"]').each(function (i) {
+                $(this).change(function () {
+                    //codes for on changes
+                    calculateIndicatorValue();
+                });
+            });
+        }
+
+        function calculateIndicatorValue() {
+            $('input[name ="indicatorFormula"]').each( function (i, form) {
+                var unReplacedFormula = $(this).attr('indicatorFormula');
+                var newFormula = unReplacedFormula;
+                unReplacedFormula.split("/").forEach(function(entryStr){
+                    if (entryStr.length > 18 && entryStr.length < 30 ) {
+                        if (entryStr.indexOf("*") > 1) {
+                            newFormula = newFormula.replace(entryStr.split("*")[0].split("(").join("").split(")").join(""), 'Number($("#'+entryStr.split("*")[0].split("(").join("").split(")").join("").split("#{").join("").split("}").join("").replace(".","-")+'-val").val())');
+                        } else {
+                            newFormula = newFormula.replace(entryStr.split("(").join("").split(")").join(""),'Number($("#'+entryStr.split("(").join("").split(")").join("").split("#{").join("").split("}").join("").replace(".","-")+'-val").val())');
+                        }
+                    } else if(entryStr.length > 30) {
+                        entryStr.split("+").forEach(function(entryStr2){
+                            if (entryStr2.indexOf("*") > 1) {
+                                newFormula = newFormula.replace(entryStr2.split("*")[0].split("(").join("").split(")").join(""), 'Number($("#'+entryStr2.split("*")[0].split("(").join("").split(")").join("").split("#{").join("").split("}").join("").replace(".","-")+'-val").val())');
+                            } else {
+                                newFormula = newFormula.replace(entryStr2.split("(").join("").split(")").join(""),'Number($("#'+entryStr2.split("(").join("").split(")").join("").split("#{").join("").split("}").join("").replace(".","-")+'-val").val())');
+                            }
+                        })
+                    }
+                });
+
+                if (newFormula !== undefined) {
+                    if (isNaN(eval("("+newFormula+")")) !== true) {
+                        $('#'+form.id).val(eval("("+newFormula+")").toFixed(2));
+                    } else {
+                        $('#'+form.id).val(0);
+                    }
+                }
+            });
+        }
+    }
+</script>
+
+<script>
+	 var indicatorAggregations = {};
+</script>
+<p>
+	<style type="text/css">
+<!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->	</style>
+</p>
+<p>
+	<style type="text/css">
+<!-- 
+		BODY,DIV,TABLE,THEAD,TBODY,TFOOT,TR,TH,TD,P { font-family:"Liberation Sans"; font-size:x-small }
+		 -->	</style>
+</p>
+<p>
+	<style type="text/css">
+<!-- 
+		BODY,DIV,TABLE,THEAD,TBODY,TFOOT,TR,TH,TD,P { font-family:"Arial"; font-size:x-small }
+		 -->	</style>
+</p>
+<table border="0" cellspacing="0" cols="6">
+	<colgroup width="41">
+	</colgroup>
+	<colgroup width="641">
+	</colgroup>
+	<colgroup width="117">
+	</colgroup>
+	<colgroup width="121">
+	</colgroup>
+	<colgroup width="118">
+	</colgroup>
+	<colgroup width="99">
+	</colgroup>
+	<tbody>
+		<tr>
+			<td align="CENTER" height="22" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000">
+				<font face="Times New Roman" size="3">Q1</font></td>
+			<td align="LEFT" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				<font face="Times New Roman" size="3">Number of health facilities supervised by the CHMT last quarter</font></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;">
+				<input id="Pk2R3AD89fx-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value=""></td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				&#xA0;</td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				&#xA0;</td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-right: 1px solid #000000">
+				&#xA0;</td>
+		</tr>
+		<tr>
+			<td align="CENTER" height="44" rowspan="2" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000" valign="MIDDLE">
+				<font face="Times New Roman" size="3">Q2</font></td>
+			<td align="LEFT" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				<font face="Times New Roman" size="3">Does the council have a computer for HMIS data?</font></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;">
+				<input id="p62GVA4vyfT-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value=""></td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				&#xA0;</td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				&#xA0;</td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-right: 1px solid #000000">
+				&#xA0;</td>
+		</tr>
+		<tr>
+			<td align="LEFT" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				<font face="Times New Roman" size="3">If No,how do you carry out HMIS activities?</font></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;">
+				<input id="HFuAea0kgIi-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value=""></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;">
+				<input id="OVymAF5kw9R-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value=""></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;">
+				<input id="crxImEYwW6y-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value=""></td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-right: 1px solid #000000">
+				&#xA0;</td>
+		</tr>
+		<tr>
+			<td align="CENTER" height="44" rowspan="2" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000" valign="MIDDLE">
+				<font face="Times New Roman" size="3">Q3</font></td>
+			<td align="LEFT" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				<font face="Times New Roman" size="3">Do you have reliable Internet connectivity?</font></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;">
+				<input id="hSnQDaC3Vw9-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value=""></td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				&#xA0;</td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				&#xA0;</td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-right: 1px solid #000000">
+				&#xA0;</td>
+		</tr>
+		<tr>
+			<td align="LEFT" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				<font face="Times New Roman" size="3">If Yes,what is the nature of your connection?</font></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;">
+				<input id="UtRJu1FjSAd-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value=""></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;">
+				<input id="HbZOWYuFJpZ-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value=""></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;">
+				<input id="UfnmS7hsyTQ-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value=""></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); border-right: 1px solid rgb(0, 0, 0); text-align: center;">
+				<input id="x8KN5YUFwMD-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value=""></td>
+		</tr>
+		<tr>
+			<td align="CENTER" height="22" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000" valign="MIDDLE">
+				<font face="Times New Roman" size="3">Q4</font></td>
+			<td align="LEFT" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				<font face="Times New Roman" size="3">How many CHMT members have not received training on HMIS?</font></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;">
+				<input id="jQXFJ1NvGMW-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value=""></td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				&#xA0;</td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				&#xA0;</td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-right: 1px solid #000000">
+				&#xA0;</td>
+		</tr>
+		<tr>
+			<td align="CENTER" height="22" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000">
+				<font face="Times New Roman" size="3">Q5</font></td>
+			<td align="LEFT" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				<font face="Times New Roman" size="3">How many members of the CHMT have access to the DHIS?</font></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;">
+				<input id="KwiZXMLzDWD-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value=""></td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				&#xA0;</td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				&#xA0;</td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-right: 1px solid #000000">
+				&#xA0;</td>
+		</tr>
+		<tr>
+			<td align="CENTER" height="22" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000">
+				<font face="Times New Roman" size="3">Q6</font></td>
+			<td align="LEFT" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				<font face="Times New Roman" size="3">Is there a budget in the CCHP allocated for HMIS activities?</font></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;">
+				<input id="uGOGTBNZBx2-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value=""></td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				&#xA0;</td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				&#xA0;</td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-right: 1px solid #000000">
+				&#xA0;</td>
+		</tr>
+		<tr>
+			<td align="CENTER" height="22" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000">
+				<font face="Times New Roman" size="3">Q7</font></td>
+			<td align="LEFT" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				<font face="Times New Roman" size="3">Is there a budget from donors to support HMIS activities in the council?</font></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;">
+				<input id="sXtQbFfbp74-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value=""></td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				&#xA0;</td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				&#xA0;</td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-right: 1px solid #000000">
+				&#xA0;</td>
+		</tr>
+		<tr>
+			<td align="CENTER" height="44" rowspan="2" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000" valign="MIDDLE">
+				<font face="Times New Roman" size="3">Q8</font></td>
+			<td align="LEFT" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				<font face="Times New Roman" size="3">Are all HMIS tools available at your district for replenishing the needs of your facilities?</font></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;">
+				<input id="bL4np5nI7Fl-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value=""></td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				&#xA0;</td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				&#xA0;</td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-right: 1px solid #000000">
+				&#xA0;</td>
+		</tr>
+		<tr>
+			<td align="LEFT" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				<font face="Times New Roman" size="3">If No,what alternative mechanism(s) are used to address the needs of tools by your facilities?</font></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;">
+				<input id="CSBH4OVJkNA-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value=""></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;">
+				<input id="aUAqlnO8RME-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value=""></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;">
+				<input id="UP7AqTWgi7k-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value=""></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); border-right: 1px solid rgb(0, 0, 0);">
+				<input id="Adoe0XaHyGT-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value=""></td>
+		</tr>
+		<tr>
+			<td align="CENTER" height="22" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000" valign="MIDDLE">
+				<font face="Times New Roman" size="3">Q9</font></td>
+			<td align="LEFT" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" valign="MIDDLE">
+				<font face="Times New Roman" size="3">Has the DHIS improved data collection,analysis and use by the CHMT?</font></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;" valign="MIDDLE">
+				<input id="qLsnjH8iwfB-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value=""></td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				&#xA0;</td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				&#xA0;</td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-right: 1px solid #000000">
+				&#xA0;</td>
+		</tr>
+		<tr>
+			<td align="CENTER" height="22" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000">
+				<font face="Times New Roman" size="3">Q10</font></td>
+			<td align="LEFT" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				<font face="Times New Roman" size="3">How does the district use data collected through the DHIS?</font></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;">
+				<input id="YQ4bcDvYNTz-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value=""></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;">
+				<input id="suGhodaJ5MX-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value=""></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;">
+				<input id="KOabSSMCt28-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value=""></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); border-right: 1px solid rgb(0, 0, 0); text-align: center;">
+				<input id="gzsqB9M5VYm-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value=""></td>
+		</tr>
+		<tr>
+			<td align="CENTER" height="44" rowspan="2" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000" valign="MIDDLE">
+				<font face="Times New Roman" size="3">Q11</font></td>
+			<td align="LEFT" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" valign="MIDDLE">
+				<font face="Times New Roman" size="3">Has the district received any feedback report from higher levels during the past three months?</font></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;" valign="MIDDLE">
+				<input id="d9y7VXBNxzC-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value=""></td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				&#xA0;</td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				&#xA0;</td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-right: 1px solid #000000">
+				&#xA0;</td>
+		</tr>
+		<tr>
+			<td align="LEFT" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				<font face="Times New Roman" size="3">If Yes, where did the feedback come from?</font></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;">
+				<input id="HbwPH7WwJ2Y-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value=""></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;">
+				<input id="VlNIsEUdfKP-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value=""></td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				&#xA0;</td>
+			<td align="LEFT" bgcolor="#C0C0C0" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-right: 1px solid #000000">
+				&#xA0;</td>
+		</tr>
+		<tr>
+			<td height="22" style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;">
+				<font face="Times New Roman" size="3">Q12</font></td>
+			<td align="LEFT" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000">
+				<font face="Times New Roman" size="3">Recommendations:</font></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;">
+				<input id="cIMh3yXLLcd-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value=""></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;">
+				<input id="oGRIT9zdIHr-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value=""></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;">
+				<input id="Uza9zA202sM-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value=""></td>
+			<td style="border-top: 1px solid rgb(0, 0, 0); border-bottom: 1px solid rgb(0, 0, 0); text-align: center;">
+				<input id="gKqS1yXv03j-uGIJ6IdkP7Q-val" style="width:7em;text-align:center" title="" value=""></td>
+		</tr>
+	</tbody>
+</table>
+<p>
+	&#xA0;</p>
+
+

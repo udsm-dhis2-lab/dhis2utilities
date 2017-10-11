@@ -1,0 +1,723 @@
+
+	<script>
+    if (dhis2.dsr){
+        function calculateReportIndicators() {
+            $('input[name="indicatorFormula"]').css('border','none'); $('input[name="indicatorFormula"]').css('background-color','#FFFFFF'); $('input[name="indicatorFormula"]').css('font-weight','500');
+            $('input[name ="indicatorFormula"]').each(function (i, form) {
+                var unReplacedFormula = $(this).attr('indicatorFormula');
+                var elementComboArr = unReplacedFormula.replace("/",",").split("(").join("").split(")").join("").split(",")[0].split("+")
+                var sum = 0;
+                for (var count = 0; count < elementComboArr.length; count++) {
+                    if (elementComboArr[count].length > 18) {
+                        var toReplace='';
+                        var elementCombo = elementComboArr[count].split(".");
+                        if (isNaN(parseInt($("span[data-co="+elementCombo[1].replace("}","")+"][data-de="+elementCombo[0].replace("#{","")+"]").text()))=== false) {
+                            sum += parseInt($("span[data-co="+elementCombo[1].replace("}","")+"][data-de="+elementCombo[0].replace("#{","")+"]").text());
+                            toReplace += elementCombo[0]+'.'+elementCombo[1];
+                        }
+                        unReplacedFormula = unReplacedFormula.replace(toReplace, sum);
+                    }
+                }
+                if (parseInt(eval(unReplacedFormula))){
+                    $('#'+form.id).val(parseInt(eval(unReplacedFormula)));
+                }
+            });
+        }
+        $(document).ready(function(){
+            calculateReportIndicators();
+        });
+    }else {
+        dhis2.util.on('dhis2.de.event.dataValuesLoaded', function () {
+            $('input[name="indicatorFormula"]').css('background-color','#FFFFFF'); $('input[name="indicatorFormula"]').css('font-weight','500'); $('input[name="indicatorFormula"]').css('border','1px grey solid'); $('input[name="indicatorFormula"]').css('text-align','center');
+            calculateIndicatorValue();
+            addListerners();
+        });
+
+        function addListerners(){
+            $('input[name ="entryfield"]').each(function (i) {
+                $(this).change(function () {
+                    //codes for on changes
+                    calculateIndicatorValue();
+                });
+            });
+        }
+
+        function calculateIndicatorValue() {
+            $('input[name ="indicatorFormula"]').each( function (i, form) {
+                var unReplacedFormula = $(this).attr('indicatorFormula');
+                var newFormula = unReplacedFormula;
+                unReplacedFormula.split("/").forEach(function(entryStr){
+                    if (entryStr.length > 18 && entryStr.length < 30 ) {
+                        if (entryStr.indexOf("*") > 1) {
+                            newFormula = newFormula.replace(entryStr.split("*")[0].split("(").join("").split(")").join(""), 'Number($("#'+entryStr.split("*")[0].split("(").join("").split(")").join("").split("#{").join("").split("}").join("").replace(".","-")+'-val").val())');
+                        } else {
+                            newFormula = newFormula.replace(entryStr.split("(").join("").split(")").join(""),'Number($("#'+entryStr.split("(").join("").split(")").join("").split("#{").join("").split("}").join("").replace(".","-")+'-val").val())');
+                        }
+                    } else if(entryStr.length > 30) {
+                        entryStr.split("+").forEach(function(entryStr2){
+                            if (entryStr2.indexOf("*") > 1) {
+                                newFormula = newFormula.replace(entryStr2.split("*")[0].split("(").join("").split(")").join(""), 'Number($("#'+entryStr2.split("*")[0].split("(").join("").split(")").join("").split("#{").join("").split("}").join("").replace(".","-")+'-val").val())');
+                            } else {
+                                newFormula = newFormula.replace(entryStr2.split("(").join("").split(")").join(""),'Number($("#'+entryStr2.split("(").join("").split(")").join("").split("#{").join("").split("}").join("").replace(".","-")+'-val").val())');
+                            }
+                        })
+                    }
+                });
+
+                if (newFormula !== undefined) {
+                    if (isNaN(eval("("+newFormula+")")) !== true) {
+                        $('#'+form.id).val(eval("("+newFormula+")").toFixed(2));
+                    } else {
+                        $('#'+form.id).val(0);
+                    }
+                }
+            });
+        }
+    }
+</script>
+
+<script>
+	 var indicatorAggregations = {"w4BXfQkqOFq":"(#{DUlS90FQGNh.UVLU1Njotu4}+#{awbB2k6c4dy.UVLU1Njotu4}+#{nGed5u8o6gv.UVLU1Njotu4}+#{kLI4iGDbN3p.UVLU1Njotu4})/(1)*(1)","A9NRJalTeuy":"(#{kLI4iGDbN3p.lVnpcptMtAD}+#{nGed5u8o6gv.lVnpcptMtAD}+#{awbB2k6c4dy.lVnpcptMtAD}+#{DUlS90FQGNh.lVnpcptMtAD})/(1)*(1)","IeoCkHvMXZU":"(#{DUlS90FQGNh.UVLU1Njotu4}+#{awbB2k6c4dy.UVLU1Njotu4}+#{nGed5u8o6gv.UVLU1Njotu4}+#{kLI4iGDbN3p.UVLU1Njotu4}+#{kLI4iGDbN3p.lVnpcptMtAD}+#{nGed5u8o6gv.lVnpcptMtAD}+#{awbB2k6c4dy.lVnpcptMtAD}+#{DUlS90FQGNh.lVnpcptMtAD})/(1)*(1)","oHX6GPDSvuD":"(#{kLI4iGDbN3p.UVLU1Njotu4})/(#{Pg47B29PFoR.UVLU1Njotu4})*(100)","szHdrrqvab3":"(#{kLI4iGDbN3p.lVnpcptMtAD})/(#{Pg47B29PFoR.lVnpcptMtAD})*(100)","jfNu0e5Gexc":"(#{kLI4iGDbN3p.UVLU1Njotu4}+#{kLI4iGDbN3p.lVnpcptMtAD})/(#{Pg47B29PFoR.UVLU1Njotu4}+#{Pg47B29PFoR.lVnpcptMtAD})*(100)","f0Vh31sVmOP":"(#{QY2val5hffZ.UVLU1Njotu4}+#{totaZnTeUuK.UVLU1Njotu4}+#{EdaxsmnoohA.UVLU1Njotu4}+#{snAJ4ADu50F.UVLU1Njotu4}+#{OkyCfGRhsu0.UVLU1Njotu4})/(1)*(1)","TF79LSSWWdc":"(#{QY2val5hffZ.lVnpcptMtAD}+#{EdaxsmnoohA.lVnpcptMtAD}+#{totaZnTeUuK.lVnpcptMtAD}+#{snAJ4ADu50F.lVnpcptMtAD}+#{OkyCfGRhsu0.lVnpcptMtAD})/(1)*(1)","TiQcFefdkM3":"(#{QY2val5hffZ.UVLU1Njotu4}+#{QY2val5hffZ.lVnpcptMtAD}+#{EdaxsmnoohA.UVLU1Njotu4}+#{EdaxsmnoohA.lVnpcptMtAD}+#{totaZnTeUuK.UVLU1Njotu4}+#{totaZnTeUuK.lVnpcptMtAD}+#{snAJ4ADu50F.UVLU1Njotu4}+#{snAJ4ADu50F.lVnpcptMtAD})/(1)*(1)","AIkTNoE9aJg":"(#{yx1Ndv0hlhO.UVLU1Njotu4}+#{nqPGDlGZsra.UVLU1Njotu4}+#{lEOPtDuEHeq.UVLU1Njotu4}+#{eGn4lgspxwe.UVLU1Njotu4}+#{acfZzCVLmCm.UVLU1Njotu4}+#{G4Q6UJtxHFT.UVLU1Njotu4}+#{kKVapmjpwMq.UVLU1Njotu4}+#{ZQRLWoLtnh5.UVLU1Njotu4}+#{zIPQsS1TzEE.UVLU1Njotu4}+#{Xd84gz2uSf9.UVLU1Njotu4})/(1)*(1)","yY8L8kGKz2s":"(#{nqPGDlGZsra.lVnpcptMtAD}+#{lEOPtDuEHeq.lVnpcptMtAD}+#{eGn4lgspxwe.lVnpcptMtAD}+#{acfZzCVLmCm.lVnpcptMtAD}+#{G4Q6UJtxHFT.lVnpcptMtAD}+#{kKVapmjpwMq.lVnpcptMtAD}+#{ZQRLWoLtnh5.lVnpcptMtAD}+#{zIPQsS1TzEE.lVnpcptMtAD}+#{Xd84gz2uSf9.lVnpcptMtAD}+#{yx1Ndv0hlhO.lVnpcptMtAD})/(1)*(1)","cMbK5e84td7":"(#{nqPGDlGZsra.UVLU1Njotu4}+#{lEOPtDuEHeq.UVLU1Njotu4}+#{eGn4lgspxwe.UVLU1Njotu4}+#{acfZzCVLmCm.UVLU1Njotu4}+#{G4Q6UJtxHFT.UVLU1Njotu4}+#{kKVapmjpwMq.UVLU1Njotu4}+#{ZQRLWoLtnh5.UVLU1Njotu4}+#{zIPQsS1TzEE.UVLU1Njotu4}+#{nqPGDlGZsra.lVnpcptMtAD}+#{lEOPtDuEHeq.lVnpcptMtAD}+#{eGn4lgspxwe.lVnpcptMtAD}+#{acfZzCVLmCm.lVnpcptMtAD}+#{G4Q6UJtxHFT.lVnpcptMtAD}+#{kKVapmjpwMq.lVnpcptMtAD}+#{ZQRLWoLtnh5.lVnpcptMtAD}+#{zIPQsS1TzEE.lVnpcptMtAD}+#{yx1Ndv0hlhO.UVLU1Njotu4}+#{yx1Ndv0hlhO.lVnpcptMtAD}+#{Xd84gz2uSf9.UVLU1Njotu4}+#{Xd84gz2uSf9.lVnpcptMtAD})/(1)*(1)","IvPYeiJ6JT1":"(#{rOAjnKgHpp2.UVLU1Njotu4}+#{kS6I0CL0w3F.UVLU1Njotu4}+#{POhKRWHhzdU.UVLU1Njotu4}+#{TQZK24giSbK.UVLU1Njotu4}+#{pD7K7AoFjpC.UVLU1Njotu4}+#{ElOF8D7aP0i.UVLU1Njotu4}+#{q9psmxRIdRH.UVLU1Njotu4}+#{NHA2IdQHnEf.UVLU1Njotu4})/(1)*(1)","oTanE8EiKex":"(#{rOAjnKgHpp2.lVnpcptMtAD}+#{kS6I0CL0w3F.lVnpcptMtAD}+#{POhKRWHhzdU.lVnpcptMtAD}+#{TQZK24giSbK.lVnpcptMtAD}+#{pD7K7AoFjpC.lVnpcptMtAD}+#{ElOF8D7aP0i.lVnpcptMtAD}+#{q9psmxRIdRH.lVnpcptMtAD}+#{NHA2IdQHnEf.lVnpcptMtAD})/(1)*(1)","LsfN3m7Rhqs":"(#{rOAjnKgHpp2.UVLU1Njotu4}+#{kS6I0CL0w3F.UVLU1Njotu4}+#{POhKRWHhzdU.UVLU1Njotu4}+#{TQZK24giSbK.UVLU1Njotu4}+#{pD7K7AoFjpC.UVLU1Njotu4}+#{ElOF8D7aP0i.UVLU1Njotu4}+#{q9psmxRIdRH.UVLU1Njotu4}+#{NHA2IdQHnEf.UVLU1Njotu4}+#{rOAjnKgHpp2.lVnpcptMtAD}+#{kS6I0CL0w3F.lVnpcptMtAD}+#{POhKRWHhzdU.lVnpcptMtAD}+#{TQZK24giSbK.lVnpcptMtAD}+#{pD7K7AoFjpC.lVnpcptMtAD}+#{ElOF8D7aP0i.lVnpcptMtAD}+#{q9psmxRIdRH.lVnpcptMtAD}+#{NHA2IdQHnEf.lVnpcptMtAD})/(1)*(1)","TuR1elC9rKG":"(#{ZBAEsBgVrBd.UVLU1Njotu4}+#{A4hY1vHZS5b.UVLU1Njotu4})/(1)*(1)","JIpsWQqvPq7":"(#{ZBAEsBgVrBd.lVnpcptMtAD}+#{A4hY1vHZS5b.lVnpcptMtAD})/(1)*(1)","pXpPpT9mcy0":"(#{ZBAEsBgVrBd.lVnpcptMtAD}+#{A4hY1vHZS5b.lVnpcptMtAD}+#{ZBAEsBgVrBd.UVLU1Njotu4}+#{A4hY1vHZS5b.UVLU1Njotu4})/(1)*(1)","vNpuPZv4Bgf":"(#{tvscIxUNNpl.UVLU1Njotu4}+#{MmVGhPhIGwf.UVLU1Njotu4}+#{XJUBOFs2prE.UVLU1Njotu4})/(1)*(1)","vwYUnbdnAhV":"(#{tvscIxUNNpl.lVnpcptMtAD}+#{MmVGhPhIGwf.lVnpcptMtAD}+#{XJUBOFs2prE.lVnpcptMtAD})/(1)*(1)","x6NuUoqRH9L":"(#{tvscIxUNNpl.UVLU1Njotu4}+#{tvscIxUNNpl.lVnpcptMtAD}+#{MmVGhPhIGwf.UVLU1Njotu4}+#{MmVGhPhIGwf.lVnpcptMtAD}+#{XJUBOFs2prE.UVLU1Njotu4}+#{XJUBOFs2prE.lVnpcptMtAD})/(1)*(1)","DX9V8WG2doM":"(#{MXYoYFrLHj7.UVLU1Njotu4}+#{VmdKpg6sNUe.UVLU1Njotu4}+#{noAFjjrlq0I.UVLU1Njotu4})/(1)*(1)","orDqM8atiGk":"(#{MXYoYFrLHj7.lVnpcptMtAD}+#{VmdKpg6sNUe.lVnpcptMtAD}+#{noAFjjrlq0I.lVnpcptMtAD})/(1)*(1)","k7tmZBgkrRU":"(#{VmdKpg6sNUe.UVLU1Njotu4}+#{VmdKpg6sNUe.lVnpcptMtAD}+#{noAFjjrlq0I.UVLU1Njotu4}+#{noAFjjrlq0I.lVnpcptMtAD}+#{MXYoYFrLHj7.UVLU1Njotu4}+#{MXYoYFrLHj7.lVnpcptMtAD})/(1)*(1)"};
+</script>
+<p>
+    <style type="text/css">#cde table {
+        border-collapse: collapse;
+    }
+
+    #cde table, #cde th, #cde td {
+        border: 1px solid #c0c0c0;
+    }
+
+    #cde td, #cde th {
+        height: 30px;
+        padding: 10px;
+        margin: 10px;
+    }
+
+    .cde-greyfield {
+        background-color: #e0e0e0;
+    }
+    </style>
+</p>
+
+<div id="cde">
+    <h2>Taarifa ya Mwezi kutoka Wodi ya Wazazi</h2>
+
+    <table border="1" cellpadding="0" cellspacing="0" width="800">
+        <tbody>
+        <tr class="cde-greyfield">
+            <th>Namba</th>
+            <th>Maelezo</th>
+            <th>Umri&#xA0;&lt; miaka 20</th>
+            <th>Umri miaka&#xA0;20 au zaidi</th>
+            <th>Jumla</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Waliotarajiwa kujifungua katika eneo la huduma</td>
+            <td><input id="Pg47B29PFoR-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="Pg47B29PFoR-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="Pg47B29PFoR" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{Pg47B29PFoR.UVLU1Njotu4}+#{Pg47B29PFoR.lVnpcptMtAD})"></td>
+        </tr>
+        <tr class="cde-greyfield">
+            <th>2</th>
+            <th>Taarifa ya Waliojifungua</th>
+            <th>&#xA0;</th>
+            <th>&#xA0;</th>
+            <th>&#xA0;</th>
+        </tr>
+        <tr>
+            <td>2a</td>
+            <td>Waliojifungulia katika kituo cha kutolea huduma za afya</td>
+            <td><input id="kLI4iGDbN3p-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="kLI4iGDbN3p-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="kLI4iGDbN3p" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{kLI4iGDbN3p.UVLU1Njotu4}+#{kLI4iGDbN3p.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>2b</td>
+            <td>Waliojifungua kabla ya kufika kituoni (BBA)</td>
+            <td><input id="awbB2k6c4dy-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="awbB2k6c4dy-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="awbB2k6c4dy" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{awbB2k6c4dy.UVLU1Njotu4}+#{awbB2k6c4dy.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>2c</td>
+            <td>Waliozalishwa na wakunga wa jadi (TBA)</td>
+            <td><input id="DUlS90FQGNh-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="DUlS90FQGNh-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="DUlS90FQGNh" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{DUlS90FQGNh.UVLU1Njotu4}+#{DUlS90FQGNh.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>2d</td>
+            <td>Waliojifungulia nyumbani (H) bila msaada wa TBA</td>
+            <td><input id="nGed5u8o6gv-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="nGed5u8o6gv-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="nGed5u8o6gv" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{nGed5u8o6gv.UVLU1Njotu4}+#{nGed5u8o6gv.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>&#xA0;</td>
+            <td><strong><i>Jumla waliojifungua </i><i>(2a+2b+2c+2d)</i></strong></td>
+            <td><input id="w4BXfQkqOFq" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="((#{DUlS90FQGNh.UVLU1Njotu4}+#{awbB2k6c4dy.UVLU1Njotu4}+#{nGed5u8o6gv.UVLU1Njotu4}+#{kLI4iGDbN3p.UVLU1Njotu4})/(1)*(1))"></td>
+            <td><input id="A9NRJalTeuy" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="((#{kLI4iGDbN3p.lVnpcptMtAD}+#{nGed5u8o6gv.lVnpcptMtAD}+#{awbB2k6c4dy.lVnpcptMtAD}+#{DUlS90FQGNh.lVnpcptMtAD})/(1)*(1))"></td>
+            <td><input id="IeoCkHvMXZU" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="((#{DUlS90FQGNh.UVLU1Njotu4}+#{awbB2k6c4dy.UVLU1Njotu4}+#{nGed5u8o6gv.UVLU1Njotu4}+#{kLI4iGDbN3p.UVLU1Njotu4}+#{kLI4iGDbN3p.lVnpcptMtAD}+#{nGed5u8o6gv.lVnpcptMtAD}+#{awbB2k6c4dy.lVnpcptMtAD}+#{DUlS90FQGNh.lVnpcptMtAD})/(1)*(1))"></td>
+        </tr>
+        <tr>
+            <td>2e</td>
+            <td>Waliozalishwa na watoa huduma wenye ujuzi</td>
+            <td><input id="DPLR0aQemYC-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="DPLR0aQemYC-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="DPLR0aQemYC" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{DPLR0aQemYC.UVLU1Njotu4}+#{DPLR0aQemYC.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>&#xA0;</td>
+            <td><strong><i>Asilimia ya waliojifungulia katika vituo vya kutolea huduma za afya (2a/1)x100</i></strong></td>
+            <td><input id="oHX6GPDSvuD" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="((#{kLI4iGDbN3p.UVLU1Njotu4})/(#{Pg47B29PFoR.UVLU1Njotu4})*(100))"></td>
+            <td><input id="szHdrrqvab3" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="((#{kLI4iGDbN3p.lVnpcptMtAD})/(#{Pg47B29PFoR.lVnpcptMtAD})*(100))"></td>
+            <td><input id="jfNu0e5Gexc" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="((#{kLI4iGDbN3p.UVLU1Njotu4}+#{kLI4iGDbN3p.lVnpcptMtAD})/(#{Pg47B29PFoR.UVLU1Njotu4}+#{Pg47B29PFoR.lVnpcptMtAD})*(100))"></td>
+        </tr>
+        <tr>
+            <td><strong>3</strong></td>
+            <td><strong>Taarifa kuhusu uchungu</strong></td>
+            <td>&#xA0;</td>
+            <td>&#xA0;</td>
+            <td>&#xA0;</td>
+        </tr>
+        <tr>
+            <td>3a</td>
+            <td>Waliojifungua baada ya saa 12 toka uchungu kuanza</td>
+            <td><input id="wl9W3HYlIdD-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="wl9W3HYlIdD-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="wl9W3HYlIdD" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{wl9W3HYlIdD.UVLU1Njotu4}+#{wl9W3HYlIdD.lVnpcptMtAD})"></td>
+        </tr>
+        <tr class="cde-greyfield">
+            <th><strong>4</strong></th>
+            <th><strong>Taarifa ya njia za kujifungua</strong></th>
+            <th>&#xA0;</th>
+            <th>&#xA0;</th>
+            <th>&#xA0;</th>
+        </tr>
+        <tr>
+            <td>4a</td>
+            <td>Kawaida (KW)</td>
+            <td><input id="QY2val5hffZ-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="QY2val5hffZ-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="QY2val5hffZ" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{QY2val5hffZ.UVLU1Njotu4}+#{QY2val5hffZ.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>4b</td>
+            <td>Vacuum (VM)</td>
+            <td><input id="totaZnTeUuK-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="totaZnTeUuK-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="totaZnTeUuK" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{totaZnTeUuK.UVLU1Njotu4}+#{totaZnTeUuK.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>4c</td>
+            <td>Breech delivery (BR)</td>
+            <td><input id="EdaxsmnoohA-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="EdaxsmnoohA-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="EdaxsmnoohA" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{EdaxsmnoohA.UVLU1Njotu4}+#{EdaxsmnoohA.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>4d</td>
+            <td>Caesarian Section (CS)</td>
+            <td><input id="snAJ4ADu50F-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="snAJ4ADu50F-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="snAJ4ADu50F" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{snAJ4ADu50F.UVLU1Njotu4}+#{snAJ4ADu50F.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>&#xA0;</td>
+            <td><strong><i>Jumla (4a+4b+4c+4d)</i></strong></td>
+            <td><input id="f0Vh31sVmOP" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="((#{QY2val5hffZ.UVLU1Njotu4}+#{totaZnTeUuK.UVLU1Njotu4}+#{EdaxsmnoohA.UVLU1Njotu4}+#{snAJ4ADu50F.UVLU1Njotu4}+#{OkyCfGRhsu0.UVLU1Njotu4})/(1)*(1))"></td>
+            <td><input id="TF79LSSWWdc" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="((#{QY2val5hffZ.lVnpcptMtAD}+#{EdaxsmnoohA.lVnpcptMtAD}+#{totaZnTeUuK.lVnpcptMtAD}+#{snAJ4ADu50F.lVnpcptMtAD}+#{OkyCfGRhsu0.lVnpcptMtAD})/(1)*(1))"></td>
+            <td><input id="TiQcFefdkM3" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="((#{QY2val5hffZ.UVLU1Njotu4}+#{QY2val5hffZ.lVnpcptMtAD}+#{EdaxsmnoohA.UVLU1Njotu4}+#{EdaxsmnoohA.lVnpcptMtAD}+#{totaZnTeUuK.UVLU1Njotu4}+#{totaZnTeUuK.lVnpcptMtAD}+#{snAJ4ADu50F.UVLU1Njotu4}+#{snAJ4ADu50F.lVnpcptMtAD})/(1)*(1))"></td>
+        </tr>
+        <tr>
+            <td>4e</td>
+            <td>Idadi ya wanawake waliopata Oxytocin baada ya kujifungua</td>
+            <td><input id="lcf03qF7UU3-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="lcf03qF7UU3-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="lcf03qF7UU3" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{lcf03qF7UU3.UVLU1Njotu4}+#{lcf03qF7UU3.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>4f</td>
+            <td>Idadi ya wanawake waaliopata Egometrine baada ya kujifungua</td>
+            <td><input id="OpccD4uVuQ6-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="OpccD4uVuQ6-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="OpccD4uVuQ6" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{OpccD4uVuQ6.UVLU1Njotu4}+#{OpccD4uVuQ6.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>4g</td>
+            <td>Idadi ya wanawake waliopata Misoprostol baada ya kujifungua</td>
+            <td><input id="FmaOm0CAkiY-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="FmaOm0CAkiY-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="FmaOm0CAkiY" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{FmaOm0CAkiY.UVLU1Njotu4}+#{FmaOm0CAkiY.lVnpcptMtAD})"></td>
+        </tr>
+        <tr class="cde-greyfield">
+            <th>5</th>
+            <th>Matatizo kabla ya kujifungua</th>
+            <th>&#xA0;</th>
+            <th>&#xA0;</th>
+            <th>&#xA0;</th>
+        </tr>
+        <tr>
+            <td>5a</td>
+            <td>APH</td>
+            <td><input id="nqPGDlGZsra-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="nqPGDlGZsra-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="nqPGDlGZsra" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{nqPGDlGZsra.UVLU1Njotu4}+#{nqPGDlGZsra.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>5b</td>
+            <td>Pre-mature Rupture of Membrane (PROM)</td>
+            <td><input id="lEOPtDuEHeq-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="lEOPtDuEHeq-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="lEOPtDuEHeq" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{lEOPtDuEHeq.UVLU1Njotu4}+#{lEOPtDuEHeq.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>5c</td>
+            <td>High BP</td>
+            <td><input id="eGn4lgspxwe-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="eGn4lgspxwe-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="eGn4lgspxwe" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{eGn4lgspxwe.UVLU1Njotu4}+#{eGn4lgspxwe.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>5d</td>
+            <td>Pre eclampsia</td>
+            <td><input id="rej2o9ZasW0-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="rej2o9ZasW0-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="rej2o9ZasW0" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{rej2o9ZasW0.UVLU1Njotu4}+#{rej2o9ZasW0.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>5e</td>
+            <td>Eclampsia</td>
+            <td><input id="acfZzCVLmCm-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="acfZzCVLmCm-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="acfZzCVLmCm" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{acfZzCVLmCm.UVLU1Njotu4}+#{acfZzCVLmCm.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>5f</td>
+            <td>Anaemia</td>
+            <td><input id="G4Q6UJtxHFT-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="G4Q6UJtxHFT-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="G4Q6UJtxHFT" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{G4Q6UJtxHFT.UVLU1Njotu4}+#{G4Q6UJtxHFT.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>5g</td>
+            <td>Malaria</td>
+            <td><input id="kKVapmjpwMq-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="kKVapmjpwMq-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="kKVapmjpwMq" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{kKVapmjpwMq.UVLU1Njotu4}+#{kKVapmjpwMq.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>5h</td>
+            <td>HIV+ stage III au IV</td>
+            <td><input id="ZQRLWoLtnh5-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="ZQRLWoLtnh5-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="ZQRLWoLtnh5" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{ZQRLWoLtnh5.UVLU1Njotu4}+#{ZQRLWoLtnh5.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>&#xA0;</td>
+            <td><strong><i>Jumla wenye matatizo kabla ya kujifungua (5a+5b+5c+5d+5e+5f+5g+5h)</i></strong></td>
+            <td><input id="AIkTNoE9aJg" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="((#{yx1Ndv0hlhO.UVLU1Njotu4}+#{nqPGDlGZsra.UVLU1Njotu4}+#{lEOPtDuEHeq.UVLU1Njotu4}+#{eGn4lgspxwe.UVLU1Njotu4}+#{acfZzCVLmCm.UVLU1Njotu4}+#{G4Q6UJtxHFT.UVLU1Njotu4}+#{kKVapmjpwMq.UVLU1Njotu4}+#{ZQRLWoLtnh5.UVLU1Njotu4}+#{zIPQsS1TzEE.UVLU1Njotu4}+#{Xd84gz2uSf9.UVLU1Njotu4})/(1)*(1))"></td>
+            <td><input id="yY8L8kGKz2s" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="((#{nqPGDlGZsra.lVnpcptMtAD}+#{lEOPtDuEHeq.lVnpcptMtAD}+#{eGn4lgspxwe.lVnpcptMtAD}+#{acfZzCVLmCm.lVnpcptMtAD}+#{G4Q6UJtxHFT.lVnpcptMtAD}+#{kKVapmjpwMq.lVnpcptMtAD}+#{ZQRLWoLtnh5.lVnpcptMtAD}+#{zIPQsS1TzEE.lVnpcptMtAD}+#{Xd84gz2uSf9.lVnpcptMtAD}+#{yx1Ndv0hlhO.lVnpcptMtAD})/(1)*(1))"></td>
+            <td><input id="cMbK5e84td7" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="((#{nqPGDlGZsra.UVLU1Njotu4}+#{lEOPtDuEHeq.UVLU1Njotu4}+#{eGn4lgspxwe.UVLU1Njotu4}+#{acfZzCVLmCm.UVLU1Njotu4}+#{G4Q6UJtxHFT.UVLU1Njotu4}+#{kKVapmjpwMq.UVLU1Njotu4}+#{ZQRLWoLtnh5.UVLU1Njotu4}+#{zIPQsS1TzEE.UVLU1Njotu4}+#{nqPGDlGZsra.lVnpcptMtAD}+#{lEOPtDuEHeq.lVnpcptMtAD}+#{eGn4lgspxwe.lVnpcptMtAD}+#{acfZzCVLmCm.lVnpcptMtAD}+#{G4Q6UJtxHFT.lVnpcptMtAD}+#{kKVapmjpwMq.lVnpcptMtAD}+#{ZQRLWoLtnh5.lVnpcptMtAD}+#{zIPQsS1TzEE.lVnpcptMtAD}+#{yx1Ndv0hlhO.UVLU1Njotu4}+#{yx1Ndv0hlhO.lVnpcptMtAD}+#{Xd84gz2uSf9.UVLU1Njotu4}+#{Xd84gz2uSf9.lVnpcptMtAD})/(1)*(1))"></td>
+        </tr>
+        <tr>
+            <td><i>5</i></td>
+            <td>Waliokeketwa (FGM)</td>
+            <td><input id="rsP3ppN4gC7-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="rsP3ppN4gC7-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="rsP3ppN4gC7" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{rsP3ppN4gC7.UVLU1Njotu4}+#{rsP3ppN4gC7.lVnpcptMtAD})"></td>
+        </tr>
+        <tr class="cde-greyfield">
+            <th>6</th>
+            <th>Matatizo wakati na baada ya kujifungua</th>
+            <th>Umri &lt; 20</th>
+            <th>Umri &gt; 20</th>
+            <th>Jumla</th>
+        </tr>
+        <tr>
+            <td>6a</td>
+            <td>PPH</td>
+            <td><input id="rOAjnKgHpp2-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="rOAjnKgHpp2-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="rOAjnKgHpp2" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{rOAjnKgHpp2.UVLU1Njotu4}+#{rOAjnKgHpp2.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>6b</td>
+            <td>Pre eclampsia</td>
+            <td><input id="RwIxKNxpaxk-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="RwIxKNxpaxk-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="RwIxKNxpaxk" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{RwIxKNxpaxk.UVLU1Njotu4}+#{RwIxKNxpaxk.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>6c</td>
+            <td>Eclampsia</td>
+            <td><input id="kS6I0CL0w3F-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="kS6I0CL0w3F-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="kS6I0CL0w3F" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{kS6I0CL0w3F.UVLU1Njotu4}+#{kS6I0CL0w3F.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>6d</td>
+            <td>Obstructed Labour</td>
+            <td><input id="POhKRWHhzdU-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="POhKRWHhzdU-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="POhKRWHhzdU" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{POhKRWHhzdU.UVLU1Njotu4}+#{POhKRWHhzdU.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>6e</td>
+            <td>Retained Placenta</td>
+            <td><input id="TQZK24giSbK-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="TQZK24giSbK-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="TQZK24giSbK" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{TQZK24giSbK.UVLU1Njotu4}+#{TQZK24giSbK.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>6f</td>
+            <td>Third degree tear</td>
+            <td><input id="pD7K7AoFjpC-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="pD7K7AoFjpC-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="pD7K7AoFjpC" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{pD7K7AoFjpC.UVLU1Njotu4}+#{pD7K7AoFjpC.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>6g</td>
+            <td>Ruptured Uterus</td>
+            <td><input id="ElOF8D7aP0i-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="ElOF8D7aP0i-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="ElOF8D7aP0i" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{ElOF8D7aP0i.UVLU1Njotu4}+#{ElOF8D7aP0i.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>6h</td>
+            <td>Uambukizo/ Sepsis</td>
+            <td><input id="q9psmxRIdRH-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="q9psmxRIdRH-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="q9psmxRIdRH" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{q9psmxRIdRH.UVLU1Njotu4}+#{q9psmxRIdRH.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>&#xA0;</td>
+            <td><strong><i>Jumla ya matatizo baada ya kujifungua (6a+6b+6c+6d+6e+6f+6g)</i></strong></td>
+            <td><input id="IvPYeiJ6JT1" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="((#{rOAjnKgHpp2.UVLU1Njotu4}+#{kS6I0CL0w3F.UVLU1Njotu4}+#{POhKRWHhzdU.UVLU1Njotu4}+#{TQZK24giSbK.UVLU1Njotu4}+#{pD7K7AoFjpC.UVLU1Njotu4}+#{ElOF8D7aP0i.UVLU1Njotu4}+#{q9psmxRIdRH.UVLU1Njotu4}+#{NHA2IdQHnEf.UVLU1Njotu4})/(1)*(1))"></td>
+            <td><input id="oTanE8EiKex" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="((#{rOAjnKgHpp2.lVnpcptMtAD}+#{kS6I0CL0w3F.lVnpcptMtAD}+#{POhKRWHhzdU.lVnpcptMtAD}+#{TQZK24giSbK.lVnpcptMtAD}+#{pD7K7AoFjpC.lVnpcptMtAD}+#{ElOF8D7aP0i.lVnpcptMtAD}+#{q9psmxRIdRH.lVnpcptMtAD}+#{NHA2IdQHnEf.lVnpcptMtAD})/(1)*(1))"></td>
+            <td><input id="LsfN3m7Rhqs" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="((#{rOAjnKgHpp2.UVLU1Njotu4}+#{kS6I0CL0w3F.UVLU1Njotu4}+#{POhKRWHhzdU.UVLU1Njotu4}+#{TQZK24giSbK.UVLU1Njotu4}+#{pD7K7AoFjpC.UVLU1Njotu4}+#{ElOF8D7aP0i.UVLU1Njotu4}+#{q9psmxRIdRH.UVLU1Njotu4}+#{NHA2IdQHnEf.UVLU1Njotu4}+#{rOAjnKgHpp2.lVnpcptMtAD}+#{kS6I0CL0w3F.lVnpcptMtAD}+#{POhKRWHhzdU.lVnpcptMtAD}+#{TQZK24giSbK.lVnpcptMtAD}+#{pD7K7AoFjpC.lVnpcptMtAD}+#{ElOF8D7aP0i.lVnpcptMtAD}+#{q9psmxRIdRH.lVnpcptMtAD}+#{NHA2IdQHnEf.lVnpcptMtAD})/(1)*(1))"></td>
+        </tr>
+        <tr class="cde-greyfield">
+            <th>7</th>
+            <th>EmOC</th>
+            <th>Umri &lt; 20</th>
+            <th>Umri &gt; 20</th>
+            <th>Jumla</th>
+        </tr>
+        <tr>
+            <td>7a</td>
+            <td>Amepewa Antibiobitic</td>
+            <td><input id="VlxSQ27Rhi2-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center//" title="" value=""></td>
+            <td><input id="VlxSQ27Rhi2-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center//" title="" value=""></td>
+            <td><input id="VlxSQ27Rhi2" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{VlxSQ27Rhi2.UVLU1Njotu4}+#{VlxSQ27Rhi2.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>7b</td>
+            <td>Amepewa Uterotonic</td>
+            <td><input id="SZJ9iGsglqE-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center//" title="" value=""></td>
+            <td><input id="SZJ9iGsglqE-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center//" title="" value=""></td>
+            <td><input id="SZJ9iGsglqE" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{SZJ9iGsglqE.UVLU1Njotu4}+#{SZJ9iGsglqE.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>7c</td>
+            <td>Amepewa Magnesium Sulphate</td>
+            <td><input id="mVUwRk6URMn-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="mVUwRk6URMn-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="mVUwRk6URMn" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{mVUwRk6URMn.UVLU1Njotu4}+#{mVUwRk6URMn.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>7d</td>
+            <td>Ameondolewa kwa mkono kondo la nyuma</td>
+            <td><input id="jOCW5eOuk3n-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="jOCW5eOuk3n-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="jOCW5eOuk3n" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{jOCW5eOuk3n.UVLU1Njotu4}+#{jOCW5eOuk3n.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>7e</td>
+            <td>Amefanyiwa MVA/D&amp;C</td>
+            <td><input id="RSKMZbagEkl-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="RSKMZbagEkl-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="RSKMZbagEkl" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{RSKMZbagEkl.UVLU1Njotu4}+#{RSKMZbagEkl.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>7f</td>
+            <td>Ameongezewa damu</td>
+            <td><input id="fE7a9uGTPkO-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="fE7a9uGTPkO-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="fE7a9uGTPkO" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{fE7a9uGTPkO.UVLU1Njotu4}+#{fE7a9uGTPkO.lVnpcptMtAD})"></td>
+        </tr>
+        <tr class="cde-greyfield">
+            <th>8</th>
+            <th>PMTCT</th>
+            <th>Umri &lt; 20</th>
+            <th>Umri &gt; 20</th>
+            <th>Jumla</th>
+        </tr>
+        <tr>
+            <td>8a</td>
+            <td>Jumla waliopimwa VVU ANC</td>
+            <td><input id="EZQIyBHGU2T-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="EZQIyBHGU2T-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="EZQIyBHGU2T" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{EZQIyBHGU2T.UVLU1Njotu4}+#{EZQIyBHGU2T.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>8b</td>
+            <td>Waliogundulika Positive kutoka ANC</td>
+            <td><input id="ZBAEsBgVrBd-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="ZBAEsBgVrBd-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="ZBAEsBgVrBd" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{ZBAEsBgVrBd.UVLU1Njotu4}+#{ZBAEsBgVrBd.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>8e</td>
+            <td>Jumla waliopimwa VVU wakati na baada ya kujifungua</td>
+            <td><input id="czV0Bdb4OMs-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="czV0Bdb4OMs-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="czV0Bdb4OMs" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{czV0Bdb4OMs.UVLU1Njotu4}+#{czV0Bdb4OMs.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>8d</td>
+            <td>Waliogundulika Positive wakati na baada ya kujifungua</td>
+            <td><input id="A4hY1vHZS5b-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="A4hY1vHZS5b-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="A4hY1vHZS5b" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{A4hY1vHZS5b.UVLU1Njotu4}+#{A4hY1vHZS5b.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>&#xA0;</td>
+            <td><strong><i>Jumla Walio na VVU (8b+8f)</i></strong></td>
+            <td><input id="TuR1elC9rKG" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="((#{ZBAEsBgVrBd.UVLU1Njotu4}+#{A4hY1vHZS5b.UVLU1Njotu4})/(1)*(1))"></td>
+            <td><input id="JIpsWQqvPq7" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="((#{ZBAEsBgVrBd.lVnpcptMtAD}+#{A4hY1vHZS5b.lVnpcptMtAD})/(1)*(1))"></td>
+            <td><input id="pXpPpT9mcy0" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="((#{ZBAEsBgVrBd.lVnpcptMtAD}+#{A4hY1vHZS5b.lVnpcptMtAD}+#{ZBAEsBgVrBd.UVLU1Njotu4}+#{A4hY1vHZS5b.UVLU1Njotu4})/(1)*(1))"></td>
+        </tr>
+        <tr>
+            <td>8e</td>
+            <td>Waliochagua kunyonyesha maziwa ya mama pekee (EBF)</td>
+            <td><input id="OOV4qrxoS2K-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="OOV4qrxoS2K-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="OOV4qrxoS2K" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{OOV4qrxoS2K.UVLU1Njotu4}+#{OOV4qrxoS2K.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>8f</td>
+            <td>Waliochagua ulishaji maziwa mbadala (RF)</td>
+            <td><input id="gN4pFrafOXL-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="gN4pFrafOXL-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="gN4pFrafOXL" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{gN4pFrafOXL.UVLU1Njotu4}+#{gN4pFrafOXL.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>8g</td>
+            <td>Waliopewa ARV Prophylaxis (tail) wakati wa kuruhusiwa</td>
+            <td><input id="aNQkSStG64V-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="aNQkSStG64V-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="aNQkSStG64V" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{aNQkSStG64V.UVLU1Njotu4}+#{aNQkSStG64V.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>8h</td>
+            <td>Waliopata rufaa kwenda kliniki ya huduma na matibabu ya wenye VVU (CTC)</td>
+            <td><input id="FLxWc7y0Q4I-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="FLxWc7y0Q4I-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="FLxWc7y0Q4I" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{FLxWc7y0Q4I.UVLU1Njotu4}+#{FLxWc7y0Q4I.lVnpcptMtAD})"></td>
+        </tr>
+        <tr class="cde-greyfield">
+            <th>9</th>
+            <th>Watoto Waliozaliwa mmoja</th>
+            <th>Umri &lt; 20</th>
+            <th>Umri &gt; 20</th>
+            <th>Jumla</th>
+        </tr>
+        <tr>
+            <td>9a</td>
+            <td>Jumla ya watoto waliozaliwa hai</td>
+            <td><input id="tvscIxUNNpl-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="tvscIxUNNpl-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><input id="tvscIxUNNpl" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{tvscIxUNNpl.UVLU1Njotu4}+#{tvscIxUNNpl.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>9b</td>
+            <td>Waliozaliwa hai Uzito&lt;2.5kg</td>
+            <td><input id="fC9eHFeDvRG-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><font class="Apple-style-span" size="2"><input id="fC9eHFeDvRG-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></font></td>
+            <td><input id="fC9eHFeDvRG" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{fC9eHFeDvRG.UVLU1Njotu4}+#{fC9eHFeDvRG.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>9c</td>
+            <td>Waliozaliwa hai Uzito =&gt;2.5kg</td>
+            <td><input id="OYZqyYdha5W-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><font class="Apple-style-span" size="2"><input id="OYZqyYdha5W-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></font></td>
+            <td><input id="OYZqyYdha5W" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{OYZqyYdha5W.UVLU1Njotu4}+#{OYZqyYdha5W.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>9d</td>
+            <td>Waliozaliwa wafu Macerated (MSB)</td>
+            <td><input id="XJUBOFs2prE-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><font class="Apple-style-span" size="2"><input id="XJUBOFs2prE-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></font></td>
+            <td><input id="XJUBOFs2prE" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{XJUBOFs2prE.UVLU1Njotu4}+#{XJUBOFs2prE.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>9e</td>
+            <td>Waliozaliwa wafu Fresh (FSB)</td>
+            <td><input id="MmVGhPhIGwf-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><font class="Apple-style-span" size="2"><input id="MmVGhPhIGwf-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></font></td>
+            <td><input id="MmVGhPhIGwf" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{MmVGhPhIGwf.UVLU1Njotu4}+#{MmVGhPhIGwf.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>9f</td>
+            <td>Waliozaliwa na mama wenye VVU</td>
+            <td><input id="Ejy66fSepec-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><font class="Apple-style-span" size="2"><input id="Ejy66fSepec-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></font></td>
+            <td><input id="Ejy66fSepec" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{Ejy66fSepec.UVLU1Njotu4}+#{Ejy66fSepec.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>9g</td>
+            <td>Waliopewa dawa za ARV</td>
+            <td><input id="ZOkuTkxNEbO-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><font class="Apple-style-span" size="2"><input id="ZOkuTkxNEbO-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></font></td>
+            <td><input id="ZOkuTkxNEbO" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{ZOkuTkxNEbO.UVLU1Njotu4}+#{ZOkuTkxNEbO.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>&#xA0;</td>
+            <td><strong><i>Jumla ya watoto waliozaliwa (hai na wafu) (9a+9d+9e)</i></strong></td>
+            <td><input id="vNpuPZv4Bgf" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="((#{tvscIxUNNpl.UVLU1Njotu4}+#{MmVGhPhIGwf.UVLU1Njotu4}+#{XJUBOFs2prE.UVLU1Njotu4})/(1)*(1))"></td>
+            <td><input id="vwYUnbdnAhV" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="((#{tvscIxUNNpl.lVnpcptMtAD}+#{MmVGhPhIGwf.lVnpcptMtAD}+#{XJUBOFs2prE.lVnpcptMtAD})/(1)*(1))"></td>
+            <td><input id="x6NuUoqRH9L" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="((#{tvscIxUNNpl.UVLU1Njotu4}+#{tvscIxUNNpl.lVnpcptMtAD}+#{MmVGhPhIGwf.UVLU1Njotu4}+#{MmVGhPhIGwf.lVnpcptMtAD}+#{XJUBOFs2prE.UVLU1Njotu4}+#{XJUBOFs2prE.lVnpcptMtAD})/(1)*(1))"></td>
+        </tr>
+        <tr>
+            <td><i>9h</i></td>
+            <td>Jumla ya watoto wenye APGAR Score chini ya 7 katika dakika 5</td>
+            <td><input id="f4Woa8xSfs5-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><font class="Apple-style-span" size="2"><input id="f4Woa8xSfs5-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></font></td>
+            <td><input id="f4Woa8xSfs5" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{f4Woa8xSfs5.UVLU1Njotu4}+#{f4Woa8xSfs5.lVnpcptMtAD})"></td>
+        </tr>
+        <tr class="cde-greyfield">
+            <th>10</th>
+            <th>Watoto Waliozaliwa mapacha</th>
+            <th>Umri &lt; 20</th>
+            <th>Umri &gt; 20</th>
+            <th>Jumla</th>
+        </tr>
+        <tr>
+            <td>10a</td>
+            <td>Jumla ya watoto waliozaliwa hai</td>
+            <td><input id="MXYoYFrLHj7-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center//" title="" value=""></td>
+            <td><input id="MXYoYFrLHj7-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center//" title="" value=""></td>
+            <td><input id="MXYoYFrLHj7" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{MXYoYFrLHj7.UVLU1Njotu4}+#{MXYoYFrLHj7.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>10b</td>
+            <td>Waliozaliwa hai Uzito&lt;2.5kg</td>
+            <td><input id="ce7ATPhE8Iv-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><font class="Apple-style-span" size="2"><input id="ce7ATPhE8Iv-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></font></td>
+            <td><input id="ce7ATPhE8Iv" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{ce7ATPhE8Iv.UVLU1Njotu4}+#{ce7ATPhE8Iv.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>10c</td>
+            <td>Waliozaliwa hai Uzito =&gt;2.5kg</td>
+            <td><input id="BH38bhaFhLi-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><font class="Apple-style-span" size="2"><input id="BH38bhaFhLi-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></font></td>
+            <td><input id="BH38bhaFhLi" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{BH38bhaFhLi.UVLU1Njotu4}+#{BH38bhaFhLi.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>10d</td>
+            <td>Waliozaliwa wafu Macerated (MSB)</td>
+            <td><input id="noAFjjrlq0I-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><font class="Apple-style-span" size="2"><input id="noAFjjrlq0I-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></font></td>
+            <td><input id="noAFjjrlq0I" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{noAFjjrlq0I.UVLU1Njotu4}+#{noAFjjrlq0I.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>10e</td>
+            <td>Waliozaliwa wafu Fresh (FSB)</td>
+            <td><input id="VmdKpg6sNUe-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><font class="Apple-style-span" size="2"><input id="VmdKpg6sNUe-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></font></td>
+            <td><input id="VmdKpg6sNUe" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{VmdKpg6sNUe.UVLU1Njotu4}+#{VmdKpg6sNUe.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>10f</td>
+            <td>Waliozaliwa na mama wenye VVU</td>
+            <td><input id="e0dhhtEU53v-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><font class="Apple-style-span" size="2"><input id="e0dhhtEU53v-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></font></td>
+            <td><input id="e0dhhtEU53v" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{e0dhhtEU53v.UVLU1Njotu4}+#{e0dhhtEU53v.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>10g</td>
+            <td>Waliopewa dawa za ARV</td>
+            <td><input id="yBzz4l1UOtl-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><font class="Apple-style-span" size="2"><input id="yBzz4l1UOtl-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></font></td>
+            <td><input id="yBzz4l1UOtl" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{yBzz4l1UOtl.UVLU1Njotu4}+#{yBzz4l1UOtl.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>&#xA0;</td>
+            <td><strong><i>Jumla ya watoto waliozaliwa (hai na wafu) (10a+10d+10e)</i></strong></td>
+            <td><input id="DX9V8WG2doM" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="((#{MXYoYFrLHj7.UVLU1Njotu4}+#{VmdKpg6sNUe.UVLU1Njotu4}+#{noAFjjrlq0I.UVLU1Njotu4})/(1)*(1))"><i> </i></td>
+            <td><input id="orDqM8atiGk" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="((#{MXYoYFrLHj7.lVnpcptMtAD}+#{VmdKpg6sNUe.lVnpcptMtAD}+#{noAFjjrlq0I.lVnpcptMtAD})/(1)*(1))"></td>
+            <td><input id="k7tmZBgkrRU" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="((#{VmdKpg6sNUe.UVLU1Njotu4}+#{VmdKpg6sNUe.lVnpcptMtAD}+#{noAFjjrlq0I.UVLU1Njotu4}+#{noAFjjrlq0I.lVnpcptMtAD}+#{MXYoYFrLHj7.UVLU1Njotu4}+#{MXYoYFrLHj7.lVnpcptMtAD})/(1)*(1))"></td>
+        </tr>
+        <tr>
+            <td>10h</td>
+            <td>Watoto wenye APGAR Score chini ya 7 katika dakika 5</td>
+            <td><input id="Kt3DuTIieoT-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center//" title="" value=""></td>
+            <td><input id="Kt3DuTIieoT-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center//" title="" value=""></td>
+            <td><input id="Kt3DuTIieoT" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{Kt3DuTIieoT.UVLU1Njotu4}+#{Kt3DuTIieoT.lVnpcptMtAD})"></td>
+        </tr>
+        <tr class="cde-greyfield">
+            <th>11</th>
+            <th>Watoto waliosaidiwa kupumua</th>
+            <th>Umri &lt; 20</th>
+            <th>Umri &gt; 20</th>
+            <th>Jumla</th>
+        </tr>
+        <tr>
+            <td>11a</td>
+            <td>Idadi ya watoto waliosaidiwa kupumua &#x2013; suction</td>
+            <td><i><input id="KAiGnZ0qtWd-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""> </i></td>
+            <td><font class="Apple-style-span" size="2"><i><input id="KAiGnZ0qtWd-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></i></font></td>
+            <td><input id="KAiGnZ0qtWd" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{KAiGnZ0qtWd.UVLU1Njotu4}+#{KAiGnZ0qtWd.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>11b</td>
+            <td>Idadi ya watoto waliosaidiwa kupumua &#x2013; stimulation</td>
+            <td><input id="H8pprB9HXYF-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><font class="Apple-style-span" size="2"><i><input id="H8pprB9HXYF-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></i></font></td>
+            <td><input id="H8pprB9HXYF" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{H8pprB9HXYF.UVLU1Njotu4}+#{H8pprB9HXYF.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>11c</td>
+            <td>Idadi ya watoto waliosaidiwa kupumua &#x2013; Bag and Mask</td>
+            <td><input id="pVTitSjQ3oL-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><font class="Apple-style-span" size="2"><i><input id="pVTitSjQ3oL-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></i></font></td>
+            <td><input id="pVTitSjQ3oL" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{pVTitSjQ3oL.UVLU1Njotu4}+#{pVTitSjQ3oL.lVnpcptMtAD})"></td>
+        </tr>
+        <tr class="cde-greyfield">
+            <th>12</th>
+            <th>Huduma nyinginezo</th>
+            <th>&#xA0;</th>
+            <th>&#xA0;</th>
+            <th>&#xA0;</th>
+        </tr>
+        <tr>
+            <td>12a</td>
+            <td>Idadi ya Watoto walionyonyeshwa saa moja baada ya kuzaliwa</td>
+            <td><input id="Kvt72ZQhs7Y-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><font class="Apple-style-span" size="2"><i><input id="Kvt72ZQhs7Y-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></i></font></td>
+            <td><input id="Kvt72ZQhs7Y" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{Kvt72ZQhs7Y.UVLU1Njotu4}+#{Kvt72ZQhs7Y.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>12b</td>
+            <td>Idadi ya Mama na Mtoto waliopewa rufaa</td>
+            <td><input id="p6wxhLrgfYk-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><font class="Apple-style-span" size="2"><i><input id="p6wxhLrgfYk-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></i></font></td>
+            <td><input id="p6wxhLrgfYk" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{p6wxhLrgfYk.UVLU1Njotu4}+#{p6wxhLrgfYk.lVnpcptMtAD}+#{p6wxhLrgfYk.UVLU1Njotu4}+#{p6wxhLrgfYk.lVnpcptMtAD})"></td>
+        </tr>
+        <tr>
+            <td>12c</td>
+            <td>Idadi ya watoto waliopewa rufaa</td>
+            <td><input id="p6wxhLrgfYk-UVLU1Njotu4-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></td>
+            <td><font class="Apple-style-span" size="2"><i><input id="p6wxhLrgfYk-lVnpcptMtAD-val" name="entryfield" style="width:7em;text-align:center;//" title="" value=""></i></font></td>
+            <td><input id="p6wxhLrgfYk" name="indicatorFormula" readonly="readonly" style="width:7em;text-align:center;//" title="" indicatorFormula="(#{p6wxhLrgfYk.UVLU1Njotu4}+#{p6wxhLrgfYk.lVnpcptMtAD}+#{p6wxhLrgfYk.UVLU1Njotu4}+#{p6wxhLrgfYk.lVnpcptMtAD})"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<p>&#xA0;</p>
+
+

@@ -1,15 +1,18 @@
 {
   "main": "smscode.js",
   "scripts": {
-    "start": "nodejs create_form_attributes.js",
+    "start": "nodejs transform_dhis2_forms.js",
+    "start5": "nodejs create_form_attributes.js",
     "start3": "nodejs smscode.js",
     "start1": "nodejs auth_code.js",
     "start2": "nodejs get_credentials.js",
     "start4": "nodejs test.js"
   },
   "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
     "curl-cmd": "0.0.1",
     "node-localstorage": "^1.3.0",
+    "progress": "^2.0.0",
     "promise": "",
     "querystring": "^0.2.0"
   },
