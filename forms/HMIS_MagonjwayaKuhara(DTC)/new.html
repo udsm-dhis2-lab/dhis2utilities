@@ -66,7 +66,7 @@
 
                 if (newFormula !== undefined) {
                     if (isNaN(eval("("+newFormula+")")) !== true) {
-                        $('#'+form.id).val(eval("("+newFormula+")").toFixed(2));
+                        $('#'+form.id).val(parseInt(eval("("+newFormula+")")));
                     } else {
                         $('#'+form.id).val(0);
                     }

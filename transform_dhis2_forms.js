@@ -240,16 +240,15 @@ if (typeOfActivity === 'backup') {
     JSON.parse(dataSetsArr).forEach(function (dataSetName, index) {
         fs.readFile('forms/'+dataSetName.split(',')[1]+'/new.html', 'utf-8', function (err, data) {
 
-            var apiPath = "/api/dataSets/"+ dataSetName.split(',')[0] +"/form";
+            var apiPath = "/dhis/api/dataSets/"+ dataSetName.split(',')[0] +"/form";
             var options = {
-                host: "localhost",
-                port: "8181",
+                host: "test.hisptz.org",
                 path: apiPath,
                 method: "POST",
                 headers: headers2
             };
 
-            var authRequest = http.request(options, function (authResponse) {
+            var authRequest = https.request(options, function (authResponse) {
                 var responseString = "";
 
                 authResponse.on('data', function (data) {
