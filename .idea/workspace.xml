@@ -1,64 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="83fa8a44-c1fa-46ae-803c-c08c70108aca" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data_store.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/store/data_malaria.json" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/BRNQualityImprovementPlanTool/indicators.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/BRNQualityImprovementPlanTool/new.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/BRNQualityImprovementPlanTool/original.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/BRN_DispensaryScoring/indicators.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/BRN_DispensaryScoring/new.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/BRN_DispensaryScoring/original.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/BRN_HealthCenterScoring/indicators.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/BRN_HealthCenterScoring/new.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/BRN_HealthCenterScoring/original.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/BRN_Hospitalscoring/indicators.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/BRN_Hospitalscoring/new.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/BRN_Hospitalscoring/original.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/CCHPSupervisionChecklist/indicators.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/CCHPSupervisionChecklist/new.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/CCHPSupervisionChecklist/original.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/DataQualityVerificationForm/indicators.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/DataQualityVerificationForm/new.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/DataQualityVerificationForm/original.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/HMIS_CouncilLevelSupportiveSupervision/indicators.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/HMIS_CouncilLevelSupportiveSupervision/new.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/HMIS_CouncilLevelSupportiveSupervision/original.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/HMIS_FacilityLevelSupportiveSupervision/indicators.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/HMIS_FacilityLevelSupportiveSupervision/new.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/HMIS_FacilityLevelSupportiveSupervision/original.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/HMIS_HudumaBaadayaKujifungua(Postnatal)/indicators.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/HMIS_HudumaBaadayaKujifungua(Postnatal)/new.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/HMIS_HudumaBaadayaKujifungua(Postnatal)/original.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/HMIS_KlinikiyaWajawazito(ANC)/indicators.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/HMIS_KlinikiyaWajawazito(ANC)/new.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/HMIS_KlinikiyaWajawazito(ANC)/original.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/HMIS_KutokaWodiyaWazazi(L&amp;D)/indicators.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/HMIS_KutokaWodiyaWazazi(L&amp;D)/new.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/HMIS_KutokaWodiyaWazazi(L&amp;D)/original.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/HMIS_MagonjwayaKuhara(DTC)/indicators.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/HMIS_MagonjwayaKuhara(DTC)/new.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/HMIS_MagonjwayaKuhara(DTC)/original.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/HMIS_RepotiKutokaKituochaHuduma (Book 10)/indicators.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/HMIS_RepotiKutokaKituochaHuduma (Book 10)/new.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/HMIS_RepotiKutokaKituochaHuduma (Book 10)/original.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/HMIS_TaarifayaMwenendowakulaza wagonjwa (Bed Occupancy)/indicators.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/HMIS_TaarifayaMwenendowakulaza wagonjwa (Bed Occupancy)/new.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/HMIS_TaarifayaMwenendowakulaza wagonjwa (Bed Occupancy)/original.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/HMIS_TaarifazaWafanyaKazi(HumanResources Register)/indicators.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/HMIS_TaarifazaWafanyaKazi(HumanResources Register)/new.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/HMIS_TaarifazaWafanyaKazi(HumanResources Register)/original.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/HMIS_TracerMedicine/indicators.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/HMIS_TracerMedicine/original.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/HMIS_UfuatiliajiwaWatoto(ChildHealth)/indicators.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/forms/HMIS_UfuatiliajiwaWatoto(ChildHealth)/original.html" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scripts/script.html" afterPath="$PROJECT_DIR$/scripts/script.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/store/script" afterPath="$PROJECT_DIR$/store/script" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/transform_dhis2_forms.js" afterPath="$PROJECT_DIR$/transform_dhis2_forms.js" />
-    </list>
+    <list default="true" id="83fa8a44-c1fa-46ae-803c-c08c70108aca" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -450,12 +393,12 @@
       <workItem from="1507559637616" duration="1270000" />
       <workItem from="1507567288916" duration="17962000" />
       <workItem from="1507712997502" duration="1768000" />
-      <workItem from="1507871974815" duration="5042000" />
+      <workItem from="1507871974815" duration="5491000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="214231000" />
+    <option name="totallyTimeSpent" value="214680000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="24" width="1301" height="744" extended-state="6" />
