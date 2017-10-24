@@ -1,0 +1,352 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.4/build/jquery.datetimepicker.full.js">
+
+
+    <!-- Bootstrap Date-Picker Plugin -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+
+    <style>
+        span {
+            height: 10px; width: 10px;
+        }
+    </style>
+</head>
+
+<body>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+
+</script>
+<script>
+    $(document).ready(function() {
+
+        $('.datepicker').css('top', '170px');
+        var date_input=$('input[name="date"]'); //our date input has the name "date"
+        var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+        var options={
+            format: 'yyyy-mm-dd',
+            container: container,
+            orientation: "bottom",
+            todayHighlight: true,
+            autoclose: true
+        };
+        date_input.datepicker(options);
+
+//        function getReport(eventUrl) {
+//        }
+
+        var orgUnit = dhis2.report.organisationUnit;
+        $('#start_date').val('2014-01-01');
+        $('#end_date').val('2017-10-24');
+        var startDate = '2014-01-01';
+        var endDate = '2017-10-24';
+
+        $('#hidden-input').append('<input id="orgId" type="hidden" value="' + orgUnit.id + '">');
+
+        $('#heading').append('<p id="top-heading">MINISTRY OF HEALTH COMMUNITY DEVELOPMENT GENDER ELDERLY AND CHILDREN ( '+ orgUnit.name+' ) :' + startDate + ' TO ' + endDate +'</p>');
+        var eventUrl = "https://test.hisptz.org/dhis/api/events/eventRows.json?orgUnit=" + orgUnit.id + "&ouMode=DESCENDANTS&program=aAwyEeJysgl&startDate=" + startDate + "&endDate=" + endDate;
+        // getReport(eventUrl);
+
+        var eventData;
+        $.getJSON(eventUrl, function (resp1) {
+            eventData = resp1;
+            google.charts.load('current', {'packages': ['table']});
+            google.charts.setOnLoadCallback(drawTable);
+
+            function drawTable() {
+                function dateFilter(theDate) {
+                    var year = theDate.split('-')[0];
+                    var month = theDate.split('-')[1];
+                    if (theDate.split('-')[1] === '01') {
+                        month = 'January';
+                    } else if (theDate.split('-')[1] === '02') {
+                        month = 'February';
+                    } else if (theDate.split('-')[1] === '03') {
+                        month = 'Mach';
+                    } else if (theDate.split('-')[1] === '04') {
+                        month = 'April';
+                    } else if (theDate.split('-')[1] === '05') {
+                        month = 'May';
+                    } else if (theDate.split('-')[1] === '06') {
+                        month = 'June';
+                    } else if (theDate.split('-')[1] === '07') {
+                        month = 'July';
+                    } else if (theDate.split('-')[1] === '08') {
+                        month = 'August';
+                    } else if (theDate.split('-')[1] === '09') {
+                        month = 'September';
+                    } else if (theDate.split('-')[1] === '10') {
+                        month = 'October';
+                    } else if (theDate.split('-')[1] === '11') {
+                        month = 'November';
+                    } else if (theDate.split('-')[1] === '12') {
+                        month = 'December';
+                    }
+                    var day = theDate.split('-')[2].substring(0, 2);
+                    return month + ', ' + day + ' ' + year;
+                }
+
+                var theData = [];
+                eventData.eventRows.forEach(function (row, index) {
+                    var theScore = '';
+                    var testStr = '';
+                    row.attributes.forEach(function (attrbs) {
+                        if (testStr.indexOf(attrbs.displayName) >= 0) {
+                            // nothing
+                        } else {
+                            testStr += attrbs.displayName;
+                            if (attrbs.value.split('-').length > 1) {
+                                theScore += '<p style="padding: 5px;">' + attrbs.displayName + ':' + '  <b>' + dateFilter(attrbs.value) + '</b></p>';
+                            } else {
+                                theScore += '<p  style="padding: 5px;">' + attrbs.displayName + ':' + ' <b>' + attrbs.value + '</b></p>';
+                            }
+                        }
+                    });
+                    var theVal = '';
+                    if (row.dataValues) {
+                        row.dataValues.forEach(function (dataVal) {
+                            if (theVal.indexOf(dataVal.value) >= 0) {
+                                // nothing
+                            } else {
+                                if (dataVal.dataElement === 'RbQ2ylMjKKR') {
+                                    theVal += '<p style="padding: 5px;">' + dataVal.value + '</p>';
+                                }
+                            }
+                        });
+                    }
+                    theData.push([theScore, row.orgUnitName, dateFilter(row.eventDate), theVal]);
+                });
+                var data = new google.visualization.DataTable();
+                data.addColumn('string', 'Organisationunit Score');
+                data.addColumn('string', 'Organisationunit Name');
+                data.addColumn('string', 'Event Date');
+                data.addColumn('string', 'Indentified Gaps/Weaknesses');
+                data.addRows(
+                    theData
+                );
+
+                var table = new google.visualization.Table(document.getElementById('table_wrapper'));
+
+                table.draw(data, {showRowNumber: true, width: '100%', height: '100%', allowHtml: true});
+            }
+        });
+
+        $("#btnExport").click(function (e) {
+            e.preventDefault();
+
+            //getting data from our table
+            var data_type = 'data:application/vnd.ms-excel';
+            var table_div = document.getElementById('table_wrapper');
+            var table_html = table_div.outerHTML.replace(/ /g, '%20');
+
+            var a = document.createElement('a');
+            a.href = data_type + ', ' + table_html;
+            a.download = 'exported_table_' + Math.floor((Math.random() * 9999999) + 1000000) + '.xls';
+            a.click();
+        });
+
+        $('#report-btn').click(function (e) {
+            $('#top-heading').remove();
+            var startDate = $('#start_date').val();
+            var endDate = $('#end_date').val();
+            console.log('THE START DATE IS '+startDate);
+            var id = $('#orgId').val();
+            $('#heading').append('<p id="top-heading">MINISTRY OF HEALTH COMMUNITY DEVELOPMENT GENDER ELDERLY AND CHILDREN ( '+ orgUnit.name+' ) :' + startDate + ' TO ' + endDate +'</p>');
+            var eventUrl = "https://test.hisptz.org/dhis/api/events/eventRows.json?orgUnit=" + id + "&ouMode=DESCENDANTS&program=aAwyEeJysgl&startDate=" + startDate + "&endDate=" + endDate;
+            //getReport(eventUrl);
+
+            var eventData;
+            $.getJSON(eventUrl, function (resp1) {
+                eventData = resp1;
+                google.charts.load('current', {'packages': ['table']});
+                google.charts.setOnLoadCallback(drawTable);
+
+                function drawTable() {
+                    function dateFilter(theDate) {
+                        var year = theDate.split('-')[0];
+                        var month = theDate.split('-')[1];
+                        if (theDate.split('-')[1] === '01') {
+                            month = 'January';
+                        } else if (theDate.split('-')[1] === '02') {
+                            month = 'February';
+                        } else if (theDate.split('-')[1] === '03') {
+                            month = 'Mach';
+                        } else if (theDate.split('-')[1] === '04') {
+                            month = 'April';
+                        } else if (theDate.split('-')[1] === '05') {
+                            month = 'May';
+                        } else if (theDate.split('-')[1] === '06') {
+                            month = 'June';
+                        } else if (theDate.split('-')[1] === '07') {
+                            month = 'July';
+                        } else if (theDate.split('-')[1] === '08') {
+                            month = 'August';
+                        } else if (theDate.split('-')[1] === '09') {
+                            month = 'September';
+                        } else if (theDate.split('-')[1] === '10') {
+                            month = 'October';
+                        } else if (theDate.split('-')[1] === '11') {
+                            month = 'November';
+                        } else if (theDate.split('-')[1] === '12') {
+                            month = 'December';
+                        }
+                        var day = theDate.split('-')[2].substring(0, 2);
+                        return month + ', ' + day + ' ' + year;
+                    }
+
+                    var theData = [];
+                    eventData.eventRows.forEach(function (row, index) {
+                        var theScore = '';
+                        var testStr = '';
+                        row.attributes.forEach(function (attrbs) {
+                            if (testStr.indexOf(attrbs.displayName) >= 0) {
+                                // nothing
+                            } else {
+                                testStr += attrbs.displayName;
+                                if (attrbs.value.split('-').length > 1) {
+                                    theScore += '<p style="padding: 5px;">' + attrbs.displayName + ':' + '  <b>' + dateFilter(attrbs.value) + '</b></p>';
+                                } else {
+                                    theScore += '<p  style="padding: 5px;">' + attrbs.displayName + ':' + ' <b>' + attrbs.value + '</b></p>';
+                                }
+                            }
+                        });
+                        var theVal = '';
+                        if (row.dataValues) {
+                            row.dataValues.forEach(function (dataVal) {
+                                if (theVal.indexOf(dataVal.value) >= 0) {
+                                    // nothing
+                                } else {
+                                    if (dataVal.dataElement === 'RbQ2ylMjKKR') {
+                                        theVal += '<p style="padding: 5px;">' + dataVal.value + '</p>';
+                                    }
+                                }
+                            });
+                        }
+                        theData.push([theScore, row.orgUnitName, dateFilter(row.eventDate), theVal]);
+                    });
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Organisationunit Score');
+                    data.addColumn('string', 'Organisationunit Name');
+                    data.addColumn('string', 'Event Date');
+                    data.addColumn('string', 'Indentified Gaps/Weaknesses');
+                    data.addRows(
+                        theData
+                    );
+
+                    var table = new google.visualization.Table(document.getElementById('table_wrapper'));
+
+                    table.draw(data, {showRowNumber: true, width: '100%', height: '100%', allowHtml: true});
+                }
+            });
+
+            $("#btnExport").click(function (e) {
+                e.preventDefault();
+
+                //getting data from our table
+                var data_type = 'data:application/vnd.ms-excel';
+                var table_div = document.getElementById('table_wrapper');
+                var table_html = table_div.outerHTML.replace(/ /g, '%20');
+
+                var a = document.createElement('a');
+                a.href = data_type + ', ' + table_html;
+                a.download = 'exported_table_' + Math.floor((Math.random() * 9999999) + 1000000) + '.xls';
+                a.click();
+            });
+        });
+
+    });
+
+    function changeTopPosition() {
+        $('.datepicker').css('top','170px');
+    }
+
+    //     function getDates(id) {
+    //
+    //         return theInputDates;
+    //     }
+    //         function showChildren() {
+    //             $('.children').css('display', 'block');
+    //             $('.g-regions-bottom').css('display', 'none');
+    //             $('#gbottom').css('display', 'block');
+    //             $('#gright').css('display', 'none');
+    //             $('.g-regions-right').css('display', 'block');
+    //         }
+    //
+    //         function hideChildren() {
+    //             $('.children').css('display', 'none');
+    //             $('#gbottom').css('display', 'none');
+    //             $('#gright').css('display', 'block');
+    //         }
+    //
+    //         function showCouncils() {
+    //             $('.councils').css('display', 'block');
+    //             $('.g-regions-right').css('display', 'none');
+    //             $('.g-regions-bottom').css('display', 'block');
+    //         }
+    //
+    //     function hideCouncils() {
+    //         $('.councils').css('display', 'none');
+    //         $('.g-regions-right').css('display', 'block');
+    //         $('.g-regions-bottom').css('display', 'none');
+    //     }
+
+
+</script>
+
+<br />
+<br />
+
+<div class="col-md-12" style="margin-bottom: 40px">
+    <div class="row">
+        <div class="container">
+            <br />
+            <div class="row">
+                <div class="form-group"> <!-- Date input -->
+                    <div id="hidden-input"></div>
+                    <div style="display: inline-block"><label class="control-label">Start Date</label><input class="form-control" style="width: 150px;" height="25px" name="date" id="start_date" placeholder="YYYY-MM-DD" type="text"/></div>
+                    <div style="display: inline-block"><label class="control-label">End Date</label><input class="form-control" style="width: 150px;" height="25px" name="date" id="end_date" placeholder="YYYY-MM-DD" type="text"/></div>
+                    <div style="display: inline-block"><button class="btn" id="report-btn" name="submit">Submit</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class='row'>
+        <div class='col-md-12' id="heading" style='text-align:center;font-weight:bolder;'></div>
+        <div class='col-md-12' id="icon">
+            <div class='row' style='text-align:center;'>
+                <div class='col-md-5'>
+                </div>
+                <div class='col-md-2'>
+                    <a href='#' class='thumbnail'
+                       style='width:50px!important;padding:10px;font-weight:bolder;position:relative;margin: auto;top: 0;left: 0;right: 0;bottom: 0;border: 0px solid #ffffff!important;border-radius: 0px!important;-webkit-box-shadow: 0 0px 0px rgba(0,0,0,.075)!important;box-shadow: 0 0px 0px rgba(0,0,0,.075)!important;'><img
+                            class=''
+                            src='https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Coat_of_arms_of_Tanzania.svg/30px-Coat_of_arms_of_Tanzania.svg.png'/></a>
+                </div>
+                <div class='col-md-5'>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div  class="row">
+        <button id="btnExport" class="pull-right" style="margin-right: 15px;">Download as Excel</button>
+    </div>
+    <div class='col-md-12' style="">
+        <div id="table_wrapper"></div>
+    </div>
+    <div class='col-md-12'>
+        <!--<div id="table_wrapper"></div>-->
+    </div>
+</div>
+
+
+</body>
+
+</html>

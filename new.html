@@ -1,0 +1,932 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+</head>
+
+<body>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+
+</script>
+<script>
+    $(document).ready(function() {
+        var eventData = {
+            headers: [
+                {
+                    name: "uochSI2xLGI",
+                    column: "Immediate Cause of Death",
+                    type: "java.lang.String",
+                    hidden: false,
+                    meta: true,
+                    optionSet: "TSa97I3hB5y"
+                },
+                {
+                    name: "JJkV68Devly",
+                    column: "Age Type",
+                    type: "java.lang.String",
+                    hidden: false,
+                    meta: true,
+                    optionSet: "oRhpnHF40ti"
+                },
+                {
+                    name: "Swn04dN2EwP",
+                    column: "Age",
+                    type: "java.lang.Integer",
+                    hidden: false,
+                    meta: true,
+                    legendSet: "sjYF2oeQTCv"
+                },
+                {
+                    name: "ou",
+                    column: "Organisation unit",
+                    type: "java.lang.String",
+                    hidden: false,
+                    meta: true
+                },
+                {
+                    name: "value",
+                    column: "Value",
+                    type: "java.lang.Double",
+                    hidden: false,
+                    meta: false
+                }
+            ],
+            metaData: {
+                names: {
+                    2014: "2014",
+                    Uc4q4WIA3H9: "Sumbawanga Reginal Hospital",
+                    Nky82zx6NQw: "Mount Meru Hospital",
+                    mlDzRw3ibhE: "Single-Event Death Registry",
+                    TfPNO5HfV48: "1-5",
+                    uochSI2xLGI: "Immediate Cause of Death",
+                    MYbdCaXtKeD: "5-60",
+                    Swn04dN2EwP: "Age",
+                    BmsnwOaYcmZ: "Tumbi Hospital",
+                    qmdW6OHhPDT: "60+",
+                    sTnafXMjP2d: "Manyara Regional Hospital",
+                    j92vRz8NTmk: "Ruvuma Regional Hospital",
+                    G4g9PzrsMLh: "Maweni Hospital",
+                    wcKDOsEFzmE: "Ligula Regional Hospital",
+                    UJVrLWcFnQW: "Bombo Regional Hospital",
+                    ou: "Organisation unit",
+                    R3oV1QyOPyR: "Dodoma Regional Hospital",
+                    rImF6zIqpn9: "Temeke Hospital",
+                    iOyC6kkyHAw: "Morogoro Regional Referral Hospital",
+                    UFWYvkqXX89: "Tabora (Kitete) Hospital",
+                    pnqOQbyMTFv: "0-1",
+                    qjdrnCtCgSC: "Singida Regional Hospital",
+                    aeZRkF0OVFK: "Sokoine Regional Hospital",
+                    ymiIhszR6dn: "Mwananyamala Hospital",
+                    Mvc0jfU9Ua2: "Death Registry",
+                    VduMoQ0SKc6: "Mbeya Regional Hospital",
+                    lKAxm7dimju: "Mawenzi Hospital",
+                    pe: "Period",
+                    JJkV68Devly: "Age Type",
+                    V0ooymSqezW: "Iringa Hospital",
+                    NnLWC4MW7ix: "Seko Toure Regional Hospital",
+                    dByxc7pczz4: "Shinyanga Regional Regional Referral Hospital",
+                    GRDYT0QagNn: "Amana Hospital - Regional Referral Hospital",
+                    PAARXcHWGq0: "Mara Region Hospital",
+                    qbvm0hcQ0Nw: "Bukoba Regional Referral Hospital"
+                },
+                pe: [
+                    "2014"
+                ],
+                ou: [
+                    "GRDYT0QagNn",
+                    "UJVrLWcFnQW",
+                    "qbvm0hcQ0Nw",
+                    "R3oV1QyOPyR",
+                    "V0ooymSqezW",
+                    "wcKDOsEFzmE",
+                    "sTnafXMjP2d",
+                    "PAARXcHWGq0",
+                    "G4g9PzrsMLh",
+                    "lKAxm7dimju",
+                    "VduMoQ0SKc6",
+                    "iOyC6kkyHAw",
+                    "Nky82zx6NQw",
+                    "ymiIhszR6dn",
+                    "j92vRz8NTmk",
+                    "NnLWC4MW7ix",
+                    "dByxc7pczz4",
+                    "qjdrnCtCgSC",
+                    "aeZRkF0OVFK",
+                    "Uc4q4WIA3H9",
+                    "UFWYvkqXX89",
+                    "rImF6zIqpn9",
+                    "BmsnwOaYcmZ"
+                ]
+            },
+            height: 103,
+            rows: [
+                [
+                    "O85 - Puerperal Sepsis /Septicaemia",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "j92vRz8NTmk",
+                    "1"
+                ],
+                [
+                    "O06 - Abortion",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "qbvm0hcQ0Nw",
+                    "3"
+                ],
+                [
+                    "O85 - Puerperal Sepsis /Septicaemia",
+                    "Years",
+                    "qmdW6OHhPDT",
+                    "UFWYvkqXX89",
+                    "1"
+                ],
+                [
+                    "O75 - Local herbs in Pregnancy",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "PAARXcHWGq0",
+                    "1"
+                ],
+                [
+                    "O99 - Anaemia in Pregnancy",
+                    "Years",
+                    "TfPNO5HfV48",
+                    "aeZRkF0OVFK",
+                    "1"
+                ],
+                [
+                    "O85 - Puerperal Sepsis /Septicaemia",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "ymiIhszR6dn",
+                    "1"
+                ],
+                [
+                    "O99.4 - Cardiomyopathy in Pregnancy",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "GRDYT0QagNn",
+                    "1"
+                ],
+                [
+                    "O75 - Unknown fever",
+                    "Years",
+                    "TfPNO5HfV48",
+                    "GRDYT0QagNn",
+                    "7"
+                ],
+                [
+                    "O99 - Pulmonary oedema",
+                    "Years",
+                    "qmdW6OHhPDT",
+                    "GRDYT0QagNn",
+                    "1"
+                ],
+                [
+                    "O75 - Unknown fever",
+                    "Days",
+                    "pnqOQbyMTFv",
+                    "GRDYT0QagNn",
+                    "18"
+                ],
+                [
+                    "O99 - Anaemia in Pregnancy",
+                    "Years",
+                    "TfPNO5HfV48",
+                    "rImF6zIqpn9",
+                    "2"
+                ],
+                [
+                    "O99.4 - Cardiomyopathy in Pregnancy",
+                    "Days",
+                    "pnqOQbyMTFv",
+                    "ymiIhszR6dn",
+                    "1"
+                ],
+                [
+                    "O99 - Anaemia in Pregnancy",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "ymiIhszR6dn",
+                    "2"
+                ],
+                [
+                    "O06 - Abortion",
+                    "Hours",
+                    "pnqOQbyMTFv",
+                    "GRDYT0QagNn",
+                    "5"
+                ],
+                [
+                    "O98 - Malaria in pregnancy",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "G4g9PzrsMLh",
+                    "2"
+                ],
+                [
+                    "O85 - Puerperal Sepsis /Septicaemia",
+                    "Years",
+                    "TfPNO5HfV48",
+                    "rImF6zIqpn9",
+                    "1"
+                ],
+                [
+                    "O06 - Abortion",
+                    "Years",
+                    "pnqOQbyMTFv",
+                    "ymiIhszR6dn",
+                    "1"
+                ],
+                [
+                    "O99 - Pneumonia in pregnancy",
+                    "Years",
+                    "TfPNO5HfV48",
+                    "qbvm0hcQ0Nw",
+                    "1"
+                ],
+                [
+                    "O99 - Anaemia in Pregnancy",
+                    "Months",
+                    "TfPNO5HfV48",
+                    "UFWYvkqXX89",
+                    "1"
+                ],
+                [
+                    "O99 - Anaemia in Pregnancy",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "aeZRkF0OVFK",
+                    "3"
+                ],
+                [
+                    "O99.4 - Cardiomyopathy in Pregnancy",
+                    "Days",
+                    "pnqOQbyMTFv",
+                    "GRDYT0QagNn",
+                    "14"
+                ],
+                [
+                    "O71 - Rupture uterus",
+                    "Days",
+                    "pnqOQbyMTFv",
+                    "GRDYT0QagNn",
+                    "1"
+                ],
+                [
+                    "O98 - Malaria in pregnancy",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "Uc4q4WIA3H9",
+                    "2"
+                ],
+                [
+                    "O75 - Unknown fever",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "GRDYT0QagNn",
+                    "193"
+                ],
+                [
+                    "O72 - Post-partum haemorrhage",
+                    "Years",
+                    "qmdW6OHhPDT",
+                    "Nky82zx6NQw",
+                    "1"
+                ],
+                [
+                    "O99 - Anaemia in Pregnancy",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "Nky82zx6NQw",
+                    "4"
+                ],
+                [
+                    "O99.4 - Cardiomyopathy in Pregnancy",
+                    "Years",
+                    "",
+                    "lKAxm7dimju",
+                    "2"
+                ],
+                [
+                    "O72 - Post-partum haemorrhage",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "UFWYvkqXX89",
+                    "2"
+                ],
+                [
+                    "O66 - Obstructed Labour",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "UFWYvkqXX89",
+                    "1"
+                ],
+                [
+                    "O99 - Anaemia in Pregnancy",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "rImF6zIqpn9",
+                    "13"
+                ],
+                [
+                    "O85 - Puerperal Sepsis /Septicaemia",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "GRDYT0QagNn",
+                    "1"
+                ],
+                [
+                    "O06 - Abortion",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "GRDYT0QagNn",
+                    "1"
+                ],
+                [
+                    "O75 - Unknown fever",
+                    "Years",
+                    "qmdW6OHhPDT",
+                    "V0ooymSqezW",
+                    "2"
+                ],
+                [
+                    "O72 - Post-partum haemorrhage",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "Uc4q4WIA3H9",
+                    "2"
+                ],
+                [
+                    "O66 - Obstructed Labour",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "Uc4q4WIA3H9",
+                    "1"
+                ],
+                [
+                    "O99.4 - Cardiomyopathy in Pregnancy",
+                    "Years",
+                    "qmdW6OHhPDT",
+                    "G4g9PzrsMLh",
+                    "1"
+                ],
+                [
+                    "O75 - Local herbs in Pregnancy",
+                    "Days",
+                    "TfPNO5HfV48",
+                    "Uc4q4WIA3H9",
+                    "1"
+                ],
+                [
+                    "O85 - Puerperal Sepsis /Septicaemia",
+                    "Years",
+                    "qmdW6OHhPDT",
+                    "V0ooymSqezW",
+                    "1"
+                ],
+                [
+                    "O72 - Post-partum haemorrhage",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "lKAxm7dimju",
+                    "1"
+                ],
+                [
+                    "O99 - Anaemia in Pregnancy",
+                    "Years",
+                    "qmdW6OHhPDT",
+                    "lKAxm7dimju",
+                    "1"
+                ],
+                [
+                    "O46 - Antepartum Haemorrhage",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "Uc4q4WIA3H9",
+                    "4"
+                ],
+                [
+                    "O06 - Abortion",
+                    "Days",
+                    "pnqOQbyMTFv",
+                    "ymiIhszR6dn",
+                    "41"
+                ],
+                [
+                    "O99 - Anaemia in Pregnancy",
+                    "Days",
+                    "TfPNO5HfV48",
+                    "GRDYT0QagNn",
+                    "1"
+                ],
+                [
+                    "O99.4 - Cardiomyopathy in Pregnancy",
+                    "Years",
+                    "qmdW6OHhPDT",
+                    "lKAxm7dimju",
+                    "3"
+                ],
+                [
+                    "O66 - Obstructed Labour",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "UJVrLWcFnQW",
+                    "2"
+                ],
+                [
+                    "O72 - Post-partum haemorrhage",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "UJVrLWcFnQW",
+                    "1"
+                ],
+                [
+                    "O99.4 - Cardiomyopathy in Pregnancy",
+                    "Days",
+                    "TfPNO5HfV48",
+                    "GRDYT0QagNn",
+                    "1"
+                ],
+                [
+                    "O75 - Unknown fever",
+                    "Days",
+                    "MYbdCaXtKeD",
+                    "GRDYT0QagNn",
+                    "1"
+                ],
+                [
+                    "O75 - Unknown fever",
+                    "Hours",
+                    "pnqOQbyMTFv",
+                    "GRDYT0QagNn",
+                    "2"
+                ],
+                [
+                    "O99 - Anaemia in Pregnancy",
+                    "Days",
+                    "TfPNO5HfV48",
+                    "ymiIhszR6dn",
+                    "1"
+                ],
+                [
+                    "O06 - Abortion",
+                    "Days",
+                    "pnqOQbyMTFv",
+                    "GRDYT0QagNn",
+                    "29"
+                ],
+                [
+                    "O99.4 - Cardiomyopathy in Pregnancy",
+                    "Months",
+                    "MYbdCaXtKeD",
+                    "G4g9PzrsMLh",
+                    "1"
+                ],
+                [
+                    "O99.4 - Cardiomyopathy in Pregnancy",
+                    "Years",
+                    "qmdW6OHhPDT",
+                    "sTnafXMjP2d",
+                    "1"
+                ],
+                [
+                    "O98 - Malaria in pregnancy",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "dByxc7pczz4",
+                    "1"
+                ],
+                [
+                    "O99 - Pneumonia in pregnancy",
+                    "Days",
+                    "MYbdCaXtKeD",
+                    "qbvm0hcQ0Nw",
+                    "2"
+                ],
+                [
+                    "O06 - Abortion",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "ymiIhszR6dn",
+                    "1"
+                ],
+                [
+                    "O99.4 - Cardiomyopathy in Pregnancy",
+                    "Days",
+                    "MYbdCaXtKeD",
+                    "GRDYT0QagNn",
+                    "1"
+                ],
+                [
+                    "O85 - Puerperal Sepsis /Septicaemia",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "qbvm0hcQ0Nw",
+                    "1"
+                ],
+                [
+                    "O75 - Unknown fever",
+                    "Days",
+                    "TfPNO5HfV48",
+                    "GRDYT0QagNn",
+                    "2"
+                ],
+                [
+                    "O75 - Unknown fever",
+                    "Years",
+                    "qmdW6OHhPDT",
+                    "PAARXcHWGq0",
+                    "1"
+                ],
+                [
+                    "O99 - Anaemia in Pregnancy",
+                    "Years",
+                    "qmdW6OHhPDT",
+                    "V0ooymSqezW",
+                    "1"
+                ],
+                [
+                    "O72 - Post-partum haemorrhage",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "V0ooymSqezW",
+                    "84"
+                ],
+                [
+                    "O06 - Abortion",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "aeZRkF0OVFK",
+                    "2"
+                ],
+                [
+                    "O06 - Abortion",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "V0ooymSqezW",
+                    "83"
+                ],
+                [
+                    "O99 - Anaemia in Pregnancy",
+                    "Years",
+                    "qmdW6OHhPDT",
+                    "aeZRkF0OVFK",
+                    "1"
+                ],
+                [
+                    "O75 - Unknown fever",
+                    "Years",
+                    "qmdW6OHhPDT",
+                    "GRDYT0QagNn",
+                    "87"
+                ],
+                [
+                    "O75 - Unknown fever",
+                    "Months",
+                    "TfPNO5HfV48",
+                    "GRDYT0QagNn",
+                    "3"
+                ],
+                [
+                    "O99 - Anaemia in Pregnancy",
+                    "Years",
+                    "qmdW6OHhPDT",
+                    "rImF6zIqpn9",
+                    "3"
+                ],
+                [
+                    "O99 - Anaemia in Pregnancy",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "UFWYvkqXX89",
+                    "2"
+                ],
+                [
+                    "O85 - Puerperal Sepsis /Septicaemia",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "dByxc7pczz4",
+                    "1"
+                ],
+                [
+                    "O71 - Rupture uterus",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "UFWYvkqXX89",
+                    "1"
+                ],
+                [
+                    "O72 - Post-partum haemorrhage",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "ymiIhszR6dn",
+                    "1"
+                ],
+                [
+                    "O99.4 - Cardiomyopathy in Pregnancy",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "UFWYvkqXX89",
+                    "1"
+                ],
+                [
+                    "O98 - Malaria in pregnancy",
+                    "Years",
+                    "qmdW6OHhPDT",
+                    "G4g9PzrsMLh",
+                    "1"
+                ],
+                [
+                    "O66 - Obstructed Labour",
+                    "Days",
+                    "pnqOQbyMTFv",
+                    "GRDYT0QagNn",
+                    "1"
+                ],
+                [
+                    "O99 - Anaemia in Pregnancy",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "dByxc7pczz4",
+                    "4"
+                ],
+                [
+                    "O99.4 - Cardiomyopathy in Pregnancy",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "qjdrnCtCgSC",
+                    "1"
+                ],
+                [
+                    "O75 - Unknown fever",
+                    "Months",
+                    "MYbdCaXtKeD",
+                    "GRDYT0QagNn",
+                    "5"
+                ],
+                [
+                    "O99 - Anaemia in Pregnancy",
+                    "Years",
+                    "TfPNO5HfV48",
+                    "UFWYvkqXX89",
+                    "2"
+                ],
+                [
+                    "O99 - Anaemia in Pregnancy",
+                    "Months",
+                    "MYbdCaXtKeD",
+                    "aeZRkF0OVFK",
+                    "2"
+                ],
+                [
+                    "O06 - Abortion",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "UJVrLWcFnQW",
+                    "1"
+                ],
+                [
+                    "O06 - Abortion",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "PAARXcHWGq0",
+                    "1"
+                ],
+                [
+                    "O06 - Abortion",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "Uc4q4WIA3H9",
+                    "1"
+                ],
+                [
+                    "O99.4 - Cardiomyopathy in Pregnancy",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "dByxc7pczz4",
+                    "3"
+                ],
+                [
+                    "O75 - Unknown fever",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "PAARXcHWGq0",
+                    "13"
+                ],
+                [
+                    "O85 - Puerperal Sepsis /Septicaemia",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "Uc4q4WIA3H9",
+                    "2"
+                ],
+                [
+                    "O85 - Puerperal Sepsis /Septicaemia",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "lKAxm7dimju",
+                    "1"
+                ],
+                [
+                    "O85 - Puerperal Sepsis /Septicaemia",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "PAARXcHWGq0",
+                    "1"
+                ],
+                [
+                    "O99 - Anaemia in Pregnancy",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "V0ooymSqezW",
+                    "239"
+                ],
+                [
+                    "O75 - Unknown fever",
+                    "Years",
+                    "TfPNO5HfV48",
+                    "V0ooymSqezW",
+                    "1"
+                ],
+                [
+                    "O85 - Puerperal Sepsis /Septicaemia",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "G4g9PzrsMLh",
+                    "2"
+                ],
+                [
+                    "O99 - Pneumonia in pregnancy",
+                    "Days",
+                    "qmdW6OHhPDT",
+                    "qbvm0hcQ0Nw",
+                    "1"
+                ],
+                [
+                    "O75 - Local herbs in Pregnancy",
+                    "Days",
+                    "pnqOQbyMTFv",
+                    "GRDYT0QagNn",
+                    "1"
+                ],
+                [
+                    "O75 - Unknown fever",
+                    "Years",
+                    "",
+                    "GRDYT0QagNn",
+                    "2"
+                ],
+                [
+                    "O99.4 - Cardiomyopathy in Pregnancy",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "lKAxm7dimju",
+                    "2"
+                ],
+                [
+                    "O99.4 - Cardiomyopathy in Pregnancy",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "Uc4q4WIA3H9",
+                    "1"
+                ],
+                [
+                    "O75 - Unknown fever",
+                    "Years",
+                    "TfPNO5HfV48",
+                    "PAARXcHWGq0",
+                    "6"
+                ],
+                [
+                    "O66 - Obstructed Labour",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "qbvm0hcQ0Nw",
+                    "1"
+                ],
+                [
+                    "O75 - Unknown fever",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "V0ooymSqezW",
+                    "6"
+                ],
+                [
+                    "O99.4 - Cardiomyopathy in Pregnancy",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "G4g9PzrsMLh",
+                    "1"
+                ],
+                [
+                    "O99 - Anaemia in Pregnancy",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "Uc4q4WIA3H9",
+                    "1"
+                ],
+                [
+                    "O99 - Anaemia in Pregnancy",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "PAARXcHWGq0",
+                    "1"
+                ],
+                [
+                    "O85 - Puerperal Sepsis /Septicaemia",
+                    "Years",
+                    "MYbdCaXtKeD",
+                    "V0ooymSqezW",
+                    "2"
+                ]
+            ],
+            width: 5
+        }
+        google.charts.load('current', {'packages':['table']});
+        google.charts.setOnLoadCallback(drawTable);
+
+        function drawTable() {
+            var theData = [];
+            console.log(eventData.rows.length);
+            eventData.rows.forEach(function (row, index) {
+                theData.push([ row[0], eventData.metaData.names[row[3]] , row[4]]);
+            });
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Name');
+            data.addColumn('string', 'Name');
+            data.addColumn('string', 'Value');
+            data.addRows(
+                theData
+            );
+
+            var table = new google.visualization.Table(document.getElementById('table_wrapper'));
+
+            table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
+        }
+        $("#btnExport").click(function(e) {
+            e.preventDefault();
+
+            //getting data from our table
+            var data_type = 'data:application/vnd.ms-excel';
+            var table_div = document.getElementById('table_wrapper');
+            var table_html = table_div.outerHTML.replace(/ /g, '%20');
+
+            var a = document.createElement('a');
+            a.href = data_type + ', ' + table_html;
+            a.download = 'exported_table_' + Math.floor((Math.random() * 9999999) + 1000000) + '.xls';
+            a.click();
+        });
+    });
+
+</script>
+<button id="btnExport">Export to xls</button>
+<br />
+<br />
+<div class="row">
+    <div class="container">
+        <br />
+        <div class="row">
+            <div class='col-sm-3'>
+                <div class="form-group">
+                    <div class='input-group date' id='datetimepicker1'>
+                        <input type='text' class="form-control" />
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-12">
+    <div class='row'>
+        <div class='col-md-12' style='text-align:center;font-weight:bolder;'>MINISTRY OF HEALTH COMMUNITY DEVELOPMENT GENDER ELDERLY AND CHILDREN: HMIS FORM COMPLETENESS BY DATE FOR {{name}} ON {{period}}</div>
+        <div class='col-md-12'>
+            <div class='row' style='text-align:center;'>
+                <div class='col-md-5'>
+                </div>
+                <div class='col-md-2'>
+                    <a href='#' class='thumbnail'
+                       style='width:50px!important;padding:10px;font-weight:bolder;position:relative;margin: auto;top: 0;left: 0;right: 0;bottom: 0;border: 0px solid #ffffff!important;border-radius: 0px!important;-webkit-box-shadow: 0 0px 0px rgba(0,0,0,.075)!important;box-shadow: 0 0px 0px rgba(0,0,0,.075)!important;'><img
+                            class=''
+                            src='https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Coat_of_arms_of_Tanzania.svg/30px-Coat_of_arms_of_Tanzania.svg.png'/></a>
+                </div>
+                <div class='col-md-5'>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class='col-md-12'>
+        <div id="table_wrapper"></div>
+    </div>
+
+</div>
+
+
+</body>
+
+</html>
