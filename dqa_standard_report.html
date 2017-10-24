@@ -17,10 +17,63 @@
         span {
             height: 10px; width: 10px;
         }
+        .datepicker {
+            top: 200px !important;
+        }
+        #loader {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            z-index: 1;
+            width: 150px;
+            height: 150px;
+            margin: -75px 0 0 -75px;
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+
+        @-webkit-keyframes spin {
+            0% { -webkit-transform: rotate(0deg); }
+            100% { -webkit-transform: rotate(360deg); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Add animation to "page content" */
+        .animate-bottom {
+            position: relative;
+            -webkit-animation-name: animatebottom;
+            -webkit-animation-duration: 1s;
+            animation-name: animatebottom;
+            animation-duration: 1s
+        }
+
+        @-webkit-keyframes animatebottom {
+            from { bottom:-100px; opacity:0 }
+            to { bottom:0px; opacity:1 }
+        }
+
+        @keyframes animatebottom {
+            from{ bottom:-100px; opacity:0 }
+            to{ bottom:0; opacity:1 }
+        }
+
+        #myDiv {
+            display: none;
+            text-align: center;
+        }
     </style>
 </head>
 
-<body>
+<body onload="myFunction()" style="margin:0;">
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
 
@@ -28,15 +81,52 @@
 <script>
     $(document).ready(function() {
 
-        $('.datepicker').css('top', '170px');
+        $(function() {
+            $(".datepicker").remove('style');
+            $(".datepicker").css('top', '170px');
+            $( "#datepicker" ).datepicker();
+        });
+
+        function dateFormat(theDate) {
+            var year = theDate.split('-')[0];
+            var month = theDate.split('-')[1];
+            if (theDate.split('-')[1] === '01') {
+                month = 'January';
+            } else if (theDate.split('-')[1] === '02') {
+                month = 'February';
+            } else if (theDate.split('-')[1] === '03') {
+                month = 'Mach';
+            } else if (theDate.split('-')[1] === '04') {
+                month = 'April';
+            } else if (theDate.split('-')[1] === '05') {
+                month = 'May';
+            } else if (theDate.split('-')[1] === '06') {
+                month = 'June';
+            } else if (theDate.split('-')[1] === '07') {
+                month = 'July';
+            } else if (theDate.split('-')[1] === '08') {
+                month = 'August';
+            } else if (theDate.split('-')[1] === '09') {
+                month = 'September';
+            } else if (theDate.split('-')[1] === '10') {
+                month = 'October';
+            } else if (theDate.split('-')[1] === '11') {
+                month = 'November';
+            } else if (theDate.split('-')[1] === '12') {
+                month = 'December';
+            }
+            var day = theDate.split('-')[2].substring(0, 2);
+            return month + ', ' + day + ' ' + year;
+        }
+
         var date_input=$('input[name="date"]'); //our date input has the name "date"
         var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
         var options={
             format: 'yyyy-mm-dd',
             container: container,
-            orientation: "bottom",
             todayHighlight: true,
-            autoclose: true
+            autoclose: true,
+            orientation: "bottom auto"
         };
         date_input.datepicker(options);
 
@@ -51,7 +141,7 @@
 
         $('#hidden-input').append('<input id="orgId" type="hidden" value="' + orgUnit.id + '">');
 
-        $('#heading').append('<p id="top-heading">MINISTRY OF HEALTH COMMUNITY DEVELOPMENT GENDER ELDERLY AND CHILDREN ( '+ orgUnit.name+' ) :' + startDate + ' TO ' + endDate +'</p>');
+        $('#heading').append('<p id="top-heading">MINISTRY OF HEALTH COMMUNITY DEVELOPMENT GENDER ELDERLY AND CHILDREN ( '+ orgUnit.name+' ) :' + dateFormat(startDate) + ' TO ' + dateFormat(endDate) +'</p>');
         var eventUrl = "https://test.hisptz.org/dhis/api/events/eventRows.json?orgUnit=" + orgUnit.id + "&ouMode=DESCENDANTS&program=aAwyEeJysgl&startDate=" + startDate + "&endDate=" + endDate;
         // getReport(eventUrl);
 
@@ -139,6 +229,8 @@
             }
         });
 
+        $('.datepicker').css('top', '200px !important');
+
         $("#btnExport").click(function (e) {
             e.preventDefault();
 
@@ -154,6 +246,16 @@
         });
 
         $('#report-btn').click(function (e) {
+            document.getElementById("loader").style.display = "block";
+            document.getElementById("myDiv").style.display = "none";
+
+            setTimeout(showPage, 2000);
+
+            function showPage() {
+                document.getElementById("loader").style.display = "none";
+                document.getElementById("myDiv").style.display = "block";
+            }
+            $('.datepicker').css('top', '200px !important');
             $('#top-heading').remove();
             var startDate = $('#start_date').val();
             var endDate = $('#end_date').val();
@@ -265,7 +367,7 @@
     });
 
     function changeTopPosition() {
-        $('.datepicker').css('top','170px');
+        $('.datepicker').css('top','190px');
     }
 
     //     function getDates(id) {
@@ -303,17 +405,18 @@
 
 <br />
 <br />
-
-<div class="col-md-12" style="margin-bottom: 40px">
+<div id="loader"></div>
+<div class="col-md-12" style="margin-bottom: 40px; display:none;"id="myDiv" class="animate-bottom">
     <div class="row">
         <div class="container">
             <br />
             <div class="row">
                 <div class="form-group"> <!-- Date input -->
                     <div id="hidden-input"></div>
-                    <div style="display: inline-block"><label class="control-label">Start Date</label><input class="form-control" style="width: 150px;" height="25px" name="date" id="start_date" placeholder="YYYY-MM-DD" type="text"/></div>
-                    <div style="display: inline-block"><label class="control-label">End Date</label><input class="form-control" style="width: 150px;" height="25px" name="date" id="end_date" placeholder="YYYY-MM-DD" type="text"/></div>
-                    <div style="display: inline-block"><button class="btn" id="report-btn" name="submit">Submit</button></div>
+                    <!--<div id="datepicker-div" style="position: relative;"><input id="datepicker"></div>-->
+                     <div style="display: inline-block"><label class="control-label">Start Date</label><input class="form-control" onclick="changeTopPosition()" style="width: 150px;" height="25px" name="date" id="start_date" placeholder="YYYY-MM-DD" type="text"/></div>
+                    <div style="display: inline-block"><label class="control-label">End Date</label><input class="form-control" onclick="changeTopPosition()" style="width: 150px;" height="25px" name="date" id="end_date" placeholder="YYYY-MM-DD" type="text"/></div>
+                    <div style="display: inline-block"><button class="btn" id="report-btn" name="submit">Change Date</button></div>
                 </div>
             </div>
         </div>
@@ -345,6 +448,18 @@
         <!--<div id="table_wrapper"></div>-->
     </div>
 </div>
+<script>
+    var myVar;
+
+    function myFunction() {
+        myVar = setTimeout(showPage, 2000);
+    }
+
+    function showPage() {
+        document.getElementById("loader").style.display = "none";
+        document.getElementById("myDiv").style.display = "block";
+    }
+</script>
 
 
 </body>
