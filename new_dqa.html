@@ -151,8 +151,8 @@
         $('#top-heading').remove();
         $('#the_message').remove();
         $('#heading').append('<p id="top-heading">MINISTRY OF HEALTH COMMUNITY DEVELOPMENT GENDER ELDERLY AND CHILDREN ( ' + orgUnit.name + ' ) :' + dateFormat(startDate) + ' TO ' + dateFormat(endDate) + '</p>');
-        var eventUrl = "https://dhis.moh.go.tz/api/events/eventRows.json?orgUnit=" + orgUnit.id + "&ouMode=DESCENDANTS&program=aAwyEeJysgl&startDate=" + startDate + "&endDate=" + endDate;
-        //getReportData(eventUrl);
+        var eventUrl = "https://test.hisptz.org/dhis/api/events/eventRows.json?orgUnit=" + orgUnit.id + "&ouMode=DESCENDANTS&program=aAwyEeJysgl&startDate=" + startDate + "&endDate=" + endDate;
+         //getReportData(eventUrl);
         var eventData;
         $.getJSON(eventUrl, function (resp1) {
             eventData = resp1;
@@ -235,133 +235,137 @@
             $('.datepicker').css('top', '200px !important');
         });
 
-        $('#report-btn').click(function (e) {
-            document.getElementById("loader").style.display = "block";
-            document.getElementById("myDiv").style.display = "none";
+         $('#report-btn').click(function (e) {
+             document.getElementById("loader").style.display = "block";
+             document.getElementById("myDiv").style.display = "none";
 
-            setTimeout(showPage, 1200);
+             setTimeout(showPage, 1200);
 
-            function showPage() {
-                document.getElementById("loader").style.display = "none";
-                document.getElementById("myDiv").style.display = "block";
-            }
-            var startDate = $('#start_date').val();
-            var endDate = $('#end_date').val();
-            var id = $('#orgId').val();
-            $('#top-heading').remove();
-            $('.rows_added').remove();
-            function dateFormat(theDate) {
-                var year = theDate.split('-')[0];
-                var month = theDate.split('-')[1];
-                if (theDate.split('-')[1] === '01') {
-                    month = 'January';
-                } else if (theDate.split('-')[1] === '02') {
-                    month = 'February';
-                } else if (theDate.split('-')[1] === '03') {
-                    month = 'Mach';
-                } else if (theDate.split('-')[1] === '04') {
-                    month = 'April';
-                } else if (theDate.split('-')[1] === '05') {
-                    month = 'May';
-                } else if (theDate.split('-')[1] === '06') {
-                    month = 'June';
-                } else if (theDate.split('-')[1] === '07') {
-                    month = 'July';
-                } else if (theDate.split('-')[1] === '08') {
-                    month = 'August';
-                } else if (theDate.split('-')[1] === '09') {
-                    month = 'September';
-                } else if (theDate.split('-')[1] === '10') {
-                    month = 'October';
-                } else if (theDate.split('-')[1] === '11') {
-                    month = 'November';
-                } else if (theDate.split('-')[1] === '12') {
-                    month = 'December';
-                }
-                var day = theDate.split('-')[2].substring(0, 2);
-                return month + ', ' + day + ' ' + year;
-            }
-            $('#heading').append('<p id="top-heading">MINISTRY OF HEALTH COMMUNITY DEVELOPMENT GENDER ELDERLY AND CHILDREN ( ' + orgUnit.name + ' ) :' + dateFormat(startDate) + ' TO ' + dateFormat(endDate) + '</p>');
-            var eventUrl = "https://dhis.moh.go.tz/api/events/eventRows.json?orgUnit=" + id + "&ouMode=DESCENDANTS&program=aAwyEeJysgl&startDate=" + startDate + "&endDate=" + endDate;
-            // getReportData(eventUrl);
-            var eventData;
-            $.getJSON(eventUrl, function (resp1) {
-                eventData = resp1;
-                function dateFilter(theDate) {
-                    var year = theDate.split('-')[0];
-                    var month = theDate.split('-')[1];
-                    if (theDate.split('-')[1] === '01') {
-                        month = 'January';
-                    } else if (theDate.split('-')[1] === '02') {
-                        month = 'February';
-                    } else if (theDate.split('-')[1] === '03') {
-                        month = 'Mach';
-                    } else if (theDate.split('-')[1] === '04') {
-                        month = 'April';
-                    } else if (theDate.split('-')[1] === '05') {
-                        month = 'May';
-                    } else if (theDate.split('-')[1] === '06') {
-                        month = 'June';
-                    } else if (theDate.split('-')[1] === '07') {
-                        month = 'July';
-                    } else if (theDate.split('-')[1] === '08') {
-                        month = 'August';
-                    } else if (theDate.split('-')[1] === '09') {
-                        month = 'September';
-                    } else if (theDate.split('-')[1] === '10') {
-                        month = 'October';
-                    } else if (theDate.split('-')[1] === '11') {
-                        month = 'November';
-                    } else if (theDate.split('-')[1] === '12') {
-                        month = 'December';
-                    }
-                    var day = theDate.split('-')[2].substring(0, 2);
-                    return month + ', ' + day + ' ' + year;
-                }
+             function showPage() {
+                 document.getElementById("loader").style.display = "none";
+                 document.getElementById("myDiv").style.display = "block";
+             }
+             var startDate = $('#start_date').val();
+             var endDate = $('#end_date').val();
+             var id = $('#orgId').val();
+             $('#top-heading').remove();
+             $('.rows_added').remove();
+             function dateFormat(theDate) {
+                 var year = theDate.split('-')[0];
+                 var month = theDate.split('-')[1];
+                 if (theDate.split('-')[1] === '01') {
+                     month = 'January';
+                 } else if (theDate.split('-')[1] === '02') {
+                     month = 'February';
+                 } else if (theDate.split('-')[1] === '03') {
+                     month = 'Mach';
+                 } else if (theDate.split('-')[1] === '04') {
+                     month = 'April';
+                 } else if (theDate.split('-')[1] === '05') {
+                     month = 'May';
+                 } else if (theDate.split('-')[1] === '06') {
+                     month = 'June';
+                 } else if (theDate.split('-')[1] === '07') {
+                     month = 'July';
+                 } else if (theDate.split('-')[1] === '08') {
+                     month = 'August';
+                 } else if (theDate.split('-')[1] === '09') {
+                     month = 'September';
+                 } else if (theDate.split('-')[1] === '10') {
+                     month = 'October';
+                 } else if (theDate.split('-')[1] === '11') {
+                     month = 'November';
+                 } else if (theDate.split('-')[1] === '12') {
+                     month = 'December';
+                 }
+                 var day = theDate.split('-')[2].substring(0, 2);
+                 return month + ', ' + day + ' ' + year;
+             }
+             $('#heading').append('<p id="top-heading">MINISTRY OF HEALTH COMMUNITY DEVELOPMENT GENDER ELDERLY AND CHILDREN ( ' + orgUnit.name + ' ) :' + dateFormat(startDate) + ' TO ' + dateFormat(endDate) + '</p>');
+             var eventUrl = "https://test.hisptz.org/dhis/api/events/eventRows.json?orgUnit=" + id + "&ouMode=DESCENDANTS&program=aAwyEeJysgl&startDate=" + startDate + "&endDate=" + endDate;
+             // getReportData(eventUrl);
+             var eventData;
+             $.getJSON(eventUrl, function (resp1) {
+                 eventData = resp1;
+                 function dateFilter(theDate) {
+                     var year = theDate.split('-')[0];
+                     var month = theDate.split('-')[1];
+                     if (theDate.split('-')[1] === '01') {
+                         month = 'January';
+                     } else if (theDate.split('-')[1] === '02') {
+                         month = 'February';
+                     } else if (theDate.split('-')[1] === '03') {
+                         month = 'Mach';
+                     } else if (theDate.split('-')[1] === '04') {
+                         month = 'April';
+                     } else if (theDate.split('-')[1] === '05') {
+                         month = 'May';
+                     } else if (theDate.split('-')[1] === '06') {
+                         month = 'June';
+                     } else if (theDate.split('-')[1] === '07') {
+                         month = 'July';
+                     } else if (theDate.split('-')[1] === '08') {
+                         month = 'August';
+                     } else if (theDate.split('-')[1] === '09') {
+                         month = 'September';
+                     } else if (theDate.split('-')[1] === '10') {
+                         month = 'October';
+                     } else if (theDate.split('-')[1] === '11') {
+                         month = 'November';
+                     } else if (theDate.split('-')[1] === '12') {
+                         month = 'December';
+                     }
+                     var day = theDate.split('-')[2].substring(0, 2);
+                     return month + ', ' + day + ' ' + year;
+                 }
 
-                var dataRows = '';
-                if (eventData.length !== 0) {
-                    eventData.eventRows.forEach(function (row, index) {
-                        var theScore = '';
-                        var testStr = '';
-                        row.attributes.forEach(function (attrbs) {
-                            if (testStr.indexOf(attrbs.displayName) >= 0) {
-                                // nothing
-                            } else {
-                                testStr += attrbs.displayName;
-                                if (attrbs.value.split('-').length > 1) {
-                                    theScore += '<p style="padding: 5px; font-size: 1.2em; text-align: left">' + attrbs.displayName + ':' + '  <b>' + dateFilter(attrbs.value) + '</b></p>';
-                                } else {
-                                    theScore += '<p  style="padding: 5px; font-size: 1.2em; text-align: left;">' + attrbs.displayName + ':' + ' <b style="color: #000000; font-weight: 600;">' + attrbs.value + '</b></p>';
-                                }
-                            }
-                        });
-                        var theVal = '';
-                        if (row.dataValues) {
-                            row.dataValues.forEach(function (dataVal) {
-                                if (theVal.indexOf(dataVal.value) >= 0) {
-                                    // nothing
-                                } else {
-                                    if (dataVal.dataElement === 'RbQ2ylMjKKR') {
-                                        theVal += '<p style="padding: 5px; font-size: 1.2em; text-align: left">' + dataVal.value + '</p>';
-                                    }
-                                }
-                            });
-                        }
-                        //
-                            dataRows += '<tr class="rows_added"><td>'+(index+1)+'</td><td>'+theScore+'</td><td>'+row.orgUnitName+'</td><td>'+dateFilter(row.eventDate)+'</td><td>'+theVal+'</td></tr>';
-                    });
-                } else {
-                    //
-                    dataRows += '<tr class="rows_added"><td><p style="color: #c12003;">No data available for the selected period range</p></td></tr>';
-                }
+                 var dataRows = '';
+                 if (eventData.length !== 0) {
+                     eventData.eventRows.forEach(function (row, index) {
+                         var theScore = '';
+                         var testStr = '';
+                         row.attributes.forEach(function (attrbs) {
+                             if (testStr.indexOf(attrbs.displayName) >= 0) {
+                                 // nothing
+                             } else {
+                                 testStr += attrbs.displayName;
+                                 if (attrbs.value.split('-').length > 1) {
+                                     theScore += '<p style="padding: 5px; font-size: 1.2em; text-align: left">' + attrbs.displayName + ':' + '  <b>' + dateFilter(attrbs.value) + '</b></p>';
+                                 } else {
+                                     theScore += '<p  style="padding: 5px; font-size: 1.2em; text-align: left;">' + attrbs.displayName + ':' + ' <b style="color: #000000; font-weight: 600;">' + attrbs.value + '</b></p>';
+                                 }
+                             }
+                         });
+                         var theVal = '';
+                         if (row.dataValues) {
+                             row.dataValues.forEach(function (dataVal) {
+                                 if (theVal.indexOf(dataVal.value) >= 0) {
+                                     // nothing
+                                 } else {
+                                     if (dataVal.dataElement === 'RbQ2ylMjKKR') {
+                                         theVal += '<p style="padding: 5px; font-size: 1.2em; text-align: left">' + dataVal.value + '</p>';
+                                     }
+                                 }
+                             });
+                         }
+                         // get the ancestor
+                         var orgUnitUrl = 'https://test.hisptz.org/dhis/api/organisationUnits/'+ row.orgUnit+'.json?fields=[name,ancestors]'
+                         $.getJSON(orgUnitUrl, function (response) {
+                             console.log(response.ancestors[2]);
+                             dataRows += '<tr class="rows_added"><td>'+(index+1)+'</td><td>'+theScore+'</td><td>'+row.orgUnitName+'</td><td>'+dateFilter(row.eventDate)+'</td><td>'+theVal+'</td></tr>';
+                         });
+                     });
+                 } else {
+                     //
+                     dataRows += '<tr class="rows_added"><td><p style="color: #c12003;">No data available for the selected period range</p></td></tr>';
+                 }
 
-                $('#tbodyId').append(dataRows);
+                 $('#tbodyId').append(dataRows);
 
-                $('.datepicker').css('top', '200px !important');
-            });
-            console.log('date changed');
-        });
+                 $('.datepicker').css('top', '200px !important');
+             });
+             console.log('date changed');
+         });
 
 
         $("#btnExport").click(function (e) {
