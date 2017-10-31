@@ -24,13 +24,16 @@
         a.comment-indicator { background:red; display:inline-block; border:1px solid black; width:0.5em; height:0.5em;  }
         comment { display:none;  }
         td {
-            text-align: left;
+            text-align: left; border: 1px solid black;
         }
         .disp_center {
             text-align: center; font-weight: 600;
         }
         .td_styles {
             border-top: 1px solid #000000;
+        }
+        table {
+            border: 1px solid #000000;
         }
     </style>
 
@@ -39,7 +42,7 @@
 <body>
 <script type="">
     $(document).ready(function() {
-        var eventData = {
+        var eventData2 = {
             headers: [
                 {
                     name: "uochSI2xLGI",
@@ -874,6 +877,16 @@
             width: 5
         };
 
+        var orgUnit = dhis2.report.organisationUnit;
+        var periods = dhis2.report.periods;
+
+        var eventUrl = 'https://dhis.moh.go.tz/api/analytics/events/aggregate/Mvc0jfU9Ua2.json?stage=mlDzRw3ibhE&dimension=uochSI2xLGI:IN%3AO06%20-%20Abortion%3BO46%20-%20Antepartum%20Haemorrhage%3BO66%20-%20Obstructed%20Labour%3BO71%20-%20Rupture%20uterus%3BO72%20-%20Post-partum%20haemorrhage%3BO75%20-%20Local%20herbs%20in%20Pregnancy%3BO75%20-%20Unknown%20fever%3BO85%20-%20Puerperal%20Sepsis%20%2FSepticaemia%3BO98%20-%20Malaria%20in%20pregnancy%3BO99%20-%20Anaemia%20in%20Pregnancy%3BO99%20-%20Meningitis%3BO99%20-%20Pneumonia%20in%20pregnancy%3BO99%20-%20Pulmonary%20oedema%3BO99.4%20-%20Cardiomyopathy%20in%20Pregnancy%3Beclampsia&dimension=JJkV68Devly&dimension=Swn04dN2EwP-sjYF2oeQTCv&dimension=ou:OU_GROUP-Y6oYSbQE2Tp;'+orgUnit.id+'&filter=pe:'+periods[0]+'&outputType=EVENT&displayProperty=NAME'
+
+        $.getJSON(eventUrl, function (response) {
+            var eventData = response;
+
+            $('#heading').append('<p id="top-heading">MINISTRY OF HEALTH COMMUNITY DEVELOPMENT GENDER ELDERLY AND CHILDREN ( ' + orgUnit.name + ' ) FOR ' + eventData.metaData.pe + '</p>');
+
         var ageTypes = ['Years', 'Months', 'Days', 'Hours'];
         var ages = ['0-1', '1-5', '5-60','60+'];
 
@@ -892,90 +905,64 @@
 
         orgUnits.forEach(function (orgUnitName, index) {
             if (orgUnitName){
-                var tr = '<td>'+ (index+1)+'</td>'+'<td style="width: 100px">'+ orgUnitName + '</td>';
+                var tr = '<td>'+ (index+1)+'</td>'+'<td style="width: 30%">'+ orgUnitName + '</td>';
                 diseasesArr.forEach(function (disease, index) {
                     ageTypes.forEach(function (ageType, index) {
+                        var testStr = '';
                         ages.forEach(function (age, index) {
+                            var myTd = '';
                             if (age === '0-1') {
-                                var myTd = '';
                                 eventData.rows.forEach(function (row, i) {
                                     if (eventData.metaData.names[row[3]] === orgUnitName && row[0] === disease && eventData.metaData.names[row[2]] === '0-1' && row[1] === ageType) {
-                                        tr += '<td>'+row[4]+'</td>';
+                                        myTd += '<td>'+row[4]+'</td>';
                                     }
-                                })
-                                if (myTd === '') {
-                                    tr += '<td>'+' '+'</td>';
-                                } else{
-                                    tr += myTd
-                                }
+                                });
                             } else if (age === '1-5') {
-                                var myTd = '';
                                 eventData.rows.forEach(function (row, i) {
                                     if (eventData.metaData.names[row[3]] === orgUnitName && row[0] === disease && eventData.metaData.names[row[2]] === '1-5' && row[1] === ageType) {
                                         myTd += '<td>'+row[4]+'</td>';
                                     }
                                 });
-                                if (myTd === '') {
-                                    tr += '<td>'+' '+'</td>';
-                                } else{
-                                    tr += myTd
-                                }
                             } else if (age === '5-60') {
-                                var myTd = '';
                                 eventData.rows.forEach(function (row, i) {
                                     if (eventData.metaData.names[row[3]] === orgUnitName && row[0] === disease && eventData.metaData.names[row[2]] === '5-60' && row[1] === ageType) {
-                                        tr += '<td>'+row[4]+'</td>';
-                                    }
-                                })
-                                if (myTd === '') {
-                                    tr += '<td>'+' '+'</td>';
-                                } else{
-                                    tr += myTd
-                                }
-                            } else if (age === '60+') {
-                                var myTd = '';
-                                eventData.rows.forEach(function (row, i) {
-                                    if (eventData.metaData.names[row[3]] === orgUnitName && row[0] === disease && eventData.metaData.names[row[2]] === '60+' && row[1] === ageType) {
-                                        tr += '<td>'+row[4]+'</td>';
+                                        myTd += '<td>'+row[4]+'</td>';
                                     }
                                 });
-                                if (myTd === '') {
-                                    tr += '<td>'+' '+'</td>';
-                                } else{
-                                    tr += myTd
-                                }
+                            } else if (age === '60+') {
+                                eventData.rows.forEach(function (row, i) {
+                                    if (eventData.metaData.names[row[3]] === orgUnitName && row[0] === disease && eventData.metaData.names[row[2]] === '60+' && row[1] === ageType) {
+                                        myTd += '<td>'+row[4]+'</td>';
+                                    }
+                                });
+                            }
+                            if (myTd.length === 0) {
+                                tr += '<td>'+' '+'</td>';
+                                testStr += 'JOSE';
+                            } else{
+                                tr += myTd;
                             }
                         });
                     });
                 });
-
-                console.log('<tr>'+tr+'</tr>');
                 $('#example').append('<tr>'+tr+'</tr>');
             }
         });
 
         var diseases = ''; var periods = '';  var ageTypes = ''; var theAges = '';
         diseasesArr.forEach(function (disease, index) {
-            diseases += '<td class="td_styles" colspan=16 align="center" valign=bottom>' + disease + '</td>';
-            periods += '<td class="td_styles" colspan=16 align="center" valign=bottom>' + '2015' + '</td>';
+            diseases += '<td class="td_styles" colspan=16 style="text-align: center;" valign=bottom>' + disease + '</td>';
+            periods += '<td class="td_styles" colspan=16 align="center" valign=bottom>' + eventData.metaData.pe+ '</td>';
             ageTypes += '<td class="td_styles" colspan=4 align="left" valign=bottom>Years</td>' +
                 '<td  class="td_styles" colspan=4 align="left" valign=bottom>Months</td>'+
                 '<td  class="td_styles" colspan=4 align="left" valign=bottom>Days</td>'+
                 '<td  class="td_styles" colspan=4 align="left" valign=bottom>Hours</td>';
 
-            ages.forEach(function (age, index) {
-                theAges += '<td  class="td_styles" align="left" valign=bottom>'+ age+'</td>';
-            });
-            ages.forEach(function (age, index) {
-                theAges += '<td  class="td_styles" align="left" valign=bottom>'+ age+'</td>';
-            });
-            ages.forEach(function (age, index) {
-                theAges += '<td  class="td_styles" align="left" valign=bottom>'+ age+'</td>';
-            });
-
-            ages.forEach(function (age, index) {
-                theAges += '<td  class="td_styles" align="left" valign=bottom>'+ age+'</td>';
-            })
+            for (var count = 0; count < 4; count++) {
+                ages.forEach(function (age, index) {
+                    theAges += '<td  class="td_styles" align="left" valign=bottom>'+ age+'</td>';
+                });
+            }
         });
         $('#disease_row').append(diseases);
             $('#period').append(periods);
@@ -984,24 +971,63 @@
         console.log(orgUnits);
         console.log(diseasesArr);
 
+        $("#btnExport").click(function (e) {
+            e.preventDefault();
+
+            //getting data from our table
+            var data_type = 'data:application/vnd.ms-excel';
+            var table_div = document.getElementById('downloadable_table');
+            var table_html = table_div.outerHTML.replace(/ /g, '%20');
+
+            var a = document.createElement('a');
+            a.href = data_type + ', ' + table_html;
+            a.download = 'exported_table_' + Math.floor((Math.random() * 9999999) + 1000000) + '.xls';
+            a.click();
+        });
+
+        });
+
     });
 </script>
-
-<table  class="table table-striped table-bordered" cellspacing="0" width="100%" id="example">
-
-    <tr id="disease_row">
-        <td class="td_styles" rowspan=4 height="74" align="center" valign=bottom><b><font>#</font></b></td>
-        <td style="width: 50%;" class="td_styles" align="left"><b><font>Intermediate cause of Death</font></b></td>
-    </tr>
-    <tr id="period">
-        <td  style="width:;" style="" align="left"><b><font>Period</font></b></td>
-    </tr>
-    <tr id="age_types">
-        <td style="width:;" align="left"><b><font>Age Type</font></b></td>
-    </tr>
-    <tr id="ages">
-        <td  style="width:" align="left"><b><font>Organisation Unit/Age</font></b></td>
-    </tr>
-</table>
+<div class="">
+    <div class='row'>
+        <div class='col-md-12' id="heading" style='text-align:center;font-weight:bolder;'></div>
+        <div class='col-md-12' id="icon">
+            <div class='row' style='text-align:center;'>
+                <div class='col-md-5'>
+                </div>
+                <div class='col-md-2'>
+                    <a href='#' class='thumbnail'
+                       style='width:50px!important;padding:10px;font-weight:bolder;position:relative;margin: auto;top: 0;left: 0;right: 0;bottom: 0;border: 0px solid #ffffff!important;border-radius: 0px!important;-webkit-box-shadow: 0 0px 0px rgba(0,0,0,.075)!important;box-shadow: 0 0px 0px rgba(0,0,0,.075)!important;'><img
+                            class=''
+                            src='https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Coat_of_arms_of_Tanzania.svg/30px-Coat_of_arms_of_Tanzania.svg.png'/></a>
+                </div>
+                <div class='col-md-5'>
+                </div>
+            </div>
+        </div>
+        <div class='col-md-12' id="sub-heading" style='text-align:center;font-weight:bolder;'> <p> DEATH REGISTRY REPORT</p></div>
+    </div>
+    <div  class="row">
+        <button id="btnExport" class="pull-left" style="margin-right: 28px;">Download as Excel</button>
+    </div>
+    <div class="row" id="downloadable_table">
+        <table  class="table table-striped table-bordered" cellspacing="0" width="100%" id="example">
+            <tr id="disease_row" style="background-color: #7FC9FD; font-weight: 600; font-size: 1.1em;">
+                <td class="td_styles" rowspan=4 height="74" align="center" valign=bottom><b><font>#</font></b></td>
+                <td style="width: 30%;" class="td_styles"><b><font>Intermediate cause of Death</font></b></td>
+            </tr>
+            <tr id="period" style="background-color: #7FC9FD; font-weight: 600; font-size: 1.1em;">
+                <td style="" align="left"><b><font>Period</font></b></td>
+            </tr>
+            <tr id="age_types" style="background-color: #7FC9FD; font-weight: 600; font-size: 1.1em;">
+                <td align="left"><b><font>Age Type</font></b></td>
+            </tr>
+            <tr id="ages" style="background-color: #7FC9FD; font-weight: 600; font-size: 1.1em;">
+                <td  align="left"><b><font>Organisation Unit/Age</font></b></td>
+            </tr>
+        </table>
+    </div>
+</div>
 </body>
 </html>
