@@ -1,0 +1,318 @@
+<sectionelem>
+<script>
+	 var indicatorAggregations = {"b4BB5Jz2sQT":"(50)/(1)*(1)","Df0YrCUfzo8":"(((#{dC72Hr9L3CS.uGIJ6IdkP7Q})*100)/50)/(1)*(1)","kfOhnxaFcF8":"(25)/(1)*(1)","xM0BmsNqbY9":"(((#{QalJB3cw7KB.uGIJ6IdkP7Q})*100)/25)/(1)*(1)","bdrLXXPfpF2":"(25)/(1)*(1)","yRXHhI12jnQ":"(((#{VKK2riGIksj.uGIJ6IdkP7Q})*100)/25)/(1)*(1)"};
+</script>
+<script type="text/javascript">
+
+
+    dhis2.util.on('dhis2.de.event.formReady', function (event, ds) {
+
+
+        var assessmentForm = {}; // assessment object
+
+        assessmentForm.dictionary = [
+            {possibleMax:"b4BB5Jz2sQT",obtainedPoints:"dC72Hr9L3CS-uGIJ6IdkP7Q-val",determinants:"luWKU7n4PNP-uGIJ6IdkP7Q-val",percentage:"Df0YrCUfzo8",number:"1"},
+            {possibleMax:"kfOhnxaFcF8",obtainedPoints:"QalJB3cw7KB-uGIJ6IdkP7Q-val",determinants:"hTLr94P4w6j-uGIJ6IdkP7Q-val",percentage:"xM0BmsNqbY9",number:"2"},
+            {possibleMax:"bdrLXXPfpF2",obtainedPoints:"VKK2riGIksj-uGIJ6IdkP7Q-val",determinants:"yHA0CjmcP9t-uGIJ6IdkP7Q-val",percentage:"yRXHhI12jnQ",number:"3"},
+        ]
+
+        // assessment dictionary
+        assessmentForm.facilityScore		 = 0;
+        assessmentForm.totalObtainedPoints	 = 0; // total obtained points
+        assessmentForm.totalpossibleMax		 = 0; // total possible maximum
+        assessmentForm.dataSet				 = dhis2.de.currentDataSetId; // selected Dataset
+        assessmentForm.period				 = $( '#selectedPeriodId' ).val(); // selected Dataset
+        assessmentForm.orgUnit				 = dhis2.de.getCurrentOrganisationUnit(); // current organisation Unit
+        assessmentForm.scoreId				 = 'kBm34QQsu8y-uGIJ6IdkP7Q-val'; // current organisation Unit
+        assessmentForm.maximumScore			 = 'bRESk8PGom4-uGIJ6IdkP7Q-val';
+        assessmentForm.obtainedPoints		 = 'ckkNEXtpMX1-uGIJ6IdkP7Q-val';
+        assessmentForm.obtainedId			 = 'indicatorfEDvYnNN3No'; // current organisation Unit
+        assessmentForm.dataValues			 = {};
+        assessmentForm.co 					 = 'uGIJ6IdkP7Q';
+        assessmentForm.availablePoints       = {};
+
+        dhis2.util.on('dhis2.de.event.dataValuesLoaded', function () {
+            $.each(assessmentForm.dictionary, function(dictionaryIndex, dictionaryValue) {
+
+                assessmentForm.availablePoints[dictionaryValue.possibleMax] = $('#indicator' + dictionaryValue.possibleMax).val();
+            });
+
+            //Change obtained points inputs into type number and specified maximum value
+            $.each(assessmentForm.dictionary, function(dictionaryIndex, dictionaryValue) {
+                var obtainedPointId =  dictionaryValue.obtainedPoints;
+                var possibleMaxId = dictionaryValue.possibleMax;
+                var thisInput = $('#'+ obtainedPointId);
+                var maxValue = assessmentForm.availablePoints[possibleMaxId];
+                //Set attributes
+                thisInput.prop('type', 'number');
+                thisInput.prop('max', maxValue);
+                thisInput.prop('min', '0');
+            });
+
+            //get total possible max value
+            $.each(assessmentForm.availablePoints, function(index, value) {
+                assessmentForm.totalpossibleMax += parseInt(value);
+            });
+
+            $(".entryfield, .entryoptionset").on("change", function(){
+
+                assessmentForm.runCalculations();
+            })
+
+
+            $(".entryoptionset").on('change',function(){
+
+                var id = $(this).attr('id');
+                var possible = '';
+                var obtained = '';
+                var percentage = '';
+                var number = 0;
+                $.each(assessmentForm.dictionary, function(index, value) {
+                    if(value.determinants == id) {
+                        possible = value.possibleMax;
+                        obtained = value.obtainedPoints;
+                        number = value.number;
+                        percentage = value.percentage;
+                    }
+                });
+                if($(this).val() == "true" || $(this).val() == true){
+                    dhis2.de.updateIndicators();
+                    $("#indicator"+possible).removeAttr('disabled').css("background-color", "#fff");
+                    $("#"+obtained).removeAttr("readonly");
+                    assessmentForm.runCalculations();
+
+                }
+
+                if($(this).val() == "false" || $(this).val() == false){
+                    dhis2.de.updateIndicators();
+                    $("#"+obtained).val("0");
+                    $("#"+obtained).attr('readonly','readonly');
+                    $("#indicator"+percentage).val("0");
+                    $("#indicator"+possible).prop('disabled', 'disabled').css("background-color", "#eee");
+                    assessmentForm.runCalculations();
+
+
+                }
+
+            });
+
+            assessmentForm.focusedRow = function(determinant,dictionary){
+                var obtainedUid = {};
+                $.each( dictionary, function(dictionaryIndex,dictionaryValue){
+                    if ( dictionaryValue.determinants == determinant )
+                    {
+                        obtainedUid = dictionaryValue;
+                    }
+                    return;
+                })
+
+                return obtainedUid;
+            }
+
+            assessmentForm.getDeFromId = function(id){
+                var dataElement = id.split('-');
+                return dataElement[0];
+            }
+
+            assessmentForm.sanitazeEntryForm = function(){
+
+                $.each( assessmentForm.dictionary, function(dictionaryIndex,dictionaryValue){
+
+                    $('#'+dictionaryValue.obtainedPoints).attr('readonly',false);
+                    $('#indicator'+dictionaryValue.possibleMax).prop("type","text");
+                })
+
+                $.each( assessmentForm.dataValues, function(dataIndex,dataValue){
+                    var de = dataValue.dataElement;
+                    var determinant = de+"-"+assessmentForm.co+"-val";
+
+                    if ( dataValue.value == 'false' || dataValue.value == false )
+                    {
+
+                        var row = assessmentForm.focusedRow(determinant,assessmentForm.dictionary);
+
+                        $('#'+row.obtainedPoints).val('');
+
+                        saveVal( assessmentForm.getDeFromId(row.obtainedPoints), assessmentForm.co, row.obtainedPoints );
+                        $('#'+row.obtainedPoints).attr('readonly','readonly');
+                        $('#indicator'+row.possibleMax).prop("type","hidden");
+                    } else if ( dataValue.value == 'true' || dataValue.value == true ) {
+                        var row = assessmentForm.focusedRow(determinant,assessmentForm.dictionary);
+
+                        $('#'+row.obtainedPoints).attr('readonly',false);
+                        $('#indicator'+row.possibleMax).prop("type","text");
+
+                    }
+
+                })
+            }
+
+            assessmentForm.runCalculations = function(){
+                var maxSoreParamenters = dhis2.de.splitFieldId(assessmentForm.maximumScore);
+                var obtPointParamenters = dhis2.de.splitFieldId(assessmentForm.obtainedPoints);
+                assessmentForm.totalObtainedPoints	 = 0;
+                assessmentForm.totalpossibleMax		 = 0;
+
+                $.each(assessmentForm.dictionary, function(itemIndex,itemValue){
+                    if(!($("#indicator"+itemValue.possibleMax).attr('disabled') == 'disabled')) {
+                        if(!($("#indicator" + itemValue.possibleMax).prop('type')=='hidden')){
+							if (!isNaN(parseInt($("#indicator"+itemValue.possibleMax).val()))) {
+								assessmentForm.totalpossibleMax += parseInt($("#indicator"+itemValue.possibleMax).val());
+							}
+					    }
+
+                        if (!isNaN(parseInt($("#"+itemValue.obtainedPoints).val()))) {
+                            assessmentForm.totalObtainedPoints += parseInt($("#"+itemValue.obtainedPoints).val());
+                        }
+                    }
+                });
+
+                if ( assessmentForm.totalpossibleMax > 0 )
+                {
+
+                    assessmentForm.facilityScore =  parseInt(assessmentForm.totalObtainedPoints)/parseInt(assessmentForm.totalpossibleMax)*100;
+                } else {
+                    assessmentForm.facilityScore = 0;
+                }
+
+
+                $('#Total').text(assessmentForm.totalpossibleMax);
+                $('#totalObtainedPoints').text(assessmentForm.totalObtainedPoints);
+//            $('#'+assessmentForm.scoreId+'').val(assessmentForm.facilityScore.toFixed(2));
+                $('#AveragePercent').text(assessmentForm.facilityScore.toFixed(2));
+
+                var scoreDe = assessmentForm.getDeFromId(assessmentForm.scoreId);
+
+                $('#'+assessmentForm.maximumScore).val(assessmentForm.totalpossibleMax);
+                $('#'+assessmentForm.obtainedPoints).val($('#'+assessmentForm.obtainedId).val());
+
+
+                saveVal( maxSoreParamenters.dataElementId, maxSoreParamenters.optionComboId, assessmentForm.maximumScore );
+                saveVal( obtPointParamenters.dataElementId, obtPointParamenters.optionComboId, assessmentForm.obtainedPoints );
+
+                saveVal( scoreDe, assessmentForm.co, assessmentForm.scoreId );
+            }
+
+            assessmentForm.produceAssessment = function(){
+
+                assessmentForm.url = '/api/dataValueSets.json?period='+assessmentForm.period+'&dataSet='+assessmentForm.dataSet+'&orgUnit='+assessmentForm.orgUnit;
+
+
+                $.get( assessmentForm.url, function(dataValues) {
+
+                        })
+                        .always(function(dataValues) {
+
+                            if ( dataValues.dataValues )
+                            {
+                                assessmentForm.dataValues = dataValues.dataValues;
+
+                            }
+                            assessmentForm.totalObtainedPoints	 = 0;
+                            assessmentForm.totalpossibleMax		 = 0;
+                            assessmentForm.sanitazeEntryForm();
+                            assessmentForm.runCalculations();
+                        });
+
+
+            }
+
+            /**
+             Runnig through dictionary for metadata and data binding to the fields
+             */
+            assessmentForm.produceAssessment();
+        });
+
+    });
+</script>
+<style type="text/css">#cde table {
+    border-collapse: collapse;
+}
+
+#cde table, #cde th, #cde td {
+    border: 1px solid #c0c0c0;
+}
+
+#cde td, #cde th {
+    height: 30px;
+    padding: 10px;
+    margin: 10px;
+}
+
+.cde-greyfield {
+    background-color: #e0e0e0;
+}
+</style>
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<div id="cde">
+<p><span style="font-size:28px;">Summary of Regional RBF Quartely Assessment</span></p>
+
+<p>&nbsp;</p>
+
+<p><span style="font-size:20px;">ASSESSMENT OF REGIONAL SECRETARIAT OFFICE </span><span style="font-size:20px;"> &nbsp;&nbsp;QUARTELY &nbsp; &nbsp;</span></p>
+
+<p><span style="font-size:20px;">REGION:&nbsp;&nbsp;<strong id="orgUnits">&nbsp;</strong></span></p>
+
+<p>&nbsp;</p>
+
+<table border="0" cellpadding="1" cellspacing="1">
+	<thead>
+		<tr>
+			<th>N</th>
+			<th>ASSESSED ACTIVITIES</th>
+			<th>Available Points</th>
+			<th>Attributed Points</th>
+			<th style="text-align:center;">%</th>
+			<th>Observations</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr id="timely_and_completeness_of_data_entry_row">
+			<td>1</td>
+			<td>Timely and Completeness of data entry</td>
+			<td><input id="indicatorb4BB5Jz2sQT" indicatorid="b4BB5Jz2sQT" name="indicator" readonly="readonly" title="" value="" /></td>
+			<td style="background-color:#fcfcfc"><input id="dC72Hr9L3CS-uGIJ6IdkP7Q-val" name="entryfield" style="width:7em//" title="" value="" />&nbsp;&nbsp;<input id="luWKU7n4PNP-uGIJ6IdkP7Q-val" name="entryfield" style="width:7em;//" title="" value="" /></td>
+			<td>&nbsp;<input id="indicatorDf0YrCUfzo8" indicatorid="Df0YrCUfzo8" name="indicator" readonly="readonly" style="width:7em;//" title="" value="" /></td>
+			<td><input id="poyg3f9CIvB-uGIJ6IdkP7Q-val" name="entryfield" title="" value="" /></td>
+		</tr>
+		<tr id="timely_r_rbfc_quarterly_meetings_row">
+			<td>2</td>
+			<td>Timery R-RBFC Quartely Meetings</td>
+			<td><input id="indicatorkfOhnxaFcF8" indicatorid="kfOhnxaFcF8" name="indicator" readonly="readonly" title="" value="" /></td>
+			<td><input id="QalJB3cw7KB-uGIJ6IdkP7Q-val" name="entryfield" style="width:7em//" title="" value="" />&nbsp;&nbsp;<input id="hTLr94P4w6j-uGIJ6IdkP7Q-val" name="entryfield" style="width:7em;//" title="" value="" /></td>
+			<td><input id="indicatorxM0BmsNqbY9" indicatorid="xM0BmsNqbY9" name="indicator" readonly="readonly" style="width:7em//" title="" value="" /></td>
+			<td><input id="qq32WhIlcuT-uGIJ6IdkP7Q-val" name="entryfield" title="" value="" /></td>
+		</tr>
+		<tr id="timely_transmission_of_approved_quarterly_row">
+			<td>3</td>
+			<td>Timely transmission of approved Quartely Consolidated Invoice to the NHIF</td>
+			<td><input id="indicatorbdrLXXPfpF2" indicatorid="bdrLXXPfpF2" name="indicator" readonly="readonly" title="" value="" /></td>
+			<td><input id="VKK2riGIksj-uGIJ6IdkP7Q-val" name="entryfield" style="width:7em//" title="" value="" />&nbsp;&nbsp;<input id="yHA0CjmcP9t-uGIJ6IdkP7Q-val" name="entryfield" style="width:7em;//" title="" value="" /></td>
+			<td><input id="indicatoryRXHhI12jnQ" indicatorid="yRXHhI12jnQ" name="indicator" readonly="readonly" style="width:7em//" title="" value="" /></td>
+			<td><input id="aYJcuFeCPcs-uGIJ6IdkP7Q-val" name="entryfield" title="" value="" /></td>
+		</tr>
+		<tr id="quality_score_row" style="font-weight:bolder">
+			<td>&nbsp;</td>
+			<td rowspan="1"><span style="font-size:18px;">TOTAL</span></td>
+			<td id="Total" style="text-align: center">&nbsp;</td>
+			<td id="totalObtainedPoints" style="text-align: center">&nbsp;</td>
+			<!--<td><input indicatorid="fEDvYnNN3No" id="indicatorfEDvYnNN3No" name="indicator" readonly title="" value=""/></td>--><!--<td><input id="kBm34QQsu8y-uGIJ6IdkP7Q-val" name="entryfield" title="" value=""/></td>-->
+			<td id="AveragePercent" style="text-align: center;">&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+	</tbody>
+</table>
+
+<div style="display:none;">
+<p>&nbsp;Max facility score<input id="bRESk8PGom4-uGIJ6IdkP7Q-val" name="entryfield" title="" value="" /></p>
+</div>
+
+<div style="display:none;">
+<p>&nbsp;ObjectPoint&nbsp;<input id="ckkNEXtpMX1-uGIJ6IdkP7Q-val" name="entryfield" title="" value="" /></p>
+</div>
+</div>
+
+</sectionelem>

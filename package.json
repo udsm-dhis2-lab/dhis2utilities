@@ -1,8 +1,8 @@
 {
   "main": "smscode.js",
   "scripts": {
-    "start":"nodejs data_store.js",
-    "start6": "nodejs transform_dhis2_forms.js",
+    "start6":"nodejs data_store.js",
+    "start": "nodejs transform_dhis2_forms.js",
     "start5": "nodejs create_form_attributes.js",
     "start3": "nodejs smscode.js",
     "start1": "nodejs auth_code.js",

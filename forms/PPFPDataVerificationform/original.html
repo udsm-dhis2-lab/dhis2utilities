@@ -1,0 +1,456 @@
+<sectionelem>
+<script>
+	 var indicatorAggregations = {};
+</script>
+<p>
+<style type="text/css">#cde table {
+  border-collapse: collapse;
+}
+
+#cde table, #cde th, #cde td {
+  border: 1px solid #c0c0c0;
+}
+#cde td, #cde th {
+  height: 30px;
+  padding: 10px;
+  margin: 10px;
+}
+
+.cde-greyfield {
+  background-color: #e0e0e0;
+}
+</style>
+<script>
+dhis2.util.on('dhis2.de.event.formReady', function (event, ds) {
+	$('input#printButton').removeAttr('onclick').attr('onclick','printDataEntryForm()');
+	$('div#contentDiv table tr td:nth-child(4)').find('input').each(function(inputindex,inputfield){
+	  //$(inputfield).css('display','none');
+	});
+	$('div#contentDiv2').remove();
+    $('div#contentDiv').css('display','block');
+	var selectedPeriod=$("#selectedPeriodId").val();
+	var currentOrganisationUnitSelected=dhis2.de.getCurrentOrganisationUnit();
+    $.get("../api/organisationUnits/"+currentOrganisationUnitSelected+".json?fields=id,name,parent[name]",function(data){
+		$('#parentOu').text(data.parent.name);
+		});
+
+$('#orgunit_header').text($('input#selectedOrganisationUnit').val());
+$('#datePrinted').text(JSON.stringify(Date()).replace('"','').replace('GMT+0300 (','').replace(')','').replace('"',''));
+
+});
+dhis2.util.on( 'dhis2.de.event.dataValuesLoaded', function( event, ds ) {
+  $('div#contentDiv table tr td:nth-child(4)').find('label').each(function(inputindex,inputfield){
+						$(inputfield).remove();
+						});
+						$('div#contentDiv table tr td:nth-child(4)').find('input').each(function(inputindex,inputfield){
+						$(inputfield).val();$(inputfield).after('<label style="text-align: center;">'+$(inputfield).val()+'</label>');$(inputfield).css('display','none');;
+						});
+} );
+						
+printDataEntryForm = function() {
+    //Reduce form size
+    $('div#cde table tbody td').attr('style','padding:3px!important;line-height:1!important;font-size: 12px!important;');
+	$('div#cde table tbody th').attr('style','padding:3px!important;line-height:1!important;font-size: 12px!important;');
+	$('div#cde table tbody th h1').attr('style','padding:0px!important;line-height:1!important;font-size: 12px!important;;text-align:center');
+	$('#orgunit_header').attr('style','padding:0px!important;line-height:1!important;font-size: 12px!important;text-align:center');
+	$('div#completenessDiv').hide()
+    window.print()
+    //Restore form size
+    $('div#cde table tbody td').removeAttr('style');
+	$('div#cde table tbody th').removeAttr('style');
+	$('div#cde table tbody th h1').removeAttr('style');
+	$('#orgunit_header').removeAttr('style');
+	$('div#completenessDiv').show()
+}
+function printBlankForm() {
+	//Reduce form size
+	//$( '#contentDiv input, select' ).css( 'display', 'none' );
+	$('div#cde table tbody td').attr('style','padding:3px!important;line-height:1!important;font-size: 12px!important;');
+	$('div#cde table tbody th').attr('style','padding:3px!important;line-height:1!important;font-size: 12px!important;');
+	$('div#cde table tbody th h1').attr('style','padding:0px!important;line-height:1!important;font-size: 12px!important;;text-align:center');
+	$('#orgunit_header').attr('style','padding:0px!important;line-height:1!important;font-size: 12px!important;text-align:center');
+	$('div#completenessDiv').hide()
+	window.print();
+	//Restore form size
+	//$( '#contentDiv input, select' ).css( 'display', '' );
+	$('div#cde table tbody td').removeAttr('style');
+	$('div#cde table tbody th').removeAttr('style');
+	$('div#cde table tbody th h1').removeAttr('style');
+	$('#orgunit_header').removeAttr('style');
+	$('div#completenessDiv').show()
+}
+
+</script></p>
+
+<div id="cde">
+<h2>PPFP Data Verification Form</h2>
+
+<table border="1" cellpadding="0" cellspacing="0" width="1000">
+	<tbody>
+		<tr class="cde-greyfield">
+			<th>#</th>
+			<th>Programme/ Service</th>
+			<th>Indicator</th>
+			<th>DHIS2<br />
+			Result</th>
+			<th>
+			<p>Facility&nbsp;</p>
+
+			<p>Summary<br />
+			Form</p>
+			</th>
+			<th>Tally<br />
+			Sheet</th>
+			<th>MTUHA<br />
+			Register</th>
+			<th>Do&nbsp;results<br />
+			agree?</th>
+			<th>
+			<p>Score</p>
+
+			<p>(0&nbsp;or&nbsp;1)</p>
+			</th>
+			<th>Comments or<br />
+			reasons for non-<br />
+			agreement</th>
+		</tr>
+		<tr class="cde-greyfield">
+			<th colspan="10" style="text-align: left;">MONTH AND YEAR:</th>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td colspan="9" rowspan="1"><strong>Ushauri wa Uzazi wa Mpango</strong></td>
+		</tr>
+		<tr>
+			<td>1</td>
+			<td><b id="docs-internal-guid-e682c4ee-db07-8fee-0e1e-fb25679496fa">PPFP</b></td>
+			<td>Idadi ya wateja waliopata ushauri wakati wa Ujauzito (ANC)<b>&nbsp;</b></td>
+			<td><input dataelementid="DKjJtOIrrw0" id="totalDKjJtOIrrw0" name="total" readonly="readonly" style="width:3.5em;text-align:center;/" title="" value="" /></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td><span style="line-height: 20.8px;">Y &nbsp; &nbsp; &nbsp; &nbsp;N</span></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>2</td>
+			<td><b id="docs-internal-guid-e682c4ee-db07-8fee-0e1e-fb25679496fa">PPFP</b></td>
+			<td>Idadi ya wateja waliopata Ushauri Baada ya Kujifungua<b> &nbsp;</b></td>
+			<td><input dataelementid="Zd3UU6IYQlN" id="totalZd3UU6IYQlN" name="total" readonly="readonly" style="width:3.5em;text-align:center;/" title="" value="" /></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td><span style="line-height: 20.8px;">Y &nbsp; &nbsp; &nbsp; &nbsp;N</span></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>3</td>
+			<td><b id="docs-internal-guid-e682c4ee-db07-8fee-0e1e-fb25679496fa">PPFP</b></td>
+			<td>Idadi ya wateja waliopata Ushauri Baada ya Mimba kuharibika<b>&nbsp;</b></td>
+			<td><input dataelementid="IhzKoFg2x38" id="totalIhzKoFg2x38" name="total" readonly="readonly" style="width:3.5em;text-align:center;/" title="" value="" /></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td><span style="line-height: 20.8px;">Y &nbsp; &nbsp; &nbsp; &nbsp;N</span></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td colspan="9" rowspan="1"><strong>Huduma zilizo tolewa baada ya mimba kuharibika(cPAC)<span style="line-height: 20.8px;">&nbsp;</span></strong></td>
+		</tr>
+		<tr>
+			<td>4</td>
+			<td><b id="docs-internal-guid-e682c4ee-db07-8fee-0e1e-fb25679496fa">PPFP</b></td>
+			<td>Idadi ya wateja waliosafishwa kwa Kutumia MVA</td>
+			<td><input dataelementid="epSeyeRZEKk" id="totalepSeyeRZEKk" name="total" readonly="readonly" style="width:3.5em;text-align:center;/" title="" value="" /></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td><span style="line-height: 20.8px;">Y &nbsp; &nbsp; &nbsp; &nbsp;N</span></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>5</td>
+			<td><b id="docs-internal-guid-e682c4ee-db07-8fee-0e1e-fb25679496fa">PPFP</b></td>
+			<td>Idadi ya Wateja waliosafishwa kwa kutumia D &amp; C</td>
+			<td><input dataelementid="LC9U5M28wCO" id="totalLC9U5M28wCO" name="total" readonly="readonly" style="width:3.5em;text-align:center;/" title="" value="" /></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td><span style="line-height: 20.8px;">Y &nbsp; &nbsp; &nbsp; &nbsp;N</span></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td colspan="9" rowspan="1"><strong>Njia ya Uzazi wa mpango baada ya Mimba kuharibika(cPAC)</strong></td>
+		</tr>
+		<tr>
+			<td>6</td>
+			<td><b id="docs-internal-guid-e682c4ee-db07-8fee-0e1e-fb25679496fa">PPFP</b></td>
+			<td>Idadi ya wateja waliowekewa vipandikizi aina &nbsp;ya Implanon NXT</td>
+			<td><input dataelementid="x5TXepFQQKy" id="totalx5TXepFQQKy" name="total" readonly="readonly" style="width:3.5em;text-align:center;/" title="" value="" /></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td><span style="line-height: 20.8px;">Y &nbsp; &nbsp; &nbsp; &nbsp;N</span></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>7</td>
+			<td><b id="docs-internal-guid-e682c4ee-db07-8fee-0e1e-fb25679496fa">PPFP</b></td>
+			<td>
+			<p dir="ltr">Idadi ya wateja waliowekewa vipandikizi aina ya Jadelle</p>
+			</td>
+			<td><input dataelementid="Q2XMRZH3IHY" id="totalQ2XMRZH3IHY" name="total" readonly="readonly" style="width:3.5em;text-align:center;/" title="" value="" /></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td><span style="line-height: 20.8px;">Y &nbsp; &nbsp; &nbsp; &nbsp;N</span></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>8</td>
+			<td><b id="docs-internal-guid-e682c4ee-db07-8fee-0e1e-fb25679496fa">PPFP</b></td>
+			<td>Wateja waliowekewa Kitanzi baada ya Mimba Kuharibika</td>
+			<td><input dataelementid="FdAyaohqbtT" id="totalFdAyaohqbtT" name="total" readonly="readonly" style="width:3.5em;text-align:center;/" title="" value="" /></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td><span style="line-height: 20.8px;">Y &nbsp; &nbsp; &nbsp; &nbsp;N</span></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td colspan="9" rowspan="1"><strong>Njia ya Uzazi wa Mpango Baada ya Kujifungua(PPFP)</strong></td>
+		</tr>
+		<tr>
+			<td>9</td>
+			<td><b id="docs-internal-guid-e682c4ee-db07-8fee-0e1e-fb25679496fa">PPFP</b></td>
+			<td>Idadi ya wateja waliowekewa vipandikizi aina ya Implanon NXT<b> </b></td>
+			<td><input dataelementid="DwKEs6B0cME" id="totalDwKEs6B0cME" name="total" readonly="readonly" style="width:3.5em;text-align:center;/" title="" value="" /></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td><span style="line-height: 20.8px;">Y &nbsp; &nbsp; &nbsp; &nbsp;N</span></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>10</td>
+			<td><b id="docs-internal-guid-e682c4ee-db07-8fee-0e1e-fb25679496fa">PPFP</b></td>
+			<td>Idadi ya wateja waliowekewa vipandikizi aina ya Jadelle</td>
+			<td><input dataelementid="xxCyJjSwo1Q" id="totalxxCyJjSwo1Q" name="total" readonly="readonly" style="width:3.5em;text-align:center;/" title="" value="" /></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td><span style="line-height: 20.8px;">Y &nbsp; &nbsp; &nbsp; &nbsp;N</span></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>11</td>
+			<td><b id="docs-internal-guid-e682c4ee-db07-8fee-0e1e-fb25679496fa">PPFP</b></td>
+			<td>Waliowekewa Kitanzi ndani ya dakika 10 baada ya kujifungua</td>
+			<td><input dataelementid="WEB4lLf7nlh" id="totalWEB4lLf7nlh" name="total" readonly="readonly" style="width:3.5em;text-align:center;/" title="" value="" /></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td><span style="line-height: 20.8px;">Y &nbsp; &nbsp; &nbsp; &nbsp;N</span></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>12</td>
+			<td><b id="docs-internal-guid-e682c4ee-db07-8fee-0e1e-fb25679496fa">PPFP</b></td>
+			<td>Waliowekewa Kitanzi ndani ya saa 48 baada ya kujifungua</td>
+			<td><input dataelementid="UYd8Pxz6mgR" id="totalUYd8Pxz6mgR" name="total" readonly="readonly" style="width:3.5em;text-align:center;/" title="" value="" /></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td><span style="line-height: 20.8px;">Y &nbsp; &nbsp; &nbsp; &nbsp;N</span></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>13</td>
+			<td><b id="docs-internal-guid-e682c4ee-db07-8fee-0e1e-fb25679496fa">PPFP</b></td>
+			<td>Wateja waliowekewa Kitanzi baada ya uzazi kwa upasuaji( intra cesarian)</td>
+			<td><input dataelementid="S9R946sP5eK" id="totalS9R946sP5eK" name="total" readonly="readonly" style="width:3.5em;text-align:center;/" title="" value="" /></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td><span style="line-height: 20.8px;">Y &nbsp; &nbsp; &nbsp; &nbsp;N</span></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td colspan="9" rowspan="1"><strong>Rufaa</strong></td>
+		</tr>
+		<tr>
+			<td>14</td>
+			<td><b id="docs-internal-guid-e682c4ee-db07-8fee-0e1e-fb25679496fa">PPFP</b></td>
+			<td>Idadi ya waliopewa rufaa kwa ajili ya huduma ya cPAC</td>
+			<td id="maternalDeath"><input dataelementid="sB2vBcW7Qxm" id="totalsB2vBcW7Qxm" name="total" readonly="readonly" style="width:3.5em;text-align:center;/" title="" value="" /></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td><span style="line-height: 20.8px;">Y &nbsp; &nbsp; &nbsp; &nbsp;N</span></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>15</td>
+			<td><b id="docs-internal-guid-e682c4ee-db07-8fee-0e1e-fb25679496fa">PPFP</b></td>
+			<td>Idadi ya waliopewa rufaa kwa ajili ya huduma ya Uzazi wa Mpango</td>
+			<td><input dataelementid="xV5kKSFDxbK" id="totalxV5kKSFDxbK" name="total" readonly="readonly" style="width:3.5em;text-align:center;/" title="" value="" /></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td><span style="line-height: 20.8px;">Y &nbsp; &nbsp; &nbsp; &nbsp;N</span></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td colspan="2">Name of facility:&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td id="orgunit_header">&nbsp;</td>
+			<td colspan="7" rowspan="1"><strong>Facility Data Quality Verification Score</strong></td>
+		</tr>
+		<tr>
+			<td colspan="2" rowspan="1">Council:</td>
+			<td id="parentOu">&nbsp;</td>
+			<td colspan="2" rowspan="1">Total score based on indicators assessed</td>
+			<td>[A]</td>
+			<td>&nbsp;</td>
+			<td colspan="2" rowspan="3">Percent score = [A]/[B]</td>
+			<td colspan="1" rowspan="3">&nbsp;</td>
+		</tr>
+		<tr>
+			<td colspan="2" rowspan="1">Date of Verification</td>
+			<td id="datePrinted">&nbsp;</td>
+			<td colspan="2" rowspan="2">Total number of indicators assessed</td>
+			<td>[B]</td>
+			<td colspan="1" rowspan="2">&nbsp;</td>
+		</tr>
+		<tr>
+			<td colspan="3" rowspan="2">
+			<p>Team Names and Signatures:</p>
+
+			<p>&nbsp;</p>
+
+			<p>&nbsp;</p>
+
+			<p><strong>Please attach this form to the National Facility DQA tool</strong></p>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="3">&nbsp;</td>
+			<td colspan="1">&nbsp;</td>
+			<td colspan="2">&nbsp;</td>
+			<td colspan="1">&nbsp;</td>
+		</tr>
+	</tbody>
+</table>
+</div>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;display:none">
+	<tbody>
+		<tr>
+			<td><input id="Zd3UU6IYQlN-ioYYLAEfTjy-val" name="entryfield" title="" value="" /></td>
+			<td><input id="Zd3UU6IYQlN-vx8wtWr47RR-val" name="entryfield" title="" value="" /></td>
+			<td><input id="Zd3UU6IYQlN-LQBXF4YsSVK-val" name="entryfield" title="" value="" /></td>
+			<td><input id="Zd3UU6IYQlN-xoiPoPKhFf8-val" name="entryfield" title="" value="" /></td>
+			<td><input id="LC9U5M28wCO-ioYYLAEfTjy-val" name="entryfield" title="" value="" /></td>
+			<td><input id="LC9U5M28wCO-vx8wtWr47RR-val" name="entryfield" title="" value="" /></td>
+			<td><input id="LC9U5M28wCO-LQBXF4YsSVK-val" name="entryfield" title="" value="" /></td>
+		</tr>
+		<tr>
+			<td><input id="LC9U5M28wCO-xoiPoPKhFf8-val" name="entryfield" title="" value="" /></td>
+			<td><input id="FdAyaohqbtT-ioYYLAEfTjy-val" name="entryfield" title="" value="" /></td>
+			<td><input id="FdAyaohqbtT-vx8wtWr47RR-val" name="entryfield" title="" value="" /></td>
+			<td><input id="FdAyaohqbtT-LQBXF4YsSVK-val" name="entryfield" title="" value="" /></td>
+			<td><input id="FdAyaohqbtT-xoiPoPKhFf8-val" name="entryfield" title="" value="" /></td>
+			<td><input id="S9R946sP5eK-ioYYLAEfTjy-val" name="entryfield" title="" value="" /></td>
+			<td><input id="S9R946sP5eK-vx8wtWr47RR-val" name="entryfield" title="" value="" /></td>
+		</tr>
+		<tr>
+			<td><input id="S9R946sP5eK-LQBXF4YsSVK-val" name="entryfield" title="" value="" /></td>
+			<td><input id="S9R946sP5eK-xoiPoPKhFf8-val" name="entryfield" title="" value="" /></td>
+			<td><input id="Q2XMRZH3IHY-ioYYLAEfTjy-val" name="entryfield" title="" value="" /></td>
+			<td><input id="Q2XMRZH3IHY-vx8wtWr47RR-val" name="entryfield" title="" value="" /></td>
+			<td><input id="Q2XMRZH3IHY-LQBXF4YsSVK-val" name="entryfield" title="" value="" /></td>
+			<td><input id="Q2XMRZH3IHY-xoiPoPKhFf8-val" name="entryfield" title="" value="" /></td>
+			<td><input id="xxCyJjSwo1Q-ioYYLAEfTjy-val" name="entryfield" title="" value="" /></td>
+		</tr>
+		<tr>
+			<td><input id="xxCyJjSwo1Q-vx8wtWr47RR-val" name="entryfield" title="" value="" /></td>
+			<td><input id="xxCyJjSwo1Q-LQBXF4YsSVK-val" name="entryfield" title="" value="" /></td>
+			<td><input id="xxCyJjSwo1Q-xoiPoPKhFf8-val" name="entryfield" title="" value="" /></td>
+			<td><input id="x5TXepFQQKy-ioYYLAEfTjy-val" name="entryfield" title="" value="" /></td>
+			<td><input id="x5TXepFQQKy-vx8wtWr47RR-val" name="entryfield" title="" value="" /></td>
+			<td><input id="x5TXepFQQKy-LQBXF4YsSVK-val" name="entryfield" title="" value="" /></td>
+			<td><input id="x5TXepFQQKy-xoiPoPKhFf8-val" name="entryfield" title="" value="" /></td>
+		</tr>
+		<tr>
+			<td><input id="IhzKoFg2x38-ioYYLAEfTjy-val" name="entryfield" title="" value="" /></td>
+			<td><input id="IhzKoFg2x38-vx8wtWr47RR-val" name="entryfield" title="" value="" /></td>
+			<td><input id="IhzKoFg2x38-LQBXF4YsSVK-val" name="entryfield" title="" value="" /></td>
+			<td><input id="IhzKoFg2x38-xoiPoPKhFf8-val" name="entryfield" title="" value="" /></td>
+			<td><input id="DKjJtOIrrw0-ioYYLAEfTjy-val" name="entryfield" title="" value="" /></td>
+			<td><input id="DKjJtOIrrw0-vx8wtWr47RR-val" name="entryfield" title="" value="" /></td>
+			<td><input id="DKjJtOIrrw0-xoiPoPKhFf8-val" name="entryfield" title="" value="" /></td>
+		</tr>
+		<tr>
+			<td><input id="DKjJtOIrrw0-LQBXF4YsSVK-val" name="entryfield" title="" value="" /></td>
+			<td><input id="epSeyeRZEKk-ioYYLAEfTjy-val" name="entryfield" title="" value="" /></td>
+			<td><input id="epSeyeRZEKk-vx8wtWr47RR-val" name="entryfield" title="" value="" /></td>
+			<td><input id="epSeyeRZEKk-LQBXF4YsSVK-val" name="entryfield" title="" value="" /></td>
+			<td><input id="epSeyeRZEKk-xoiPoPKhFf8-val" name="entryfield" title="" value="" /></td>
+			<td><input id="DwKEs6B0cME-ioYYLAEfTjy-val" name="entryfield" title="" value="" /></td>
+			<td><input id="DwKEs6B0cME-vx8wtWr47RR-val" name="entryfield" title="" value="" /></td>
+		</tr>
+		<tr>
+			<td><input id="DwKEs6B0cME-LQBXF4YsSVK-val" name="entryfield" title="" value="" /></td>
+			<td><input id="DwKEs6B0cME-xoiPoPKhFf8-val" name="entryfield" title="" value="" /></td>
+			<td><input id="UYd8Pxz6mgR-ioYYLAEfTjy-val" name="entryfield" title="" value="" /></td>
+			<td><input id="UYd8Pxz6mgR-vx8wtWr47RR-val" name="entryfield" title="" value="" /></td>
+			<td><input id="UYd8Pxz6mgR-LQBXF4YsSVK-val" name="entryfield" title="" value="" /></td>
+			<td><input id="UYd8Pxz6mgR-xoiPoPKhFf8-val" name="entryfield" title="" value="" /></td>
+			<td><input id="sB2vBcW7Qxm-ioYYLAEfTjy-val" name="entryfield" title="" value="" /></td>
+		</tr>
+		<tr>
+			<td><input id="sB2vBcW7Qxm-vx8wtWr47RR-val" name="entryfield" title="" value="" /></td>
+			<td><input id="sB2vBcW7Qxm-LQBXF4YsSVK-val" name="entryfield" title="" value="" /></td>
+			<td><input id="sB2vBcW7Qxm-xoiPoPKhFf8-val" name="entryfield" title="" value="" /></td>
+			<td><input id="WEB4lLf7nlh-ioYYLAEfTjy-val" name="entryfield" title="" value="" /></td>
+			<td><input id="WEB4lLf7nlh-vx8wtWr47RR-val" name="entryfield" title="" value="" /></td>
+			<td><input id="WEB4lLf7nlh-LQBXF4YsSVK-val" name="entryfield" title="" value="" /></td>
+			<td><input id="WEB4lLf7nlh-xoiPoPKhFf8-val" name="entryfield" title="" value="" /></td>
+		</tr>
+		<tr>
+			<td><input id="xV5kKSFDxbK-ioYYLAEfTjy-val" name="entryfield" title="" value="" /></td>
+			<td><input id="xV5kKSFDxbK-vx8wtWr47RR-val" name="entryfield" title="" value="" /></td>
+			<td><input id="xV5kKSFDxbK-LQBXF4YsSVK-val" name="entryfield" title="" value="" /></td>
+			<td><input id="xV5kKSFDxbK-xoiPoPKhFf8-val" name="entryfield" title="" value="" /></td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>&nbsp;</p>
+
+</sectionelem>
