@@ -1,5 +1,6 @@
 <meta charset="UTF-8">
 <title></title>
+
 <script type="text/javascript">
     dhis2.util.on( 'dhis2.de.event.formReady', function( event, ds ) {
 
@@ -423,8 +424,34 @@
     disabled {
         background-color: #FFFFFF;
     }
-    .ui-widget-content {
-        border: 1px solid #FFFFFF;
+    ui-accordion-content{
+        height:auto !important;
+    }
+    .cde-greyfield, .cde-greyfield2, .cde-greyfield-ipd, .cde-greyfield3 {
+        height: 15px;
+        background-color: #e0e0e0;
+    }
+
+    #cde td, #cde th {
+        height: 15px;
+        padding: 6px;
+        margin: 10px;
+    }
+
+    .cde-NORMAL td, .cde-NORMAL th {
+        height: 15px;
+        padding: 6px;
+        border: 1px solid #c0c0c0;
+    }
+
+    .page th {
+        text-align: center;
+        color: #39547d;
+        padding: 2px 0 2px 1px;
+        font-size: 13px;
+        font-weight: bold;
+        border-collapse: collapse;
+        border-bottom: 1px solid #cad5e5;
     }
     </style>
 </p>
@@ -577,10 +604,10 @@
                 </style>
                 Sub Group Total</td>
             <td>&nbsp;</td>
-            <td><input disabled="disabled" id="KmXk9x3Vufy" indicatorformula="(#{Zjkenpllpi6.konzHOzokck}+#{Zjkenpllpi6.hbDciyXwjXQ}+#{Zjkenpllpi6.iXCVhTEpvBb}+#{Zjkenpllpi6.rWIxhGL5P8d}+#{Zjkenpllpi6.ermZ2ZbIOtR}+#{Zjkenpllpi6.q5uNkzBHTyI}+#{Zjkenpllpi6.kaa5vGLOjcl}+#{Zjkenpllpi6.c3muzJcXQSv}+#{Zjkenpllpi6.Thy3dUMxfyE}+#{h5h3cTCtSfr.usAgPsqwFNE})/(1)" name="indicatorFormula" style="background-color: #FFFFFF; border: solid 1px; height: 24px; width: 4em;" /></td>
-            <td><input disabled="disabled" id="ZaIzPcdcf5b" indicatorformula="(#{Zjkenpllpi6.RlRa8KeXBzq}+#{Zjkenpllpi6.VBGQlJ6oPjq}+#{Zjkenpllpi6.bYh167FVptJ}+#{Zjkenpllpi6.GFLZJAnaTgf}+#{Zjkenpllpi6.k2qOZPS3tPX}+#{Zjkenpllpi6.NCUqQKB7NMo}+#{Zjkenpllpi6.c8I8yUsaeAg}+#{Zjkenpllpi6.CHZb51jx1S6}+#{Zjkenpllpi6.wy07jOgyGp3}+#{h5h3cTCtSfr.Ud6Dd9dGBi7})/(1)" name="indicatorFormula" style="background-color: #FFFFFF; border: solid 1px; height: 24px; width: 4em;" /></td>
-            <td><input disabled="disabled" id="G02EosuK0zn" indicatorformula="(#{Zjkenpllpi6.FrC6aNn8BNh}+#{Zjkenpllpi6.tWfiMNWHrbr}+#{Zjkenpllpi6.NkOx2bikDFo}+#{Zjkenpllpi6.IZ20A0aLwNY}+#{Zjkenpllpi6.lu9AW5Mi3L5}+#{Zjkenpllpi6.pyZOd8LCq3n}+#{Zjkenpllpi6.YQ5mDtb1gvZ}+#{Zjkenpllpi6.QiFuE75VhJL}+#{Zjkenpllpi6.Qgm4bPuKGZ4}+#{h5h3cTCtSfr.HBy1OuNjFds})/(1)" name="indicatorFormula" style="background-color: #FFFFFF; border: solid 1px; height: 24px; width: 4em;" /></td>
-            <td><input disabled="disabled" id="GXyr6HDvFU3" indicatorformula="(#{Zjkenpllpi6.ikBGgoTXYg0}+#{Zjkenpllpi6.zBQjhIaFO4P}+#{Zjkenpllpi6.LpLXc09dOte}+#{Zjkenpllpi6.AkYcU8syb6A}+#{Zjkenpllpi6.bgzsDvVjJip}+#{Zjkenpllpi6.YSx0yk405DP}+#{Zjkenpllpi6.UYmifePPifi}+#{Zjkenpllpi6.AZ3VPc9NUsb}+#{Zjkenpllpi6.T3hwTlIPgXx}+#{h5h3cTCtSfr.lOu04lXipeH})/(1)" name="indicatorFormula" style="background-color: #FFFFFF; border: solid 1px; height: 24px; width: 4em;" /></td>
+            <td><input disabled="disabled" id="KmXk9x3Vufy" indicatorformula="(#{Zjkenpllpi6.konzHOzokck}+#{Zjkenpllpi6.hbDciyXwjXQ}+#{Zjkenpllpi6.iXCVhTEpvBb}+#{Zjkenpllpi6.rWIxhGL5P8d}+#{Zjkenpllpi6.ermZ2ZbIOtR}+#{Zjkenpllpi6.q5uNkzBHTyI}+#{Zjkenpllpi6.kaa5vGLOjcl}+#{Zjkenpllpi6.c3muzJcXQSv}+#{Zjkenpllpi6.Thy3dUMxfyE}+#{h5h3cTCtSfr.usAgPsqwFNE})/(1)" name="indicatorFormula" style="background-color: #FFFFFF; border: solid 1px;" /></td>
+            <td><input disabled="disabled" id="ZaIzPcdcf5b" indicatorformula="(#{Zjkenpllpi6.RlRa8KeXBzq}+#{Zjkenpllpi6.VBGQlJ6oPjq}+#{Zjkenpllpi6.bYh167FVptJ}+#{Zjkenpllpi6.GFLZJAnaTgf}+#{Zjkenpllpi6.k2qOZPS3tPX}+#{Zjkenpllpi6.NCUqQKB7NMo}+#{Zjkenpllpi6.c8I8yUsaeAg}+#{Zjkenpllpi6.CHZb51jx1S6}+#{Zjkenpllpi6.wy07jOgyGp3}+#{h5h3cTCtSfr.Ud6Dd9dGBi7})/(1)" name="indicatorFormula" style="background-color: #FFFFFF; border: solid 1px;" /></td>
+            <td><input disabled="disabled" id="G02EosuK0zn" indicatorformula="(#{Zjkenpllpi6.FrC6aNn8BNh}+#{Zjkenpllpi6.tWfiMNWHrbr}+#{Zjkenpllpi6.NkOx2bikDFo}+#{Zjkenpllpi6.IZ20A0aLwNY}+#{Zjkenpllpi6.lu9AW5Mi3L5}+#{Zjkenpllpi6.pyZOd8LCq3n}+#{Zjkenpllpi6.YQ5mDtb1gvZ}+#{Zjkenpllpi6.QiFuE75VhJL}+#{Zjkenpllpi6.Qgm4bPuKGZ4}+#{h5h3cTCtSfr.HBy1OuNjFds})/(1)" name="indicatorFormula" style="background-color: #FFFFFF; border: solid 1px;" /></td>
+            <td><input disabled="disabled" id="GXyr6HDvFU3" indicatorformula="(#{Zjkenpllpi6.ikBGgoTXYg0}+#{Zjkenpllpi6.zBQjhIaFO4P}+#{Zjkenpllpi6.LpLXc09dOte}+#{Zjkenpllpi6.AkYcU8syb6A}+#{Zjkenpllpi6.bgzsDvVjJip}+#{Zjkenpllpi6.YSx0yk405DP}+#{Zjkenpllpi6.UYmifePPifi}+#{Zjkenpllpi6.AZ3VPc9NUsb}+#{Zjkenpllpi6.T3hwTlIPgXx}+#{h5h3cTCtSfr.lOu04lXipeH})/(1)" name="indicatorFormula" style="background-color: #FFFFFF; border: solid 1px;" /></td>
         </tr>
         <tr class="LUGALO_MUHIMBILI_KCMC_MAMC_JKCI_MIREMBE_MBEYA_MOI">
             <td class="cde-greyfield">&nbsp;</td>
@@ -739,10 +766,10 @@
                 </style>
                 Sub Group Total</td>
             <td>&nbsp;</td>
-            <td><input disabled="disabled" id="ekXm2JvYzFT" indicatorformula="(#{S45IsKe2NC1.c8VA4dZEmU3}+#{S45IsKe2NC1.O4ebJSmDXrN}+#{S45IsKe2NC1.jYKlCjLuqRw}+#{S45IsKe2NC1.oNbXxEDNEpg}+#{S45IsKe2NC1.v2UaZnP5IPK}+#{S45IsKe2NC1.AqkO6g23AWW}+#{S45IsKe2NC1.fSKcM8735IJ}+#{S45IsKe2NC1.Vtq92nNrNjM}+#{S45IsKe2NC1.kYdbrY0UvAB}+#{S45IsKe2NC1.gCZQIk1haEI})/(1)" name="indicatorFormula" style="background-color: #FFFFFF; border: solid 1px; height: 24px; width: 4em;" /></td>
-            <td><input disabled="disabled" id="TlpQrRZah79" indicatorformula="(#{S45IsKe2NC1-Zv8Jjnp5839}+#{S45IsKe2NC1.XZFZwTz6w7y}+#{S45IsKe2NC1.LFhmSpwSBkh}+#{S45IsKe2NC1.qYm6oa8YDUW}+#{S45IsKe2NC1.YJgfiCWVPu1}+#{S45IsKe2NC1.hmGtixaMMev}+#{S45IsKe2NC1.VSFgI9uerpd}+#{S45IsKe2NC1.M9ucxMBj75a}+#{S45IsKe2NC1.cO0HzXOVOCA}+#{S45IsKe2NC1.fYxWhlskd8o})/(1)" name="indicatorFormula" style="background-color: #FFFFFF; border: solid 1px; height: 24px; width: 4em;" /></td>
-            <td><input disabled="disabled" id="L0imnjWrg32" indicatorformula="(#{S45IsKe2NC1.Lfipy3HXohe}+#{S45IsKe2NC1.sYeyxeVNAxK}+#{S45IsKe2NC1.LFhmSpwSBkh}+#{S45IsKe2NC1.YRm75Z2cQxO}+#{S45IsKe2NC1.p20v7ZRf7zw}+#{S45IsKe2NC1.iCkgwMl1lqW}+#{S45IsKe2NC1.kyjps1aU7Kz}+#{S45IsKe2NC1.ULY83UCMDC7}+#{S45IsKe2NC1.O6BeCOe4oQ0}+#{S45IsKe2NC1.kLUJSEoK2fw})/(1)" name="indicatorFormula" style="background-color: #FFFFFF; border: solid 1px; height: 24px; width: 4em;" /></td>
-            <td><input disabled="disabled" id="Wc5kfPb4vB5" indicatorformula="(#{S45IsKe2NC1.y2n3Clwt8bK}+#{S45IsKe2NC1.uhwqvq8a7nx}+#{S45IsKe2NC1.PwHasQcCjcP}+#{S45IsKe2NC1.TUftpF4rVW1}+#{S45IsKe2NC1.BYQ6SEyW4ad}+#{S45IsKe2NC1.fmktuRVRn9R}+#{S45IsKe2NC1.aeHLcDficsN}+#{S45IsKe2NC1.DTs6vgdzymR}+#{S45IsKe2NC1.iCr07WgXhae}+#{S45IsKe2NC1.vOEC3Yrj573})/(1)" name="indicatorFormula" style="background-color: #FFFFFF; border: solid 1px; height: 24px; width: 4em;" /></td>
+            <td><input disabled="disabled" id="ekXm2JvYzFT" indicatorformula="(#{S45IsKe2NC1.c8VA4dZEmU3}+#{S45IsKe2NC1.O4ebJSmDXrN}+#{S45IsKe2NC1.jYKlCjLuqRw}+#{S45IsKe2NC1.oNbXxEDNEpg}+#{S45IsKe2NC1.v2UaZnP5IPK}+#{S45IsKe2NC1.AqkO6g23AWW}+#{S45IsKe2NC1.fSKcM8735IJ}+#{S45IsKe2NC1.Vtq92nNrNjM}+#{S45IsKe2NC1.kYdbrY0UvAB}+#{S45IsKe2NC1.gCZQIk1haEI})/(1)" name="indicatorFormula" style="background-color: #FFFFFF; border: solid 1px;" /></td>
+            <td><input disabled="disabled" id="TlpQrRZah79" indicatorformula="(#{S45IsKe2NC1-Zv8Jjnp5839}+#{S45IsKe2NC1.XZFZwTz6w7y}+#{S45IsKe2NC1.LFhmSpwSBkh}+#{S45IsKe2NC1.qYm6oa8YDUW}+#{S45IsKe2NC1.YJgfiCWVPu1}+#{S45IsKe2NC1.hmGtixaMMev}+#{S45IsKe2NC1.VSFgI9uerpd}+#{S45IsKe2NC1.M9ucxMBj75a}+#{S45IsKe2NC1.cO0HzXOVOCA}+#{S45IsKe2NC1.fYxWhlskd8o})/(1)" name="indicatorFormula" style="background-color: #FFFFFF; border: solid 1px;" /></td>
+            <td><input disabled="disabled" id="L0imnjWrg32" indicatorformula="(#{S45IsKe2NC1.Lfipy3HXohe}+#{S45IsKe2NC1.sYeyxeVNAxK}+#{S45IsKe2NC1.LFhmSpwSBkh}+#{S45IsKe2NC1.YRm75Z2cQxO}+#{S45IsKe2NC1.p20v7ZRf7zw}+#{S45IsKe2NC1.iCkgwMl1lqW}+#{S45IsKe2NC1.kyjps1aU7Kz}+#{S45IsKe2NC1.ULY83UCMDC7}+#{S45IsKe2NC1.O6BeCOe4oQ0}+#{S45IsKe2NC1.kLUJSEoK2fw})/(1)" name="indicatorFormula" style="background-color: #FFFFFF; border: solid 1px;" /></td>
+            <td><input disabled="disabled" id="Wc5kfPb4vB5" indicatorformula="(#{S45IsKe2NC1.y2n3Clwt8bK}+#{S45IsKe2NC1.uhwqvq8a7nx}+#{S45IsKe2NC1.PwHasQcCjcP}+#{S45IsKe2NC1.TUftpF4rVW1}+#{S45IsKe2NC1.BYQ6SEyW4ad}+#{S45IsKe2NC1.fmktuRVRn9R}+#{S45IsKe2NC1.aeHLcDficsN}+#{S45IsKe2NC1.DTs6vgdzymR}+#{S45IsKe2NC1.iCr07WgXhae}+#{S45IsKe2NC1.vOEC3Yrj573})/(1)" name="indicatorFormula" style="background-color: #FFFFFF; border: solid 1px;" /></td>
         </tr>
         <tr class="LUGALO_MUHIMBILI_KCMC_MAMC_JKCI_MIREMBE_MBEYA_MOI">
             <td class="cde-greyfield">&nbsp;</td>
