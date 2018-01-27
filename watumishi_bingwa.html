@@ -318,6 +318,32 @@
     .cde-greyfield, .cde-greyfield2, .cde-greyfield-ipd, .cde-greyfield3 {
         background-color: #e0e0e0;
     }
+    #tableA-div{
+        counter-reset: watumishi-sno;
+    }
+    #tableB-div{
+        counter-reset: mabingwa-sno;
+    }
+
+    #tableA-div td span::before{
+        counter-increment: watumishi-sno;
+        content: counter(watumishi-sno);
+    }
+    #tableB-div td span::before{
+        counter-increment: mabingwa-sno;
+        content: counter(mabingwa-sno);
+    }
+    td:nth-child(6){
+        width: 10%;
+    }
+    td:nth-child(3), td:nth-child(4), td:nth-child(5) {
+        width: 10%;
+    }
+
+    td:first-child {
+        width: 1%;
+    }
+
     #tableA-div input {
         width: 4em;
     }
@@ -335,7 +361,6 @@
     }
     </style>
 </p>
-
 <!--<p><span style="font-size:20px;"><strong>HMIS Taarifa za Watumishi na Madaktari Bingwa</strong></span></p>-->
 
 <div class="toggle-buttons hideInPrint">
@@ -352,25 +377,24 @@
         <div id="tableA-div" style="padding: none;">
             <table border="1" cellpadding="0" cellspacing="0" width="800">
                 <tbody>
-
                 <tr class="cde-greyfield3">
                     <th>SN</th>
                     <th>Kada</th>
                     <th>Ikama</th>
                     <th>Waliopo</th>
-                    <th>Pungufu</th>
+                    <th>Pungufu/Waliozidi</th>
                     <th>Walioondoka</th>
                 </tr>
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
-                    <td><span></span></td>
+                    <td><span>.</span></td>
                     <td style="width: 15em;">Accountant</td>
-                    <td><input id="pgQcu1senjO-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Accountant watumishi_ikama " value="[ Watumishi_Accountant watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN046" indicatorid="REFWATIN046" name="indicator" readonly="readonly" title="Ikama ya Accountant" value="[ Ikama ya Accountant ]" /></td>
                     <td><input id="pgQcu1senjO-r8ZhrId127A-val" name="entryfield" title="Watumishi_Accountant watumishi_waliopo" value="[ Watumishi_Accountant watumishi_waliopo ]" /></td>
                     <td><input id="pgQcu1senjO-UugiDlXctdf-val" name="entryfield" title="Watumishi_Accountant watumishi_pungufu" value="[ Watumishi_Accountant watumishi_pungufu ]" /></td>
                     <td><input id="pgQcu1senjO-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Accountant watumishi_walioondoka" value="[ Watumishi_Accountant watumishi_walioondoka ]" /></td>
                 </tr>
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
-                    <td><span></span></td>
+                    <td>&nbsp;</td>
                     <td style="width: 15em;">Accounts Technician</td>
                     <td><input id="qrtG9qzK1v0-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Accounts Technician watumishi_ikama " value="[ Watumishi_Accounts Technician watumishi_ikama  ]" /></td>
                     <td><input id="qrtG9qzK1v0-r8ZhrId127A-val" name="entryfield" title="Watumishi_Accounts Technician watumishi_waliopo" value="[ Watumishi_Accounts Technician watumishi_waliopo ]" /></td>
@@ -378,7 +402,7 @@
                     <td><input id="qrtG9qzK1v0-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Accounts Technician watumishi_walioondoka" value="[ Watumishi_Accounts Technician watumishi_walioondoka ]" /></td>
                 </tr>
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
-                    <td><span></span></td>
+                    <td><span>.</span></td>
                     <td style="width: 15em;">Administrative Officer</td>
                     <td><input id="CRnGfKZz5xl-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Administrative Officer watumishi_ikama " value="[ Watumishi_Administrative Officer watumishi_ikama  ]" /></td>
                     <td><input id="CRnGfKZz5xl-r8ZhrId127A-val" name="entryfield" title="Watumishi_Administrative Officer watumishi_waliopo" value="[ Watumishi_Administrative Officer watumishi_waliopo ]" /></td>
@@ -420,7 +444,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Assistant Accountant</td>
-                    <td><input id="Rh7vchFXUzm-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Assistant Accountant watumishi_ikama " value="[ Watumishi_Assistant Accountant watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN047" indicatorid="REFWATIN047" name="indicator" readonly="readonly" title="Ikama ya Assistant accountant" value="[ Ikama ya Assistant accountant ]" /></td>
                     <td><input id="Rh7vchFXUzm-r8ZhrId127A-val" name="entryfield" title="Watumishi_Assistant Accountant watumishi_waliopo" value="[ Watumishi_Assistant Accountant watumishi_waliopo ]" /></td>
                     <td><input id="Rh7vchFXUzm-UugiDlXctdf-val" name="entryfield" title="Watumishi_Assistant Accountant watumishi_pungufu" value="[ Watumishi_Assistant Accountant watumishi_pungufu ]" /></td>
                     <td><input id="Rh7vchFXUzm-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Assistant Accountant watumishi_walioondoka" value="[ Watumishi_Assistant Accountant watumishi_walioondoka ]" /></td>
@@ -444,7 +468,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Assistant Dental Officer</td>
-                    <td><input id="MtuwfyoIq5i-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Assistant Dental Officer watumishi_ikama " value="[ Watumishi_Assistant Dental Officer watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN005" indicatorid="REFWATIN005" name="indicator" readonly="readonly" title="Ikama ya Assistant dental officer" value="[ Ikama ya Assistant dental officer ]" /></td>
                     <td><input id="MtuwfyoIq5i-r8ZhrId127A-val" name="entryfield" title="Watumishi_Assistant Dental Officer watumishi_waliopo" value="[ Watumishi_Assistant Dental Officer watumishi_waliopo ]" /></td>
                     <td><input id="MtuwfyoIq5i-UugiDlXctdf-val" name="entryfield" title="Watumishi_Assistant Dental Officer watumishi_pungufu" value="[ Watumishi_Assistant Dental Officer watumishi_pungufu ]" /></td>
                     <td><input id="MtuwfyoIq5i-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Assistant Dental Officer watumishi_walioondoka" value="[ Watumishi_Assistant Dental Officer watumishi_walioondoka ]" /></td>
@@ -468,7 +492,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Assistant Environmental Health Officer</td>
-                    <td><input id="hdP3FzMERPI-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Assistant Environmental Health Officer watumishi_ikama " value="[ Watumishi_Assistant Environmental Health Officer watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN032" indicatorid="REFWATIN032" name="indicator" readonly="readonly" title="Ikama ya Assistant environmental health Officer" value="[ Ikama ya Assistant environmental health Officer ]" /></td>
                     <td><input id="hdP3FzMERPI-r8ZhrId127A-val" name="entryfield" title="Watumishi_Assistant Environmental Health Officer watumishi_waliopo" value="[ Watumishi_Assistant Environmental Health Officer watumishi_waliopo ]" /></td>
                     <td><input id="hdP3FzMERPI-UugiDlXctdf-val" name="entryfield" title="Watumishi_Assistant Environmental Health Officer watumishi_pungufu" value="[ Watumishi_Assistant Environmental Health Officer watumishi_pungufu ]" /></td>
                     <td><input id="hdP3FzMERPI-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Assistant Environmental Health Officer watumishi_walioondoka" value="[ Watumishi_Assistant Environmental Health Officer watumishi_walioondoka ]" /></td>
@@ -476,7 +500,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Assistant Health Laboratory Technologist</td>
-                    <td><input id="hAMCjZD8nQr-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Assistant Health Laboratory Technologist watumishi_ikama " value="[ Watumishi_Assistant Health Laboratory Technologist watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN018" indicatorid="REFWATIN018" name="indicator" readonly="readonly" title="Ikama ya Assistant health lab technologist" value="[ Ikama ya Assistant health lab technologist ]" /></td>
                     <td><input id="hAMCjZD8nQr-r8ZhrId127A-val" name="entryfield" title="Watumishi_Assistant Health Laboratory Technologist watumishi_waliopo" value="[ Watumishi_Assistant Health Laboratory Technologist watumishi_waliopo ]" /></td>
                     <td><input id="hAMCjZD8nQr-UugiDlXctdf-val" name="entryfield" title="Watumishi_Assistant Health Laboratory Technologist watumishi_pungufu" value="[ Watumishi_Assistant Health Laboratory Technologist watumishi_pungufu ]" /></td>
                     <td><input id="hAMCjZD8nQr-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Assistant Health Laboratory Technologist watumishi_walioondoka" value="[ Watumishi_Assistant Health Laboratory Technologist watumishi_walioondoka ]" /></td>
@@ -492,7 +516,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Assistant Medical Officer</td>
-                    <td><input id="bduVMr5fjFF-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Assistant Medical Officer watumishi_ikama " value="[ Watumishi_Assistant Medical Officer watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN003" indicatorid="REFWATIN003" name="indicator" readonly="readonly" title="Ikama ya Assistant medical officer" value="[ Ikama ya Assistant medical officer ]" /></td>
                     <td><input id="bduVMr5fjFF-r8ZhrId127A-val" name="entryfield" title="Watumishi_Assistant Medical Officer watumishi_waliopo" value="[ Watumishi_Assistant Medical Officer watumishi_waliopo ]" /></td>
                     <td><input id="bduVMr5fjFF-UugiDlXctdf-val" name="entryfield" title="Watumishi_Assistant Medical Officer watumishi_pungufu" value="[ Watumishi_Assistant Medical Officer watumishi_pungufu ]" /></td>
                     <td><input id="bduVMr5fjFF-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Assistant Medical Officer watumishi_walioondoka" value="[ Watumishi_Assistant Medical Officer watumishi_walioondoka ]" /></td>
@@ -500,7 +524,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Assistant Nursing Officer</td>
-                    <td><input id="c74rX8OJA2j-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Assistant Nursing Officer watumishi_ikama " value="[ Watumishi_Assistant Nursing Officer watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN014" indicatorid="REFWATIN014" name="indicator" readonly="readonly" title="Ikama ya Assistant nursing officer" value="[ Ikama ya Assistant nursing officer ]" /></td>
                     <td><input id="c74rX8OJA2j-r8ZhrId127A-val" name="entryfield" title="Watumishi_Assistant Nursing Officer watumishi_waliopo" value="[ Watumishi_Assistant Nursing Officer watumishi_waliopo ]" /></td>
                     <td><input id="c74rX8OJA2j-UugiDlXctdf-val" name="entryfield" title="Watumishi_Assistant Nursing Officer watumishi_pungufu" value="[ Watumishi_Assistant Nursing Officer watumishi_pungufu ]" /></td>
                     <td><input id="c74rX8OJA2j-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Assistant Nursing Officer watumishi_walioondoka" value="[ Watumishi_Assistant Nursing Officer watumishi_walioondoka ]" /></td>
@@ -556,7 +580,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Assistant Supplies Officer</td>
-                    <td><input id="FCR7mTviA12-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Assistant Supplies Officer watumishi_ikama " value="[ Watumishi_Assistant Supplies Officer watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN050" indicatorid="REFWATIN050" name="indicator" readonly="readonly" title="Ikama ya Assistance supplies Officer" value="[ Ikama ya Assistance supplies Officer ]" /></td>
                     <td><input id="FCR7mTviA12-r8ZhrId127A-val" name="entryfield" title="Watumishi_Assistant Supplies Officer watumishi_waliopo" value="[ Watumishi_Assistant Supplies Officer watumishi_waliopo ]" /></td>
                     <td><input id="FCR7mTviA12-UugiDlXctdf-val" name="entryfield" title="Watumishi_Assistant Supplies Officer watumishi_pungufu" value="[ Watumishi_Assistant Supplies Officer watumishi_pungufu ]" /></td>
                     <td><input id="FCR7mTviA12-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Assistant Supplies Officer watumishi_walioondoka" value="[ Watumishi_Assistant Supplies Officer watumishi_walioondoka ]" /></td>
@@ -596,7 +620,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Biomedical Engineer</td>
-                    <td><input id="d4V7u0MJcwX-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Biomedical Engineer watumishi_ikama " value="[ Watumishi_Biomedical Engineer watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN023" indicatorid="REFWATIN023" name="indicator" readonly="readonly" title="Ikama ya Biomedical engineer" value="[ Ikama ya Biomedical engineer ]" /></td>
                     <td><input id="d4V7u0MJcwX-r8ZhrId127A-val" name="entryfield" title="Watumishi_Biomedical Engineer watumishi_waliopo" value="[ Watumishi_Biomedical Engineer watumishi_waliopo ]" /></td>
                     <td><input id="d4V7u0MJcwX-UugiDlXctdf-val" name="entryfield" title="Watumishi_Biomedical Engineer watumishi_pungufu" value="[ Watumishi_Biomedical Engineer watumishi_pungufu ]" /></td>
                     <td><input id="d4V7u0MJcwX-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Biomedical Engineer watumishi_walioondoka" value="[ Watumishi_Biomedical Engineer watumishi_walioondoka ]" /></td>
@@ -732,7 +756,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Dental Laboratory Technologist</td>
-                    <td><input id="spGj84U0AbE-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Dental Laboratory Technologist watumishi_ikama " value="[ Watumishi_Dental Laboratory Technologist watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN019" indicatorid="REFWATIN019" name="indicator" readonly="readonly" title="Ikama ya Dental lab technician/ technologist" value="[ Ikama ya Dental lab technician/ technologist ]" /></td>
                     <td><input id="spGj84U0AbE-r8ZhrId127A-val" name="entryfield" title="Watumishi_Dental Laboratory Technologist watumishi_waliopo" value="[ Watumishi_Dental Laboratory Technologist watumishi_waliopo ]" /></td>
                     <td><input id="spGj84U0AbE-UugiDlXctdf-val" name="entryfield" title="Watumishi_Dental Laboratory Technologist watumishi_pungufu" value="[ Watumishi_Dental Laboratory Technologist watumishi_pungufu ]" /></td>
                     <td><input id="spGj84U0AbE-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Dental Laboratory Technologist watumishi_walioondoka" value="[ Watumishi_Dental Laboratory Technologist watumishi_walioondoka ]" /></td>
@@ -748,7 +772,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Dental Surgeon</td>
-                    <td><input id="c9JQ6otJtAN-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Dental Surgeon watumishi_ikama " value="[ Watumishi_Dental Surgeon watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN004" indicatorid="REFWATIN004" name="indicator" readonly="readonly" title="Ikama ya Dental surgeon" value="[ Ikama ya Dental surgeon ]" /></td>
                     <td><input id="c9JQ6otJtAN-r8ZhrId127A-val" name="entryfield" title="Watumishi_Dental Surgeon watumishi_waliopo" value="[ Watumishi_Dental Surgeon watumishi_waliopo ]" /></td>
                     <td><input id="c9JQ6otJtAN-UugiDlXctdf-val" name="entryfield" title="Watumishi_Dental Surgeon watumishi_pungufu" value="[ Watumishi_Dental Surgeon watumishi_pungufu ]" /></td>
                     <td><input id="c9JQ6otJtAN-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Dental Surgeon watumishi_walioondoka" value="[ Watumishi_Dental Surgeon watumishi_walioondoka ]" /></td>
@@ -764,7 +788,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Dental Therapist</td>
-                    <td><input id="roVMeNPnEGu-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Dental Therapist watumishi_ikama " value="[ Watumishi_Dental Therapist watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN006" indicatorid="REFWATIN006" name="indicator" readonly="readonly" title="Ikama ya Dental therapist" value="[ Ikama ya Dental therapist ]" /></td>
                     <td><input id="roVMeNPnEGu-r8ZhrId127A-val" name="entryfield" title="Watumishi_Dental Therapist watumishi_waliopo" value="[ Watumishi_Dental Therapist watumishi_waliopo ]" /></td>
                     <td><input id="roVMeNPnEGu-UugiDlXctdf-val" name="entryfield" title="Watumishi_Dental Therapist watumishi_pungufu" value="[ Watumishi_Dental Therapist watumishi_pungufu ]" /></td>
                     <td><input id="roVMeNPnEGu-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Dental Therapist watumishi_walioondoka" value="[ Watumishi_Dental Therapist watumishi_walioondoka ]" /></td>
@@ -772,7 +796,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Driver</td>
-                    <td><input id="kDHreVKCX8F-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Driver watumishi_ikama " value="[ Watumishi_Driver watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN053" indicatorid="REFWATIN053" name="indicator" readonly="readonly" title="Ikama ya Drivers" value="[ Ikama ya Drivers ]" /></td>
                     <td><input id="kDHreVKCX8F-r8ZhrId127A-val" name="entryfield" title="Watumishi_Driver watumishi_waliopo" value="[ Watumishi_Driver watumishi_waliopo ]" /></td>
                     <td><input id="kDHreVKCX8F-UugiDlXctdf-val" name="entryfield" title="Watumishi_Driver watumishi_pungufu" value="[ Watumishi_Driver watumishi_pungufu ]" /></td>
                     <td><input id="kDHreVKCX8F-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Driver watumishi_walioondoka" value="[ Watumishi_Driver watumishi_walioondoka ]" /></td>
@@ -780,7 +804,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Economist</td>
-                    <td><input id="zbjbiPHzML7-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Economist watumishi_ikama " value="[ Watumishi_Economist watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN036" indicatorid="REFWATIN036" name="indicator" readonly="readonly" title="Ikama ya Economist/monitoring welfare officer" value="[ Ikama ya Economist/monitoring welfare officer ]" /></td>
                     <td><input id="zbjbiPHzML7-r8ZhrId127A-val" name="entryfield" title="Watumishi_Economist watumishi_waliopo" value="[ Watumishi_Economist watumishi_waliopo ]" /></td>
                     <td><input id="zbjbiPHzML7-UugiDlXctdf-val" name="entryfield" title="Watumishi_Economist watumishi_pungufu" value="[ Watumishi_Economist watumishi_pungufu ]" /></td>
                     <td><input id="zbjbiPHzML7-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Economist watumishi_walioondoka" value="[ Watumishi_Economist watumishi_walioondoka ]" /></td>
@@ -812,7 +836,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Environmental Health Officer</td>
-                    <td><input id="y3IMt7rtHIe-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Environmental Health Officer watumishi_ikama " value="[ Watumishi_Environmental Health Officer watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN031" indicatorid="REFWATIN031" name="indicator" readonly="readonly" title="Ikama ya Environmental health officer" value="[ Ikama ya Environmental health officer ]" /></td>
                     <td><input id="y3IMt7rtHIe-r8ZhrId127A-val" name="entryfield" title="Watumishi_Environmental Health Officer watumishi_waliopo" value="[ Watumishi_Environmental Health Officer watumishi_waliopo ]" /></td>
                     <td><input id="y3IMt7rtHIe-UugiDlXctdf-val" name="entryfield" title="Watumishi_Environmental Health Officer watumishi_pungufu" value="[ Watumishi_Environmental Health Officer watumishi_pungufu ]" /></td>
                     <td><input id="y3IMt7rtHIe-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Environmental Health Officer watumishi_walioondoka" value="[ Watumishi_Environmental Health Officer watumishi_walioondoka ]" /></td>
@@ -876,7 +900,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Health Laboratory Scientist</td>
-                    <td><input id="F60TbvObqcx-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Health Laboratory Scientist watumishi_ikama " value="[ Watumishi_Health Laboratory Scientist watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN016" indicatorid="REFWATIN016" name="indicator" readonly="readonly" title="Ikama ya Health laboratory scientist" value="[ Ikama ya Health laboratory scientist ]" /></td>
                     <td><input id="F60TbvObqcx-r8ZhrId127A-val" name="entryfield" title="Watumishi_Health Laboratory Scientist watumishi_waliopo" value="[ Watumishi_Health Laboratory Scientist watumishi_waliopo ]" /></td>
                     <td><input id="F60TbvObqcx-UugiDlXctdf-val" name="entryfield" title="Watumishi_Health Laboratory Scientist watumishi_pungufu" value="[ Watumishi_Health Laboratory Scientist watumishi_pungufu ]" /></td>
                     <td><input id="F60TbvObqcx-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Health Laboratory Scientist watumishi_walioondoka" value="[ Watumishi_Health Laboratory Scientist watumishi_walioondoka ]" /></td>
@@ -884,7 +908,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Health Laboratory Technologist</td>
-                    <td><input id="FWhn4pBRVE0-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Health Laboratory Technologist watumishi_ikama " value="[ Watumishi_Health Laboratory Technologist watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN017" indicatorid="REFWATIN017" name="indicator" readonly="readonly" title="Ikama ya Health laboratory technologist" value="[ Ikama ya Health laboratory technologist ]" /></td>
                     <td><input id="FWhn4pBRVE0-r8ZhrId127A-val" name="entryfield" title="Watumishi_Health Laboratory Technologist watumishi_waliopo" value="[ Watumishi_Health Laboratory Technologist watumishi_waliopo ]" /></td>
                     <td><input id="FWhn4pBRVE0-UugiDlXctdf-val" name="entryfield" title="Watumishi_Health Laboratory Technologist watumishi_pungufu" value="[ Watumishi_Health Laboratory Technologist watumishi_pungufu ]" /></td>
                     <td><input id="FWhn4pBRVE0-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Health Laboratory Technologist watumishi_walioondoka" value="[ Watumishi_Health Laboratory Technologist watumishi_walioondoka ]" /></td>
@@ -940,7 +964,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Health Secretary</td>
-                    <td><input id="jFeiHyKLKUp-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Health Secretary watumishi_ikama " value="[ Watumishi_Health Secretary watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN044" indicatorid="REFWATIN044" name="indicator" readonly="readonly" title="Ikama ya Health secretary" value="[ Ikama ya Health secretary ]" /></td>
                     <td><input id="jFeiHyKLKUp-r8ZhrId127A-val" name="entryfield" title="Watumishi_Health Secretary watumishi_waliopo" value="[ Watumishi_Health Secretary watumishi_waliopo ]" /></td>
                     <td><input id="jFeiHyKLKUp-UugiDlXctdf-val" name="entryfield" title="Watumishi_Health Secretary watumishi_pungufu" value="[ Watumishi_Health Secretary watumishi_pungufu ]" /></td>
                     <td><input id="jFeiHyKLKUp-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Health Secretary watumishi_walioondoka" value="[ Watumishi_Health Secretary watumishi_walioondoka ]" /></td>
@@ -1084,7 +1108,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Medical Attendant</td>
-                    <td><input id="lXySbvWZEUA-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Medical Attendant watumishi_ikama " value="[ Watumishi_Medical Attendant watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN041" indicatorid="REFWATIN041" name="indicator" readonly="readonly" title="Ikama ya Medical attendant" value="[ Ikama ya Medical attendant ]" /></td>
                     <td><input id="lXySbvWZEUA-r8ZhrId127A-val" name="entryfield" title="Watumishi_Medical Attendant watumishi_waliopo" value="[ Watumishi_Medical Attendant watumishi_waliopo ]" /></td>
                     <td><input id="lXySbvWZEUA-UugiDlXctdf-val" name="entryfield" title="Watumishi_Medical Attendant watumishi_pungufu" value="[ Watumishi_Medical Attendant watumishi_pungufu ]" /></td>
                     <td><input id="lXySbvWZEUA-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Medical Attendant watumishi_walioondoka" value="[ Watumishi_Medical Attendant watumishi_walioondoka ]" /></td>
@@ -1116,7 +1140,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Medical Officer</td>
-                    <td><input id="tkTxuedrVAX-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Medical Officer watumishi_ikama " value="[ Watumishi_Medical Officer watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN002" indicatorid="REFWATIN002" name="indicator" readonly="readonly" title="Ikama ya Medical officer" value="[ Ikama ya Medical officer ]" /></td>
                     <td><input id="tkTxuedrVAX-r8ZhrId127A-val" name="entryfield" title="Watumishi_Medical Officer watumishi_waliopo" value="[ Watumishi_Medical Officer watumishi_waliopo ]" /></td>
                     <td><input id="tkTxuedrVAX-UugiDlXctdf-val" name="entryfield" title="Watumishi_Medical Officer watumishi_pungufu" value="[ Watumishi_Medical Officer watumishi_pungufu ]" /></td>
                     <td><input id="tkTxuedrVAX-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Medical Officer watumishi_walioondoka" value="[ Watumishi_Medical Officer watumishi_walioondoka ]" /></td>
@@ -1156,7 +1180,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Mortuary Attendant</td>
-                    <td><input id="keYcZll5YV9-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Mortuary Attendant watumishi_ikama " value="[ Watumishi_Mortuary Attendant watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN042" indicatorid="REFWATIN042" name="indicator" readonly="readonly" title="Ikama ya Mortuary attendant" value="[ Ikama ya Mortuary attendant ]" /></td>
                     <td><input id="keYcZll5YV9-r8ZhrId127A-val" name="entryfield" title="Watumishi_Mortuary Attendant watumishi_waliopo" value="[ Watumishi_Mortuary Attendant watumishi_waliopo ]" /></td>
                     <td><input id="keYcZll5YV9-UugiDlXctdf-val" name="entryfield" title="Watumishi_Mortuary Attendant watumishi_pungufu" value="[ Watumishi_Mortuary Attendant watumishi_pungufu ]" /></td>
                     <td><input id="keYcZll5YV9-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Mortuary Attendant watumishi_walioondoka" value="[ Watumishi_Mortuary Attendant watumishi_walioondoka ]" /></td>
@@ -1164,7 +1188,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Nurse</td>
-                    <td><input id="Pw0iFVmk5lF-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Nurse watumishi_ikama " value="[ Watumishi_Nurse watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN015" indicatorid="REFWATIN015" name="indicator" readonly="readonly" title="Ikama ya Nurse" value="[ Ikama ya Nurse ]" /></td>
                     <td><input id="Pw0iFVmk5lF-r8ZhrId127A-val" name="entryfield" title="Watumishi_Nurse watumishi_waliopo" value="[ Watumishi_Nurse watumishi_waliopo ]" /></td>
                     <td><input id="Pw0iFVmk5lF-UugiDlXctdf-val" name="entryfield" title="Watumishi_Nurse watumishi_pungufu" value="[ Watumishi_Nurse watumishi_pungufu ]" /></td>
                     <td><input id="Pw0iFVmk5lF-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Nurse watumishi_walioondoka" value="[ Watumishi_Nurse watumishi_walioondoka ]" /></td>
@@ -1196,7 +1220,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Nutrition Officer</td>
-                    <td><input id="JM2X6hgMc53-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Nutrition Officer watumishi_ikama " value="[ Watumishi_Nutrition Officer watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN013" indicatorid="REFWATIN013" name="indicator" readonly="readonly" title="Ikama ya Nursing officer" value="[ Ikama ya Nursing officer ]" /></td>
                     <td><input id="JM2X6hgMc53-r8ZhrId127A-val" name="entryfield" title="Watumishi_Nutrition Officer watumishi_waliopo" value="[ Watumishi_Nutrition Officer watumishi_waliopo ]" /></td>
                     <td><input id="JM2X6hgMc53-UugiDlXctdf-val" name="entryfield" title="Watumishi_Nutrition Officer watumishi_pungufu" value="[ Watumishi_Nutrition Officer watumishi_pungufu ]" /></td>
                     <td><input id="JM2X6hgMc53-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Nutrition Officer watumishi_walioondoka" value="[ Watumishi_Nutrition Officer watumishi_walioondoka ]" /></td>
@@ -1204,7 +1228,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Obstretrics and gynecology</td>
-                    <td><input id="CJIuCgrena7-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Obstretrics and gynecology watumishi_ikama " value="[ Watumishi_Obstretrics and gynecology watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN008" indicatorid="REFWATIN008" name="indicator" readonly="readonly" title="Ikama ya Obstetrics and gynecology" value="[ Ikama ya Obstetrics and gynecology ]" /></td>
                     <td><input id="CJIuCgrena7-r8ZhrId127A-val" name="entryfield" title="Watumishi_Obstretrics and gynecology watumishi_waliopo" value="[ Watumishi_Obstretrics and gynecology watumishi_waliopo ]" /></td>
                     <td><input id="CJIuCgrena7-UugiDlXctdf-val" name="entryfield" title="Watumishi_Obstretrics and gynecology watumishi_pungufu" value="[ Watumishi_Obstretrics and gynecology watumishi_pungufu ]" /></td>
                     <td><input id="CJIuCgrena7-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Obstretrics and gynecology watumishi_walioondoka" value="[ Watumishi_Obstretrics and gynecology watumishi_walioondoka ]" /></td>
@@ -1212,7 +1236,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Occupational Therapist</td>
-                    <td><input id="VRQrrnHGXRv-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Occupational Therapist watumishi_ikama " value="[ Watumishi_Occupational Therapist watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN009" indicatorid="REFWATIN009" name="indicator" readonly="readonly" title="Ikama ya Occupation therapist" value="[ Ikama ya Occupation therapist ]" /></td>
                     <td><input id="VRQrrnHGXRv-r8ZhrId127A-val" name="entryfield" title="Watumishi_Occupational Therapist watumishi_waliopo" value="[ Watumishi_Occupational Therapist watumishi_waliopo ]" /></td>
                     <td><input id="VRQrrnHGXRv-UugiDlXctdf-val" name="entryfield" title="Watumishi_Occupational Therapist watumishi_pungufu" value="[ Watumishi_Occupational Therapist watumishi_pungufu ]" /></td>
                     <td><input id="VRQrrnHGXRv-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Occupational Therapist watumishi_walioondoka" value="[ Watumishi_Occupational Therapist watumishi_walioondoka ]" /></td>
@@ -1252,7 +1276,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Ophthalmologist</td>
-                    <td><input id="zgy58Fxxqox-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Ophthalmologist watumishi_ikama " value="[ Watumishi_Ophthalmologist watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN010" indicatorid="REFWATIN010" name="indicator" readonly="readonly" title="Ikama ya Ophthalmologist" value="[ Ikama ya Ophthalmologist ]" /></td>
                     <td><input id="zgy58Fxxqox-r8ZhrId127A-val" name="entryfield" title="Watumishi_Ophthalmologist watumishi_waliopo" value="[ Watumishi_Ophthalmologist watumishi_waliopo ]" /></td>
                     <td><input id="zgy58Fxxqox-UugiDlXctdf-val" name="entryfield" title="Watumishi_Ophthalmologist watumishi_pungufu" value="[ Watumishi_Ophthalmologist watumishi_pungufu ]" /></td>
                     <td><input id="zgy58Fxxqox-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Ophthalmologist watumishi_walioondoka" value="[ Watumishi_Ophthalmologist watumishi_walioondoka ]" /></td>
@@ -1276,7 +1300,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Optometrist</td>
-                    <td><input id="Vsc9RK44mps-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Optometrist watumishi_ikama " value="[ Watumishi_Optometrist watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN011" indicatorid="REFWATIN011" name="indicator" readonly="readonly" title="Ikama ya Optometrists" value="[ Ikama ya Optometrists ]" /></td>
                     <td><input id="Vsc9RK44mps-r8ZhrId127A-val" name="entryfield" title="Watumishi_Optometrist watumishi_waliopo" value="[ Watumishi_Optometrist watumishi_waliopo ]" /></td>
                     <td><input id="Vsc9RK44mps-UugiDlXctdf-val" name="entryfield" title="Watumishi_Optometrist watumishi_pungufu" value="[ Watumishi_Optometrist watumishi_pungufu ]" /></td>
                     <td><input id="Vsc9RK44mps-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Optometrist watumishi_walioondoka" value="[ Watumishi_Optometrist watumishi_walioondoka ]" /></td>
@@ -1324,7 +1348,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Pharmaceutical Technologist</td>
-                    <td><input id="Kdm5yOQgv86-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Pharmaceutical Technologist watumishi_ikama " value="[ Watumishi_Pharmaceutical Technologist watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN026" indicatorid="REFWATIN026" name="indicator" readonly="readonly" title="Ikama ya Pharmaceutical Technologist" value="[ Ikama ya Pharmaceutical Technologist ]" /></td>
                     <td><input id="Kdm5yOQgv86-r8ZhrId127A-val" name="entryfield" title="Watumishi_Pharmaceutical Technologist watumishi_waliopo" value="[ Watumishi_Pharmaceutical Technologist watumishi_waliopo ]" /></td>
                     <td><input id="Kdm5yOQgv86-UugiDlXctdf-val" name="entryfield" title="Watumishi_Pharmaceutical Technologist watumishi_pungufu" value="[ Watumishi_Pharmaceutical Technologist watumishi_pungufu ]" /></td>
                     <td><input id="Kdm5yOQgv86-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Pharmaceutical Technologist watumishi_walioondoka" value="[ Watumishi_Pharmaceutical Technologist watumishi_walioondoka ]" /></td>
@@ -1332,7 +1356,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Pharmacist</td>
-                    <td><input id="Cc6aT15Wgi1-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Pharmacist watumishi_ikama " value="[ Watumishi_Pharmacist watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN025" indicatorid="REFWATIN025" name="indicator" readonly="readonly" title="Ikama ya Pharmacist" value="[ Ikama ya Pharmacist ]" /></td>
                     <td><input id="Cc6aT15Wgi1-r8ZhrId127A-val" name="entryfield" title="Watumishi_Pharmacist watumishi_waliopo" value="[ Watumishi_Pharmacist watumishi_waliopo ]" /></td>
                     <td><input id="Cc6aT15Wgi1-UugiDlXctdf-val" name="entryfield" title="Watumishi_Pharmacist watumishi_pungufu" value="[ Watumishi_Pharmacist watumishi_pungufu ]" /></td>
                     <td><input id="Cc6aT15Wgi1-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Pharmacist watumishi_walioondoka" value="[ Watumishi_Pharmacist watumishi_walioondoka ]" /></td>
@@ -1348,7 +1372,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Physiotherapist</td>
-                    <td><input id="Mdei0HRsadg-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Physiotherapist watumishi_ikama " value="[ Watumishi_Physiotherapist watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN028" indicatorid="REFWATIN028" name="indicator" readonly="readonly" title="Ikama ya Physiotherapist" value="[ Ikama ya Physiotherapist ]" /></td>
                     <td><input id="Mdei0HRsadg-r8ZhrId127A-val" name="entryfield" title="Watumishi_Physiotherapist watumishi_waliopo" value="[ Watumishi_Physiotherapist watumishi_waliopo ]" /></td>
                     <td><input id="Mdei0HRsadg-UugiDlXctdf-val" name="entryfield" title="Watumishi_Physiotherapist watumishi_pungufu" value="[ Watumishi_Physiotherapist watumishi_pungufu ]" /></td>
                     <td><input id="Mdei0HRsadg-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Physiotherapist watumishi_walioondoka" value="[ Watumishi_Physiotherapist watumishi_walioondoka ]" /></td>
@@ -1380,7 +1404,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Procurement Officer</td>
-                    <td><input id="ruvyNHU67vj-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Procurement Officer watumishi_ikama " value="[ Watumishi_Procurement Officer watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN049" indicatorid="REFWATIN049" name="indicator" readonly="readonly" title="Ikama ya Procurement and supplies officer" value="[ Ikama ya Procurement and supplies officer ]" /></td>
                     <td><input id="ruvyNHU67vj-r8ZhrId127A-val" name="entryfield" title="Watumishi_Procurement Officer watumishi_waliopo" value="[ Watumishi_Procurement Officer watumishi_waliopo ]" /></td>
                     <td><input id="ruvyNHU67vj-UugiDlXctdf-val" name="entryfield" title="Watumishi_Procurement Officer watumishi_pungufu" value="[ Watumishi_Procurement Officer watumishi_pungufu ]" /></td>
                     <td><input id="ruvyNHU67vj-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Procurement Officer watumishi_walioondoka" value="[ Watumishi_Procurement Officer watumishi_walioondoka ]" /></td>
@@ -1396,7 +1420,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Radiographer</td>
-                    <td><input id="w5x1YhzozGy-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Radiographer watumishi_ikama " value="[ Watumishi_Radiographer watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN021" indicatorid="REFWATIN021" name="indicator" readonly="readonly" title="Ikama ya Radiographer" value="[ Ikama ya Radiographer ]" /></td>
                     <td><input id="w5x1YhzozGy-r8ZhrId127A-val" name="entryfield" title="Watumishi_Radiographer watumishi_waliopo" value="[ Watumishi_Radiographer watumishi_waliopo ]" /></td>
                     <td><input id="w5x1YhzozGy-UugiDlXctdf-val" name="entryfield" title="Watumishi_Radiographer watumishi_pungufu" value="[ Watumishi_Radiographer watumishi_pungufu ]" /></td>
                     <td><input id="w5x1YhzozGy-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Radiographer watumishi_walioondoka" value="[ Watumishi_Radiographer watumishi_walioondoka ]" /></td>
@@ -1500,7 +1524,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Security Guard</td>
-                    <td><input id="BAwRAcAryjz-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Security Guard watumishi_ikama " value="[ Watumishi_Security Guard watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN054" indicatorid="REFWATIN054" name="indicator" readonly="readonly" title="Ikama ya Security guard" value="[ Ikama ya Security guard ]" /></td>
                     <td><input id="BAwRAcAryjz-r8ZhrId127A-val" name="entryfield" title="Watumishi_Security Guard watumishi_waliopo" value="[ Watumishi_Security Guard watumishi_waliopo ]" /></td>
                     <td><input id="BAwRAcAryjz-UugiDlXctdf-val" name="entryfield" title="Watumishi_Security Guard watumishi_pungufu" value="[ Watumishi_Security Guard watumishi_pungufu ]" /></td>
                     <td><input id="BAwRAcAryjz-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Security Guard watumishi_walioondoka" value="[ Watumishi_Security Guard watumishi_walioondoka ]" /></td>
@@ -1572,7 +1596,7 @@
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Technologist/Technician(Prosthetic)</td>
-                    <td><input id="TA3z9pF6GFu-CN0gz4T9Iso-val" name="entryfield" title="Watumishi_Technologist/Technician(Prosthetic) watumishi_ikama " value="[ Watumishi_Technologist/Technician(Prosthetic) watumishi_ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN033" indicatorid="REFWATIN033" name="indicator" readonly="readonly" title="Ikama ya Technologist/technician (prosthetic)" value="[ Ikama ya Technologist/technician (prosthetic) ]" /></td>
                     <td><input id="TA3z9pF6GFu-r8ZhrId127A-val" name="entryfield" title="Watumishi_Technologist/Technician(Prosthetic) watumishi_waliopo" value="[ Watumishi_Technologist/Technician(Prosthetic) watumishi_waliopo ]" /></td>
                     <td><input id="TA3z9pF6GFu-UugiDlXctdf-val" name="entryfield" title="Watumishi_Technologist/Technician(Prosthetic) watumishi_pungufu" value="[ Watumishi_Technologist/Technician(Prosthetic) watumishi_pungufu ]" /></td>
                     <td><input id="TA3z9pF6GFu-gaWahxh8FLi-val" name="entryfield" title="Watumishi_Technologist/Technician(Prosthetic) watumishi_walioondoka" value="[ Watumishi_Technologist/Technician(Prosthetic) watumishi_walioondoka ]" /></td>
@@ -1604,47 +1628,49 @@
                 </tbody>
             </table>
         </div>
-        <br/>
+        &nbsp;
+
         <div id="tableB-div" style="padding: none;">
             <table border="1" cellpadding="0" cellspacing="0" width="800">
                 <tbody>
                 <tr class="cde-greyfield3">
-                    <th rowspan="2" >SN</th>
+                    <th rowspan="2">SN</th>
                     <th rowspan="2">Kada</th>
                     <th rowspan="2">Ikama</th>
                     <th rowspan="2">Waliopo</th>
-                    <th rowspan="2">Pungufu</th>
+                    <th rowspan="2">Pungufu/Waliozidi</th>
                     <th rowspan="2">Walioondoka</th>
                     <th colspan="4">Sababu ya kuondoka</th>
                 </tr>
                 <tr class="cde-greyfield3">
-
-                    <th> Transferred </th>
-                    <th> Retired </th>
-                    <th>Termination </th>
-                    <th> Others </th>
+                    <th>Transferred</th>
+                    <th>Retired</th>
+                    <th>Termination</th>
+                    <th>Others</th>
                 </tr>
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
-                    <td><span>.</span></td>                    <td style="width: 15em;">Anaesthesiologist</td>
-                    <td><input id="xY1wdQoFN1z-zQDaL0X32pT-val" name="entryfield" title="Mabingwa_Anaesthesiologist Ikama " value="[ Mabingwa_Anaesthesiologist Ikama  ]" /></td>
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Anaesthesiologist</td>
+                    <td><input id="indicatorREFWATIN007" indicatorid="REFWATIN007" name="indicator" readonly="readonly" title="Ikama ya Anesthesiologist" value="[ Ikama ya Anesthesiologist ]" /></td>
                     <td><input id="xY1wdQoFN1z-cPIIPSgejLL-val" name="entryfield" title="Mabingwa_Anaesthesiologist waliopo" value="[ Mabingwa_Anaesthesiologist waliopo ]" /></td>
                     <td><input id="xY1wdQoFN1z-IabdQUAkkCD-val" name="entryfield" title="Mabingwa_Anaesthesiologist pungufu" value="[ Mabingwa_Anaesthesiologist pungufu ]" /></td>
                     <td><input id="xY1wdQoFN1z-Zl12QWmm5xm-val" name="entryfield" title="Mabingwa_Anaesthesiologist walioondoka" value="[ Mabingwa_Anaesthesiologist walioondoka ]" /></td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
-                    <td><span>.</span></td>                    <td style="width: 15em;">Cardiologist</td>
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Cardiologist</td>
                     <td><input id="EKqWAqxaICL-zQDaL0X32pT-val" name="entryfield" title="Mabingwa_Cardiologist Ikama " value="[ Mabingwa_Cardiologist Ikama  ]" /></td>
                     <td><input id="EKqWAqxaICL-cPIIPSgejLL-val" name="entryfield" title="Mabingwa_Cardiologist waliopo" value="[ Mabingwa_Cardiologist waliopo ]" /></td>
                     <td><input id="EKqWAqxaICL-IabdQUAkkCD-val" name="entryfield" title="Mabingwa_Cardiologist pungufu" value="[ Mabingwa_Cardiologist pungufu ]" /></td>
                     <td><input id="EKqWAqxaICL-Zl12QWmm5xm-val" name="entryfield" title="Mabingwa_Cardiologist walioondoka" value="[ Mabingwa_Cardiologist walioondoka ]" /></td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
@@ -1653,10 +1679,10 @@
                     <td><input id="jN8KKRzWScF-cPIIPSgejLL-val" name="entryfield" title="Mabingwa_Cardiothoracic Surgeon waliopo" value="[ Mabingwa_Cardiothoracic Surgeon waliopo ]" /></td>
                     <td><input id="jN8KKRzWScF-IabdQUAkkCD-val" name="entryfield" title="Mabingwa_Cardiothoracic Surgeon pungufu" value="[ Mabingwa_Cardiothoracic Surgeon pungufu ]" /></td>
                     <td><input id="jN8KKRzWScF-Zl12QWmm5xm-val" name="entryfield" title="Mabingwa_Cardiothoracic Surgeon walioondoka" value="[ Mabingwa_Cardiothoracic Surgeon walioondoka ]" /></td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
@@ -1665,10 +1691,10 @@
                     <td><input id="e5Ji6DqWTqY-cPIIPSgejLL-val" name="entryfield" title="Mabingwa_Cataract Surgeon waliopo" value="[ Mabingwa_Cataract Surgeon waliopo ]" /></td>
                     <td><input id="e5Ji6DqWTqY-IabdQUAkkCD-val" name="entryfield" title="Mabingwa_Cataract Surgeon pungufu" value="[ Mabingwa_Cataract Surgeon pungufu ]" /></td>
                     <td><input id="e5Ji6DqWTqY-Zl12QWmm5xm-val" name="entryfield" title="Mabingwa_Cataract Surgeon walioondoka" value="[ Mabingwa_Cataract Surgeon walioondoka ]" /></td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
@@ -1677,10 +1703,10 @@
                     <td><input id="ioHHAvGaRHr-cPIIPSgejLL-val" name="entryfield" title="Mabingwa_Dermatologist waliopo" value="[ Mabingwa_Dermatologist waliopo ]" /></td>
                     <td><input id="ioHHAvGaRHr-IabdQUAkkCD-val" name="entryfield" title="Mabingwa_Dermatologist pungufu" value="[ Mabingwa_Dermatologist pungufu ]" /></td>
                     <td><input id="ioHHAvGaRHr-Zl12QWmm5xm-val" name="entryfield" title="Mabingwa_Dermatologist walioondoka" value="[ Mabingwa_Dermatologist walioondoka ]" /></td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
@@ -1689,10 +1715,10 @@
                     <td><input id="BRNVDY8FLxd-cPIIPSgejLL-val" name="entryfield" title="Mabingwa_ENT Surgeon waliopo" value="[ Mabingwa_ENT Surgeon waliopo ]" /></td>
                     <td><input id="BRNVDY8FLxd-IabdQUAkkCD-val" name="entryfield" title="Mabingwa_ENT Surgeon pungufu" value="[ Mabingwa_ENT Surgeon pungufu ]" /></td>
                     <td><input id="BRNVDY8FLxd-Zl12QWmm5xm-val" name="entryfield" title="Mabingwa_ENT Surgeon walioondoka" value="[ Mabingwa_ENT Surgeon walioondoka ]" /></td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
@@ -1701,10 +1727,10 @@
                     <td><input id="TCljKbKnOcx-cPIIPSgejLL-val" name="entryfield" title="Mabingwa_Gastroentorologist waliopo" value="[ Mabingwa_Gastroentorologist waliopo ]" /></td>
                     <td><input id="TCljKbKnOcx-IabdQUAkkCD-val" name="entryfield" title="Mabingwa_Gastroentorologist pungufu" value="[ Mabingwa_Gastroentorologist pungufu ]" /></td>
                     <td><input id="TCljKbKnOcx-Zl12QWmm5xm-val" name="entryfield" title="Mabingwa_Gastroentorologist walioondoka" value="[ Mabingwa_Gastroentorologist walioondoka ]" /></td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
@@ -1713,10 +1739,10 @@
                     <td><input id="TsMXUDwAgco-cPIIPSgejLL-val" name="entryfield" title="Mabingwa_General Surgeon waliopo" value="[ Mabingwa_General Surgeon waliopo ]" /></td>
                     <td><input id="TsMXUDwAgco-IabdQUAkkCD-val" name="entryfield" title="Mabingwa_General Surgeon pungufu" value="[ Mabingwa_General Surgeon pungufu ]" /></td>
                     <td><input id="TsMXUDwAgco-Zl12QWmm5xm-val" name="entryfield" title="Mabingwa_General Surgeon walioondoka" value="[ Mabingwa_General Surgeon walioondoka ]" /></td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
@@ -1725,10 +1751,10 @@
                     <td><input id="Ry9iFQbM9Et-cPIIPSgejLL-val" name="entryfield" title="Mabingwa_Lean Specialist waliopo" value="[ Mabingwa_Lean Specialist waliopo ]" /></td>
                     <td><input id="Ry9iFQbM9Et-IabdQUAkkCD-val" name="entryfield" title="Mabingwa_Lean Specialist pungufu" value="[ Mabingwa_Lean Specialist pungufu ]" /></td>
                     <td><input id="Ry9iFQbM9Et-Zl12QWmm5xm-val" name="entryfield" title="Mabingwa_Lean Specialist walioondoka" value="[ Mabingwa_Lean Specialist walioondoka ]" /></td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
@@ -1737,10 +1763,10 @@
                     <td><input id="lr8mFfyJK2i-cPIIPSgejLL-val" name="entryfield" title="Mabingwa_Maxillofacial Surgeon waliopo" value="[ Mabingwa_Maxillofacial Surgeon waliopo ]" /></td>
                     <td><input id="lr8mFfyJK2i-IabdQUAkkCD-val" name="entryfield" title="Mabingwa_Maxillofacial Surgeon pungufu" value="[ Mabingwa_Maxillofacial Surgeon pungufu ]" /></td>
                     <td><input id="lr8mFfyJK2i-Zl12QWmm5xm-val" name="entryfield" title="Mabingwa_Maxillofacial Surgeon walioondoka" value="[ Mabingwa_Maxillofacial Surgeon walioondoka ]" /></td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
@@ -1749,10 +1775,10 @@
                     <td><input id="klz3MwaKtL8-cPIIPSgejLL-val" name="entryfield" title="Mabingwa_Medical Specialist -Emergency Medicine waliopo" value="[ Mabingwa_Medical Specialist -Emergency Medicine waliopo ]" /></td>
                     <td><input id="klz3MwaKtL8-IabdQUAkkCD-val" name="entryfield" title="Mabingwa_Medical Specialist -Emergency Medicine pungufu" value="[ Mabingwa_Medical Specialist -Emergency Medicine pungufu ]" /></td>
                     <td><input id="klz3MwaKtL8-Zl12QWmm5xm-val" name="entryfield" title="Mabingwa_Medical Specialist -Emergency Medicine walioondoka" value="[ Mabingwa_Medical Specialist -Emergency Medicine walioondoka ]" /></td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
@@ -1761,10 +1787,10 @@
                     <td><input id="Uqyp1d6ps2R-cPIIPSgejLL-val" name="entryfield" title="Mabingwa_Neuro Surgeon waliopo" value="[ Mabingwa_Neuro Surgeon waliopo ]" /></td>
                     <td><input id="Uqyp1d6ps2R-IabdQUAkkCD-val" name="entryfield" title="Mabingwa_Neuro Surgeon pungufu" value="[ Mabingwa_Neuro Surgeon pungufu ]" /></td>
                     <td><input id="Uqyp1d6ps2R-Zl12QWmm5xm-val" name="entryfield" title="Mabingwa_Neuro Surgeon walioondoka" value="[ Mabingwa_Neuro Surgeon walioondoka ]" /></td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
@@ -1773,10 +1799,10 @@
                     <td><input id="lMOoJ9vYGCL-cPIIPSgejLL-val" name="entryfield" title="Mabingwa_Obstetrician/Gynaecologist waliopo" value="[ Mabingwa_Obstetrician/Gynaecologist waliopo ]" /></td>
                     <td><input id="lMOoJ9vYGCL-IabdQUAkkCD-val" name="entryfield" title="Mabingwa_Obstetrician/Gynaecologist pungufu" value="[ Mabingwa_Obstetrician/Gynaecologist pungufu ]" /></td>
                     <td><input id="lMOoJ9vYGCL-Zl12QWmm5xm-val" name="entryfield" title="Mabingwa_Obstetrician/Gynaecologist walioondoka" value="[ Mabingwa_Obstetrician/Gynaecologist walioondoka ]" /></td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
@@ -1785,10 +1811,10 @@
                     <td><input id="Dlmt0DRfJ6r-cPIIPSgejLL-val" name="entryfield" title="Mabingwa_Oncologist waliopo" value="[ Mabingwa_Oncologist waliopo ]" /></td>
                     <td><input id="Dlmt0DRfJ6r-IabdQUAkkCD-val" name="entryfield" title="Mabingwa_Oncologist pungufu" value="[ Mabingwa_Oncologist pungufu ]" /></td>
                     <td><input id="Dlmt0DRfJ6r-Zl12QWmm5xm-val" name="entryfield" title="Mabingwa_Oncologist walioondoka" value="[ Mabingwa_Oncologist walioondoka ]" /></td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
@@ -1797,10 +1823,10 @@
                     <td><input id="b3M6nU7YIGm-cPIIPSgejLL-val" name="entryfield" title="Mabingwa_Ophthalmologist waliopo" value="[ Mabingwa_Ophthalmologist waliopo ]" /></td>
                     <td><input id="b3M6nU7YIGm-IabdQUAkkCD-val" name="entryfield" title="Mabingwa_Ophthalmologist pungufu" value="[ Mabingwa_Ophthalmologist pungufu ]" /></td>
                     <td><input id="b3M6nU7YIGm-Zl12QWmm5xm-val" name="entryfield" title="Mabingwa_Ophthalmologist walioondoka" value="[ Mabingwa_Ophthalmologist walioondoka ]" /></td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
@@ -1809,22 +1835,22 @@
                     <td><input id="JQPHgobhyMn-cPIIPSgejLL-val" name="entryfield" title="Mabingwa_Orthopeadic Surgeon waliopo" value="[ Mabingwa_Orthopeadic Surgeon waliopo ]" /></td>
                     <td><input id="JQPHgobhyMn-IabdQUAkkCD-val" name="entryfield" title="Mabingwa_Orthopeadic Surgeon pungufu" value="[ Mabingwa_Orthopeadic Surgeon pungufu ]" /></td>
                     <td><input id="JQPHgobhyMn-Zl12QWmm5xm-val" name="entryfield" title="Mabingwa_Orthopeadic Surgeon walioondoka" value="[ Mabingwa_Orthopeadic Surgeon walioondoka ]" /></td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Paediatrician</td>
-                    <td><input id="ip4wNCbM1jv-zQDaL0X32pT-val" name="entryfield" title="Mabingwa_Paediatrician Ikama " value="[ Mabingwa_Paediatrician Ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN012" indicatorid="REFWATIN012" name="indicator" readonly="readonly" title="Ikama ya Pediatrics" value="[ Ikama ya Pediatrics ]" /></td>
                     <td><input id="ip4wNCbM1jv-cPIIPSgejLL-val" name="entryfield" title="Mabingwa_Paediatrician waliopo" value="[ Mabingwa_Paediatrician waliopo ]" /></td>
                     <td><input id="ip4wNCbM1jv-IabdQUAkkCD-val" name="entryfield" title="Mabingwa_Paediatrician pungufu" value="[ Mabingwa_Paediatrician pungufu ]" /></td>
                     <td><input id="ip4wNCbM1jv-Zl12QWmm5xm-val" name="entryfield" title="Mabingwa_Paediatrician walioondoka" value="[ Mabingwa_Paediatrician walioondoka ]" /></td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
@@ -1833,10 +1859,10 @@
                     <td><input id="R227PweLA6B-cPIIPSgejLL-val" name="entryfield" title="Mabingwa_Pathologist waliopo" value="[ Mabingwa_Pathologist waliopo ]" /></td>
                     <td><input id="R227PweLA6B-IabdQUAkkCD-val" name="entryfield" title="Mabingwa_Pathologist pungufu" value="[ Mabingwa_Pathologist pungufu ]" /></td>
                     <td><input id="R227PweLA6B-Zl12QWmm5xm-val" name="entryfield" title="Mabingwa_Pathologist walioondoka" value="[ Mabingwa_Pathologist walioondoka ]" /></td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
@@ -1845,10 +1871,10 @@
                     <td><input id="QsWInAup7eK-cPIIPSgejLL-val" name="entryfield" title="Mabingwa_Physician waliopo" value="[ Mabingwa_Physician waliopo ]" /></td>
                     <td><input id="QsWInAup7eK-IabdQUAkkCD-val" name="entryfield" title="Mabingwa_Physician pungufu" value="[ Mabingwa_Physician pungufu ]" /></td>
                     <td><input id="QsWInAup7eK-Zl12QWmm5xm-val" name="entryfield" title="Mabingwa_Physician walioondoka" value="[ Mabingwa_Physician walioondoka ]" /></td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
@@ -1857,22 +1883,22 @@
                     <td><input id="Rquns7GouD7-cPIIPSgejLL-val" name="entryfield" title="Mabingwa_Psychiatrist waliopo" value="[ Mabingwa_Psychiatrist waliopo ]" /></td>
                     <td><input id="Rquns7GouD7-IabdQUAkkCD-val" name="entryfield" title="Mabingwa_Psychiatrist pungufu" value="[ Mabingwa_Psychiatrist pungufu ]" /></td>
                     <td><input id="Rquns7GouD7-Zl12QWmm5xm-val" name="entryfield" title="Mabingwa_Psychiatrist walioondoka" value="[ Mabingwa_Psychiatrist walioondoka ]" /></td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
                     <td style="width: 15em;">Radiologist</td>
-                    <td><input id="QBLG42ioqKF-zQDaL0X32pT-val" name="entryfield" title="Mabingwa_Radiologist Ikama " value="[ Mabingwa_Radiologist Ikama  ]" /></td>
+                    <td><input id="indicatorREFWATIN020" indicatorid="REFWATIN020" name="indicator" readonly="readonly" title="Ikama ya Radiologist" value="[ Ikama ya Radiologist ]" /></td>
                     <td><input id="QBLG42ioqKF-cPIIPSgejLL-val" name="entryfield" title="Mabingwa_Radiologist waliopo" value="[ Mabingwa_Radiologist waliopo ]" /></td>
                     <td><input id="QBLG42ioqKF-IabdQUAkkCD-val" name="entryfield" title="Mabingwa_Radiologist pungufu" value="[ Mabingwa_Radiologist pungufu ]" /></td>
                     <td><input id="QBLG42ioqKF-Zl12QWmm5xm-val" name="entryfield" title="Mabingwa_Radiologist walioondoka" value="[ Mabingwa_Radiologist walioondoka ]" /></td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
@@ -1881,10 +1907,10 @@
                     <td><input id="Uuj7mL0rQNd-cPIIPSgejLL-val" name="entryfield" title="Mabingwa_Urologist waliopo" value="[ Mabingwa_Urologist waliopo ]" /></td>
                     <td><input id="Uuj7mL0rQNd-IabdQUAkkCD-val" name="entryfield" title="Mabingwa_Urologist pungufu" value="[ Mabingwa_Urologist pungufu ]" /></td>
                     <td><input id="Uuj7mL0rQNd-Zl12QWmm5xm-val" name="entryfield" title="Mabingwa_Urologist walioondoka" value="[ Mabingwa_Urologist walioondoka ]" /></td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
@@ -1893,10 +1919,10 @@
                     <td><input id="COnqnTjFZSB-cPIIPSgejLL-val" name="entryfield" title="Mabingwa_Public Health Specialists waliopo" value="[ Mabingwa_Public Health Specialists waliopo ]" /></td>
                     <td><input id="COnqnTjFZSB-IabdQUAkkCD-val" name="entryfield" title="Mabingwa_Public Health Specialists pungufu" value="[ Mabingwa_Public Health Specialists pungufu ]" /></td>
                     <td><input id="COnqnTjFZSB-Zl12QWmm5xm-val" name="entryfield" title="Mabingwa_Public Health Specialists walioondoka" value="[ Mabingwa_Public Health Specialists walioondoka ]" /></td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
@@ -1905,10 +1931,10 @@
                     <td><input id="FysCB01oybD-cPIIPSgejLL-val" name="entryfield" title="Mabingwa_Neurologists waliopo" value="[ Mabingwa_Neurologists waliopo ]" /></td>
                     <td><input id="FysCB01oybD-IabdQUAkkCD-val" name="entryfield" title="Mabingwa_Neurologists pungufu" value="[ Mabingwa_Neurologists pungufu ]" /></td>
                     <td><input id="FysCB01oybD-Zl12QWmm5xm-val" name="entryfield" title="Mabingwa_Neurologists walioondoka" value="[ Mabingwa_Neurologists walioondoka ]" /></td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
                     <td><span>.</span></td>
@@ -1917,10 +1943,10 @@
                     <td><input id="AXV4pua76wo-cPIIPSgejLL-val" name="entryfield" title="Mabingwa_Neurosurgeons waliopo" value="[ Mabingwa_Neurosurgeons waliopo ]" /></td>
                     <td><input id="AXV4pua76wo-IabdQUAkkCD-val" name="entryfield" title="Mabingwa_Neurosurgeons pungufu" value="[ Mabingwa_Neurosurgeons pungufu ]" /></td>
                     <td><input id="AXV4pua76wo-Zl12QWmm5xm-val" name="entryfield" title="Mabingwa_Neurosurgeons walioondoka" value="[ Mabingwa_Neurosurgeons walioondoka ]" /></td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
-                    <td>&nbsp</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                 </tr>
                 </tbody>
             </table>
