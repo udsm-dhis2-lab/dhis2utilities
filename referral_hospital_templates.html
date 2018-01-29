@@ -249,6 +249,9 @@
             } else {
                 // Nothing
                 $('tr').hide();
+                $('#cde').append('<div><h4>No data elements for this organisation unit</h4></div>');
+
+
             }
         });
     });
@@ -431,7 +434,7 @@
     .ui-accordion-content{
         height:auto !important;
     }
-    .cde-greyfield, .cde-greyfield2, .cde-greyfield-ipd, .cde-greyfield3 {
+    .cde-greyfield, .cde-greyfield2, .cde-greyfield-ipd, .cde-greyfield-img {
         height: 15px;
         background-color: #e0e0e0;
     }
@@ -2395,7 +2398,11 @@
                         </style>
                         Average daily Admission (ADA)</th>
                     <th>Average daily Discharge</th>
-                    <th>Inpatients/occupied Beds Days (OBD)</th>
+                    <th>
+                        <p>Inpatients/</p>
+
+                        <p>occupied Beds Days (OBD)</p>
+                    </th>
                     <th>Average daily In-patients Census</th>
                     <th>Bed Occupancy Rate %</th>
                     <th>Average Length of Stay in the Hospital (days)</th>
@@ -4484,7 +4491,11 @@
 
                         <p>seen</p>
                     </th>
-                    <th rowspan="2">Total # exempted</th>
+                    <th rowspan="2">
+                        <p>Total #</p>
+
+                        <p>exempted</p>
+                    </th>
                     <th colspan="3">Age group (years)</th>
                     <th rowspan="2">
                         <p>Cost</p>
@@ -4651,11 +4662,13 @@
                         <p>Exempted (B)</p>
                     </th>
                     <th rowspan="2">
-                        <p>Total # of</p>
+                        <p><span style="font-size:12px;">Total # of</span></p>
 
-                        <p>tests/ services</p>
+                        <p><span style="font-size:12px;">tests/</span></p>
 
-                        <p>exempted (C)</p>
+                        <p><span style="font-size:12px;">services</span></p>
+
+                        <p><span style="font-size:12px;">exempted</span></p>
                     </th>
                     <th colspan="3">Age group (years)</th>
                     <th rowspan="2">
@@ -4892,7 +4905,6 @@
                     <td><input id="bgL3i3X7VmI-LPFTWNNmgQe-val" name="entryfield" style="width:5em//////////////////////////" title="Biochemistry Uric acid, 18 -45" value="[ Biochemistry Uric acid, 18 -45 ]" /></td>
                     <td><input id="bgL3i3X7VmI-o61nhkF70ar-val" name="entryfield" style="width:5em//////////////////////////" title="Biochemistry Uric acid, 46 - 60" value="[ Biochemistry Uric acid, 46 - 60 ]" /></td>
                     <td><input id="bgL3i3X7VmI-H8WkRA7zLfc-val" name="entryfield" style="width:5em//////////////////////////" title="Biochemistry Uric acid, 60+" value="[ Biochemistry Uric acid, 60+ ]" /></td>
-
                     <td><input disabled="disabled" id="bgL3i3X7VmId" indicatorformula="(#{bgL3i3X7VmI.hojlnr6O5W6}+#{bgL3i3X7VmI.ISS2w6S6dU8}+#{bgL3i3X7VmI.LPFTWNNmgQe}+#{bgL3i3X7VmI.o61nhkF70ar}+#{bgL3i3X7VmI.H8WkRA7zLfc})/(1)" name="indicatorFormula" /></td>
                 </tr>
                 <tr class="MUHIMBILI_MOI_LUGALO_KIDH_ORCI_JKCI_MIREMBE_KCMC_MAMC_BUGANDO_CCBRT_MBEYA">
@@ -4909,8 +4921,8 @@
                 <tr class="MUHIMBILI_MOI_LUGALO_KIDH_ORCI_JKCI_MIREMBE_KCMC_MAMC_BUGANDO_CCBRT_MBEYA">
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
-                    <td>Bilirumin total</td
-                    <td><input id="bgL3i3X7VmI-iu91PvGgTZj-val" name="entryfield" style="width:5em//////////////////////////" title="Biochemistry Bilirumin total, 0 - 5" value="[ Biochemistry Bilirumin total, 0 - 5 ]" /></td>
+                    <td>Bilirumin total</td>
+                    <td><input id="bgL3i3X7VmI-iu91PvGgTZj-val" name="entryfield" title="Biochemistry Bilirumin total, 0 - 5" value="[ Biochemistry Bilirumin total, 0 - 5 ]" /></td>
                     <td><input id="bgL3i3X7VmI-LWtFySYsTkF-val" name="entryfield" style="width:5em//////////////////////////" title="Biochemistry Bilirumin total, 6 - 17" value="[ Biochemistry Bilirumin total, 6 - 17 ]" /></td>
                     <td><input id="bgL3i3X7VmI-WYiFsN2fkOB-val" name="entryfield" style="width:5em//////////////////////////" title="Biochemistry Bilirumin total, 18 -45" value="[ Biochemistry Bilirumin total, 18 -45 ]" /></td>
                     <td><input id="bgL3i3X7VmI-kHW3PbiNNSL-val" name="entryfield" style="width:5em//////////////////////////" title="Biochemistry Bilirumin total, 46 - 60" value="[ Biochemistry Bilirumin total, 46 - 60 ]" /></td>
@@ -5084,13 +5096,7 @@
                 </tr>
                 <tr class="cde-greyfield">
                     <td>&nbsp;</td>
-                    <td colspan="2">TOTAL BIOCHEMISTRY</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
+                    <td colspan="8" rowspan="1">&nbsp;</td>
                 </tr>
                 <tr class="MUHIMBILI_MOI_LUGALO_KIDH_ORCI_JKCI_MIREMBE_KCMC_MAMC_BUGANDO_CCBRT_MBEYA">
                     <td><span>.</span></td>
@@ -5237,9 +5243,7 @@
                 </tr>
                 <tr class="cde-greyfield">
                     <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td colspan="6" rowspan="1">TOTAL HEMATOLOGY</td>
-                    <td>&nbsp;</td>
+                    <td colspan="8" rowspan="1">&nbsp;</td>
                 </tr>
                 <tr class="MUHIMBILI_MOI_LUGALO_KIDH_ORCI_JKCI_MIREMBE_KCMC_MAMC_BUGANDO_CCBRT_MBEYA">
                     <td><span>.</span></td>
@@ -5320,9 +5324,7 @@
                 </tr>
                 <tr class="cde-greyfield">
                     <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td colspan="6" rowspan="1">TOTAL PARASITOLOGY</td>
-                    <td>&nbsp;</td>
+                    <td colspan="8" rowspan="1">&nbsp;</td>
                 </tr>
                 <tr class="MUHIMBILI_MOI_LUGALO_KIDH_ORCI_JKCI_MIREMBE_KCMC_MAMC_BUGANDO_CCBRT_MBEYA">
                     <td><span>.</span></td>
@@ -5535,9 +5537,7 @@
                 </tr>
                 <tr class="cde-greyfield">
                     <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td colspan="6" rowspan="1">TOTAL MICROBIOLOGY</td>
-                    <td>&nbsp;</td>
+                    <td colspan="8" rowspan="1">&nbsp;</td>
                 </tr>
                 <tr class="MUHIMBILI_MOI_LUGALO_KIDH_ORCI_JKCI_MIREMBE_KCMC_MAMC_BUGANDO_CCBRT_MBEYA">
                     <td><span>.</span></td>
@@ -5827,9 +5827,7 @@
                 </tr>
                 <tr class="cde-greyfield">
                     <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td colspan="6" rowspan="1">TOTAL SEROLOGY</td>
-                    <td>&nbsp;</td>
+                    <td colspan="8" rowspan="1">&nbsp;</td>
                 </tr>
                 <tr class="MUHIMBILI_MOI_LUGALO_KIDH_ORCI_JKCI_MIREMBE_KCMC_MAMC_BUGANDO_CCBRT_MBEYA">
                     <td><span>.</span></td>
@@ -5878,13 +5876,7 @@
                 <tr class="MUHIMBILI_MOI_LUGALO_KIDH_ORCI_JKCI_MIREMBE_KCMC_MAMC_BUGANDO_CCBRT_MBEYA">
                     <td><span>.</span></td>
                     <td>Mortuary</td>
-                    <td class="cde-greyfield">Kuhifadhi miili</td>
-                    <td class="cde-greyfield">&nbsp;</td>
-                    <td class="cde-greyfield">&nbsp;</td>
-                    <td class="cde-greyfield">&nbsp;</td>
-                    <td class="cde-greyfield">&nbsp;</td>
-                    <td class="cde-greyfield">&nbsp;</td>
-                    <td class="cde-greyfield">&nbsp;</td>
+                    <td class="cde-greyfield" colspan="7" rowspan="1">Kuhifadhi miili</td>
                 </tr>
                 <tr class="MUHIMBILI_MOI_LUGALO_KIDH_ORCI_JKCI_MIREMBE_KCMC_MAMC_BUGANDO_CCBRT_MBEYA">
                     <td>&nbsp;</td>
@@ -5991,12 +5983,11 @@
         <div id="tableE-div">
             <h1><span style="font-size:18px; text-align: center">TABLE 5: Huduma za radiology</span></h1>
 
-            <table border="1" cellpadding="0" cellspacing="0" width="800">
+            <table border="1" cellpadding="0" cellspacing="0" width="400">
                 <tbody>
                 <tr class="cde-greyfield">
-                    <th colspan="2">REPORTING PERIOD:</th>
-                    <th id="selectedPeriod" style="text-align: left;">&nbsp;</th>
-                    <th style="width: 4em;">&nbsp;</th>
+                    <th colspan="2" style="text-align: left;">REPORTING PERIOD:</th>
+                    <th colspan="2" id="selectedPeriod" rowspan="1" style="text-align: left;"></th>
                 </tr>
                 <tr class="cde-greyfield">
                     <th style="text-align: left;">SN</th>
@@ -6162,8 +6153,7 @@
                 </tr>
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MIREMBE_MBEYA cde-greyfield">
                     <td>&nbsp;</td>
-                    <td colspan="2">TOTAL X-RAYS</td>
-                    <td>&nbsp;</td>
+                    <td colspan="3" rowspan="1">&nbsp;</td>
                 </tr>
                 <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA">
                     <td><span>.</span></td>
@@ -6278,7 +6268,7 @@
                     <td>CT scan</td>
                     <td><input id="Zu8CXGrmWr3-Wjvju3RYtce-val" name="entryfield" title="Radiology Imaging CT Scan" value="[ Radiology Imaging CT Scan ]" /></td>
                 </tr>
-                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_BUGANDO cde-greyfield">
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_BUGANDO cde-greyfield-img">
                     <td>&nbsp;</td>
                     <td colspan="2">TOTAL IMAGING</td>
                     <td><input dataelementid="Zu8CXGrmWr3" id="totalZu8CXGrmWr3" name="total" readonly="readonly" title="Radiology Imaging (Total)" value="[ Radiology Imaging (Total) ]" /></td>
