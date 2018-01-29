@@ -1,23 +1,2000 @@
-CCBRT % ya Upasuaji mkubwa wa Obstetrics and Gynaecology
+<meta charset="UTF-8">
+<title></title>
+<script type="text/javascript">
 
-CCBRT % ya Upasuaji mdogo wa Obstetrics and Gynaecology
+    dhis2.util.on('dhis2.de.event.formReady', function (event, ds) {
+        console.log('form is ready');
+        console.log(window.visitedTabsInMultipleForm);
+        //Reset all tabs
+        $('a[role="presentation"][class="ui-tabs-anchor"]').removeAttr('style');
+        //Initialize
+        var periodId = $('#selectedPeriodId').val();
+        var dataSetId = $('#selectedDataSetId').val();
+        var orgunitsSelected = dhis2.de.currentOrganisationUnitId;
+        var keyVal = orgunitsSelected + dataSetId + periodId;
 
-CCBRT % ya Upasuaji mkubwa wa Ear, Nose, Throat surgery
+        if (window.visitedTabsInMultipleForm === undefined)
+            window.visitedTabsInMultipleForm = {};
+        if (window.visitedTabsInMultipleForm[keyVal] === undefined)
+            window.visitedTabsInMultipleForm[keyVal] = [];
+        //Find active tab and add it to list
+        $('li[role="tab"][aria-selected="true"]').find('a').each(function (anchorTagIndex, anchorTag) {
+            console.log('this is executed');
+            var anchorTagName = $(anchorTag).attr('href');
+            if ($.inArray(anchorTagName, window.visitedTabsInMultipleForm[keyVal]) == -1) {
+                // if(Object.keys(window.visitedTabsInMultipleForm[keyVal][0])===keyVal){
+                window.visitedTabsInMultipleForm[keyVal].push(anchorTagName);
+                // }
+            }
+        });
 
-CCBRT % ya Upasuaji mdogo wa Ear, Nose, Throat surgery
+        //Implement a function to id="id-grey-dark"  already visited tabs and color them for the first time
+        console.log('the first time contents');
+        console.log(window.visitedTabsInMultipleForm[keyVal])
+        $.each(window.visitedTabsInMultipleForm[keyVal], function (tabIndex, tabName) {
+            $("a[href=" + tabName + "]").css({"background-color": "yellow"});
+        });
 
-CCBRT % ya Upasuaji mkubwa wa Orthopedic
-(UPASUAJIW23.eY5I6gwwW2g)
+        //Implement event trigger for adding new tabs and changing colors
+        $('a[role="presentation"][class="ui-tabs-anchor"]').on("click", function () {
+            console.log('tab is clicked:');
+            console.log(window.visitedTabsInMultipleForm);
+            //Change color
+            $(this).css({"background-color": "yellow"});
 
-CCBRT % ya Upasuaji mdogo wa Orthopedic
+            //Add to our array list
+            var tabName = $(this).attr("href");
+            $.each(window.visitedTabsInMultipleForm, function (key, valueObj) {
+                if (key == keyVal && $.inArray(tabName, window.visitedTabsInMultipleForm[keyVal]) == -1) {
+                    console.log('visited tab is:' + tabName);
+                    console.log('all contents of array:');
+                    console.log(window.visitedTabsInMultipleForm[keyVal])
+                    console.log("matches" + key + " " + keyVal);
+                    window.visitedTabsInMultipleForm[key].push(tabName);
+                    console.log('after click');
+                    console.log(window.visitedTabsInMultipleForm[key]);
+                }
+            });
 
-CCBRT % ya Upasuaji mkubwa wa Ophthalmology
+        });
 
-CCBRT % ya Upasuaji mdogo wa Ophthalmology
+    });
 
-CCBRT % ya Upasuaji mkubwa wa Plastic surgery
+    var tabsLayout = function(setting) {
+        if(typeof(setting)!=='undefined' && setting=='default') {
+            console.log('default selected',setting);
+            $( "#mod2_tabs" ).tabs();
+            $('#tabs-on').css({ 'background-color' : '#449d44', 'color' : '#fff', 'border-color' : '#449d44'});$('#listTabs').css({ 'display' : 'block'});
+            $('#tabs-off').css({ 'background-color' : '#fff', 'color' : '#333', 'border-color' : '#ccc'});$('#listTabs').css({ 'display' : 'block'});
 
-CCBRT % ya Upasuaji mdogo wa Plastic surgery
+        }else if(typeof(setting)!=='undefined' && setting=='destroy') {
+            console.log('destroy selected',setting);
+            $( "#mod2_tabs" ).tabs('destroy');
+            $('#tabs-on').css({ 'background-color' : '#fff', 'color' : '#333', 'border-color' : '#ccc'});$('#listTabs').css({ 'display' : 'none'});
+            $('#tabs-off').css({ 'background-color' : '#449d44', 'color' : '#fff', 'border-color' : '#449d44'});$('#listTabs').css({ 'display' : 'none'});
+
+        }else {
+            console.log('couldnt match anything');
+
+        }
+
+    }
+
+    $(document).ready(function () {
+        $(function () {
+            $("#mod2_tabs").tabs();
+        });
+
+        dhis2.util.on( 'dhis2.de.event.formReady', function( event, ds ) {
 
 
-#{UPASUAJIW11.eY5I6gwwW2g}+#{UPASUAJIW12.eY5I6gwwW2g}+#{UPASUAJIW13.eY5I6gwwW2g}+#{UPASUAJIW14.eY5I6gwwW2g}+#{UPASUAJIW15.eY5I6gwwW2g}+#{UPASUAJIW16.eY5I6gwwW2g}+#{UPASUAJIW17.eY5I6gwwW2g}+#{UPASUAJIW18.eY5I6gwwW2g}
+            $( function() {
+                $( "#icd10" ).accordion();
+            } );
+
+            function periodFormatter(period) {
+                var truePeriod = ''; var year = period.pe.substring(0,4);
+                var monthCheck = period.pe.substring(4);
+                if (monthCheck ==='01') {
+                    return 'January '+ year;
+                } else if (monthCheck ==='02') {
+                    return 'February '+ year;
+                } else if (monthCheck ==='03') {
+                    return 'March '+ year;
+                } else if (monthCheck ==='04') {
+                    return 'April '+ year;
+                } else if (monthCheck ==='05') {
+                    return 'May '+ year;
+                } else if (monthCheck ==='06') {
+                    return 'June '+ year;
+                } else if (monthCheck ==='07') {
+                    return 'July '+ year;
+                } else if (monthCheck ==='08') {
+                    return 'August '+ year;
+                } else if (monthCheck ==='09') {
+                    return 'September '+ year;
+                } else if (monthCheck ==='10') {
+                    return 'October '+ year;
+                } else if (monthCheck ==='11') {
+                    return 'November '+ year;
+                } else if (monthCheck ==='12') {
+                    return 'December '+ year;
+                }
+            }
+            var orgUnitId = dhis2.de.currentOrganisationUnitId;
+            var period = dhis2.de.api.getSelections();
+            $('#selectedPeriod').text(periodFormatter(period));
+
+            function showTrsTdsByOrgUnit(orgUnitId) {
+                var orgUnitIdsObj = {
+                    "L3OnLgaVY3P": "CCBRT",
+                    "yI1rweSuNPd": "MAMC",
+                    "nPsRsAhjEIx": "LUGALO",
+                    "y9DO43xRhsp": "MUHIMBILI",
+                    "hZGbTy42NTH": "KCMC",
+                    "av7cOiKhqPT": "ORCI",
+                    "XcpYSq098gi": "JKCI",
+                    "zgp2gPBVqyt": "BUGANDO",
+                    "bAwoKsCXiT6": "MOI",
+                    "xXi1J4KyX97": "KIDH",
+                    "sEn1fzvOU7m": "MIREMBE",
+                    "gQWcAtCpYvS": "MBEYA"
+                };
+                Object.keys(orgUnitIdsObj).forEach(function (key, val) {
+                    if (orgUnitId === key) {
+                        var arr =['tr', 'td'];
+                        for (var count = 0; count < arr.length; count++) {
+                            $(arr[count]).each(function() {
+                                var theClass= $(this).attr('class');
+                                if (theClass !== undefined) {
+                                    if (theClass.indexOf(orgUnitIdsObj[key]) >= 0) {
+                                        $('.' + $(this).attr('class')).show();
+                                    } else if ($(this).attr('class').indexOf('cde-greyfield') >= 0) {
+                                        $('.' + $(this).attr('class')).show();
+                                    } else {
+                                        $('.' + $(this).attr('class')).hide();
+                                    }
+                                }
+                            });
+                        }
+                    } else {
+                        $('.'+$(this).attr('class')).hide();
+                    }
+                });
+            }
+
+            showTrsTdsByOrgUnit(orgUnitId);
+
+            if ( orgUnitId === "L3OnLgaVY3P") { // CCBRT
+                $('#CSJS7pawQZII').text('1.');
+            } else if(orgUnitId === 'yI1rweSuNPd') { // Mloganzila MAMC
+                $('#oHlfGi8Zkqzz').text('1.');
+            } else if(orgUnitId === 'nPsRsAhjEIx') { //Lugalo SPecialist
+                $('#oHlfGi8Zkqz').text('Children CLinic (Vaccination and weighing)');
+            } else if(orgUnitId === 'y9DO43xRhsp') { //Muhimbili N H
+                $('#S0kZYE3eNsi').text('5.');
+            } else if(orgUnitId === 'hZGbTy42NTH') { //KCMC
+                $('#ORCI-death-indicator').hide();
+                $('#KCMC-death-indicator').show();
+                $('#WLsMbBM5C5g').text('WD8 - General, Urology');
+                $('#LeMpCA5x8nL').text('WD11 - Medical (Male)');
+                $('#fovvK2dh0Lg').text('WD9 - Medical (Female)');
+                $('#sUTFYcrf64x').text('ICU - Intensive Care (Main)');
+                $('#a9YQWPFkVWvaa').text('META2 - Antenatal Ward');
+                $('#N794dEavSVNza').text('META3 - Obstetrics & Gynecology');
+                $('#ngBRmLLsRSOza').text('Paediatric Infectious Ward');
+            } else if (orgUnitId === 'av7cOiKhqPT') { //ORCI
+                $('#UICSbyoGsiu').text('VIP Rooms');
+                $('#ORCI-death-indicator').show();
+                $('#KCMC-death-indicator').hide();
+            } else if (orgUnitId === 'XcpYSq098gi') { // jakaya - JKCI
+                $('#NUTRITION_gmBtExh6uZ4').text('Nutritional Clinic');
+                $('#PAEDIATRIC_ZZl1iQcAOfu').text('Paediatric Clinic');
+                $('#CTC_Lw16CH0BT9R').text('Adult Clinic');
+                $('#CARDIOLOGY_Cm7n3iR4SSQ').text('Cardiovascular Surgery');
+                $('#O7vRuvnSxlT').text('Ward Two(Surgical Ward)')
+                $('#ngBRmLLsRSO').text('Ward Three(Paediatric Ward)');
+                $('#UICSbyoGsiu').text('Ward Four(Private/Insurance)');
+            } else if(orgUnitId === 'zgp2gPBVqyt') { //BUGANDO
+                $('#x8bIWqRoFP8').text('1.');
+            } else if(orgUnitId === 'bAwoKsCXiT6') { //MOI
+                $('#oHlfGi8Zkqzz').text('1.');
+            } else if(orgUnitId === 'xXi1J4KyX97') { //KIDH
+                $('#d0V9McVa9RI12').text('EF: (  New Tb ward male and female)');
+                $('#uoTwhbF4INx').text('Ophthalmology');
+                $('#xARAOWl914s').text('General Outpatient Clinic');
+                $('#NQ9oF5xyu5N').text('Occupational Health Service ');
+            } else if (orgUnitId === 'sEn1fzvOU7m') { // Mirembe
+                $('#x8bIWqRoFP8').text('1.');
+
+            } else if (orgUnitId === 'gQWcAtCpYvS') { //Mbeya
+                $('#x8bIWqRoFP8').text('1.');
+
+            } else {
+                // Nothing
+                $('tr').hide();
+            }
+        });
+    });
+    if (dhis2.dsr){
+        function calculateReportIndicators() {
+            $('input[name="indicatorFormula"]').css('border','none'); $('input[name="indicatorFormula"]').css('background-color','#FFFFFF'); $('input[name="indicatorFormula"]').css('font-weight','500');
+            $('input[name ="indicatorFormula"]').each(function (i, form) {
+                var unReplacedFormula = $(this).attr('indicatorFormula');
+                var elementComboArr = unReplacedFormula.replace("/",",").split("(").join("").split(")").join("").split(",")[0].split("+")
+                var sum = 0;
+                for (var count = 0; count < elementComboArr.length; count++) {
+                    if (elementComboArr[count].length > 18) {
+                        var toReplace='';
+                        var elementCombo = elementComboArr[count].split(".");
+                        if (isNaN(parseInt($("span[data-co="+elementCombo[1].replace("}","")+"][data-de="+elementCombo[0].replace("#{","")+"]").text()))=== false) {
+                            sum += parseInt($("span[data-co="+elementCombo[1].replace("}","")+"][data-de="+elementCombo[0].replace("#{","")+"]").text());
+                            toReplace += elementCombo[0]+'.'+elementCombo[1];
+                        }
+                        unReplacedFormula = unReplacedFormula.replace(toReplace, sum);
+                    }
+                }
+                if (parseInt(eval(unReplacedFormula))){
+                    $('#'+form.id).val(parseInt(eval(unReplacedFormula)));
+                }
+            });
+        }
+        $(document).ready(function(){
+            calculateReportIndicators();
+        });
+    }else {
+        dhis2.util.on('dhis2.de.event.dataValuesLoaded', function () {
+            $('input[name="indicatorFormula"]').css('background-color','#FFFFFF'); $('input[name="indicatorFormula"]').css('font-weight','500'); $('input[name="indicatorFormula"]').css('border','1px grey solid'); $('input[name="indicatorFormula"]').css('text-align','center');
+            calculateIndicatorValue();
+            addListerners();
+        });
+
+        function addListerners(){
+            $('input[name ="entryfield"]').each(function (i) {
+                $(this).change(function () {
+                    //codes for on changes
+                    calculateIndicatorValue();
+                });
+            });
+        }
+
+        function calculateIndicatorValue() {
+            $('input[name ="indicatorFormula"]').each( function (i, form) {
+                var unReplacedFormula = $(this).attr('indicatorFormula');
+                var newFormula = unReplacedFormula;
+                unReplacedFormula.split("/").forEach(function(entryStr){
+                    if (entryStr.length > 18 && entryStr.length < 30 ) {
+                        if (entryStr.indexOf("*") > 0) {
+                            newFormula = newFormula.replace(entryStr.split("*")[0].split("(").join("").split(")").join(""), 'Number($("#'+entryStr.split("*")[0].split("(").join("").split(")").join("").split("#{").join("").split("}").join("").replace(".","-")+'-val").val())');
+                        } else {
+                            newFormula = newFormula.replace(entryStr.split("(").join("").split(")").join(""),'Number($("#'+entryStr.split("(").join("").split(")").join("").split("#{").join("").split("}").join("").replace(".","-")+'-val").val())');
+                        }
+                    } else if(entryStr.length > 30) {
+                        entryStr.split("+").forEach(function(entryStr2){
+                            if (entryStr2.indexOf("*") > 1) {
+                                newFormula = newFormula.replace(entryStr2.split("*")[0].split("(").join("").split(")").join(""), 'Number($("#'+entryStr2.split("*")[0].split("(").join("").split(")").join("").split("#{").join("").split("}").join("").replace(".","-")+'-val").val())');
+                            } else {
+                                newFormula = newFormula.replace(entryStr2.split("(").join("").split(")").join(""),'Number($("#'+entryStr2.split("(").join("").split(")").join("").split("#{").join("").split("}").join("").replace(".","-")+'-val").val())');
+                            }
+                        })
+                    }
+                });
+
+                if (newFormula !== undefined) {
+                    if (isNaN(eval("("+newFormula.split("# ").join("#").split(" -").join("-").replace("  ","").replace(/(?:\r\n|\r|\n)/g, '')+")")) !== true) {
+                        $('#'+form.id).val(parseInt(eval("("+newFormula.split("# ").join("#").split(" -").join("-").replace("  ","").replace(/(?:\r\n|\r|\n)/g, '')+")")));
+                    } else {
+                        $('#'+form.id).val(0);
+                    }
+                }
+            });
+        }
+    }
+</script>
+<p>
+    <style type="text/css">#cde table {
+        border-collapse: collapse;
+    }
+
+    #cde table, #cde th, #cde td {
+        border: 1px solid #c0c0c0;
+    }
+
+    #cde td, #cde th {
+        height: 30px;
+        padding: 10px;
+        margin: 10px;
+    }
+
+
+    td{
+        text-transform:lowercase;
+    }
+
+    td:first-letter{
+        text-transform: uppercase;
+    }
+
+    .cde-greyfield, .cde-greyfield2, .cde-greyfield-ipd, .cde-greyfield3 {
+        background-color: #e0e0e0;
+    }
+    #tableA-div{
+        counter-reset: watumishi-sno;
+    }
+    #tableB-div{
+        counter-reset: mabingwa-sno;
+    }
+
+    #tableA-div td span::before{
+        counter-increment: watumishi-sno;
+        content: counter(watumishi-sno);
+    }
+    #tableB-div td span::before{
+        counter-increment: mabingwa-sno;
+        content: counter(mabingwa-sno);
+    }
+
+    #tableA-div input {
+        width: 4em;
+    }
+    #tableB-div input {
+        width: 4em;
+    }
+    disabled {
+        background-color: #FFFFFF;
+    }
+    .ui-widget-content {
+        border: 1px solid #FFFFFF;
+    }
+    .ui-accordion-content{
+        height:auto !important;
+    }
+    li .ui-tabs-anchor:visited{
+        color: #6c3aad !important;
+    }
+    </style>
+</p>
+<!--<p><span style="font-size:20px;"><strong>HMIS Taarifa za Watumishi na Madaktari Bingwa</strong></span></p>-->
+
+<div class="toggle-buttons hideInPrint">
+    <div aria-label="Large button group" class="btn-group btn-group-lg" role="group"><span style="font-family:Arial,Helvetica,sans-serif;"><button class="btn btn-default" id="tabs-on" onclick="tabsLayout('default')" style="margin-right:-2px;background-color:#449d44;color:#fff;border-color:#449d44;border-top-right-radius: 0;border-bottom-right-radius: 0;" type="button">Tabs On</button><button class="btn btn-default" id="tabs-off" onclick="tabsLayout('destroy')" style="margin-left:-2px;background-color:#fff;color:#333;border-color:#ccc;border-top-right-radius: 0;border-bottom-right-radius: 0;" type="button">Tabs Off</button></span></div>
+</div>
+
+<div id="mod2_tabs">
+    <ul id="listTabs">
+        <li><span style="font-family:Arial,Helvetica,sans-serif;"><a href="#tableA-div">Table 1: Watumishi</a></span></li>
+        <li><span style="font-family:Arial,Helvetica,sans-serif;"><a href="#tableB-div">Table 2: Madaktari Bingwa</a></span></li>
+    </ul>
+
+    <div id="cde">
+        <div id="tableA-div" style="padding: none;">
+            <table border="1" cellpadding="0" cellspacing="0" width="800">
+                <tbody>
+                <tr class="cde-greyfield3">
+                    <th>SN</th>
+                    <th>Kada</th>
+                    <th>Ikama</th>
+                    <th>Waliopo</th>
+                    <th>Pungufu</th>
+                    <th>Walioondoka</th>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Accountant</td>
+                    <td><input id="indicatorREFWATIN046" indicatorid="REFWATIN046" name="indicator" readonly="readonly" title="Ikama ya Accountant" value="[ Ikama ya Accountant ]" /></td>
+                    <td><input id="O04W6XZUddV-fc8P7bU8lnA-val" name="entryfield" title="Watumishi Waliopo Accountant" value="[ Watumishi Waliopo Accountant ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-fc8P7bU8lnA-val" name="entryfield" title="Watumishi Walioondoka Accountant" value="[ Watumishi Walioondoka Accountant ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td>2</td>
+                    <td style="width: 15em;">Accounts Technician</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-bBNIbXwb8Wz-val" name="entryfield" title="Watumishi Waliopo Accounts technician" value="[ Watumishi Waliopo Accounts technician ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-bBNIbXwb8Wz-val" name="entryfield" title="Watumishi Walioondoka Accounts technician" value="[ Watumishi Walioondoka Accounts technician ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Administrative Officer</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-wfVgarE0qSZ-val" name="entryfield" title="Watumishi Waliopo Administrative officer" value="[ Watumishi Waliopo Administrative officer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-wfVgarE0qSZ-val" name="entryfield" title="Watumishi Walioondoka Administrative officer" value="[ Watumishi Walioondoka Administrative officer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Agricultural Officer</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-TiC7DUwjiw8-val" name="entryfield" title="Watumishi Waliopo Agricultural officer" value="[ Watumishi Waliopo Agricultural officer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-TiC7DUwjiw8-val" name="entryfield" title="Watumishi Walioondoka Agricultural officer" value="[ Watumishi Walioondoka Agricultural officer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Agriculturalist</td>
+                    <td><input id="pp1Qsv9nspS-CN0gz4T9Iso-val" name="entryfield" title="undefined" value="[ undefined ]" /></td>
+                    <td><input id="O04W6XZUddV-HnMb4n9fACC-val" name="entryfield" title="Watumishi Waliopo Agriculturalist" value="[ Watumishi Waliopo Agriculturalist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-HnMb4n9fACC-val" name="entryfield" title="Watumishi Walioondoka Agriculturalist" value="[ Watumishi Walioondoka Agriculturalist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Architech</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-jjFLkGzZiK7-val" name="entryfield" title="Watumishi Waliopo Architech" value="[ Watumishi Waliopo Architech ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-jjFLkGzZiK7-val" name="entryfield" title="Watumishi Walioondoka Architech" value="[ Watumishi Walioondoka Architech ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Artisan</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-NcflUGhic9g-val" name="entryfield" title="Watumishi Waliopo Artisan" value="[ Watumishi Waliopo Artisan ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-NcflUGhic9g-val" name="entryfield" title="Watumishi Walioondoka Artisan" value="[ Watumishi Walioondoka Artisan ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Assistant Accountant</td>
+                    <td><input id="indicatorREFWATIN047" indicatorid="REFWATIN047" name="indicator" readonly="readonly" title="Ikama ya Assistant accountant" value="[ Ikama ya Assistant accountant ]" /></td>
+                    <td><input id="O04W6XZUddV-MwOPUwjVFXt-val" name="entryfield" title="Watumishi Waliopo Assistant accountant" value="[ Watumishi Waliopo Assistant accountant ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-MwOPUwjVFXt-val" name="entryfield" title="Watumishi Walioondoka Assistant accountant" value="[ Watumishi Walioondoka Assistant accountant ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Assistant Biomedical Engineering Technician</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-tOChJeTOci8-val" name="entryfield" title="Watumishi Waliopo Assistant biomedical engineering technician" value="[ Watumishi Waliopo Assistant biomedical engineering technician ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-tOChJeTOci8-val" name="entryfield" title="Watumishi Walioondoka Assistant biomedical engineering technician" value="[ Watumishi Walioondoka Assistant biomedical engineering technician ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Assistant Chemical Laboratory Technologist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-r5Ls6lnbqLW-val" name="entryfield" title="Watumishi Waliopo Assistant chemical laboratory technologist" value="[ Watumishi Waliopo Assistant chemical laboratory technologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-r5Ls6lnbqLW-val" name="entryfield" title="Watumishi Walioondoka Assistant chemical laboratory technologist" value="[ Watumishi Walioondoka Assistant chemical laboratory technologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Assistant Dental Officer</td>
+                    <td><input id="indicatorREFWATIN005" indicatorid="REFWATIN005" name="indicator" readonly="readonly" title="Ikama ya Assistant dental officer" value="[ Ikama ya Assistant dental officer ]" /></td>
+                    <td><input id="O04W6XZUddV-sRKKbiFBTkW-val" name="entryfield" title="Watumishi Waliopo Assistant dental officer" value="[ Watumishi Waliopo Assistant dental officer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-sRKKbiFBTkW-val" name="entryfield" title="Watumishi Walioondoka Assistant dental officer" value="[ Watumishi Walioondoka Assistant dental officer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Assistant Dental Surgeon Officer</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-NvFpiaEreMD-val" name="entryfield" title="Watumishi Waliopo Assistant dental surgeon officer" value="[ Watumishi Waliopo Assistant dental surgeon officer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-NvFpiaEreMD-val" name="entryfield" title="Watumishi Walioondoka Assistant dental surgeon officer" value="[ Watumishi Walioondoka Assistant dental surgeon officer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Assistant Dental Technologist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-owGnpYFsWPw-val" name="entryfield" title="Watumishi Waliopo Assistant dental technologist" value="[ Watumishi Waliopo Assistant dental technologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-owGnpYFsWPw-val" name="entryfield" title="Watumishi Walioondoka Assistant dental technologist" value="[ Watumishi Walioondoka Assistant dental technologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Assistant Environmental Health Officer</td>
+                    <td><input id="indicatorREFWATIN032" indicatorid="REFWATIN032" name="indicator" readonly="readonly" title="Ikama ya Assistant environmental health Officer" value="[ Ikama ya Assistant environmental health Officer ]" /></td>
+                    <td><input id="O04W6XZUddV-FbQ2XjgOk7j-val" name="entryfield" title="Watumishi Waliopo Assistant environmental health officer" value="[ Watumishi Waliopo Assistant environmental health officer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-FbQ2XjgOk7j-val" name="entryfield" title="Watumishi Walioondoka Assistant environmental health officer" value="[ Watumishi Walioondoka Assistant environmental health officer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Assistant Health Laboratory Technologist</td>
+                    <td><input id="indicatorREFWATIN018" indicatorid="REFWATIN018" name="indicator" readonly="readonly" title="Ikama ya Assistant health lab technologist" value="[ Ikama ya Assistant health lab technologist ]" /></td>
+                    <td><input id="O04W6XZUddV-drWSjTnmoUP-val" name="entryfield" title="Watumishi Waliopo Assistant health laboratory technologist" value="[ Watumishi Waliopo Assistant health laboratory technologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-drWSjTnmoUP-val" name="entryfield" title="Watumishi Walioondoka Assistant health laboratory technologist" value="[ Watumishi Walioondoka Assistant health laboratory technologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Assistant Internal Auditor</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-f18jtGFBrdE-val" name="entryfield" title="Watumishi Waliopo Assistant internal auditor" value="[ Watumishi Waliopo Assistant internal auditor ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-f18jtGFBrdE-val" name="entryfield" title="Watumishi Walioondoka Assistant internal auditor" value="[ Watumishi Walioondoka Assistant internal auditor ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Assistant Medical Officer</td>
+                    <td><input id="indicatorREFWATIN003" indicatorid="REFWATIN003" name="indicator" readonly="readonly" title="Ikama ya Assistant medical officer" value="[ Ikama ya Assistant medical officer ]" /></td>
+                    <td><input id="O04W6XZUddV-epadvSPomKn-val" name="entryfield" title="Watumishi Waliopo Assistant medical officer" value="[ Watumishi Waliopo Assistant medical officer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-epadvSPomKn-val" name="entryfield" title="Watumishi Walioondoka Assistant medical officer" value="[ Watumishi Walioondoka Assistant medical officer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Assistant Nursing Officer</td>
+                    <td><input id="indicatorREFWATIN014" indicatorid="REFWATIN014" name="indicator" readonly="readonly" title="Ikama ya Assistant nursing officer" value="[ Ikama ya Assistant nursing officer ]" /></td>
+                    <td><input id="O04W6XZUddV-sfcD136k7cL-val" name="entryfield" title="Watumishi Waliopo Assistant nursing officer" value="[ Watumishi Waliopo Assistant nursing officer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-sfcD136k7cL-val" name="entryfield" title="Watumishi Walioondoka Assistant nursing officer" value="[ Watumishi Walioondoka Assistant nursing officer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Assistant Nursing Officer II</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-KYpg4dksPXn-val" name="entryfield" title="Watumishi Waliopo Assistant nursing officer ii" value="[ Watumishi Waliopo Assistant nursing officer ii ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-KYpg4dksPXn-val" name="entryfield" title="Watumishi Walioondoka Assistant nursing officer ii" value="[ Watumishi Walioondoka Assistant nursing officer ii ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Assistant Optometric Technologist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-CHPH3wRisGV-val" name="entryfield" title="Watumishi Waliopo Assistant optometric technologist" value="[ Watumishi Waliopo Assistant optometric technologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-CHPH3wRisGV-val" name="entryfield" title="Watumishi Walioondoka Assistant optometric technologist" value="[ Watumishi Walioondoka Assistant optometric technologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Assistant Orthopedic Technologist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-mBzrxOiHCv1-val" name="entryfield" title="Watumishi Waliopo Assistant orthopedic technologist" value="[ Watumishi Waliopo Assistant orthopedic technologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-mBzrxOiHCv1-val" name="entryfield" title="Watumishi Walioondoka Assistant orthopedic technologist" value="[ Watumishi Walioondoka Assistant orthopedic technologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Assistant Pharmaceutical Technologist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-Lj88trsBytW-val" name="entryfield" title="Watumishi Waliopo Assistant pharmaceutical technologist" value="[ Watumishi Waliopo Assistant pharmaceutical technologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-Lj88trsBytW-val" name="entryfield" title="Watumishi Walioondoka Assistant pharmaceutical technologist" value="[ Watumishi Walioondoka Assistant pharmaceutical technologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Assistant Radiologic Technologist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-R5V28kXGmYA-val" name="entryfield" title="Watumishi Waliopo Assistant radiologic technologist" value="[ Watumishi Waliopo Assistant radiologic technologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-R5V28kXGmYA-val" name="entryfield" title="Watumishi Walioondoka Assistant radiologic technologist" value="[ Watumishi Walioondoka Assistant radiologic technologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Assistant Radiotherapy Technologist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-bf1Q5tGKShi-val" name="entryfield" title="Watumishi Waliopo Assistant radiotherapy technologist" value="[ Watumishi Waliopo Assistant radiotherapy technologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-bf1Q5tGKShi-val" name="entryfield" title="Watumishi Walioondoka Assistant radiotherapy technologist" value="[ Watumishi Walioondoka Assistant radiotherapy technologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Assistant Supplies Officer</td>
+                    <td><input id="indicatorREFWATIN050" indicatorid="REFWATIN050" name="indicator" readonly="readonly" title="Ikama ya Assistance supplies Officer" value="[ Ikama ya Assistance supplies Officer ]" /></td>
+                    <td><input id="O04W6XZUddV-GrdZxYkD8Cj-val" name="entryfield" title="Watumishi Waliopo Assistant supplies officer" value="[ Watumishi Waliopo Assistant supplies officer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-GrdZxYkD8Cj-val" name="entryfield" title="Watumishi Walioondoka Assistant supplies officer" value="[ Watumishi Walioondoka Assistant supplies officer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Assistant Technician</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-W0TxODXZFpH-val" name="entryfield" title="Watumishi Waliopo Assistant technician" value="[ Watumishi Waliopo Assistant technician ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-W0TxODXZFpH-val" name="entryfield" title="Watumishi Walioondoka Assistant technician" value="[ Watumishi Walioondoka Assistant technician ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Assistant Technologist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-TSVyPOYQQSZ-val" name="entryfield" title="Watumishi Waliopo Assistant technologist" value="[ Watumishi Waliopo Assistant technologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-TSVyPOYQQSZ-val" name="entryfield" title="Watumishi Walioondoka Assistant technologist" value="[ Watumishi Walioondoka Assistant technologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Assistant Procurement Officer</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-arYzaQor1wz-val" name="entryfield" title="Watumishi Waliopo Assistant procurement officer" value="[ Watumishi Waliopo Assistant procurement officer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-arYzaQor1wz-val" name="entryfield" title="Watumishi Walioondoka Assistant procurement officer" value="[ Watumishi Walioondoka Assistant procurement officer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Auditor</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-ZOgQKrNiX3v-val" name="entryfield" title="Watumishi Waliopo Auditor" value="[ Watumishi Waliopo Auditor ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-ZOgQKrNiX3v-val" name="entryfield" title="Watumishi Walioondoka Auditor" value="[ Watumishi Walioondoka Auditor ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Biomedical Engineer</td>
+                    <td><input id="indicatorREFWATIN023" indicatorid="REFWATIN023" name="indicator" readonly="readonly" title="Ikama ya Biomedical engineer" value="[ Ikama ya Biomedical engineer ]" /></td>
+                    <td><input id="O04W6XZUddV-edX9fiBmGjJ-val" name="entryfield" title="Watumishi Waliopo Biomedical engineer" value="[ Watumishi Waliopo Biomedical engineer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-edX9fiBmGjJ-val" name="entryfield" title="Watumishi Walioondoka Biomedical engineer" value="[ Watumishi Walioondoka Biomedical engineer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Biomedical Engineering Technician</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-owG08qTagtr-val" name="entryfield" title="Watumishi Waliopo Biomedical engineering technician" value="[ Watumishi Waliopo Biomedical engineering technician ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-owG08qTagtr-val" name="entryfield" title="Watumishi Walioondoka Biomedical engineering technician" value="[ Watumishi Walioondoka Biomedical engineering technician ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Catering Officer</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-te4Rt4e1OUo-val" name="entryfield" title="Watumishi Waliopo Catering officer" value="[ Watumishi Waliopo Catering officer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-te4Rt4e1OUo-val" name="entryfield" title="Watumishi Walioondoka Catering officer" value="[ Watumishi Walioondoka Catering officer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Chemical Laboratory Technologist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-FN2URBWfhmo-val" name="entryfield" title="Watumishi Waliopo Chemical laboratory technologist" value="[ Watumishi Waliopo Chemical laboratory technologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-FN2URBWfhmo-val" name="entryfield" title="Watumishi Walioondoka Chemical laboratory technologist" value="[ Watumishi Walioondoka Chemical laboratory technologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Chemist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-iSBihfksT02-val" name="entryfield" title="Watumishi Waliopo Chemist" value="[ Watumishi Waliopo Chemist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-iSBihfksT02-val" name="entryfield" title="Watumishi Walioondoka Chemist" value="[ Watumishi Walioondoka Chemist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Chemist Assistant</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-M7Sc8XpCrti-val" name="entryfield" title="Watumishi Waliopo Chemist assistant" value="[ Watumishi Waliopo Chemist assistant ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-M7Sc8XpCrti-val" name="entryfield" title="Watumishi Walioondoka Chemist assistant" value="[ Watumishi Walioondoka Chemist assistant ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Child Care Worker</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-M1Z0H8kyxNp-val" name="entryfield" title="Watumishi Waliopo Child care worker" value="[ Watumishi Waliopo Child care worker ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-M1Z0H8kyxNp-val" name="entryfield" title="Watumishi Walioondoka Child care worker" value="[ Watumishi Walioondoka Child care worker ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Clinical Assistant</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-SxV3VVz7KLf-val" name="entryfield" title="Watumishi Waliopo Clinical assistant" value="[ Watumishi Waliopo Clinical assistant ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-SxV3VVz7KLf-val" name="entryfield" title="Watumishi Walioondoka Clinical assistant" value="[ Watumishi Walioondoka Clinical assistant ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Clinical Officer</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-VU42UCH0iVI-val" name="entryfield" title="Watumishi Waliopo Clinical officer" value="[ Watumishi Waliopo Clinical officer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-VU42UCH0iVI-val" name="entryfield" title="Watumishi Walioondoka Clinical officer" value="[ Watumishi Walioondoka Clinical officer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Computer Data Operator</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-XSv98FkZjaC-val" name="entryfield" title="Watumishi Waliopo Computer data operator" value="[ Watumishi Waliopo Computer data operator ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-XSv98FkZjaC-val" name="entryfield" title="Watumishi Walioondoka Computer data operator" value="[ Watumishi Walioondoka Computer data operator ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Computer System Analyst</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-IxP79GDHTbM-val" name="entryfield" title="Watumishi Waliopo Computer system analyst" value="[ Watumishi Waliopo Computer system analyst ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-IxP79GDHTbM-val" name="entryfield" title="Watumishi Walioondoka Computer system analyst" value="[ Watumishi Walioondoka Computer system analyst ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Consultant Chemist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-JWhSkvtF1Mf-val" name="entryfield" title="Watumishi Waliopo Consultant chemist" value="[ Watumishi Waliopo Consultant chemist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-JWhSkvtF1Mf-val" name="entryfield" title="Watumishi Walioondoka Consultant chemist" value="[ Watumishi Walioondoka Consultant chemist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Consultant Doctor</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-IYPdto5uqyS-val" name="entryfield" title="Watumishi Waliopo Consultant doctor" value="[ Watumishi Waliopo Consultant doctor ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-IYPdto5uqyS-val" name="entryfield" title="Watumishi Walioondoka Consultant doctor" value="[ Watumishi Walioondoka Consultant doctor ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Consultant Health Technologist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-EktVS9e8JtL-val" name="entryfield" title="Watumishi Waliopo Consultant health technologist" value="[ Watumishi Waliopo Consultant health technologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-EktVS9e8JtL-val" name="entryfield" title="Watumishi Walioondoka Consultant health technologist" value="[ Watumishi Walioondoka Consultant health technologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Cook</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-Jmm0cIDsCzS-val" name="entryfield" title="Watumishi Waliopo Cook" value="[ Watumishi Waliopo Cook ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-Jmm0cIDsCzS-val" name="entryfield" title="Watumishi Walioondoka Cook" value="[ Watumishi Walioondoka Cook ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Dental Assistant</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-Pen8qWJrGBh-val" name="entryfield" title="Watumishi Waliopo Dental assistant" value="[ Watumishi Waliopo Dental assistant ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-Pen8qWJrGBh-val" name="entryfield" title="Watumishi Walioondoka Dental assistant" value="[ Watumishi Walioondoka Dental assistant ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Dental Consultant</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-XirYiOC4RXQ-val" name="entryfield" title="Watumishi Waliopo Dental consultant" value="[ Watumishi Waliopo Dental consultant ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-XirYiOC4RXQ-val" name="entryfield" title="Watumishi Walioondoka Dental consultant" value="[ Watumishi Walioondoka Dental consultant ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Dental Laboratory Technologist</td>
+                    <td><input id="indicatorREFWATIN019" indicatorid="REFWATIN019" name="indicator" readonly="readonly" title="Ikama ya Dental lab technician/ technologist" value="[ Ikama ya Dental lab technician/ technologist ]" /></td>
+                    <td><input id="O04W6XZUddV-zMtyE9Zi5vx-val" name="entryfield" title="Watumishi Waliopo Dental laboratory technologist" value="[ Watumishi Waliopo Dental laboratory technologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-zMtyE9Zi5vx-val" name="entryfield" title="Watumishi Walioondoka Dental laboratory technologist" value="[ Watumishi Walioondoka Dental laboratory technologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Dental Specialist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-dDSeRNudycm-val" name="entryfield" title="Watumishi Waliopo Dental specialist" value="[ Watumishi Waliopo Dental specialist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-dDSeRNudycm-val" name="entryfield" title="Watumishi Walioondoka Dental specialist" value="[ Watumishi Walioondoka Dental specialist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Dental Surgeon</td>
+                    <td><input id="indicatorREFWATIN004" indicatorid="REFWATIN004" name="indicator" readonly="readonly" title="Ikama ya Dental surgeon" value="[ Ikama ya Dental surgeon ]" /></td>
+                    <td><input id="O04W6XZUddV-tyuzQVBlpPQ-val" name="entryfield" title="Watumishi Waliopo Dental surgeon" value="[ Watumishi Waliopo Dental surgeon ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-tyuzQVBlpPQ-val" name="entryfield" title="Watumishi Walioondoka Dental surgeon" value="[ Watumishi Walioondoka Dental surgeon ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Dental Technologist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-YsBDCTuYMXk-val" name="entryfield" title="Watumishi Waliopo Dental technologist" value="[ Watumishi Waliopo Dental technologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-YsBDCTuYMXk-val" name="entryfield" title="Watumishi Walioondoka Dental technologist" value="[ Watumishi Walioondoka Dental technologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Dental Therapist</td>
+                    <td><input id="indicatorREFWATIN006" indicatorid="REFWATIN006" name="indicator" readonly="readonly" title="Ikama ya Dental therapist" value="[ Ikama ya Dental therapist ]" /></td>
+                    <td><input id="O04W6XZUddV-IhKMSim5Uqb-val" name="entryfield" title="Watumishi Waliopo Dental therapist" value="[ Watumishi Waliopo Dental therapist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-IhKMSim5Uqb-val" name="entryfield" title="Watumishi Walioondoka Dental therapist" value="[ Watumishi Walioondoka Dental therapist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Driver</td>
+                    <td><input id="indicatorREFWATIN053" indicatorid="REFWATIN053" name="indicator" readonly="readonly" title="Ikama ya Drivers" value="[ Ikama ya Drivers ]" /></td>
+                    <td><input id="O04W6XZUddV-JFPaoClDS89-val" name="entryfield" title="Watumishi Waliopo Driver" value="[ Watumishi Waliopo Driver ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-JFPaoClDS89-val" name="entryfield" title="Watumishi Walioondoka Driver" value="[ Watumishi Walioondoka Driver ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Economist</td>
+                    <td><input id="indicatorREFWATIN036" indicatorid="REFWATIN036" name="indicator" readonly="readonly" title="Ikama ya Economist/monitoring welfare officer" value="[ Ikama ya Economist/monitoring welfare officer ]" /></td>
+                    <td><input id="O04W6XZUddV-EdIq3Z4keOV-val" name="entryfield" title="Watumishi Waliopo Economist" value="[ Watumishi Waliopo Economist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-EdIq3Z4keOV-val" name="entryfield" title="Watumishi Walioondoka Economist" value="[ Watumishi Walioondoka Economist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Electronics Technician</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-ZYem2OxDmXa-val" name="entryfield" title="Watumishi Waliopo Electronics technician" value="[ Watumishi Waliopo Electronics technician ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-ZYem2OxDmXa-val" name="entryfield" title="Watumishi Walioondoka Electronics technician" value="[ Watumishi Walioondoka Electronics technician ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Engineer</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-uvlKFJKSexH-val" name="entryfield" title="Watumishi Waliopo Engineer" value="[ Watumishi Waliopo Engineer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-uvlKFJKSexH-val" name="entryfield" title="Watumishi Walioondoka Engineer" value="[ Watumishi Walioondoka Engineer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Environmental Health Assistant</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-GF6l2mGWujf-val" name="entryfield" title="Watumishi Waliopo Environmental health assistant" value="[ Watumishi Waliopo Environmental health assistant ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-GF6l2mGWujf-val" name="entryfield" title="Watumishi Walioondoka Environmental health assistant" value="[ Watumishi Walioondoka Environmental health assistant ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Environmental Health Officer</td>
+                    <td><input id="indicatorREFWATIN031" indicatorid="REFWATIN031" name="indicator" readonly="readonly" title="Ikama ya Environmental health officer" value="[ Ikama ya Environmental health officer ]" /></td>
+                    <td><input id="O04W6XZUddV-rI1Zpyj7Ctt-val" name="entryfield" title="Watumishi Waliopo Environmental health officer" value="[ Watumishi Waliopo Environmental health officer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-rI1Zpyj7Ctt-val" name="entryfield" title="Watumishi Walioondoka Environmental health officer" value="[ Watumishi Walioondoka Environmental health officer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Estate Officer</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-avqMVD61o6b-val" name="entryfield" title="Watumishi Waliopo Estate officer" value="[ Watumishi Waliopo Estate officer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-avqMVD61o6b-val" name="entryfield" title="Watumishi Walioondoka Estate officer" value="[ Watumishi Walioondoka Estate officer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Executive Assistant</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-BQOBXtVKEPr-val" name="entryfield" title="Watumishi Waliopo Executive assistant" value="[ Watumishi Waliopo Executive assistant ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-BQOBXtVKEPr-val" name="entryfield" title="Watumishi Walioondoka Executive assistant" value="[ Watumishi Walioondoka Executive assistant ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Food Scientist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-jXrLaVg61J1-val" name="entryfield" title="Watumishi Waliopo Food scientist" value="[ Watumishi Waliopo Food scientist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-jXrLaVg61J1-val" name="entryfield" title="Watumishi Walioondoka Food scientist" value="[ Watumishi Walioondoka Food scientist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Foreman</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-GIXnKhwvIk0-val" name="entryfield" title="Watumishi Waliopo Foreman" value="[ Watumishi Waliopo Foreman ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-GIXnKhwvIk0-val" name="entryfield" title="Watumishi Walioondoka Foreman" value="[ Watumishi Walioondoka Foreman ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Health Assistant</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-VqUSRE1sJ2e-val" name="entryfield" title="Watumishi Waliopo Health assistant" value="[ Watumishi Waliopo Health assistant ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-VqUSRE1sJ2e-val" name="entryfield" title="Watumishi Walioondoka Health assistant" value="[ Watumishi Walioondoka Health assistant ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Health Attendant</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-gtBvxqcniLV-val" name="entryfield" title="Watumishi Waliopo Health attendant" value="[ Watumishi Waliopo Health attendant ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-gtBvxqcniLV-val" name="entryfield" title="Watumishi Walioondoka Health attendant" value="[ Watumishi Walioondoka Health attendant ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Health Laboratory Assistant</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-mjxtOL5vpIh-val" name="entryfield" title="Watumishi Waliopo Health laboratory assistant" value="[ Watumishi Waliopo Health laboratory assistant ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-mjxtOL5vpIh-val" name="entryfield" title="Watumishi Walioondoka Health laboratory assistant" value="[ Watumishi Walioondoka Health laboratory assistant ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Health Laboratory Scientist</td>
+                    <td><input id="indicatorREFWATIN016" indicatorid="REFWATIN016" name="indicator" readonly="readonly" title="Ikama ya Health laboratory scientist" value="[ Ikama ya Health laboratory scientist ]" /></td>
+                    <td><input id="O04W6XZUddV-lnGPvCIzuAQ-val" name="entryfield" title="Watumishi Waliopo Health laboratory scientist" value="[ Watumishi Waliopo Health laboratory scientist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-lnGPvCIzuAQ-val" name="entryfield" title="Watumishi Walioondoka Health laboratory scientist" value="[ Watumishi Walioondoka Health laboratory scientist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Health Laboratory Technologist</td>
+                    <td><input id="indicatorREFWATIN017" indicatorid="REFWATIN017" name="indicator" readonly="readonly" title="Ikama ya Health laboratory technologist" value="[ Ikama ya Health laboratory technologist ]" /></td>
+                    <td><input id="O04W6XZUddV-PNkbI5yza0o-val" name="entryfield" title="Watumishi Waliopo Health laboratory technologist" value="[ Watumishi Waliopo Health laboratory technologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-PNkbI5yza0o-val" name="entryfield" title="Watumishi Walioondoka Health laboratory technologist" value="[ Watumishi Walioondoka Health laboratory technologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Health Officer</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-d2z2kDndZi8-val" name="entryfield" title="Watumishi Waliopo Health officer" value="[ Watumishi Waliopo Health officer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-d2z2kDndZi8-val" name="entryfield" title="Watumishi Walioondoka Health officer" value="[ Watumishi Walioondoka Health officer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Health Orthopedic Scientist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-n3oiVWA6ZUz-val" name="entryfield" title="Watumishi Waliopo Health orthopedic scientist" value="[ Watumishi Waliopo Health orthopedic scientist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-n3oiVWA6ZUz-val" name="entryfield" title="Watumishi Walioondoka Health orthopedic scientist" value="[ Watumishi Walioondoka Health orthopedic scientist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Health Radiologic Scientist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-Zykdb5jd8XU-val" name="entryfield" title="Watumishi Waliopo Health radiologic scientist" value="[ Watumishi Waliopo Health radiologic scientist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-Zykdb5jd8XU-val" name="entryfield" title="Watumishi Walioondoka Health radiologic scientist" value="[ Watumishi Walioondoka Health radiologic scientist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Health Recorder</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-jz34Fi07Aj2-val" name="entryfield" title="Watumishi Waliopo Health recorder" value="[ Watumishi Waliopo Health recorder ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-jz34Fi07Aj2-val" name="entryfield" title="Watumishi Walioondoka Health recorder" value="[ Watumishi Walioondoka Health recorder ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Health Records Technician</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-jDq2ZYOwJDJ-val" name="entryfield" title="Watumishi Waliopo Health records technician" value="[ Watumishi Waliopo Health records technician ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-jDq2ZYOwJDJ-val" name="entryfield" title="Watumishi Walioondoka Health records technician" value="[ Watumishi Walioondoka Health records technician ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Health Research Scientist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-psYAYm05UAI-val" name="entryfield" title="Watumishi Waliopo Health research scientist" value="[ Watumishi Waliopo Health research scientist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-psYAYm05UAI-val" name="entryfield" title="Watumishi Walioondoka Health research scientist" value="[ Watumishi Walioondoka Health research scientist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Health Secretary</td>
+                    <td><input id="indicatorREFWATIN044" indicatorid="REFWATIN044" name="indicator" readonly="readonly" title="Ikama ya Health secretary" value="[ Ikama ya Health secretary ]" /></td>
+                    <td><input id="O04W6XZUddV-LPRAutM4Vee-val" name="entryfield" title="Watumishi Waliopo Health secretary" value="[ Watumishi Waliopo Health secretary ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-LPRAutM4Vee-val" name="entryfield" title="Watumishi Walioondoka Health secretary" value="[ Watumishi Walioondoka Health secretary ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Health Technologist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-HonnAXE4Nna-val" name="entryfield" title="Watumishi Waliopo Health technologist" value="[ Watumishi Waliopo Health technologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-HonnAXE4Nna-val" name="entryfield" title="Watumishi Walioondoka Health technologist" value="[ Watumishi Walioondoka Health technologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Hr Management Officer</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-OzalYranhx7-val" name="entryfield" title="Watumishi Waliopo Hr management officer" value="[ Watumishi Waliopo Hr management officer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-OzalYranhx7-val" name="entryfield" title="Watumishi Walioondoka Hr management officer" value="[ Watumishi Walioondoka Hr management officer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Human Resource Officer</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-NOrIAxXGh81-val" name="entryfield" title="Watumishi Waliopo Human resource officer" value="[ Watumishi Waliopo Human resource officer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-NOrIAxXGh81-val" name="entryfield" title="Watumishi Walioondoka Human resource officer" value="[ Watumishi Walioondoka Human resource officer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Information Officer</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-kZOutOKMjTt-val" name="entryfield" title="Watumishi Waliopo Information officer" value="[ Watumishi Waliopo Information officer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-kZOutOKMjTt-val" name="entryfield" title="Watumishi Walioondoka Information officer" value="[ Watumishi Walioondoka Information officer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Internal Auditor</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-jtSmFvJR1PK-val" name="entryfield" title="Watumishi Waliopo Internal auditor" value="[ Watumishi Waliopo Internal auditor ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-jtSmFvJR1PK-val" name="entryfield" title="Watumishi Walioondoka Internal auditor" value="[ Watumishi Walioondoka Internal auditor ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Kitchen Attendant</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-xm096FYdNfk-val" name="entryfield" title="Watumishi Waliopo Kitchen attendant" value="[ Watumishi Waliopo Kitchen attendant ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-xm096FYdNfk-val" name="entryfield" title="Watumishi Walioondoka Kitchen attendant" value="[ Watumishi Walioondoka Kitchen attendant ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Laboratory Assistant</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-Ytjz4Lb612w-val" name="entryfield" title="Watumishi Waliopo Laboratory assistant" value="[ Watumishi Waliopo Laboratory assistant ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-Ytjz4Lb612w-val" name="entryfield" title="Watumishi Walioondoka Laboratory assistant" value="[ Watumishi Walioondoka Laboratory assistant ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Laboratory Attendant</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-hyWQYffskxR-val" name="entryfield" title="Watumishi Waliopo Laboratory attendant" value="[ Watumishi Waliopo Laboratory attendant ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-hyWQYffskxR-val" name="entryfield" title="Watumishi Walioondoka Laboratory attendant" value="[ Watumishi Walioondoka Laboratory attendant ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Laboratory Technician</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-DoO9yOaGHEF-val" name="entryfield" title="Watumishi Waliopo Laboratory technician" value="[ Watumishi Waliopo Laboratory technician ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-DoO9yOaGHEF-val" name="entryfield" title="Watumishi Walioondoka Laboratory technician" value="[ Watumishi Walioondoka Laboratory technician ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Launderer</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-wipTK86Xi4p-val" name="entryfield" title="Watumishi Waliopo Launderer" value="[ Watumishi Waliopo Launderer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-wipTK86Xi4p-val" name="entryfield" title="Watumishi Walioondoka Launderer" value="[ Watumishi Walioondoka Launderer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Lawyer</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-Y0dvhc7JrOt-val" name="entryfield" title="Watumishi Waliopo Lawyer" value="[ Watumishi Waliopo Lawyer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-Y0dvhc7JrOt-val" name="entryfield" title="Watumishi Walioondoka Lawyer" value="[ Watumishi Walioondoka Lawyer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Lecturer</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-mAM4vNom9TZ-val" name="entryfield" title="Watumishi Waliopo Lecturer" value="[ Watumishi Waliopo Lecturer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-mAM4vNom9TZ-val" name="entryfield" title="Watumishi Walioondoka Lecturer" value="[ Watumishi Walioondoka Lecturer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Legal Officer</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-Aty5sXujhNb-val" name="entryfield" title="Watumishi Waliopo Legal officer" value="[ Watumishi Waliopo Legal officer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-Aty5sXujhNb-val" name="entryfield" title="Watumishi Walioondoka Legal officer" value="[ Watumishi Walioondoka Legal officer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Librarian</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-PlYipHQzNTG-val" name="entryfield" title="Watumishi Waliopo Librarian" value="[ Watumishi Waliopo Librarian ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-PlYipHQzNTG-val" name="entryfield" title="Watumishi Walioondoka Librarian" value="[ Watumishi Walioondoka Librarian ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Library Assistant</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-t76EhS4QkBL-val" name="entryfield" title="Watumishi Waliopo Library assistant" value="[ Watumishi Waliopo Library assistant ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-t76EhS4QkBL-val" name="entryfield" title="Watumishi Walioondoka Library assistant" value="[ Watumishi Walioondoka Library assistant ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Livestock Officer</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-JU1fFFBUnRR-val" name="entryfield" title="Watumishi Waliopo Livestock officer" value="[ Watumishi Waliopo Livestock officer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-JU1fFFBUnRR-val" name="entryfield" title="Watumishi Walioondoka Livestock officer" value="[ Watumishi Walioondoka Livestock officer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Materials Manager</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-NtJZrYEh3aW-val" name="entryfield" title="Watumishi Waliopo Materials manager" value="[ Watumishi Waliopo Materials manager ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-NtJZrYEh3aW-val" name="entryfield" title="Watumishi Walioondoka Materials manager" value="[ Watumishi Walioondoka Materials manager ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Medical Attendant</td>
+                    <td><input id="indicatorREFWATIN041" indicatorid="REFWATIN041" name="indicator" readonly="readonly" title="Ikama ya Medical attendant" value="[ Ikama ya Medical attendant ]" /></td>
+                    <td><input id="O04W6XZUddV-lhv34rzvBkO-val" name="entryfield" title="Watumishi Waliopo Medical attendant" value="[ Watumishi Waliopo Medical attendant ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-lhv34rzvBkO-val" name="entryfield" title="Watumishi Walioondoka Medical attendant" value="[ Watumishi Walioondoka Medical attendant ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Medical Consultants</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-TW7zNojCjXb-val" name="entryfield" title="Watumishi Waliopo Medical consultants" value="[ Watumishi Waliopo Medical consultants ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-TW7zNojCjXb-val" name="entryfield" title="Watumishi Walioondoka Medical consultants" value="[ Watumishi Walioondoka Medical consultants ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Medical Doctor</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-gXddTbbA6KN-val" name="entryfield" title="Watumishi Waliopo Medical doctor" value="[ Watumishi Waliopo Medical doctor ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-gXddTbbA6KN-val" name="entryfield" title="Watumishi Walioondoka Medical doctor" value="[ Watumishi Walioondoka Medical doctor ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Medical Laboratory Technologist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-dyvRgHqGnm8-val" name="entryfield" title="Watumishi Waliopo Medical laboratory technologist" value="[ Watumishi Waliopo Medical laboratory technologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-dyvRgHqGnm8-val" name="entryfield" title="Watumishi Walioondoka Medical laboratory technologist" value="[ Watumishi Walioondoka Medical laboratory technologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Medical Officer</td>
+                    <td><input id="indicatorREFWATIN002" indicatorid="REFWATIN002" name="indicator" readonly="readonly" title="Ikama ya Medical officer" value="[ Ikama ya Medical officer ]" /></td>
+                    <td><input id="O04W6XZUddV-TG5bVKlbI4F-val" name="entryfield" title="Watumishi Waliopo Medical officer" value="[ Watumishi Waliopo Medical officer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-TG5bVKlbI4F-val" name="entryfield" title="Watumishi Walioondoka Medical officer" value="[ Watumishi Walioondoka Medical officer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Medical Record Officer</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-M1oex4P74hO-val" name="entryfield" title="Watumishi Waliopo Medical record officer" value="[ Watumishi Waliopo Medical record officer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-M1oex4P74hO-val" name="entryfield" title="Watumishi Walioondoka Medical record officer" value="[ Watumishi Walioondoka Medical record officer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Medical Record Technician</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-FqqbmsYoMF8-val" name="entryfield" title="Watumishi Waliopo Medical record technician" value="[ Watumishi Waliopo Medical record technician ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-FqqbmsYoMF8-val" name="entryfield" title="Watumishi Walioondoka Medical record technician" value="[ Watumishi Walioondoka Medical record technician ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Medical Specialist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-Aa9iUEM1slG-val" name="entryfield" title="Watumishi Waliopo Medical specialist" value="[ Watumishi Waliopo Medical specialist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-Aa9iUEM1slG-val" name="entryfield" title="Watumishi Walioondoka Medical specialist" value="[ Watumishi Walioondoka Medical specialist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Microbiologist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-GLk1p2RzNe8-val" name="entryfield" title="Watumishi Waliopo Microbiologist" value="[ Watumishi Waliopo Microbiologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-GLk1p2RzNe8-val" name="entryfield" title="Watumishi Walioondoka Microbiologist" value="[ Watumishi Walioondoka Microbiologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Mortuary Attendant</td>
+                    <td><input id="indicatorREFWATIN042" indicatorid="REFWATIN042" name="indicator" readonly="readonly" title="Ikama ya Mortuary attendant" value="[ Ikama ya Mortuary attendant ]" /></td>
+                    <td><input id="O04W6XZUddV-qzh601ykFb5-val" name="entryfield" title="Watumishi Waliopo Mortuary attendant" value="[ Watumishi Waliopo Mortuary attendant ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-qzh601ykFb5-val" name="entryfield" title="Watumishi Walioondoka Mortuary attendant" value="[ Watumishi Walioondoka Mortuary attendant ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Nurse</td>
+                    <td><input id="indicatorREFWATIN015" indicatorid="REFWATIN015" name="indicator" readonly="readonly" title="Ikama ya Nurse" value="[ Ikama ya Nurse ]" /></td>
+                    <td><input id="O04W6XZUddV-oWblNN94gNQ-val" name="entryfield" title="Watumishi Waliopo Nurse" value="[ Watumishi Waliopo Nurse ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-oWblNN94gNQ-val" name="entryfield" title="Watumishi Walioondoka Nurse" value="[ Watumishi Walioondoka Nurse ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Nursing Midwife</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-FKocN8yfwXW-val" name="entryfield" title="Watumishi Waliopo Nursing midwife" value="[ Watumishi Waliopo Nursing midwife ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-FKocN8yfwXW-val" name="entryfield" title="Watumishi Walioondoka Nursing midwife" value="[ Watumishi Walioondoka Nursing midwife ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Nursing Officer</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-KDAZZwGF60J-val" name="entryfield" title="Watumishi Waliopo Nursing officer" value="[ Watumishi Waliopo Nursing officer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-KDAZZwGF60J-val" name="entryfield" title="Watumishi Walioondoka Nursing officer" value="[ Watumishi Walioondoka Nursing officer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Nutrition Assistant</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-k37ePcbX0Rx-val" name="entryfield" title="Watumishi Waliopo Nutrition assistant" value="[ Watumishi Waliopo Nutrition assistant ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-k37ePcbX0Rx-val" name="entryfield" title="Watumishi Walioondoka Nutrition assistant" value="[ Watumishi Walioondoka Nutrition assistant ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Nutrition Officer</td>
+                    <td><input id="indicatorREFWATIN013" indicatorid="REFWATIN013" name="indicator" readonly="readonly" title="Ikama ya Nursing officer" value="[ Ikama ya Nursing officer ]" /></td>
+                    <td><input id="O04W6XZUddV-aofHLeKQxqj-val" name="entryfield" title="Watumishi Waliopo Nutrition officer" value="[ Watumishi Waliopo Nutrition officer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-aofHLeKQxqj-val" name="entryfield" title="Watumishi Walioondoka Nutrition officer" value="[ Watumishi Walioondoka Nutrition officer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Obstretrics and gynecology</td>
+                    <td><input id="indicatorREFWATIN008" indicatorid="REFWATIN008" name="indicator" readonly="readonly" title="Ikama ya Obstetrics and gynecology" value="[ Ikama ya Obstetrics and gynecology ]" /></td>
+                    <td><input id="O04W6XZUddV-vilTYL3FvHC-val" name="entryfield" title="Watumishi Waliopo Obstretrics and gynecology" value="[ Watumishi Waliopo Obstretrics and gynecology ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-vilTYL3FvHC-val" name="entryfield" title="Watumishi Walioondoka Obstretrics and gynecology" value="[ Watumishi Walioondoka Obstretrics and gynecology ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Occupational Therapist</td>
+                    <td><input id="indicatorREFWATIN009" indicatorid="REFWATIN009" name="indicator" readonly="readonly" title="Ikama ya Occupation therapist" value="[ Ikama ya Occupation therapist ]" /></td>
+                    <td><input id="O04W6XZUddV-SZukDZ3sHtK-val" name="entryfield" title="Watumishi Waliopo Occupational therapist" value="[ Watumishi Waliopo Occupational therapist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-SZukDZ3sHtK-val" name="entryfield" title="Watumishi Walioondoka Occupational therapist" value="[ Watumishi Walioondoka Occupational therapist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Occupational Therapist Assistant</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-hQZkmbGISmy-val" name="entryfield" title="Watumishi Waliopo Occupational therapist assistant" value="[ Watumishi Waliopo Occupational therapist assistant ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-hQZkmbGISmy-val" name="entryfield" title="Watumishi Walioondoka Occupational therapist assistant" value="[ Watumishi Walioondoka Occupational therapist assistant ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Office Attendant</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-OXsljEpMJ2z-val" name="entryfield" title="Watumishi Waliopo Office attendant" value="[ Watumishi Waliopo Office attendant ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-OXsljEpMJ2z-val" name="entryfield" title="Watumishi Walioondoka Office attendant" value="[ Watumishi Walioondoka Office attendant ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Office Management Assistant</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-hiMGOw2YHVz-val" name="entryfield" title="Watumishi Waliopo Office management assistant" value="[ Watumishi Waliopo Office management assistant ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-hiMGOw2YHVz-val" name="entryfield" title="Watumishi Walioondoka Office management assistant" value="[ Watumishi Walioondoka Office management assistant ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Office Management Secretary</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-byaUMMYSleo-val" name="entryfield" title="Watumishi Waliopo Office management secretary" value="[ Watumishi Waliopo Office management secretary ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-byaUMMYSleo-val" name="entryfield" title="Watumishi Walioondoka Office management secretary" value="[ Watumishi Walioondoka Office management secretary ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Ophthalmologist</td>
+                    <td><input id="indicatorREFWATIN010" indicatorid="REFWATIN010" name="indicator" readonly="readonly" title="Ikama ya Ophthalmologist" value="[ Ikama ya Ophthalmologist ]" /></td>
+                    <td><input id="O04W6XZUddV-udI6HhWracU-val" name="entryfield" title="Watumishi Waliopo Ophthalmologist" value="[ Watumishi Waliopo Ophthalmologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-udI6HhWracU-val" name="entryfield" title="Watumishi Walioondoka Ophthalmologist" value="[ Watumishi Walioondoka Ophthalmologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Optometric Technician</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-AA8qqMLy8mB-val" name="entryfield" title="Watumishi Waliopo Optometric technician" value="[ Watumishi Waliopo Optometric technician ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-AA8qqMLy8mB-val" name="entryfield" title="Watumishi Walioondoka Optometric technician" value="[ Watumishi Walioondoka Optometric technician ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Optometric Technologist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-a6rquTdh82q-val" name="entryfield" title="Watumishi Waliopo Optometric technologist" value="[ Watumishi Waliopo Optometric technologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-a6rquTdh82q-val" name="entryfield" title="Watumishi Walioondoka Optometric technologist" value="[ Watumishi Walioondoka Optometric technologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Optometrist</td>
+                    <td><input id="indicatorREFWATIN011" indicatorid="REFWATIN011" name="indicator" readonly="readonly" title="Ikama ya Optometrists" value="[ Ikama ya Optometrists ]" /></td>
+                    <td><input id="O04W6XZUddV-MpSbetJyBH5-val" name="entryfield" title="Watumishi Waliopo Optometrist" value="[ Watumishi Waliopo Optometrist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-MpSbetJyBH5-val" name="entryfield" title="Watumishi Walioondoka Optometrist" value="[ Watumishi Walioondoka Optometrist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Orthopedic Technologist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-AUYWHNn6EjA-val" name="entryfield" title="Watumishi Waliopo Orthopedic technologist" value="[ Watumishi Waliopo Orthopedic technologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-AUYWHNn6EjA-val" name="entryfield" title="Watumishi Walioondoka Orthopedic technologist" value="[ Watumishi Walioondoka Orthopedic technologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Other</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-kZEviuscZGQ-val" name="entryfield" title="Watumishi Waliopo Other" value="[ Watumishi Waliopo Other ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-kZEviuscZGQ-val" name="entryfield" title="Watumishi Walioondoka Other" value="[ Watumishi Walioondoka Other ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Pathologist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-rAiU6BE60jA-val" name="entryfield" title="Watumishi Waliopo Pathologist" value="[ Watumishi Waliopo Pathologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-rAiU6BE60jA-val" name="entryfield" title="Watumishi Walioondoka Pathologist" value="[ Watumishi Walioondoka Pathologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Personal Secretary</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-FmzlQC4EuX7-val" name="entryfield" title="Watumishi Waliopo Personal secretary" value="[ Watumishi Waliopo Personal secretary ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-FmzlQC4EuX7-val" name="entryfield" title="Watumishi Walioondoka Personal secretary" value="[ Watumishi Walioondoka Personal secretary ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Pharmaceutical Technician</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-M9TSFtTl2hZ-val" name="entryfield" title="Watumishi Waliopo Pharmaceutical technician" value="[ Watumishi Waliopo Pharmaceutical technician ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-M9TSFtTl2hZ-val" name="entryfield" title="Watumishi Walioondoka Pharmaceutical technician" value="[ Watumishi Walioondoka Pharmaceutical technician ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Pharmaceutical Technologist</td>
+                    <td><input id="indicatorREFWATIN026" indicatorid="REFWATIN026" name="indicator" readonly="readonly" title="Ikama ya Pharmaceutical Technologist" value="[ Ikama ya Pharmaceutical Technologist ]" /></td>
+                    <td><input id="O04W6XZUddV-e4m0AiGUfL6-val" name="entryfield" title="Watumishi Waliopo Pharmaceutical technologist" value="[ Watumishi Waliopo Pharmaceutical technologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-e4m0AiGUfL6-val" name="entryfield" title="Watumishi Walioondoka Pharmaceutical technologist" value="[ Watumishi Walioondoka Pharmaceutical technologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Pharmacist</td>
+                    <td><input id="indicatorREFWATIN025" indicatorid="REFWATIN025" name="indicator" readonly="readonly" title="Ikama ya Pharmacist" value="[ Ikama ya Pharmacist ]" /></td>
+                    <td><input id="O04W6XZUddV-LEBmNOYliXl-val" name="entryfield" title="Watumishi Waliopo Pharmacist" value="[ Watumishi Waliopo Pharmacist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-LEBmNOYliXl-val" name="entryfield" title="Watumishi Walioondoka Pharmacist" value="[ Watumishi Walioondoka Pharmacist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Pharmasict</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-eGpG8hBo0HN-val" name="entryfield" title="Watumishi Waliopo Pharmasict" value="[ Watumishi Waliopo Pharmasict ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-eGpG8hBo0HN-val" name="entryfield" title="Watumishi Walioondoka Pharmasict" value="[ Watumishi Walioondoka Pharmasict ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Physiotherapist</td>
+                    <td><input id="indicatorREFWATIN028" indicatorid="REFWATIN028" name="indicator" readonly="readonly" title="Ikama ya Physiotherapist" value="[ Ikama ya Physiotherapist ]" /></td>
+                    <td><input id="O04W6XZUddV-OdH5AqrkiXv-val" name="entryfield" title="Watumishi Waliopo Physiotherapist" value="[ Watumishi Waliopo Physiotherapist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-OdH5AqrkiXv-val" name="entryfield" title="Watumishi Walioondoka Physiotherapist" value="[ Watumishi Walioondoka Physiotherapist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Physiotherapist Assistant</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-M0LUNwwy5Pb-val" name="entryfield" title="Watumishi Waliopo Physiotherapist assistant" value="[ Watumishi Waliopo Physiotherapist assistant ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-M0LUNwwy5Pb-val" name="entryfield" title="Watumishi Walioondoka Physiotherapist assistant" value="[ Watumishi Walioondoka Physiotherapist assistant ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Planning Officer</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-KPu227tdp3v-val" name="entryfield" title="Watumishi Waliopo Planning officer" value="[ Watumishi Waliopo Planning officer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-KPu227tdp3v-val" name="entryfield" title="Watumishi Walioondoka Planning officer" value="[ Watumishi Walioondoka Planning officer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Police Auxiliary</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-p28Z9bTAM1g-val" name="entryfield" title="Watumishi Waliopo Police auxiliary" value="[ Watumishi Waliopo Police auxiliary ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-p28Z9bTAM1g-val" name="entryfield" title="Watumishi Walioondoka Police auxiliary" value="[ Watumishi Walioondoka Police auxiliary ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Procurement Officer</td>
+                    <td><input id="indicatorREFWATIN049" indicatorid="REFWATIN049" name="indicator" readonly="readonly" title="Ikama ya Procurement and supplies officer" value="[ Ikama ya Procurement and supplies officer ]" /></td>
+                    <td><input id="O04W6XZUddV-OtIiysp4EQl-val" name="entryfield" title="Watumishi Waliopo Procurement officer" value="[ Watumishi Waliopo Procurement officer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-OtIiysp4EQl-val" name="entryfield" title="Watumishi Walioondoka Procurement officer" value="[ Watumishi Walioondoka Procurement officer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Quantity Surveyor</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-Lsmxtkfib2Y-val" name="entryfield" title="Watumishi Waliopo Quantity surveyor" value="[ Watumishi Waliopo Quantity surveyor ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-Lsmxtkfib2Y-val" name="entryfield" title="Watumishi Walioondoka Quantity surveyor" value="[ Watumishi Walioondoka Quantity surveyor ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Radiographer</td>
+                    <td><input id="indicatorREFWATIN021" indicatorid="REFWATIN021" name="indicator" readonly="readonly" title="Ikama ya Radiographer" value="[ Ikama ya Radiographer ]" /></td>
+                    <td><input id="O04W6XZUddV-AaSjbnhMokP-val" name="entryfield" title="Watumishi Waliopo Radiographer" value="[ Watumishi Waliopo Radiographer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-AaSjbnhMokP-val" name="entryfield" title="Watumishi Walioondoka Radiographer" value="[ Watumishi Walioondoka Radiographer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Radiographic Assistant Technician</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-gTSfdkZVu7K-val" name="entryfield" title="Watumishi Waliopo Radiographic assistant technician" value="[ Watumishi Waliopo Radiographic assistant technician ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-gTSfdkZVu7K-val" name="entryfield" title="Watumishi Walioondoka Radiographic assistant technician" value="[ Watumishi Walioondoka Radiographic assistant technician ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Radiography Technician</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-YRdsBPuhoov-val" name="entryfield" title="Watumishi Waliopo Radiography technician" value="[ Watumishi Waliopo Radiography technician ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-YRdsBPuhoov-val" name="entryfield" title="Watumishi Walioondoka Radiography technician" value="[ Watumishi Walioondoka Radiography technician ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Radiologic Technologist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-K0RvCn86Z5x-val" name="entryfield" title="Watumishi Waliopo Radiologic technologist" value="[ Watumishi Waliopo Radiologic technologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-K0RvCn86Z5x-val" name="entryfield" title="Watumishi Walioondoka Radiologic technologist" value="[ Watumishi Walioondoka Radiologic technologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Radiotherapist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-tPHMaXvKPef-val" name="entryfield" title="Watumishi Waliopo Radiotherapist" value="[ Watumishi Waliopo Radiotherapist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-tPHMaXvKPef-val" name="entryfield" title="Watumishi Walioondoka Radiotherapist" value="[ Watumishi Walioondoka Radiotherapist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Radiotherapy Technologist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-hAzAUTEg4OD-val" name="entryfield" title="Watumishi Waliopo Radiotherapy technologist" value="[ Watumishi Waliopo Radiotherapy technologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-hAzAUTEg4OD-val" name="entryfield" title="Watumishi Walioondoka Radiotherapy technologist" value="[ Watumishi Walioondoka Radiotherapy technologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Receptionist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-v16RQ3ijNq2-val" name="entryfield" title="Watumishi Waliopo Receptionist" value="[ Watumishi Waliopo Receptionist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-v16RQ3ijNq2-val" name="entryfield" title="Watumishi Walioondoka Receptionist" value="[ Watumishi Walioondoka Receptionist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Records Management Assistant</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-vSRUHSfhSao-val" name="entryfield" title="Watumishi Waliopo Records management assistant" value="[ Watumishi Waliopo Records management assistant ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-vSRUHSfhSao-val" name="entryfield" title="Watumishi Walioondoka Records management assistant" value="[ Watumishi Walioondoka Records management assistant ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Records Management Officer</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-KQg1wVLsZo4-val" name="entryfield" title="Watumishi Waliopo Records management officer" value="[ Watumishi Waliopo Records management officer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-KQg1wVLsZo4-val" name="entryfield" title="Watumishi Walioondoka Records management officer" value="[ Watumishi Walioondoka Records management officer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Registry Clerk</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-Jtq1Vj9gqMA-val" name="entryfield" title="Watumishi Waliopo Registry clerk" value="[ Watumishi Waliopo Registry clerk ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-Jtq1Vj9gqMA-val" name="entryfield" title="Watumishi Walioondoka Registry clerk" value="[ Watumishi Walioondoka Registry clerk ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Research Officer</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-LwGjaq5KhHB-val" name="entryfield" title="Watumishi Waliopo Research officer" value="[ Watumishi Waliopo Research officer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-LwGjaq5KhHB-val" name="entryfield" title="Watumishi Walioondoka Research officer" value="[ Watumishi Walioondoka Research officer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Scientist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-QXLk9z4CwLv-val" name="entryfield" title="Watumishi Waliopo Scientist" value="[ Watumishi Waliopo Scientist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-QXLk9z4CwLv-val" name="entryfield" title="Watumishi Walioondoka Scientist" value="[ Watumishi Walioondoka Scientist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Secretary</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-vK9nP6LSvu7-val" name="entryfield" title="Watumishi Waliopo Secretary" value="[ Watumishi Waliopo Secretary ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-vK9nP6LSvu7-val" name="entryfield" title="Watumishi Walioondoka Secretary" value="[ Watumishi Walioondoka Secretary ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Security Guard</td>
+                    <td><input id="indicatorREFWATIN054" indicatorid="REFWATIN054" name="indicator" readonly="readonly" title="Ikama ya Security guard" value="[ Ikama ya Security guard ]" /></td>
+                    <td><input id="O04W6XZUddV-mvhuWCE5YRj-val" name="entryfield" title="Watumishi Waliopo Security guard" value="[ Watumishi Waliopo Security guard ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-mvhuWCE5YRj-val" name="entryfield" title="Watumishi Walioondoka Security guard" value="[ Watumishi Walioondoka Security guard ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Social Welfare Assistant</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-F6ykIG0q2lM-val" name="entryfield" title="Watumishi Waliopo Social welfare assistant" value="[ Watumishi Waliopo Social welfare assistant ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-F6ykIG0q2lM-val" name="entryfield" title="Watumishi Walioondoka Social welfare assistant" value="[ Watumishi Walioondoka Social welfare assistant ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Social Welfare Officer</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-S3Cgpc56Lp9-val" name="entryfield" title="Watumishi Waliopo Social welfare officer" value="[ Watumishi Waliopo Social welfare officer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-S3Cgpc56Lp9-val" name="entryfield" title="Watumishi Walioondoka Social welfare officer" value="[ Watumishi Walioondoka Social welfare officer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Stastician</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-TaXOFi6CwP9-val" name="entryfield" title="Watumishi Waliopo Stastician" value="[ Watumishi Waliopo Stastician ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-TaXOFi6CwP9-val" name="entryfield" title="Watumishi Walioondoka Stastician" value="[ Watumishi Walioondoka Stastician ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Supplies Assistant</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-FvOTOnIzf64-val" name="entryfield" title="Watumishi Waliopo Supplies assistant" value="[ Watumishi Waliopo Supplies assistant ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-FvOTOnIzf64-val" name="entryfield" title="Watumishi Walioondoka Supplies assistant" value="[ Watumishi Walioondoka Supplies assistant ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Supplies Officer</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-GpMZ9DlZhEl-val" name="entryfield" title="Watumishi Waliopo Supplies officer" value="[ Watumishi Waliopo Supplies officer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-GpMZ9DlZhEl-val" name="entryfield" title="Watumishi Walioondoka Supplies officer" value="[ Watumishi Walioondoka Supplies officer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Tailor</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-X8VhEO02ZzD-val" name="entryfield" title="Watumishi Waliopo Tailor" value="[ Watumishi Waliopo Tailor ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-X8VhEO02ZzD-val" name="entryfield" title="Watumishi Walioondoka Tailor" value="[ Watumishi Walioondoka Tailor ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Technician</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-fhpDG1xcKsE-val" name="entryfield" title="Watumishi Waliopo Technician" value="[ Watumishi Waliopo Technician ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-fhpDG1xcKsE-val" name="entryfield" title="Watumishi Walioondoka Technician" value="[ Watumishi Walioondoka Technician ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Technologist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-pBuzg4X5SrW-val" name="entryfield" title="Watumishi Waliopo Technologist" value="[ Watumishi Waliopo Technologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-pBuzg4X5SrW-val" name="entryfield" title="Watumishi Walioondoka Technologist" value="[ Watumishi Walioondoka Technologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Technologist/Technician(Prosthetic)</td>
+                    <td><input id="indicatorREFWATIN033" indicatorid="REFWATIN033" name="indicator" readonly="readonly" title="Ikama ya Technologist/technician (prosthetic)" value="[ Ikama ya Technologist/technician (prosthetic) ]" /></td>
+                    <td><input id="O04W6XZUddV-qAkdsfEUeQZ-val" name="entryfield" title="Watumishi Waliopo Technologist/technician(prosthetic)" value="[ Watumishi Waliopo Technologist/technician(prosthetic) ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-qAkdsfEUeQZ-val" name="entryfield" title="Watumishi Walioondoka Technologist/technician(prosthetic)" value="[ Watumishi Walioondoka Technologist/technician(prosthetic) ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Telephone Officer</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-flhVfhhraKh-val" name="entryfield" title="Watumishi Waliopo Telephone officer" value="[ Watumishi Waliopo Telephone officer ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-flhVfhhraKh-val" name="entryfield" title="Watumishi Walioondoka Telephone officer" value="[ Watumishi Walioondoka Telephone officer ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Tutor</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-cPeFVEOYXl4-val" name="entryfield" title="Watumishi Waliopo Tutor" value="[ Watumishi Waliopo Tutor ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-cPeFVEOYXl4-val" name="entryfield" title="Watumishi Walioondoka Tutor" value="[ Watumishi Walioondoka Tutor ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Typist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="O04W6XZUddV-EKKwlw6cscW-val" name="entryfield" title="Watumishi Waliopo Typist" value="[ Watumishi Waliopo Typist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="bN91P9zVdci-EKKwlw6cscW-val" name="entryfield" title="Watumishi Walioondoka Typist" value="[ Watumishi Walioondoka Typist ]" /></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        &nbsp;
+
+        <div id="tableB-div" style="padding: none;">Table 2: Mabingwa
+            <table border="1" cellpadding="0" cellspacing="0" width="800">
+                <tbody>
+                <tr class="cde-greyfield3">
+                    <th rowspan="2">Na.</th>
+                    <th rowspan="2">Kada</th>
+                    <th rowspan="2">Ikama</th>
+                    <th rowspan="2">Waliopo</th>
+                    <th rowspan="2">Pungufu/Waliozidi</th>
+                    <th rowspan="2">Walioondoka</th>
+                    <th colspan="6">Sababu ya kuondoka</th>
+                </tr>
+                <tr class="cde-greyfield3">
+                    <th>Transferred</th>
+                    <th>Retired</th>
+                    <th>Termination</th>
+                    <th>Death</th>
+                    <th>Resignation</th>
+                    <th>On Leave</th>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Anaesthesiologist</td>
+                    <td><input id="indicatorREFWATIN007" indicatorid="REFWATIN007" name="indicator" readonly="readonly" title="Ikama ya Anesthesiologist" value="[ Ikama ya Anesthesiologist ]" /></td>
+                    <td><input id="REFDEDOC001-tKgP5UvTniM-val" name="entryfield" title="Mabingwa waliopo Anaesthesiologist" value="[ Mabingwa waliopo Anaesthesiologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC002-tKgP5UvTniM-val" name="entryfield" title="Mabingwa walioondoka Anaesthesiologist" value="[ Mabingwa walioondoka Anaesthesiologist ]" /></td>
+                    <td><input id="REFDEDOC003-dYgDbhIEspe-val" name="entryfield" title="Mabingwa sababu za kuondoka Transfer, Anaesthesiologist" value="[ Mabingwa sababu za kuondoka Transfer, Anaesthesiologist ]" /></td>
+                    <td><input id="REFDEDOC003-X0GLVVt8HFx-val" name="entryfield" title="Mabingwa sababu za kuondoka Retired, Anaesthesiologist" value="[ Mabingwa sababu za kuondoka Retired, Anaesthesiologist ]" /></td>
+                    <td><input id="REFDEDOC003-IORFx5KW4Hn-val" name="entryfield" title="Mabingwa sababu za kuondoka Termination, Anaesthesiologist" value="[ Mabingwa sababu za kuondoka Termination, Anaesthesiologist ]" /></td>
+                    <td><input id="REFDEDOC003-TPkPsn6KDCl-val" name="entryfield" title="Mabingwa sababu za kuondoka Death, Anaesthesiologist" value="[ Mabingwa sababu za kuondoka Death, Anaesthesiologist ]" /></td>
+                    <td><input id="REFDEDOC003-BcfSgjFtFP2-val" name="entryfield" title="Mabingwa sababu za kuondoka Resignation, Anaesthesiologist" value="[ Mabingwa sababu za kuondoka Resignation, Anaesthesiologist ]" /></td>
+                    <td><input id="REFDEDOC003-fT7M2KOdt1r-val" name="entryfield" title="Mabingwa sababu za kuondoka On leave, Anaesthesiologist" value="[ Mabingwa sababu za kuondoka On leave, Anaesthesiologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Cardiologist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC001-Xw4iiAAhFiq-val" name="entryfield" title="Mabingwa waliopo Cardiologist" value="[ Mabingwa waliopo Cardiologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC002-Xw4iiAAhFiq-val" name="entryfield" title="Mabingwa walioondoka Cardiologist" value="[ Mabingwa walioondoka Cardiologist ]" /></td>
+                    <td><input id="REFDEDOC003-tYuFYW3XFHj-val" name="entryfield" title="Mabingwa sababu za kuondoka Transfer, Cardiologist" value="[ Mabingwa sababu za kuondoka Transfer, Cardiologist ]" /></td>
+                    <td><input id="REFDEDOC003-HSnM0OwuaCg-val" name="entryfield" title="Mabingwa sababu za kuondoka Retired, Cardiologist" value="[ Mabingwa sababu za kuondoka Retired, Cardiologist ]" /></td>
+                    <td><input id="REFDEDOC003-J78wOFxL4Hs-val" name="entryfield" title="Mabingwa sababu za kuondoka Termination, Cardiologist" value="[ Mabingwa sababu za kuondoka Termination, Cardiologist ]" /></td>
+                    <td><input id="REFDEDOC003-ApYPyyDt3fK-val" name="entryfield" title="Mabingwa sababu za kuondoka Death, Cardiologist" value="[ Mabingwa sababu za kuondoka Death, Cardiologist ]" /></td>
+                    <td><input id="REFDEDOC003-b4ddxaPFrDa-val" name="entryfield" title="Mabingwa sababu za kuondoka Resignation, Cardiologist" value="[ Mabingwa sababu za kuondoka Resignation, Cardiologist ]" /></td>
+                    <td><input id="REFDEDOC003-QmNv7ppqdbQ-val" name="entryfield" title="Mabingwa sababu za kuondoka On leave, Cardiologist" value="[ Mabingwa sababu za kuondoka On leave, Cardiologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Cardiothoracic Surgeon</td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC001-bXqAfQeUhQF-val" name="entryfield" title="Mabingwa waliopo Cardiothoracic Surgeon" value="[ Mabingwa waliopo Cardiothoracic Surgeon ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC002-bXqAfQeUhQF-val" name="entryfield" title="Mabingwa walioondoka Cardiothoracic Surgeon" value="[ Mabingwa walioondoka Cardiothoracic Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-xfr1XMBFiMw-val" name="entryfield" title="Mabingwa sababu za kuondoka Transfer, Cardiothoracic Surgeon" value="[ Mabingwa sababu za kuondoka Transfer, Cardiothoracic Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-IPNJcT7WqPu-val" name="entryfield" title="Mabingwa sababu za kuondoka Retired, Cardiothoracic Surgeon" value="[ Mabingwa sababu za kuondoka Retired, Cardiothoracic Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-mQHz1S9Bu4V-val" name="entryfield" title="Mabingwa sababu za kuondoka Termination, Cardiothoracic Surgeon" value="[ Mabingwa sababu za kuondoka Termination, Cardiothoracic Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-mPcJC7lSba9-val" name="entryfield" title="Mabingwa sababu za kuondoka Death, Cardiothoracic Surgeon" value="[ Mabingwa sababu za kuondoka Death, Cardiothoracic Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-XSVOUTfU0Sv-val" name="entryfield" title="Mabingwa sababu za kuondoka Resignation, Cardiothoracic Surgeon" value="[ Mabingwa sababu za kuondoka Resignation, Cardiothoracic Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-J1xbv3uWi0C-val" name="entryfield" title="Mabingwa sababu za kuondoka On leave, Cardiothoracic Surgeon" value="[ Mabingwa sababu za kuondoka On leave, Cardiothoracic Surgeon ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Cataract Surgeon</td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC001-alE2a0eIuAU-val" name="entryfield" title="Mabingwa waliopo Cataract Surgeon" value="[ Mabingwa waliopo Cataract Surgeon ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC002-alE2a0eIuAU-val" name="entryfield" title="Mabingwa walioondoka Cataract Surgeon" value="[ Mabingwa walioondoka Cataract Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-RUR9j48OSJK-val" name="entryfield" title="Mabingwa sababu za kuondoka Transfer, Cataract Surgeon" value="[ Mabingwa sababu za kuondoka Transfer, Cataract Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-VqJU2ggZEsP-val" name="entryfield" title="Mabingwa sababu za kuondoka Retired, Cataract Surgeon" value="[ Mabingwa sababu za kuondoka Retired, Cataract Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-MX3PIwKGZPf-val" name="entryfield" title="Mabingwa sababu za kuondoka Termination, Cataract Surgeon" value="[ Mabingwa sababu za kuondoka Termination, Cataract Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-K1hBfP4HEjT-val" name="entryfield" title="Mabingwa sababu za kuondoka Death, Cataract Surgeon" value="[ Mabingwa sababu za kuondoka Death, Cataract Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-wE9mpH7RqTY-val" name="entryfield" title="Mabingwa sababu za kuondoka Resignation, Cataract Surgeon" value="[ Mabingwa sababu za kuondoka Resignation, Cataract Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-J1bJVcZ0oad-val" name="entryfield" title="Mabingwa sababu za kuondoka On leave, Cataract Surgeon" value="[ Mabingwa sababu za kuondoka On leave, Cataract Surgeon ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Dermatologist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC001-S8yltb5BcIX-val" name="entryfield" title="Mabingwa waliopo Dermatologist" value="[ Mabingwa waliopo Dermatologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC002-S8yltb5BcIX-val" name="entryfield" title="Mabingwa walioondoka Dermatologist" value="[ Mabingwa walioondoka Dermatologist ]" /></td>
+                    <td><input id="REFDEDOC003-ZAJkWIJNPpJ-val" name="entryfield" title="Mabingwa sababu za kuondoka Transfer, Dermatologist" value="[ Mabingwa sababu za kuondoka Transfer, Dermatologist ]" /></td>
+                    <td><input id="REFDEDOC003-DU0kf9aNDBi-val" name="entryfield" title="Mabingwa sababu za kuondoka Retired, Dermatologist" value="[ Mabingwa sababu za kuondoka Retired, Dermatologist ]" /></td>
+                    <td><input id="REFDEDOC003-Ww04Vi6pBcb-val" name="entryfield" title="Mabingwa sababu za kuondoka Termination, Dermatologist" value="[ Mabingwa sababu za kuondoka Termination, Dermatologist ]" /></td>
+                    <td><input id="REFDEDOC003-SimwQiza2SJ-val" name="entryfield" title="Mabingwa sababu za kuondoka Death, Dermatologist" value="[ Mabingwa sababu za kuondoka Death, Dermatologist ]" /></td>
+                    <td><input id="REFDEDOC003-wchNPWCfa3S-val" name="entryfield" title="Mabingwa sababu za kuondoka Resignation, Dermatologist" value="[ Mabingwa sababu za kuondoka Resignation, Dermatologist ]" /></td>
+                    <td><input id="REFDEDOC003-YZw31EYVvza-val" name="entryfield" title="Mabingwa sababu za kuondoka On leave, Dermatologist" value="[ Mabingwa sababu za kuondoka On leave, Dermatologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">ENT Surgeon</td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC001-Wzi2QtJGlB8-val" name="entryfield" title="Mabingwa waliopo ENT Surgeon" value="[ Mabingwa waliopo ENT Surgeon ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC002-Wzi2QtJGlB8-val" name="entryfield" title="Mabingwa walioondoka ENT Surgeon" value="[ Mabingwa walioondoka ENT Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-rjJNUwfqCIU-val" name="entryfield" title="Mabingwa sababu za kuondoka Transfer, ENT Surgeon" value="[ Mabingwa sababu za kuondoka Transfer, ENT Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-pUxD8upV9xl-val" name="entryfield" title="Mabingwa sababu za kuondoka Retired, ENT Surgeon" value="[ Mabingwa sababu za kuondoka Retired, ENT Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-JMOjWo4Bsoy-val" name="entryfield" title="Mabingwa sababu za kuondoka Termination, ENT Surgeon" value="[ Mabingwa sababu za kuondoka Termination, ENT Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-UDncWMI613E-val" name="entryfield" title="Mabingwa sababu za kuondoka Death, ENT Surgeon" value="[ Mabingwa sababu za kuondoka Death, ENT Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-NeEwNvCvpTg-val" name="entryfield" title="Mabingwa sababu za kuondoka Resignation, ENT Surgeon" value="[ Mabingwa sababu za kuondoka Resignation, ENT Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-Ax4RVjSY3uR-val" name="entryfield" title="Mabingwa sababu za kuondoka On leave, ENT Surgeon" value="[ Mabingwa sababu za kuondoka On leave, ENT Surgeon ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Gastroentorologist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC001-JcqUof1Zn6T-val" name="entryfield" title="Mabingwa waliopo Gastroentorologist" value="[ Mabingwa waliopo Gastroentorologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC002-JcqUof1Zn6T-val" name="entryfield" title="Mabingwa walioondoka Gastroentorologist" value="[ Mabingwa walioondoka Gastroentorologist ]" /></td>
+                    <td><input id="REFDEDOC003-ofE5VEqFYIU-val" name="entryfield" title="Mabingwa sababu za kuondoka Transfer, Gastroentorologist" value="[ Mabingwa sababu za kuondoka Transfer, Gastroentorologist ]" /></td>
+                    <td><input id="REFDEDOC003-ul9ImJnkHVf-val" name="entryfield" title="Mabingwa sababu za kuondoka Retired, Gastroentorologist" value="[ Mabingwa sababu za kuondoka Retired, Gastroentorologist ]" /></td>
+                    <td><input id="REFDEDOC003-KTmfzTd8VqH-val" name="entryfield" title="Mabingwa sababu za kuondoka Termination, Gastroentorologist" value="[ Mabingwa sababu za kuondoka Termination, Gastroentorologist ]" /></td>
+                    <td><input id="REFDEDOC003-Wo2yNU0c11q-val" name="entryfield" title="Mabingwa sababu za kuondoka Death, Gastroentorologist" value="[ Mabingwa sababu za kuondoka Death, Gastroentorologist ]" /></td>
+                    <td><input id="REFDEDOC003-j9jG7KoYXaF-val" name="entryfield" title="Mabingwa sababu za kuondoka Resignation, Gastroentorologist" value="[ Mabingwa sababu za kuondoka Resignation, Gastroentorologist ]" /></td>
+                    <td><input id="REFDEDOC003-bDFzuSFTcy9-val" name="entryfield" title="Mabingwa sababu za kuondoka On leave, Gastroentorologist" value="[ Mabingwa sababu za kuondoka On leave, Gastroentorologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">General Surgeon</td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC001-KZ5YOKl5L4a-val" name="entryfield" title="Mabingwa waliopo General Surgeon" value="[ Mabingwa waliopo General Surgeon ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC002-KZ5YOKl5L4a-val" name="entryfield" title="Mabingwa walioondoka General Surgeon" value="[ Mabingwa walioondoka General Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-QjMhsKUzhsk-val" name="entryfield" title="Mabingwa sababu za kuondoka Transfer, General Surgeon" value="[ Mabingwa sababu za kuondoka Transfer, General Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-Q58qAgEZa8Q-val" name="entryfield" title="Mabingwa sababu za kuondoka Retired, General Surgeon" value="[ Mabingwa sababu za kuondoka Retired, General Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-Hhu9QKtZ7KL-val" name="entryfield" title="Mabingwa sababu za kuondoka Termination, General Surgeon" value="[ Mabingwa sababu za kuondoka Termination, General Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-kLzN87UN7m9-val" name="entryfield" title="Mabingwa sababu za kuondoka Death, General Surgeon" value="[ Mabingwa sababu za kuondoka Death, General Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-jFwPWGujhmg-val" name="entryfield" title="Mabingwa sababu za kuondoka Resignation, General Surgeon" value="[ Mabingwa sababu za kuondoka Resignation, General Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-JcNi10QChrw-val" name="entryfield" title="Mabingwa sababu za kuondoka On leave, General Surgeon" value="[ Mabingwa sababu za kuondoka On leave, General Surgeon ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Lean Specialist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC001-TcqhfIXzJ0k-val" name="entryfield" title="Mabingwa waliopo Lean Specialist" value="[ Mabingwa waliopo Lean Specialist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC002-TcqhfIXzJ0k-val" name="entryfield" title="Mabingwa walioondoka Lean Specialist" value="[ Mabingwa walioondoka Lean Specialist ]" /></td>
+                    <td><input id="REFDEDOC003-GaP5jyoOgZh-val" name="entryfield" title="Mabingwa sababu za kuondoka Transfer, Lean Specialist" value="[ Mabingwa sababu za kuondoka Transfer, Lean Specialist ]" /></td>
+                    <td><input id="REFDEDOC003-BxG9TPc79CU-val" name="entryfield" title="Mabingwa sababu za kuondoka Retired, Lean Specialist" value="[ Mabingwa sababu za kuondoka Retired, Lean Specialist ]" /></td>
+                    <td><input id="REFDEDOC003-scaBCRU4iw6-val" name="entryfield" title="Mabingwa sababu za kuondoka Termination, Lean Specialist" value="[ Mabingwa sababu za kuondoka Termination, Lean Specialist ]" /></td>
+                    <td><input id="REFDEDOC003-Gii5PW6HQ6J-val" name="entryfield" title="Mabingwa sababu za kuondoka Death, Lean Specialist" value="[ Mabingwa sababu za kuondoka Death, Lean Specialist ]" /></td>
+                    <td><input id="REFDEDOC003-HgaHle0IPcz-val" name="entryfield" title="Mabingwa sababu za kuondoka Resignation, Lean Specialist" value="[ Mabingwa sababu za kuondoka Resignation, Lean Specialist ]" /></td>
+                    <td><input id="REFDEDOC003-X71mnHdv5yf-val" name="entryfield" title="Mabingwa sababu za kuondoka On leave, Lean Specialist" value="[ Mabingwa sababu za kuondoka On leave, Lean Specialist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Maxillofacial Surgeon</td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC001-MOJSE1pTeJz-val" name="entryfield" title="Mabingwa waliopo Maxillofacial Surgeon" value="[ Mabingwa waliopo Maxillofacial Surgeon ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC002-MOJSE1pTeJz-val" name="entryfield" title="Mabingwa walioondoka Maxillofacial Surgeon" value="[ Mabingwa walioondoka Maxillofacial Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-GMmco31XarF-val" name="entryfield" title="Mabingwa sababu za kuondoka Transfer, Maxillofacial Surgeon" value="[ Mabingwa sababu za kuondoka Transfer, Maxillofacial Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-gPfXkRFiJpe-val" name="entryfield" title="Mabingwa sababu za kuondoka Retired, Maxillofacial Surgeon" value="[ Mabingwa sababu za kuondoka Retired, Maxillofacial Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-gX12EJPpZZf-val" name="entryfield" title="Mabingwa sababu za kuondoka Termination, Maxillofacial Surgeon" value="[ Mabingwa sababu za kuondoka Termination, Maxillofacial Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-cSKRueeYdSR-val" name="entryfield" title="Mabingwa sababu za kuondoka Death, Maxillofacial Surgeon" value="[ Mabingwa sababu za kuondoka Death, Maxillofacial Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-iND54jlGGO9-val" name="entryfield" title="Mabingwa sababu za kuondoka Resignation, Maxillofacial Surgeon" value="[ Mabingwa sababu za kuondoka Resignation, Maxillofacial Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-oNaPjgMdYxH-val" name="entryfield" title="Mabingwa sababu za kuondoka On leave, Maxillofacial Surgeon" value="[ Mabingwa sababu za kuondoka On leave, Maxillofacial Surgeon ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Medical Specialist -Emergency Medicine</td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC001-rxKbcfLw4Ji-val" name="entryfield" title="Mabingwa waliopo Medical Specialist -Emergency Medicine" value="[ Mabingwa waliopo Medical Specialist -Emergency Medicine ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC002-rxKbcfLw4Ji-val" name="entryfield" title="Mabingwa walioondoka Medical Specialist -Emergency Medicine" value="[ Mabingwa walioondoka Medical Specialist -Emergency Medicine ]" /></td>
+                    <td><input id="REFDEDOC003-kaJUcn6eOW9-val" name="entryfield" title="Mabingwa sababu za kuondoka Transfer, Medical Specialist -Emergency Medicine" value="[ Mabingwa sababu za kuondoka Transfer, Medical Specialist -Emergency Medicine ]" /></td>
+                    <td><input id="REFDEDOC003-eSzirbi1jU6-val" name="entryfield" title="Mabingwa sababu za kuondoka Retired, Medical Specialist -Emergency Medicine" value="[ Mabingwa sababu za kuondoka Retired, Medical Specialist -Emergency Medicine ]" /></td>
+                    <td><input id="REFDEDOC003-rQgwA8ABhiY-val" name="entryfield" title="Mabingwa sababu za kuondoka Termination, Medical Specialist -Emergency Medicine" value="[ Mabingwa sababu za kuondoka Termination, Medical Specialist -Emergency Medicine ]" /></td>
+                    <td><input id="REFDEDOC003-LscUBZKTNgn-val" name="entryfield" title="Mabingwa sababu za kuondoka Death, Medical Specialist -Emergency Medicine" value="[ Mabingwa sababu za kuondoka Death, Medical Specialist -Emergency Medicine ]" /></td>
+                    <td><input id="REFDEDOC003-aIzXRaQAT5D-val" name="entryfield" title="Mabingwa sababu za kuondoka Resignation, Medical Specialist -Emergency Medicine" value="[ Mabingwa sababu za kuondoka Resignation, Medical Specialist -Emergency Medicine ]" /></td>
+                    <td><input id="REFDEDOC003-rrqY9NmIbHX-val" name="entryfield" title="Mabingwa sababu za kuondoka On leave, Medical Specialist -Emergency Medicine" value="[ Mabingwa sababu za kuondoka On leave, Medical Specialist -Emergency Medicine ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Neuro Surgeon</td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC001-MOxcvFHQbZo-val" name="entryfield" title="Mabingwa waliopo Neuro Surgeon" value="[ Mabingwa waliopo Neuro Surgeon ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC002-MOxcvFHQbZo-val" name="entryfield" title="Mabingwa walioondoka Neuro Surgeon" value="[ Mabingwa walioondoka Neuro Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-XEq7gt6nBQD-val" name="entryfield" title="Mabingwa sababu za kuondoka Transfer, Neuro Surgeon" value="[ Mabingwa sababu za kuondoka Transfer, Neuro Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-hqqNgCvUq4Z-val" name="entryfield" title="Mabingwa sababu za kuondoka Retired, Neuro Surgeon" value="[ Mabingwa sababu za kuondoka Retired, Neuro Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-eDRRbBtScam-val" name="entryfield" title="Mabingwa sababu za kuondoka Termination, Neuro Surgeon" value="[ Mabingwa sababu za kuondoka Termination, Neuro Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-WeUlMPdYdu8-val" name="entryfield" title="Mabingwa sababu za kuondoka Death, Neuro Surgeon" value="[ Mabingwa sababu za kuondoka Death, Neuro Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-feSg6kQGkF5-val" name="entryfield" title="Mabingwa sababu za kuondoka Resignation, Neuro Surgeon" value="[ Mabingwa sababu za kuondoka Resignation, Neuro Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-kXThuZwJvvu-val" name="entryfield" title="Mabingwa sababu za kuondoka On leave, Neuro Surgeon" value="[ Mabingwa sababu za kuondoka On leave, Neuro Surgeon ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Obstetrician/Gynaecologist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC001-Uu2goDILAyt-val" name="entryfield" title="Mabingwa waliopo Obstetrician/Gynaecologist" value="[ Mabingwa waliopo Obstetrician/Gynaecologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC002-Uu2goDILAyt-val" name="entryfield" title="Mabingwa walioondoka Obstetrician/Gynaecologist" value="[ Mabingwa walioondoka Obstetrician/Gynaecologist ]" /></td>
+                    <td><input id="REFDEDOC003-bxNMhcxb7uX-val" name="entryfield" title="Mabingwa sababu za kuondoka Transfer, Obstetrician/Gynaecologist" value="[ Mabingwa sababu za kuondoka Transfer, Obstetrician/Gynaecologist ]" /></td>
+                    <td><input id="REFDEDOC003-qycqiAS9eN8-val" name="entryfield" title="Mabingwa sababu za kuondoka Retired, Obstetrician/Gynaecologist" value="[ Mabingwa sababu za kuondoka Retired, Obstetrician/Gynaecologist ]" /></td>
+                    <td><input id="REFDEDOC003-FOEwiEJGAEb-val" name="entryfield" title="Mabingwa sababu za kuondoka Termination, Obstetrician/Gynaecologist" value="[ Mabingwa sababu za kuondoka Termination, Obstetrician/Gynaecologist ]" /></td>
+                    <td><input id="REFDEDOC003-AO5uZGdUJQh-val" name="entryfield" title="Mabingwa sababu za kuondoka Death, Obstetrician/Gynaecologist" value="[ Mabingwa sababu za kuondoka Death, Obstetrician/Gynaecologist ]" /></td>
+                    <td><input id="REFDEDOC003-z0NcX8xATdG-val" name="entryfield" title="Mabingwa sababu za kuondoka Resignation, Obstetrician/Gynaecologist" value="[ Mabingwa sababu za kuondoka Resignation, Obstetrician/Gynaecologist ]" /></td>
+                    <td><input id="REFDEDOC003-FYOVvH7FUdb-val" name="entryfield" title="Mabingwa sababu za kuondoka On leave, Obstetrician/Gynaecologist" value="[ Mabingwa sababu za kuondoka On leave, Obstetrician/Gynaecologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Oncologist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC001-BGE3HFwbBhV-val" name="entryfield" title="Mabingwa waliopo Oncologist" value="[ Mabingwa waliopo Oncologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC002-BGE3HFwbBhV-val" name="entryfield" title="Mabingwa walioondoka Oncologist" value="[ Mabingwa walioondoka Oncologist ]" /></td>
+                    <td><input id="REFDEDOC003-lSFgjVOGFwh-val" name="entryfield" title="Mabingwa sababu za kuondoka Transfer, Oncologist" value="[ Mabingwa sababu za kuondoka Transfer, Oncologist ]" /></td>
+                    <td><input id="REFDEDOC003-Jy3Dgt26PWw-val" name="entryfield" title="Mabingwa sababu za kuondoka Retired, Oncologist" value="[ Mabingwa sababu za kuondoka Retired, Oncologist ]" /></td>
+                    <td><input id="REFDEDOC003-JnLvU52b1PU-val" name="entryfield" title="Mabingwa sababu za kuondoka Termination, Oncologist" value="[ Mabingwa sababu za kuondoka Termination, Oncologist ]" /></td>
+                    <td><input id="REFDEDOC003-CKdjUoDwQqk-val" name="entryfield" title="Mabingwa sababu za kuondoka Death, Oncologist" value="[ Mabingwa sababu za kuondoka Death, Oncologist ]" /></td>
+                    <td><input id="REFDEDOC003-wvd0dmE8t1j-val" name="entryfield" title="Mabingwa sababu za kuondoka Resignation, Oncologist" value="[ Mabingwa sababu za kuondoka Resignation, Oncologist ]" /></td>
+                    <td><input id="REFDEDOC003-B6gKBdxBdVb-val" name="entryfield" title="Mabingwa sababu za kuondoka On leave, Oncologist" value="[ Mabingwa sababu za kuondoka On leave, Oncologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Ophthalmologist_bingwa</td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC001-L2M57f3BxB5-val" name="entryfield" title="Mabingwa waliopo Ophthalmologist_bingwa" value="[ Mabingwa waliopo Ophthalmologist_bingwa ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC002-L2M57f3BxB5-val" name="entryfield" title="Mabingwa walioondoka Ophthalmologist_bingwa" value="[ Mabingwa walioondoka Ophthalmologist_bingwa ]" /></td>
+                    <td><input id="REFDEDOC003-msM2AHqlFDx-val" name="entryfield" title="Mabingwa sababu za kuondoka Transfer, Ophthalmologist_bingwa" value="[ Mabingwa sababu za kuondoka Transfer, Ophthalmologist_bingwa ]" /></td>
+                    <td><input id="REFDEDOC003-PAkQVLvmxSb-val" name="entryfield" title="Mabingwa sababu za kuondoka Retired, Ophthalmologist_bingwa" value="[ Mabingwa sababu za kuondoka Retired, Ophthalmologist_bingwa ]" /></td>
+                    <td><input id="REFDEDOC003-WHw0fuOP2bx-val" name="entryfield" title="Mabingwa sababu za kuondoka Termination, Ophthalmologist_bingwa" value="[ Mabingwa sababu za kuondoka Termination, Ophthalmologist_bingwa ]" /></td>
+                    <td><input id="REFDEDOC003-SuHA5Yj1emP-val" name="entryfield" title="Mabingwa sababu za kuondoka Death, Ophthalmologist_bingwa" value="[ Mabingwa sababu za kuondoka Death, Ophthalmologist_bingwa ]" /></td>
+                    <td><input id="REFDEDOC003-gN6jlnDgJ2M-val" name="entryfield" title="Mabingwa sababu za kuondoka Resignation, Ophthalmologist_bingwa" value="[ Mabingwa sababu za kuondoka Resignation, Ophthalmologist_bingwa ]" /></td>
+                    <td><input id="REFDEDOC003-eWfToRunsaB-val" name="entryfield" title="Mabingwa sababu za kuondoka On leave, Ophthalmologist_bingwa" value="[ Mabingwa sababu za kuondoka On leave, Ophthalmologist_bingwa ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Orthopeadic Surgeon</td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC001-bdfaSXBBjVz-val" name="entryfield" title="Mabingwa waliopo Orthopeadic Surgeon" value="[ Mabingwa waliopo Orthopeadic Surgeon ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC002-bdfaSXBBjVz-val" name="entryfield" title="Mabingwa walioondoka Orthopeadic Surgeon" value="[ Mabingwa walioondoka Orthopeadic Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-hNnsf5hpuKq-val" name="entryfield" title="Mabingwa sababu za kuondoka Transfer, Orthopeadic Surgeon" value="[ Mabingwa sababu za kuondoka Transfer, Orthopeadic Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-FaRZggpVh5S-val" name="entryfield" title="Mabingwa sababu za kuondoka Retired, Orthopeadic Surgeon" value="[ Mabingwa sababu za kuondoka Retired, Orthopeadic Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-yal6NTvLAHi-val" name="entryfield" title="Mabingwa sababu za kuondoka Termination, Orthopeadic Surgeon" value="[ Mabingwa sababu za kuondoka Termination, Orthopeadic Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-m75f5294kr9-val" name="entryfield" title="Mabingwa sababu za kuondoka Death, Orthopeadic Surgeon" value="[ Mabingwa sababu za kuondoka Death, Orthopeadic Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-cc9UoX3n7Kf-val" name="entryfield" title="Mabingwa sababu za kuondoka Resignation, Orthopeadic Surgeon" value="[ Mabingwa sababu za kuondoka Resignation, Orthopeadic Surgeon ]" /></td>
+                    <td><input id="REFDEDOC003-fiiIVothkI2-val" name="entryfield" title="Mabingwa sababu za kuondoka On leave, Orthopeadic Surgeon" value="[ Mabingwa sababu za kuondoka On leave, Orthopeadic Surgeon ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Paediatrician</td>
+                    <td><input id="indicatorREFWATIN012" indicatorid="REFWATIN012" name="indicator" readonly="readonly" title="Ikama ya Pediatrics" value="[ Ikama ya Pediatrics ]" /></td>
+                    <td><input id="REFDEDOC001-bfU9NumEPF2-val" name="entryfield" title="Mabingwa waliopo Paediatrician" value="[ Mabingwa waliopo Paediatrician ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC002-bfU9NumEPF2-val" name="entryfield" title="Mabingwa walioondoka Paediatrician" value="[ Mabingwa walioondoka Paediatrician ]" /></td>
+                    <td><input id="REFDEDOC003-VkpAzxI7t4z-val" name="entryfield" title="Mabingwa sababu za kuondoka Transfer, Paediatrician" value="[ Mabingwa sababu za kuondoka Transfer, Paediatrician ]" /></td>
+                    <td><input id="REFDEDOC003-WgHuVI3pJQW-val" name="entryfield" title="Mabingwa sababu za kuondoka Retired, Paediatrician" value="[ Mabingwa sababu za kuondoka Retired, Paediatrician ]" /></td>
+                    <td><input id="REFDEDOC003-N48KxoIfGPG-val" name="entryfield" title="Mabingwa sababu za kuondoka Termination, Paediatrician" value="[ Mabingwa sababu za kuondoka Termination, Paediatrician ]" /></td>
+                    <td><input id="REFDEDOC003-A6J2ns0S36x-val" name="entryfield" title="Mabingwa sababu za kuondoka Death, Paediatrician" value="[ Mabingwa sababu za kuondoka Death, Paediatrician ]" /></td>
+                    <td><input id="REFDEDOC003-PztAs4kPh0w-val" name="entryfield" title="Mabingwa sababu za kuondoka Resignation, Paediatrician" value="[ Mabingwa sababu za kuondoka Resignation, Paediatrician ]" /></td>
+                    <td><input id="REFDEDOC003-L4QQfvtqr4A-val" name="entryfield" title="Mabingwa sababu za kuondoka On leave, Paediatrician" value="[ Mabingwa sababu za kuondoka On leave, Paediatrician ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Pathologist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC001-i68oDIsgLfS-val" name="entryfield" title="Mabingwa waliopo Pathologist_bingwa" value="[ Mabingwa waliopo Pathologist_bingwa ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC002-i68oDIsgLfS-val" name="entryfield" title="Mabingwa walioondoka Pathologist_bingwa" value="[ Mabingwa walioondoka Pathologist_bingwa ]" /></td>
+                    <td><input id="REFDEDOC003-AJwcFGPfXQv-val" name="entryfield" title="Mabingwa sababu za kuondoka Transfer, Pathologist_bingwa" value="[ Mabingwa sababu za kuondoka Transfer, Pathologist_bingwa ]" /></td>
+                    <td><input id="REFDEDOC003-XDRCFDGdsGx-val" name="entryfield" title="Mabingwa sababu za kuondoka Retired, Pathologist_bingwa" value="[ Mabingwa sababu za kuondoka Retired, Pathologist_bingwa ]" /></td>
+                    <td><input id="REFDEDOC003-ZEsyfE1bQjz-val" name="entryfield" title="Mabingwa sababu za kuondoka Termination, Pathologist_bingwa" value="[ Mabingwa sababu za kuondoka Termination, Pathologist_bingwa ]" /></td>
+                    <td><input id="REFDEDOC003-lZCHXNsHSev-val" name="entryfield" title="Mabingwa sababu za kuondoka Death, Pathologist_bingwa" value="[ Mabingwa sababu za kuondoka Death, Pathologist_bingwa ]" /></td>
+                    <td><input id="REFDEDOC003-jHhOtonFNC1-val" name="entryfield" title="Mabingwa sababu za kuondoka Resignation, Pathologist_bingwa" value="[ Mabingwa sababu za kuondoka Resignation, Pathologist_bingwa ]" /></td>
+                    <td><input id="REFDEDOC003-PJ1IVINFtu3-val" name="entryfield" title="Mabingwa sababu za kuondoka On leave, Pathologist_bingwa" value="[ Mabingwa sababu za kuondoka On leave, Pathologist_bingwa ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Physician</td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC001-r2ReUz8AHy0-val" name="entryfield" title="Mabingwa waliopo Physician_bingwa" value="[ Mabingwa waliopo Physician_bingwa ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC002-r2ReUz8AHy0-val" name="entryfield" title="Mabingwa walioondoka Physician_bingwa" value="[ Mabingwa walioondoka Physician_bingwa ]" /></td>
+                    <td><input id="REFDEDOC003-xpMT1J0nP5n-val" name="entryfield" title="Mabingwa sababu za kuondoka Transfer, Physician_bingwa" value="[ Mabingwa sababu za kuondoka Transfer, Physician_bingwa ]" /></td>
+                    <td><input id="REFDEDOC003-D0V2oZDB8Zu-val" name="entryfield" title="Mabingwa sababu za kuondoka Retired, Physician_bingwa" value="[ Mabingwa sababu za kuondoka Retired, Physician_bingwa ]" /></td>
+                    <td><input id="REFDEDOC003-EH67xJGHrw1-val" name="entryfield" title="Mabingwa sababu za kuondoka Termination, Physician_bingwa" value="[ Mabingwa sababu za kuondoka Termination, Physician_bingwa ]" /></td>
+                    <td><input id="REFDEDOC003-L7Qhx0p6tfi-val" name="entryfield" title="Mabingwa sababu za kuondoka Death, Physician_bingwa" value="[ Mabingwa sababu za kuondoka Death, Physician_bingwa ]" /></td>
+                    <td><input id="REFDEDOC003-u6S4ZlVr36q-val" name="entryfield" title="Mabingwa sababu za kuondoka Resignation, Physician_bingwa" value="[ Mabingwa sababu za kuondoka Resignation, Physician_bingwa ]" /></td>
+                    <td><input id="REFDEDOC003-KyEYK1lQ5tP-val" name="entryfield" title="Mabingwa sababu za kuondoka On leave, Physician_bingwa" value="[ Mabingwa sababu za kuondoka On leave, Physician_bingwa ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Psychiatrist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC001-M9hAV3gMfQv-val" name="entryfield" title="Mabingwa waliopo Psychiatrist" value="[ Mabingwa waliopo Psychiatrist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC002-M9hAV3gMfQv-val" name="entryfield" title="Mabingwa walioondoka Psychiatrist" value="[ Mabingwa walioondoka Psychiatrist ]" /></td>
+                    <td><input id="REFDEDOC003-haTBIPRCkr2-val" name="entryfield" title="Mabingwa sababu za kuondoka Transfer, Psychiatrist" value="[ Mabingwa sababu za kuondoka Transfer, Psychiatrist ]" /></td>
+                    <td><input id="REFDEDOC003-GK1J5ujFtW3-val" name="entryfield" title="Mabingwa sababu za kuondoka Retired, Psychiatrist" value="[ Mabingwa sababu za kuondoka Retired, Psychiatrist ]" /></td>
+                    <td><input id="REFDEDOC003-gCIsrCn4brV-val" name="entryfield" title="Mabingwa sababu za kuondoka Termination, Psychiatrist" value="[ Mabingwa sababu za kuondoka Termination, Psychiatrist ]" /></td>
+                    <td><input id="REFDEDOC003-E51XIbZFkcO-val" name="entryfield" title="Mabingwa sababu za kuondoka Death, Psychiatrist" value="[ Mabingwa sababu za kuondoka Death, Psychiatrist ]" /></td>
+                    <td><input id="REFDEDOC003-zBc6cd7hS6q-val" name="entryfield" title="Mabingwa sababu za kuondoka Resignation, Psychiatrist" value="[ Mabingwa sababu za kuondoka Resignation, Psychiatrist ]" /></td>
+                    <td><input id="REFDEDOC003-vOm8VePAdsG-val" name="entryfield" title="Mabingwa sababu za kuondoka On leave, Psychiatrist" value="[ Mabingwa sababu za kuondoka On leave, Psychiatrist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Radiologist</td>
+                    <td><input id="indicatorREFWATIN020" indicatorid="REFWATIN020" name="indicator" readonly="readonly" title="Ikama ya Radiologist" value="[ Ikama ya Radiologist ]" /></td>
+                    <td><input id="REFDEDOC001-kYBIqPLgjdp-val" name="entryfield" title="Mabingwa waliopo Radiologist" value="[ Mabingwa waliopo Radiologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC002-kYBIqPLgjdp-val" name="entryfield" title="Mabingwa walioondoka Radiologist" value="[ Mabingwa walioondoka Radiologist ]" /></td>
+                    <td><input id="REFDEDOC003-bTNf8VThrj6-val" name="entryfield" title="Mabingwa sababu za kuondoka Transfer, Radiologist" value="[ Mabingwa sababu za kuondoka Transfer, Radiologist ]" /></td>
+                    <td><input id="REFDEDOC003-FbTas3VDrJZ-val" name="entryfield" title="Mabingwa sababu za kuondoka Retired, Radiologist" value="[ Mabingwa sababu za kuondoka Retired, Radiologist ]" /></td>
+                    <td><input id="REFDEDOC003-wkHzAxUzmjA-val" name="entryfield" title="Mabingwa sababu za kuondoka Termination, Radiologist" value="[ Mabingwa sababu za kuondoka Termination, Radiologist ]" /></td>
+                    <td><input id="REFDEDOC003-TemSp5oL80i-val" name="entryfield" title="Mabingwa sababu za kuondoka Death, Radiologist" value="[ Mabingwa sababu za kuondoka Death, Radiologist ]" /></td>
+                    <td><input id="REFDEDOC003-weMBf6ev2mj-val" name="entryfield" title="Mabingwa sababu za kuondoka Resignation, Radiologist" value="[ Mabingwa sababu za kuondoka Resignation, Radiologist ]" /></td>
+                    <td><input id="REFDEDOC003-FFAhMGBKkRT-val" name="entryfield" title="Mabingwa sababu za kuondoka On leave, Radiologist" value="[ Mabingwa sababu za kuondoka On leave, Radiologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Urologist</td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC001-K5fyduNGUJs-val" name="entryfield" title="Mabingwa waliopo Urologist" value="[ Mabingwa waliopo Urologist ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC002-K5fyduNGUJs-val" name="entryfield" title="Mabingwa walioondoka Urologist" value="[ Mabingwa walioondoka Urologist ]" /></td>
+                    <td><input id="REFDEDOC003-SoycX2hCSkc-val" name="entryfield" title="Mabingwa sababu za kuondoka Transfer, Urologist" value="[ Mabingwa sababu za kuondoka Transfer, Urologist ]" /></td>
+                    <td><input id="REFDEDOC003-ojYacsPYBmg-val" name="entryfield" title="Mabingwa sababu za kuondoka Retired, Urologist" value="[ Mabingwa sababu za kuondoka Retired, Urologist ]" /></td>
+                    <td><input id="REFDEDOC003-TA7dVXPssdM-val" name="entryfield" title="Mabingwa sababu za kuondoka Termination, Urologist" value="[ Mabingwa sababu za kuondoka Termination, Urologist ]" /></td>
+                    <td><input id="REFDEDOC003-TTInlNFjC0T-val" name="entryfield" title="Mabingwa sababu za kuondoka Death, Urologist" value="[ Mabingwa sababu za kuondoka Death, Urologist ]" /></td>
+                    <td><input id="REFDEDOC003-pHKQDI3hlKO-val" name="entryfield" title="Mabingwa sababu za kuondoka Resignation, Urologist" value="[ Mabingwa sababu za kuondoka Resignation, Urologist ]" /></td>
+                    <td><input id="REFDEDOC003-F6NHuQlrJRD-val" name="entryfield" title="Mabingwa sababu za kuondoka On leave, Urologist" value="[ Mabingwa sababu za kuondoka On leave, Urologist ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Public Health Specialists</td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC001-fPkj24eKoUB-val" name="entryfield" title="Mabingwa waliopo Public Health Specialists" value="[ Mabingwa waliopo Public Health Specialists ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC002-fPkj24eKoUB-val" name="entryfield" title="Mabingwa walioondoka Public Health Specialists" value="[ Mabingwa walioondoka Public Health Specialists ]" /></td>
+                    <td><input id="REFDEDOC003-rEmL0seagsd-val" name="entryfield" title="Mabingwa sababu za kuondoka Transfer, Public Health Specialists" value="[ Mabingwa sababu za kuondoka Transfer, Public Health Specialists ]" /></td>
+                    <td><input id="REFDEDOC003-EUzdEWAHokn-val" name="entryfield" title="Mabingwa sababu za kuondoka Retired, Public Health Specialists" value="[ Mabingwa sababu za kuondoka Retired, Public Health Specialists ]" /></td>
+                    <td><input id="REFDEDOC003-dgs6uaWS4aJ-val" name="entryfield" title="Mabingwa sababu za kuondoka Termination, Public Health Specialists" value="[ Mabingwa sababu za kuondoka Termination, Public Health Specialists ]" /></td>
+                    <td><input id="REFDEDOC003-OQhU83Sk7Km-val" name="entryfield" title="Mabingwa sababu za kuondoka Death, Public Health Specialists" value="[ Mabingwa sababu za kuondoka Death, Public Health Specialists ]" /></td>
+                    <td><input id="REFDEDOC003-yDcrCCOItHN-val" name="entryfield" title="Mabingwa sababu za kuondoka Resignation, Public Health Specialists" value="[ Mabingwa sababu za kuondoka Resignation, Public Health Specialists ]" /></td>
+                    <td><input id="REFDEDOC003-HrP5hawDZWY-val" name="entryfield" title="Mabingwa sababu za kuondoka On leave, Public Health Specialists" value="[ Mabingwa sababu za kuondoka On leave, Public Health Specialists ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Neurologists</td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC001-dBU3k6vhPSN-val" name="entryfield" title="Mabingwa waliopo Neurologists" value="[ Mabingwa waliopo Neurologists ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC002-dBU3k6vhPSN-val" name="entryfield" title="Mabingwa walioondoka Neurologists" value="[ Mabingwa walioondoka Neurologists ]" /></td>
+                    <td><input id="REFDEDOC003-utd4J1RBBQh-val" name="entryfield" title="Mabingwa sababu za kuondoka Transfer, Neurologists" value="[ Mabingwa sababu za kuondoka Transfer, Neurologists ]" /></td>
+                    <td><input id="REFDEDOC003-SW587I9X9kY-val" name="entryfield" title="Mabingwa sababu za kuondoka Retired, Neurologists" value="[ Mabingwa sababu za kuondoka Retired, Neurologists ]" /></td>
+                    <td><input id="REFDEDOC003-BgIPJHnHeZJ-val" name="entryfield" title="Mabingwa sababu za kuondoka Termination, Neurologists" value="[ Mabingwa sababu za kuondoka Termination, Neurologists ]" /></td>
+                    <td><input id="REFDEDOC003-FKljqIAi51s-val" name="entryfield" title="Mabingwa sababu za kuondoka Death, Neurologists" value="[ Mabingwa sababu za kuondoka Death, Neurologists ]" /></td>
+                    <td><input id="REFDEDOC003-Jmsk6QIdSjr-val" name="entryfield" title="Mabingwa sababu za kuondoka Resignation, Neurologists" value="[ Mabingwa sababu za kuondoka Resignation, Neurologists ]" /></td>
+                    <td><input id="REFDEDOC003-dyPOt8hR3Hz-val" name="entryfield" title="Mabingwa sababu za kuondoka On leave, Neurologists" value="[ Mabingwa sababu za kuondoka On leave, Neurologists ]" /></td>
+                </tr>
+                <tr class="MUHIMBILI_KCMC_MAMC_CCBRT_LUGALO_ORCI_JKCI_MOI_KIDH_BUGANDO_MBEYA_MIREMBE">
+                    <td><span>.</span></td>
+                    <td style="width: 15em;">Neurosurgeons</td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC001-SMHUN32nS7J-val" name="entryfield" title="Mabingwa waliopo Neurosurgeons" value="[ Mabingwa waliopo Neurosurgeons ]" /></td>
+                    <td>&nbsp;</td>
+                    <td><input id="REFDEDOC002-SMHUN32nS7J-val" name="entryfield" title="Mabingwa walioondoka Neurosurgeons" value="[ Mabingwa walioondoka Neurosurgeons ]" /></td>
+                    <td><input id="REFDEDOC003-TxJ9YtdFm2x-val" name="entryfield" title="Mabingwa sababu za kuondoka Transfer, Neurosurgeons" value="[ Mabingwa sababu za kuondoka Transfer, Neurosurgeons ]" /></td>
+                    <td><input id="REFDEDOC003-qrbdHLQL24R-val" name="entryfield" title="Mabingwa sababu za kuondoka Retired, Neurosurgeons" value="[ Mabingwa sababu za kuondoka Retired, Neurosurgeons ]" /></td>
+                    <td><input id="REFDEDOC003-Ol7H0BddmOH-val" name="entryfield" title="Mabingwa sababu za kuondoka Termination, Neurosurgeons" value="[ Mabingwa sababu za kuondoka Termination, Neurosurgeons ]" /></td>
+                    <td><input id="REFDEDOC003-Xp5GioyK03x-val" name="entryfield" title="Mabingwa sababu za kuondoka Death, Neurosurgeons" value="[ Mabingwa sababu za kuondoka Death, Neurosurgeons ]" /></td>
+                    <td><input id="REFDEDOC003-jFoTrjOrVWt-val" name="entryfield" title="Mabingwa sababu za kuondoka Resignation, Neurosurgeons" value="[ Mabingwa sababu za kuondoka Resignation, Neurosurgeons ]" /></td>
+                    <td><input id="REFDEDOC003-EiyBv4C0870-val" name="entryfield" title="Mabingwa sababu za kuondoka On leave, Neurosurgeons" value="[ Mabingwa sababu za kuondoka On leave, Neurosurgeons ]" /></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
