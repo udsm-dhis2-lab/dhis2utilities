@@ -1,0 +1,25 @@
+{
+  "main": "smscode.js",
+  "scripts": {
+    "start": "nodejs group_array_elements.js"
+  },
+  "dependencies": {
+    "math-round": "^1.0.0",
+    "node-localstorage": "^1.3.0",
+    "promise": ""
+  },
+  "name": "group-array-elements",
+  "version": "1.0.0",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hisptz/dhis2utilities.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hisptz/dhis2utilities/issues"
+  },
+  "homepage": "https://github.com/hisptz/dhis2utilities#readme",
+  "description": ""
+}
