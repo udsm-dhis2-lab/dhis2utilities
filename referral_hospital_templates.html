@@ -35,6 +35,7 @@
             $( function() {
                 $( "#icd10" ).accordion();
                 $( "#icd10G" ).accordion();
+                $( "#referrals" ).accordion();
             } );
 
             function periodFormatter(period) {
@@ -424,6 +425,9 @@
         text-decoration: none;
         background-color: yellow;
     }
+        .out-referrals input {
+            width: 15em;
+        }
     </style>
 </p>
 
@@ -441,6 +445,7 @@
         <li id="tabF"><span style="font-family:Arial,Helvetica,sans-serif;"><a class="these-tabs" href="#tableF-div" onclick="visitedTabsFunc(this.id)">Table 6: ICD 10 OPD Diagnosis</a></span></li>
         <li id="tabG"><span style="font-family:Arial,Helvetica,sans-serif;"><a class="these-tabs" href="#tableG-div" onclick="visitedTabsFunc(this.id)">Table 7: ICD 10 IPD Diagnosis</a></span></li>
         <li id="tabH"><span style="font-family:Arial,Helvetica,sans-serif;"><a class="these-tabs" href="#tableH-div" onclick="visitedTabsFunc(this.id)">Table 8: Upasuaji (Theatre)</a></span></li>
+        <li id="tabI"><span style="font-family:Arial,Helvetica,sans-serif;"><a class="these-tabs" href="#tableI-div" onclick="visitedTabsFunc(this.id)">Table 9: Referrals</a></span></li>
     </ul>
 
     <div id="cde">
@@ -10521,5 +10526,1529 @@
             </tr>
             </tbody>
         </table>
+    </div>
+
+    <div id="tableI-div"><!--<h1><span style="font-size:18px;">Table 9: Referrals</span></h1>-->
+        <div id="referrals">
+            <h3>Self Referrals</h3>
+
+            <div style="height:auto !important;">
+                <table>
+                    <thead>
+                    <tr class="cde-greyfield">
+                        <th>SN</th>
+                        <th>Department</th>
+                        <th>
+                            <p>Within</p>
+
+                            <p>catchment</p>
+
+                            <p>area</p>
+                        </th>
+                        <th>
+                            <p>Outside</p>
+
+                            <p>catchment</p>
+
+                            <p>area</p>
+                        </th>
+                        <th>Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>1</td>
+                        <td>General OPD</td>
+                        <td><input id="OUT12REFE17-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for General OPD Within catchment area" value="[ Self-Referrals for General OPD Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE17-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for General OPD Outside catchment area" value="[ Self-Referrals for General OPD Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE17" id="totalOUT12REFE17" name="total" readonly="readonly" title="Self-Referrals for General OPD (Total)" value="[ Self-Referrals for General OPD (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>2</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            General Surgery</td>
+                        <td><input id="OUT12REFE18-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for General Surgery Within catchment area" value="[ Self-Referrals for General Surgery Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE18-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for General Surgery Outside catchment area" value="[ Self-Referrals for General Surgery Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE18" id="totalOUT12REFE18" name="total" readonly="readonly" title="Self-Referrals for General Surgery (Total)" value="[ Self-Referrals for General Surgery (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>3</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Care &amp; Treatment Clinic (CTC)</td>
+                        <td><input id="OUT12REFE12-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Care &amp; Treatment Clinic (CTC) Within catchment area" value="[ Self-Referrals for Care &amp; Treatment Clinic (CTC) Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE12-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Care &amp; Treatment Clinic (CTC) Outside catchment area" value="[ Self-Referrals for Care &amp; Treatment Clinic (CTC) Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE12" id="totalOUT12REFE12" name="total" readonly="readonly" title="Self-Referrals for Care &amp; Treatment Clinic (CTC) (Total)" value="[ Self-Referrals for Care &amp; Treatment Clinic (CTC) (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>4</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            CTC Meta</td>
+                        <td><input id="OUT12REFE13-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for CTC Meta Within catchment area" value="[ Self-Referrals for CTC Meta Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE13-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for CTC Meta Outside catchment area" value="[ Self-Referrals for CTC Meta Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE13" id="totalOUT12REFE13" name="total" readonly="readonly" title="Self-Referrals for CTC Meta (Total)" value="[ Self-Referrals for CTC Meta (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>5</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Dental Clinic</td>
+                        <td><input id="OUT12REFE14-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Dental Clinic Within catchment area" value="[ Self-Referrals for Dental Clinic Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE14-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Dental Clinic Outside catchment area" value="[ Self-Referrals for Dental Clinic Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE14" id="totalOUT12REFE14" name="total" readonly="readonly" title="Self-Referrals for Dental Clinic (Total)" value="[ Self-Referrals for Dental Clinic (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>6</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Diabetic</td>
+                        <td><input id="OUT12REFE15-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Diabetic Within catchment area" value="[ Self-Referrals for Diabetic Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE15-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Diabetic Outside catchment area" value="[ Self-Referrals for Diabetic Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE15" id="totalOUT12REFE15" name="total" readonly="readonly" title="Self-Referrals for Diabetic (Total)" value="[ Self-Referrals for Diabetic (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>7</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Emergence Medicine/Casualty</td>
+                        <td><input id="OUT12REFE16-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Emergence Medicine/Casualty Within catchment area" value="[ Self-Referrals for Emergence Medicine/Casualty Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE16-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Emergence Medicine/Casualty Outside catchment area" value="[ Self-Referrals for Emergence Medicine/Casualty Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE16" id="totalOUT12REFE16" name="total" readonly="readonly" title="Self-Referrals for Emergence Medicine/Casualty (Total)" value="[ Self-Referrals for Emergence Medicine/Casualty (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>8</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Cardiology</td>
+                        <td><input id="OUT12REFE11-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Cardiology Within catchment area" value="[ Self-Referrals for Cardiology Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE11-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Cardiology Outside catchment area" value="[ Self-Referrals for Cardiology Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE11" id="totalOUT12REFE11" name="total" readonly="readonly" title="Self-Referrals for Cardiology (Total)" value="[ Self-Referrals for Cardiology (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>9</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Medical Clinic</td>
+                        <td><input id="OUT12REFE19-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Medical Clinic Within catchment area" value="[ Self-Referrals for Medical Clinic Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE19-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Medical Clinic Outside catchment area" value="[ Self-Referrals for Medical Clinic Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE19" id="totalOUT12REFE19" name="total" readonly="readonly" title="Self-Referrals for Medical Clinic (Total)" value="[ Self-Referrals for Medical Clinic (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>10</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Methadone Clinic</td>
+                        <td><input id="OUT12REFE20-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Methadone Clinic Within catchment area" value="[ Self-Referrals for Methadone Clinic Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE20-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Methadone Clinic Outside catchment area" value="[ Self-Referrals for Methadone Clinic Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE20" id="totalOUT12REFE20" name="total" readonly="readonly" title="Self-Referrals for Methadone Clinic (Total)" value="[ Self-Referrals for Methadone Clinic (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>11</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Neonatal</td>
+                        <td><input id="OUT12REFE21-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Neonatal Within catchment area" value="[ Self-Referrals for Neonatal Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE21-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Neonatal Outside catchment area" value="[ Self-Referrals for Neonatal Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE21" id="totalOUT12REFE21" name="total" readonly="readonly" title="Self-Referrals for Neonatal (Total)" value="[ Self-Referrals for Neonatal (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>12</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            NHIF</td>
+                        <td><input id="OUT12REFE22-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for NHIF Within catchment area" value="[ Self-Referrals for NHIF Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE22-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for NHIF Outside catchment area" value="[ Self-Referrals for NHIF Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE22" id="totalOUT12REFE22" name="total" readonly="readonly" title="Self-Referrals for NHIF (Total)" value="[ Self-Referrals for NHIF (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>13</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Obstetrics-Gynecology/ VVF</td>
+                        <td><input id="OUT12REFE23-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Obstetrics-Gynecology Within catchment area" value="[ Self-Referrals for Obstetrics-Gynecology Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE23-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Obstetrics-Gynecology Outside catchment area" value="[ Self-Referrals for Obstetrics-Gynecology Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE23" id="totalOUT12REFE23" name="total" readonly="readonly" title="Self-Referrals for Obstetrics-Gynecology (Total)" value="[ Self-Referrals for Obstetrics-Gynecology (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>14</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Opthamology</td>
+                        <td><input id="OUT12REFE24-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Opthamology Within catchment area" value="[ Self-Referrals for Opthamology Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE24-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Opthamology Outside catchment area" value="[ Self-Referrals for Opthamology Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE24" id="totalOUT12REFE24" name="total" readonly="readonly" title="Self-Referrals for Opthamology (Total)" value="[ Self-Referrals for Opthamology (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>15</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Orthopedic clinic</td>
+                        <td><input id="OUT12REFE25-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Orthopedic Clinic Within catchment area" value="[ Self-Referrals for Orthopedic Clinic Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE25-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Orthopedic Clinic Outside catchment area" value="[ Self-Referrals for Orthopedic Clinic Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE25" id="totalOUT12REFE25" name="total" readonly="readonly" title="Self-Referrals for Orthopedic Clinic (Total)" value="[ Self-Referrals for Orthopedic Clinic (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>16</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Orthopedic workshop</td>
+                        <td><input id="OUT12REFE26-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Orthopedic Workshop Within catchment area" value="[ Self-Referrals for Orthopedic Workshop Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE26-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Orthopedic Workshop Outside catchment area" value="[ Self-Referrals for Orthopedic Workshop Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE26" id="totalOUT12REFE26" name="total" readonly="readonly" title="Self-Referrals for Orthopedic Workshop (Total)" value="[ Self-Referrals for Orthopedic Workshop (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>17</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Otorhinolaryngology (Ear, Nose &amp; Throat) ENT</td>
+                        <td><input id="OUT12REFE27-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Otorhinolaryngology ENT Within catchment area" value="[ Self-Referrals for Otorhinolaryngology ENT Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE27-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Otorhinolaryngology ENT Outside catchment area" value="[ Self-Referrals for Otorhinolaryngology ENT Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE27" id="totalOUT12REFE27" name="total" readonly="readonly" title="Self-Referrals for Otorhinolaryngology ENT (Total)" value="[ Self-Referrals for Otorhinolaryngology ENT (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>18</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Paediatric casuality</td>
+                        <td><input id="OUT12REFE28-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Paediatric Casuality Within catchment area" value="[ Self-Referrals for Paediatric Casuality Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE28-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Paediatric Casuality Outside catchment area" value="[ Self-Referrals for Paediatric Casuality Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE28" id="totalOUT12REFE28" name="total" readonly="readonly" title="Self-Referrals for Paediatric Casuality (Total)" value="[ Self-Referrals for Paediatric Casuality (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>19</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Paediatric clinic</td>
+                        <td><input id="OUT12REFE29-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Paediatric Clinic Within catchment area" value="[ Self-Referrals for Paediatric Clinic Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE29-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Paediatric Clinic Outside catchment area" value="[ Self-Referrals for Paediatric Clinic Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE29" id="totalOUT12REFE29" name="total" readonly="readonly" title="Self-Referrals for Paediatric Clinic (Total)" value="[ Self-Referrals for Paediatric Clinic (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>20</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Physiotherapy</td>
+                        <td><input id="OUT12REFE30-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Physiotherapy Within catchment area" value="[ Self-Referrals for Physiotherapy Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE30-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Physiotherapy Outside catchment area" value="[ Self-Referrals for Physiotherapy Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE30" id="totalOUT12REFE30" name="total" readonly="readonly" title="Self-Referrals for Physiotherapy (Total)" value="[ Self-Referrals for Physiotherapy (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>21</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Psychiatric-OPD</td>
+                        <td><input id="OUT12REFE31-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Psychiatric-OPD Within catchment area" value="[ Self-Referrals for Psychiatric-OPD Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE31-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Psychiatric-OPD Outside catchment area" value="[ Self-Referrals for Psychiatric-OPD Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE31" id="totalOUT12REFE31" name="total" readonly="readonly" title="Self-Referrals for Psychiatric-OPD (Total)" value="[ Self-Referrals for Psychiatric-OPD (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>22</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Renal clinic</td>
+                        <td><input id="OUT12REFE32-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Renal Clinic Within catchment area" value="[ Self-Referrals for Renal Clinic Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE32-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Renal Clinic Outside catchment area" value="[ Self-Referrals for Renal Clinic Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE32" id="totalOUT12REFE32" name="total" readonly="readonly" title="Self-Referrals for Renal Clinic (Total)" value="[ Self-Referrals for Renal Clinic (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>23</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            RHU</td>
+                        <td><input id="OUT12REFE33-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for RHU Within catchment area" value="[ Self-Referrals for RHU Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE33-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for RHU Outside catchment area" value="[ Self-Referrals for RHU Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE33" id="totalOUT12REFE33" name="total" readonly="readonly" title="Self-Referrals for RHU (Total)" value="[ Self-Referrals for RHU (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>24</td>
+                        <td>Dermatology (Skin)</td>
+                        <td><input id="OUT12REFE34-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Skin (Dermatology) Within catchment area" value="[ Self-Referrals for Skin (Dermatology) Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE34-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Skin (Dermatology) Outside catchment area" value="[ Self-Referrals for Skin (Dermatology) Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE34" id="totalOUT12REFE34" name="total" readonly="readonly" title="Self-Referrals for Skin (Dermatology) (Total)" value="[ Self-Referrals for Skin (Dermatology) (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>25</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            STI</td>
+                        <td><input id="OUT12REFE35-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for STI Within catchment area" value="[ Self-Referrals for STI Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE35-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for STI Outside catchment area" value="[ Self-Referrals for STI Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE35" id="totalOUT12REFE35" name="total" readonly="readonly" title="Self-Referrals for STI (Total)" value="[ Self-Referrals for STI (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>26</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            TB</td>
+                        <td><input id="OUT12REFE36-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for TB Within catchment area" value="[ Self-Referrals for TB Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE36-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for TB Outside catchment area" value="[ Self-Referrals for TB Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE36" id="totalOUT12REFE36" name="total" readonly="readonly" title="Self-Referrals for TB (Total)" value="[ Self-Referrals for TB (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>27</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Urology</td>
+                        <td><input id="OUT12REFE37-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Urology Within catchment area" value="[ Self-Referrals for Urology Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE37-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Urology Outside catchment area" value="[ Self-Referrals for Urology Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE37" id="totalOUT12REFE37" name="total" readonly="readonly" title="Self-Referrals for Urology (Total)" value="[ Self-Referrals for Urology (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>28</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Oncology specialists clinic</td>
+                        <td><input id="OUT12REFE38-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Oncology Specialists Clinic Within catchment area" value="[ Self-Referrals for Oncology Specialists Clinic Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE38-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Oncology Specialists Clinic Outside catchment area" value="[ Self-Referrals for Oncology Specialists Clinic Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE38" id="totalOUT12REFE38" name="total" readonly="readonly" title="Self-Referrals for Oncology Specialists Clinic (Total)" value="[ Self-Referrals for Oncology Specialists Clinic (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>29</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Internal medicine</td>
+                        <td><input id="OUT12REFE39-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Internal Medicine Within catchment area" value="[ Self-Referrals for Internal Medicine Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE39-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Internal Medicine Outside catchment area" value="[ Self-Referrals for Internal Medicine Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE39" id="totalOUT12REFE39" name="total" readonly="readonly" title="Self-Referrals for Internal Medicine (Total)" value="[ Self-Referrals for Internal Medicine (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>30</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Nuclear medicine</td>
+                        <td><input id="OUT12REFE40-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Nuclear Medicine Within catchment area" value="[ Self-Referrals for Nuclear Medicine Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE40-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Nuclear Medicine Outside catchment area" value="[ Self-Referrals for Nuclear Medicine Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE40" id="totalOUT12REFE40" name="total" readonly="readonly" title="Self-Referrals for Nuclear Medicine (Total)" value="[ Self-Referrals for Nuclear Medicine (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>31</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Neurology/neurosurgery</td>
+                        <td><input id="OUT12REFE41-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Neurology/Neurosurgery Within catchment area" value="[ Self-Referrals for Neurology/Neurosurgery Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE41-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Neurology/Neurosurgery Outside catchment area" value="[ Self-Referrals for Neurology/Neurosurgery Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE41" id="totalOUT12REFE41" name="total" readonly="readonly" title="Self-Referrals for Neurology/Neurosurgery (Total)" value="[ Self-Referrals for Neurology/Neurosurgery (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>32</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Family planning</td>
+                        <td><input id="OUT12REFE42-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Family Planning Within catchment area" value="[ Self-Referrals for Family Planning Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE42-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Family Planning Outside catchment area" value="[ Self-Referrals for Family Planning Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE42" id="totalOUT12REFE42" name="total" readonly="readonly" title="Self-Referrals for Family Planning (Total)" value="[ Self-Referrals for Family Planning (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>33</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Occupational health service / therapy</td>
+                        <td><input id="OUT12REFE43-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Occupational Health Service / Therapy Within catchment area" value="[ Self-Referrals for Occupational Health Service / Therapy Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE43-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Occupational Health Service / Therapy Outside catchment area" value="[ Self-Referrals for Occupational Health Service / Therapy Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE43" id="totalOUT12REFE43" name="total" readonly="readonly" title="Self-Referrals for Occupational Health Service / Therapy (Total)" value="[ Self-Referrals for Occupational Health Service / Therapy (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>34</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Children clinic (vaccination and weighing</td>
+                        <td><input id="OUT12REFE44-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Children clinic (Vaccination and weighing Within catchment area" value="[ Self-Referrals for Children clinic (Vaccination and weighing Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE44-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Children clinic (Vaccination and weighing Outside catchment area" value="[ Self-Referrals for Children clinic (Vaccination and weighing Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE44" id="totalOUT12REFE44" name="total" readonly="readonly" title="Self-Referrals for Children clinic (Vaccination and weighing (Total)" value="[ Self-Referrals for Children clinic (Vaccination and weighing (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>35</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Radiotherapy</td>
+                        <td><input id="OUT12REFE45-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Radiotherapy Within catchment area" value="[ Self-Referrals for Radiotherapy Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE45-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Radiotherapy Outside catchment area" value="[ Self-Referrals for Radiotherapy Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE45" id="totalOUT12REFE45" name="total" readonly="readonly" title="Self-Referrals for Radiotherapy (Total)" value="[ Self-Referrals for Radiotherapy (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>36</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            General practioners oncology clinic</td>
+                        <td><input id="OUT12REFE46-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for General Practioners Oncology Clinic Within catchment area" value="[ Self-Referrals for General Practioners Oncology Clinic Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE46-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for General Practioners Oncology Clinic Outside catchment area" value="[ Self-Referrals for General Practioners Oncology Clinic Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE46" id="totalOUT12REFE46" name="total" readonly="readonly" title="Self-Referrals for General Practioners Oncology Clinic (Total)" value="[ Self-Referrals for General Practioners Oncology Clinic (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>37</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Chemotherapy</td>
+                        <td><input id="OUT12REFE47-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Chemotherapy Within catchment area" value="[ Self-Referrals for Chemotherapy Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE47-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Chemotherapy Outside catchment area" value="[ Self-Referrals for Chemotherapy Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE47" id="totalOUT12REFE47" name="total" readonly="readonly" title="Self-Referrals for Chemotherapy (Total)" value="[ Self-Referrals for Chemotherapy (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>38</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Cancer screening</td>
+                        <td><input id="OUT12REFE48-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Cancer Screening Within catchment area" value="[ Self-Referrals for Cancer Screening Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE48-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Cancer Screening Outside catchment area" value="[ Self-Referrals for Cancer Screening Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE48" id="totalOUT12REFE48" name="total" readonly="readonly" title="Self-Referrals for Cancer Screening (Total)" value="[ Self-Referrals for Cancer Screening (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>39</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            CECAP clinic</td>
+                        <td><input id="OUT12REFE49-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for CECAP Clinic Within catchment area" value="[ Self-Referrals for CECAP Clinic Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE49-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for CECAP Clinic Outside catchment area" value="[ Self-Referrals for CECAP Clinic Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE49" id="totalOUT12REFE49" name="total" readonly="readonly" title="Self-Referrals for CECAP Clinic (Total)" value="[ Self-Referrals for CECAP Clinic (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>40</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Siha health centre</td>
+                        <td><input id="OUT12REFE50-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Siha Health Centre Within catchment area" value="[ Self-Referrals for Siha Health Centre Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE50-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Siha Health Centre Outside catchment area" value="[ Self-Referrals for Siha Health Centre Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE50" id="totalOUT12REFE50" name="total" readonly="readonly" title="Self-Referrals for Siha Health Centre (Total)" value="[ Self-Referrals for Siha Health Centre (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>41</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Nutritional clinic</td>
+                        <td><input id="OUT12REFE51-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Nutritional Clinic Within catchment area" value="[ Self-Referrals for Nutritional Clinic Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE51-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Nutritional Clinic Outside catchment area" value="[ Self-Referrals for Nutritional Clinic Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE51" id="totalOUT12REFE51" name="total" readonly="readonly" title="Self-Referrals for Nutritional Clinic (Total)" value="[ Self-Referrals for Nutritional Clinic (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>42</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Rehabilitation medicine</td>
+                        <td><input id="OUT12REFE52-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Rehabilitation medicine Within catchment area" value="[ Self-Referrals for Rehabilitation medicine Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE52-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Rehabilitation medicine Outside catchment area" value="[ Self-Referrals for Rehabilitation medicine Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE52" id="totalOUT12REFE52" name="total" readonly="readonly" title="Self-Referrals for Rehabilitation medicine (Total)" value="[ Self-Referrals for Rehabilitation medicine (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>43</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Anaesthesia</td>
+                        <td><input id="OUT12REFE53-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Anaesthesia Within catchment area" value="[ Self-Referrals for Anaesthesia Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE53-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Anaesthesia Outside catchment area" value="[ Self-Referrals for Anaesthesia Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE53" id="totalOUT12REFE53" name="total" readonly="readonly" title="Self-Referrals for Anaesthesia (Total)" value="[ Self-Referrals for Anaesthesia (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>44</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Oral Health</td>
+                        <td><input id="OUT12REFE54-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Oral Health Within catchment area" value="[ Self-Referrals for Oral Health Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE54-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Oral Health Outside catchment area" value="[ Self-Referrals for Oral Health Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE54" id="totalOUT12REFE54" name="total" readonly="readonly" title="Self-Referrals for Oral Health (Total)" value="[ Self-Referrals for Oral Health (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>45</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            VCT</td>
+                        <td><input id="OUT12REFE55-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for VCT Within catchment area" value="[ Self-Referrals for VCT Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE55-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for VCT Outside catchment area" value="[ Self-Referrals for VCT Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE55" id="totalOUT12REFE55" name="total" readonly="readonly" title="Self-Referrals for VCT (Total)" value="[ Self-Referrals for VCT (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>46</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Threatre(minor theatre)</td>
+                        <td><input id="OUT12REFE56-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Threatre(minor Theatre) Within catchment area" value="[ Self-Referrals for Threatre(minor Theatre) Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE56-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Threatre(minor Theatre) Outside catchment area" value="[ Self-Referrals for Threatre(minor Theatre) Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE56" id="totalOUT12REFE56" name="total" readonly="readonly" title="Self-Referrals for Threatre(minor Theatre) (Total)" value="[ Self-Referrals for Threatre(minor Theatre) (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>47</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            DCT</td>
+                        <td><input id="OUT12REFE57-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for DCT Within catchment area" value="[ Self-Referrals for DCT Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE57-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for DCT Outside catchment area" value="[ Self-Referrals for DCT Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE57" id="totalOUT12REFE57" name="total" readonly="readonly" title="Self-Referrals for DCT (Total)" value="[ Self-Referrals for DCT (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>48</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Spirometry</td>
+                        <td><input id="OUT12REFE58-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Spirometry Within catchment area" value="[ Self-Referrals for Spirometry Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE58-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Spirometry Outside catchment area" value="[ Self-Referrals for Spirometry Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE58" id="totalOUT12REFE58" name="total" readonly="readonly" title="Self-Referrals for Spirometry (Total)" value="[ Self-Referrals for Spirometry (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>49</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Psychology</td>
+                        <td><input id="OUT12REFE59-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Psychology Within catchment area" value="[ Self-Referrals for Psychology Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE59-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Psychology Outside catchment area" value="[ Self-Referrals for Psychology Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE59" id="totalOUT12REFE59" name="total" readonly="readonly" title="Self-Referrals for Psychology (Total)" value="[ Self-Referrals for Psychology (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>50</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Physician</td>
+                        <td><input id="OUT12REFE60-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Physician Within catchment area" value="[ Self-Referrals for Physician Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE60-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Physician Outside catchment area" value="[ Self-Referrals for Physician Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE60" id="totalOUT12REFE60" name="total" readonly="readonly" title="Self-Referrals for Physician (Total)" value="[ Self-Referrals for Physician (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>51</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Antenatal</td>
+                        <td><input id="OUT12REFE61-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Antenatal Within catchment area" value="[ Self-Referrals for Antenatal Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE61-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Antenatal Outside catchment area" value="[ Self-Referrals for Antenatal Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE61" id="totalOUT12REFE61" name="total" readonly="readonly" title="Self-Referrals for Antenatal (Total)" value="[ Self-Referrals for Antenatal (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>52</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Anticoagulant</td>
+                        <td><input id="OUT12REFE62-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Anticoagulant Within catchment area" value="[ Self-Referrals for Anticoagulant Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE62-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Anticoagulant Outside catchment area" value="[ Self-Referrals for Anticoagulant Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE62" id="totalOUT12REFE62" name="total" readonly="readonly" title="Self-Referrals for Anticoagulant (Total)" value="[ Self-Referrals for Anticoagulant (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>53</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Asthma (Pulmonology)</td>
+                        <td><input id="OUT12REFE63-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Asthma (Pulmonology) Within catchment area" value="[ Self-Referrals for Asthma (Pulmonology) Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE63-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Asthma (Pulmonology) Outside catchment area" value="[ Self-Referrals for Asthma (Pulmonology) Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE63" id="totalOUT12REFE63" name="total" readonly="readonly" title="Self-Referrals for Asthma (Pulmonology) (Total)" value="[ Self-Referrals for Asthma (Pulmonology) (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>54</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Endocrinology</td>
+                        <td><input id="OUT12REFE64-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Endocrinology Within catchment area" value="[ Self-Referrals for Endocrinology Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE64-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Endocrinology Outside catchment area" value="[ Self-Referrals for Endocrinology Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE64" id="totalOUT12REFE64" name="total" readonly="readonly" title="Self-Referrals for Endocrinology (Total)" value="[ Self-Referrals for Endocrinology (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>55</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Paediatric surgery</td>
+                        <td><input id="OUT12REFE65-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Paediatric surgery Within catchment area" value="[ Self-Referrals for Paediatric surgery Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE65-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Paediatric surgery Outside catchment area" value="[ Self-Referrals for Paediatric surgery Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE65" id="totalOUT12REFE65" name="total" readonly="readonly" title="Self-Referrals for Paediatric surgery (Total)" value="[ Self-Referrals for Paediatric surgery (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>56</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Paediatric neurology</td>
+                        <td><input id="OUT12REFE66-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Paediatric neurology Within catchment area" value="[ Self-Referrals for Paediatric neurology Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE66-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Paediatric neurology Outside catchment area" value="[ Self-Referrals for Paediatric neurology Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE66" id="totalOUT12REFE66" name="total" readonly="readonly" title="Self-Referrals for Paediatric neurology (Total)" value="[ Self-Referrals for Paediatric neurology (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>57</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Paediatric oncology</td>
+                        <td><input id="OUT12REFE67-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Paediatric oncology Within catchment area" value="[ Self-Referrals for Paediatric oncology Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE67-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Paediatric oncology Outside catchment area" value="[ Self-Referrals for Paediatric oncology Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE67" id="totalOUT12REFE67" name="total" readonly="readonly" title="Self-Referrals for Paediatric oncology (Total)" value="[ Self-Referrals for Paediatric oncology (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>58</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Plastic surgery</td>
+                        <td><input id="OUT12REFE68-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Plastic surgery Within catchment area" value="[ Self-Referrals for Plastic surgery Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE68-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Plastic surgery Outside catchment area" value="[ Self-Referrals for Plastic surgery Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE68" id="totalOUT12REFE68" name="total" readonly="readonly" title="Self-Referrals for Plastic surgery (Total)" value="[ Self-Referrals for Plastic surgery (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>59</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Postnatal</td>
+                        <td><input id="OUT12REFE69-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Postnatal Within catchment area" value="[ Self-Referrals for Postnatal Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE69-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Postnatal Outside catchment area" value="[ Self-Referrals for Postnatal Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE69" id="totalOUT12REFE69" name="total" readonly="readonly" title="Self-Referrals for Postnatal (Total)" value="[ Self-Referrals for Postnatal (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>60</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Rheumatology</td>
+                        <td><input id="OUT12REFE70-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Rheumatology Within catchment area" value="[ Self-Referrals for Rheumatology Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE70-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Rheumatology Outside catchment area" value="[ Self-Referrals for Rheumatology Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE70" id="totalOUT12REFE70" name="total" readonly="readonly" title="Self-Referrals for Rheumatology (Total)" value="[ Self-Referrals for Rheumatology (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>61</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Speech therapy</td>
+                        <td><input id="OUT12REFE71-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Speech therapy Within catchment area" value="[ Self-Referrals for Speech therapy Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE71-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Speech therapy Outside catchment area" value="[ Self-Referrals for Speech therapy Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE71" id="totalOUT12REFE71" name="total" readonly="readonly" title="Self-Referrals for Speech therapy (Total)" value="[ Self-Referrals for Speech therapy (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>62</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            SURG general</td>
+                        <td><input id="OUT12REFE72-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for SURG general Within catchment area" value="[ Self-Referrals for SURG general Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE72-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for SURG general Outside catchment area" value="[ Self-Referrals for SURG general Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE72" id="totalOUT12REFE72" name="total" readonly="readonly" title="Self-Referrals for SURG general (Total)" value="[ Self-Referrals for SURG general (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>63</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Well woman clinic</td>
+                        <td><input id="OUT12REFE73-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Well woman clinic Within catchment area" value="[ Self-Referrals for Well woman clinic Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE73-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Well woman clinic Outside catchment area" value="[ Self-Referrals for Well woman clinic Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE73" id="totalOUT12REFE73" name="total" readonly="readonly" title="Self-Referrals for Well woman clinic (Total)" value="[ Self-Referrals for Well woman clinic (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>64</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Gastroenterology</td>
+                        <td><input id="OUT12REFE74-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Gastroenterology Within catchment area" value="[ Self-Referrals for Gastroenterology Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE74-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Gastroenterology Outside catchment area" value="[ Self-Referrals for Gastroenterology Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE74" id="totalOUT12REFE74" name="total" readonly="readonly" title="Self-Referrals for Gastroenterology (Total)" value="[ Self-Referrals for Gastroenterology (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>65</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Haematology</td>
+                        <td><input id="OUT12REFE75-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Haematology Within catchment area" value="[ Self-Referrals for Haematology Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE75-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Haematology Outside catchment area" value="[ Self-Referrals for Haematology Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE75" id="totalOUT12REFE75" name="total" readonly="readonly" title="Self-Referrals for Haematology (Total)" value="[ Self-Referrals for Haematology (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>66</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Health-check</td>
+                        <td><input id="OUT12REFE76-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Health-check Within catchment area" value="[ Self-Referrals for Health-check Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE76-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Health-check Outside catchment area" value="[ Self-Referrals for Health-check Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE76" id="totalOUT12REFE76" name="total" readonly="readonly" title="Self-Referrals for Health-check (Total)" value="[ Self-Referrals for Health-check (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>67</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Hepatology</td>
+                        <td><input id="OUT12REFE77-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Hepatology Within catchment area" value="[ Self-Referrals for Hepatology Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE77-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Hepatology Outside catchment area" value="[ Self-Referrals for Hepatology Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE77" id="totalOUT12REFE77" name="total" readonly="readonly" title="Self-Referrals for Hepatology (Total)" value="[ Self-Referrals for Hepatology (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>68</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            HIV</td>
+                        <td><input id="OUT12REFE78-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for HIV Within catchment area" value="[ Self-Referrals for HIV Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE78-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for HIV Outside catchment area" value="[ Self-Referrals for HIV Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE78" id="totalOUT12REFE78" name="total" readonly="readonly" title="Self-Referrals for HIV (Total)" value="[ Self-Referrals for HIV (Total) ]" /></td>
+                    </tr>
+                    <tr>
+                        <td>69</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Infectious Diseases</td>
+                        <td><input id="OUT12REFE79-zu8Flq2HWxN-val" name="entryfield" title="Self-Referrals for Infectious Diseases Within catchment area" value="[ Self-Referrals for Infectious Diseases Within catchment area ]" /></td>
+                        <td><input id="OUT12REFE79-nW6C55aJ7vT-val" name="entryfield" title="Self-Referrals for Infectious Diseases Outside catchment area" value="[ Self-Referrals for Infectious Diseases Outside catchment area ]" /></td>
+                        <td><input dataelementid="OUT12REFE79" id="totalOUT12REFE79" name="total" readonly="readonly" title="Self-Referrals for Infectious Diseases (Total)" value="[ Self-Referrals for Infectious Diseases (Total) ]" /></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>In Referrals</h3>
+
+            <div style="height:auto !important;">
+                <table>
+                    <thead>
+                    <tr class="cde-greyfield">
+                        <th>SN</th>
+                        <th>Department</th>
+                        <th>
+                            <p>Within</p>
+
+                            <p>catchment</p>
+
+                            <p>area</p>
+                        </th>
+                        <th>
+                            <p>Outside</p>
+
+                            <p>catchment</p>
+
+                            <p>area</p>
+                        </th>
+                        <th>Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>1</td>
+                        <td>General OPD</td>
+                        <td><input id="REFERRALS17-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for General OPD Within catchment area" value="[ In-Referrals for General OPD Within catchment area ]" /></td>
+                        <td><input id="REFERRALS17-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for General OPD Outside catchment area" value="[ In-Referrals for General OPD Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS17" id="totalREFERRALS17" name="total" readonly="readonly" title="In-Referrals for General OPD (Total)" value="[ In-Referrals for General OPD (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>2</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            General Surgery</td>
+                        <td><input id="REFERRALS18-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for General Surgery Within catchment area" value="[ In-Referrals for General Surgery Within catchment area ]" /></td>
+                        <td><input id="REFERRALS18-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for General Surgery Outside catchment area" value="[ In-Referrals for General Surgery Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS18" id="totalREFERRALS18" name="total" readonly="readonly" title="In-Referrals for General Surgery (Total)" value="[ In-Referrals for General Surgery (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>3</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Care &amp; Treatment Clinic (CTC)</td>
+                        <td><input id="REFERRALS12-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Care &amp; Treatment Clinic (CTC) Within catchment area" value="[ In-Referrals for Care &amp; Treatment Clinic (CTC) Within catchment area ]" /></td>
+                        <td><input id="REFERRALS12-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Care &amp; Treatment Clinic (CTC) Outside catchment area" value="[ In-Referrals for Care &amp; Treatment Clinic (CTC) Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS12" id="totalREFERRALS12" name="total" readonly="readonly" title="In-Referrals for Care &amp; Treatment Clinic (CTC) (Total)" value="[ In-Referrals for Care &amp; Treatment Clinic (CTC) (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>4</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            CTC Meta</td>
+                        <td><input id="REFERRALS13-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for CTC Meta Within catchment area" value="[ In-Referrals for CTC Meta Within catchment area ]" /></td>
+                        <td><input id="REFERRALS13-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for CTC Meta Outside catchment area" value="[ In-Referrals for CTC Meta Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS13" id="totalREFERRALS13" name="total" readonly="readonly" title="In-Referrals for CTC Meta (Total)" value="[ In-Referrals for CTC Meta (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>5</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Dental Clinic</td>
+                        <td><input id="REFERRALS14-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Dental Clinic Within catchment area" value="[ In-Referrals for Dental Clinic Within catchment area ]" /></td>
+                        <td><input id="REFERRALS14-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Dental Clinic Outside catchment area" value="[ In-Referrals for Dental Clinic Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS14" id="totalREFERRALS14" name="total" readonly="readonly" title="In-Referrals for Dental Clinic (Total)" value="[ In-Referrals for Dental Clinic (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>6</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Diabetic</td>
+                        <td><input id="REFERRALS15-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Diabetic Within catchment area" value="[ In-Referrals for Diabetic Within catchment area ]" /></td>
+                        <td><input id="REFERRALS15-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Diabetic Outside catchment area" value="[ In-Referrals for Diabetic Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS15" id="totalREFERRALS15" name="total" readonly="readonly" title="In-Referrals for Diabetic (Total)" value="[ In-Referrals for Diabetic (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>7</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Emergence Medicine/Casualty</td>
+                        <td><input id="REFERRALS16-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Emergence Medicine/Casualty Within catchment area" value="[ In-Referrals for Emergence Medicine/Casualty Within catchment area ]" /></td>
+                        <td><input id="REFERRALS16-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Emergence Medicine/Casualty Outside catchment area" value="[ In-Referrals for Emergence Medicine/Casualty Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS16" id="totalREFERRALS16" name="total" readonly="readonly" title="In-Referrals for Emergence Medicine/Casualty (Total)" value="[ In-Referrals for Emergence Medicine/Casualty (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>8</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Cardiology</td>
+                        <td><input id="REFERRALS11-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Cardiology Within catchment area" value="[ In-Referrals for Cardiology Within catchment area ]" /></td>
+                        <td><input id="REFERRALS11-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Cardiology Outside catchment area" value="[ In-Referrals for Cardiology Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS11" id="totalREFERRALS11" name="total" readonly="readonly" title="In-Referrals for Cardiology (Total)" value="[ In-Referrals for Cardiology (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>9</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Medical Clinic</td>
+                        <td><input id="REFERRALS19-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Medical Clinic Within catchment area" value="[ In-Referrals for Medical Clinic Within catchment area ]" /></td>
+                        <td><input id="REFERRALS19-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Medical Clinic Outside catchment area" value="[ In-Referrals for Medical Clinic Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS19" id="totalREFERRALS19" name="total" readonly="readonly" title="In-Referrals for Medical Clinic (Total)" value="[ In-Referrals for Medical Clinic (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>10</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Methadone Clinic</td>
+                        <td><input id="REFERRALS20-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Methadone Clinic Within catchment area" value="[ In-Referrals for Methadone Clinic Within catchment area ]" /></td>
+                        <td><input id="REFERRALS20-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Methadone Clinic Outside catchment area" value="[ In-Referrals for Methadone Clinic Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS20" id="totalREFERRALS20" name="total" readonly="readonly" title="In-Referrals for Methadone Clinic (Total)" value="[ In-Referrals for Methadone Clinic (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>11</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Neonatal</td>
+                        <td><input id="REFERRALS21-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Neonatal Within catchment area" value="[ In-Referrals for Neonatal Within catchment area ]" /></td>
+                        <td><input id="REFERRALS21-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Neonatal Outside catchment area" value="[ In-Referrals for Neonatal Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS21" id="totalREFERRALS21" name="total" readonly="readonly" title="In-Referrals for Neonatal (Total)" value="[ In-Referrals for Neonatal (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>12</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            NHIF</td>
+                        <td><input id="REFERRALS22-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for NHIF Within catchment area" value="[ In-Referrals for NHIF Within catchment area ]" /></td>
+                        <td><input id="REFERRALS22-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for NHIF Outside catchment area" value="[ In-Referrals for NHIF Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS22" id="totalREFERRALS22" name="total" readonly="readonly" title="In-Referrals for NHIF (Total)" value="[ In-Referrals for NHIF (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>13</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Obstetrics-Gynecology/ VVF</td>
+                        <td><input id="REFERRALS23-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Obstetrics-Gynecology Within catchment area" value="[ In-Referrals for Obstetrics-Gynecology Within catchment area ]" /></td>
+                        <td><input id="REFERRALS23-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Obstetrics-Gynecology Outside catchment area" value="[ In-Referrals for Obstetrics-Gynecology Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS23" id="totalREFERRALS23" name="total" readonly="readonly" title="In-Referrals for Obstetrics-Gynecology (Total)" value="[ In-Referrals for Obstetrics-Gynecology (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>14</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Opthamology</td>
+                        <td><input id="REFERRALS24-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Opthamology Within catchment area" value="[ In-Referrals for Opthamology Within catchment area ]" /></td>
+                        <td><input id="REFERRALS24-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Opthamology Outside catchment area" value="[ In-Referrals for Opthamology Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS24" id="totalREFERRALS24" name="total" readonly="readonly" title="In-Referrals for Opthamology (Total)" value="[ In-Referrals for Opthamology (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>15</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Orthopedic clinic</td>
+                        <td><input id="REFERRALS25-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Orthopedic Clinic Within catchment area" value="[ In-Referrals for Orthopedic Clinic Within catchment area ]" /></td>
+                        <td><input id="REFERRALS25-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Orthopedic Clinic Outside catchment area" value="[ In-Referrals for Orthopedic Clinic Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS25" id="totalREFERRALS25" name="total" readonly="readonly" title="In-Referrals for Orthopedic Clinic (Total)" value="[ In-Referrals for Orthopedic Clinic (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>16</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Orthopedic workshop</td>
+                        <td><input id="REFERRALS26-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Orthopedic Workshop Within catchment area" value="[ In-Referrals for Orthopedic Workshop Within catchment area ]" /></td>
+                        <td><input id="REFERRALS26-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Orthopedic Workshop Outside catchment area" value="[ In-Referrals for Orthopedic Workshop Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS26" id="totalREFERRALS26" name="total" readonly="readonly" title="In-Referrals for Orthopedic Workshop (Total)" value="[ In-Referrals for Orthopedic Workshop (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>17</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Otorhinolaryngology (Ear, Nose &amp; Throat) ENT</td>
+                        <td><input id="REFERRALS27-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Otorhinolaryngology ENT Within catchment area" value="[ In-Referrals for Otorhinolaryngology ENT Within catchment area ]" /></td>
+                        <td><input id="REFERRALS27-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Otorhinolaryngology ENT Outside catchment area" value="[ In-Referrals for Otorhinolaryngology ENT Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS27" id="totalREFERRALS27" name="total" readonly="readonly" title="In-Referrals for Otorhinolaryngology ENT (Total)" value="[ In-Referrals for Otorhinolaryngology ENT (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>18</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Paediatric casuality</td>
+                        <td><input id="REFERRALS28-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Paediatric Casuality Within catchment area" value="[ In-Referrals for Paediatric Casuality Within catchment area ]" /></td>
+                        <td><input id="REFERRALS28-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Paediatric Casuality Outside catchment area" value="[ In-Referrals for Paediatric Casuality Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS28" id="totalREFERRALS28" name="total" readonly="readonly" title="In-Referrals for Paediatric Casuality (Total)" value="[ In-Referrals for Paediatric Casuality (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>19</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Paediatric clinic</td>
+                        <td><input id="REFERRALS29-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Paediatric Clinic Within catchment area" value="[ In-Referrals for Paediatric Clinic Within catchment area ]" /></td>
+                        <td><input id="REFERRALS29-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Paediatric Clinic Outside catchment area" value="[ In-Referrals for Paediatric Clinic Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS29" id="totalREFERRALS29" name="total" readonly="readonly" title="In-Referrals for Paediatric Clinic (Total)" value="[ In-Referrals for Paediatric Clinic (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>20</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Physiotherapy</td>
+                        <td><input id="REFERRALS30-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Physiotherapy Within catchment area" value="[ In-Referrals for Physiotherapy Within catchment area ]" /></td>
+                        <td><input id="REFERRALS30-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Physiotherapy Outside catchment area" value="[ In-Referrals for Physiotherapy Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS30" id="totalREFERRALS30" name="total" readonly="readonly" title="In-Referrals for Physiotherapy (Total)" value="[ In-Referrals for Physiotherapy (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>21</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Psychiatric-OPD</td>
+                        <td><input id="REFERRALS31-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Psychiatric-OPD Within catchment area" value="[ In-Referrals for Psychiatric-OPD Within catchment area ]" /></td>
+                        <td><input id="REFERRALS31-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Psychiatric-OPD Outside catchment area" value="[ In-Referrals for Psychiatric-OPD Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS31" id="totalREFERRALS31" name="total" readonly="readonly" title="In-Referrals for Psychiatric-OPD (Total)" value="[ In-Referrals for Psychiatric-OPD (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>22</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Renal clinic</td>
+                        <td><input id="REFERRALS32-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Renal Clinic Within catchment area" value="[ In-Referrals for Renal Clinic Within catchment area ]" /></td>
+                        <td><input id="REFERRALS32-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Renal Clinic Outside catchment area" value="[ In-Referrals for Renal Clinic Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS32" id="totalREFERRALS32" name="total" readonly="readonly" title="In-Referrals for Renal Clinic (Total)" value="[ In-Referrals for Renal Clinic (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>23</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            RHU</td>
+                        <td><input id="REFERRALS33-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for RHU Within catchment area" value="[ In-Referrals for RHU Within catchment area ]" /></td>
+                        <td><input id="REFERRALS33-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for RHU Outside catchment area" value="[ In-Referrals for RHU Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS33" id="totalREFERRALS33" name="total" readonly="readonly" title="In-Referrals for RHU (Total)" value="[ In-Referrals for RHU (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>24</td>
+                        <td>Dermatology (Skin)</td>
+                        <td><input id="REFERRALS34-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Skin (Dermatology) Within catchment area" value="[ In-Referrals for Skin (Dermatology) Within catchment area ]" /></td>
+                        <td><input id="REFERRALS34-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Skin (Dermatology) Outside catchment area" value="[ In-Referrals for Skin (Dermatology) Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS34" id="totalREFERRALS34" name="total" readonly="readonly" title="In-Referrals for Skin (Dermatology) (Total)" value="[ In-Referrals for Skin (Dermatology) (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>25</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            STI</td>
+                        <td><input id="REFERRALS35-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for STI Within catchment area" value="[ In-Referrals for STI Within catchment area ]" /></td>
+                        <td><input id="REFERRALS35-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for STI Outside catchment area" value="[ In-Referrals for STI Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS35" id="totalREFERRALS35" name="total" readonly="readonly" title="In-Referrals for STI (Total)" value="[ In-Referrals for STI (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>26</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            TB</td>
+                        <td><input id="REFERRALS36-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for TB Within catchment area" value="[ In-Referrals for TB Within catchment area ]" /></td>
+                        <td><input id="REFERRALS36-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for TB Outside catchment area" value="[ In-Referrals for TB Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS36" id="totalREFERRALS36" name="total" readonly="readonly" title="In-Referrals for TB (Total)" value="[ In-Referrals for TB (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>27</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Urology</td>
+                        <td><input id="REFERRALS37-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Urology Within catchment area" value="[ In-Referrals for Urology Within catchment area ]" /></td>
+                        <td><input id="REFERRALS37-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Urology Outside catchment area" value="[ In-Referrals for Urology Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS37" id="totalREFERRALS37" name="total" readonly="readonly" title="In-Referrals for Urology (Total)" value="[ In-Referrals for Urology (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>28</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Oncology specialists clinic</td>
+                        <td><input id="REFERRALS38-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Oncology Specialists Clinic Within catchment area" value="[ In-Referrals for Oncology Specialists Clinic Within catchment area ]" /></td>
+                        <td><input id="REFERRALS38-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Oncology Specialists Clinic Outside catchment area" value="[ In-Referrals for Oncology Specialists Clinic Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS38" id="totalREFERRALS38" name="total" readonly="readonly" title="In-Referrals for Oncology Specialists Clinic (Total)" value="[ In-Referrals for Oncology Specialists Clinic (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>29</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Internal medicine</td>
+                        <td><input id="REFERRALS39-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Internal Medicine Within catchment area" value="[ In-Referrals for Internal Medicine Within catchment area ]" /></td>
+                        <td><input id="REFERRALS39-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Internal Medicine Outside catchment area" value="[ In-Referrals for Internal Medicine Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS39" id="totalREFERRALS39" name="total" readonly="readonly" title="In-Referrals for Internal Medicine (Total)" value="[ In-Referrals for Internal Medicine (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>30</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Nuclear medicine</td>
+                        <td><input id="REFERRALS40-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Nuclear Medicine Within catchment area" value="[ In-Referrals for Nuclear Medicine Within catchment area ]" /></td>
+                        <td><input id="REFERRALS40-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Nuclear Medicine Outside catchment area" value="[ In-Referrals for Nuclear Medicine Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS40" id="totalREFERRALS40" name="total" readonly="readonly" title="In-Referrals for Nuclear Medicine (Total)" value="[ In-Referrals for Nuclear Medicine (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>31</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Neurology/neurosurgery</td>
+                        <td><input id="REFERRALS41-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Neurology/Neurosurgery Within catchment area" value="[ In-Referrals for Neurology/Neurosurgery Within catchment area ]" /></td>
+                        <td><input id="REFERRALS41-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Neurology/Neurosurgery Outside catchment area" value="[ In-Referrals for Neurology/Neurosurgery Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS41" id="totalREFERRALS41" name="total" readonly="readonly" title="In-Referrals for Neurology/Neurosurgery (Total)" value="[ In-Referrals for Neurology/Neurosurgery (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>32</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Family planning</td>
+                        <td><input id="REFERRALS42-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Family Planning Within catchment area" value="[ In-Referrals for Family Planning Within catchment area ]" /></td>
+                        <td><input id="REFERRALS42-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Family Planning Outside catchment area" value="[ In-Referrals for Family Planning Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS42" id="totalREFERRALS42" name="total" readonly="readonly" title="In-Referrals for Family Planning (Total)" value="[ In-Referrals for Family Planning (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>33</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Occupational health service / therapy</td>
+                        <td><input id="REFERRALS43-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Occupational Health Service / Therapy Within catchment area" value="[ In-Referrals for Occupational Health Service / Therapy Within catchment area ]" /></td>
+                        <td><input id="REFERRALS43-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Occupational Health Service / Therapy Outside catchment area" value="[ In-Referrals for Occupational Health Service / Therapy Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS43" id="totalREFERRALS43" name="total" readonly="readonly" title="In-Referrals for Occupational Health Service / Therapy (Total)" value="[ In-Referrals for Occupational Health Service / Therapy (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>34</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Children clinic (vaccination and weighing</td>
+                        <td><input id="REFERRALS44-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Children clinic (Vaccination and weighing Within catchment area" value="[ In-Referrals for Children clinic (Vaccination and weighing Within catchment area ]" /></td>
+                        <td><input id="REFERRALS44-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Children clinic (Vaccination and weighing Outside catchment area" value="[ In-Referrals for Children clinic (Vaccination and weighing Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS44" id="totalREFERRALS44" name="total" readonly="readonly" title="In-Referrals for Children clinic (Vaccination and weighing (Total)" value="[ In-Referrals for Children clinic (Vaccination and weighing (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>35</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Radiotherapy</td>
+                        <td><input id="REFERRALS45-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Radiotherapy Within catchment area" value="[ In-Referrals for Radiotherapy Within catchment area ]" /></td>
+                        <td><input id="REFERRALS45-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Radiotherapy Outside catchment area" value="[ In-Referrals for Radiotherapy Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS45" id="totalREFERRALS45" name="total" readonly="readonly" title="In-Referrals for Radiotherapy (Total)" value="[ In-Referrals for Radiotherapy (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>36</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            General practioners oncology clinic</td>
+                        <td><input id="REFERRALS46-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for General Practioners Oncology Clinic Within catchment area" value="[ In-Referrals for General Practioners Oncology Clinic Within catchment area ]" /></td>
+                        <td><input id="REFERRALS46-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for General Practioners Oncology Clinic Outside catchment area" value="[ In-Referrals for General Practioners Oncology Clinic Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS46" id="totalREFERRALS46" name="total" readonly="readonly" title="In-Referrals for General Practioners Oncology Clinic (Total)" value="[ In-Referrals for General Practioners Oncology Clinic (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>37</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Chemotherapy</td>
+                        <td><input id="REFERRALS47-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Chemotherapy Within catchment area" value="[ In-Referrals for Chemotherapy Within catchment area ]" /></td>
+                        <td><input id="REFERRALS47-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Chemotherapy Outside catchment area" value="[ In-Referrals for Chemotherapy Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS47" id="totalREFERRALS47" name="total" readonly="readonly" title="In-Referrals for Chemotherapy (Total)" value="[ In-Referrals for Chemotherapy (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>38</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Cancer screening</td>
+                        <td><input id="REFERRALS48-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Cancer Screening Within catchment area" value="[ In-Referrals for Cancer Screening Within catchment area ]" /></td>
+                        <td><input id="REFERRALS48-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Cancer Screening Outside catchment area" value="[ In-Referrals for Cancer Screening Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS48" id="totalREFERRALS48" name="total" readonly="readonly" title="In-Referrals for Cancer Screening (Total)" value="[ In-Referrals for Cancer Screening (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>39</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            CECAP clinic</td>
+                        <td><input id="REFERRALS49-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for CECAP Clinic Within catchment area" value="[ In-Referrals for CECAP Clinic Within catchment area ]" /></td>
+                        <td><input id="REFERRALS49-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for CECAP Clinic Outside catchment area" value="[ In-Referrals for CECAP Clinic Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS49" id="totalREFERRALS49" name="total" readonly="readonly" title="In-Referrals for CECAP Clinic (Total)" value="[ In-Referrals for CECAP Clinic (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>40</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Siha health centre</td>
+                        <td><input id="REFERRALS50-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Siha Health Centre Within catchment area" value="[ In-Referrals for Siha Health Centre Within catchment area ]" /></td>
+                        <td><input id="REFERRALS50-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Siha Health Centre Outside catchment area" value="[ In-Referrals for Siha Health Centre Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS50" id="totalREFERRALS50" name="total" readonly="readonly" title="In-Referrals for Siha Health Centre (Total)" value="[ In-Referrals for Siha Health Centre (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>41</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Nutritional clinic</td>
+                        <td><input id="REFERRALS51-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Nutritional Clinic Within catchment area" value="[ In-Referrals for Nutritional Clinic Within catchment area ]" /></td>
+                        <td><input id="REFERRALS51-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Nutritional Clinic Outside catchment area" value="[ In-Referrals for Nutritional Clinic Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS51" id="totalREFERRALS51" name="total" readonly="readonly" title="In-Referrals for Nutritional Clinic (Total)" value="[ In-Referrals for Nutritional Clinic (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>42</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Rehabilitation medicine</td>
+                        <td><input id="REFERRALS52-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Rehabilitation medicine Within catchment area" value="[ In-Referrals for Rehabilitation medicine Within catchment area ]" /></td>
+                        <td><input id="REFERRALS52-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Rehabilitation medicine Outside catchment area" value="[ In-Referrals for Rehabilitation medicine Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS52" id="totalREFERRALS52" name="total" readonly="readonly" title="In-Referrals for Rehabilitation medicine (Total)" value="[ In-Referrals for Rehabilitation medicine (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>43</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Anaesthesia</td>
+                        <td><input id="REFERRALS53-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Anaesthesia Within catchment area" value="[ In-Referrals for Anaesthesia Within catchment area ]" /></td>
+                        <td><input id="REFERRALS53-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Anaesthesia Outside catchment area" value="[ In-Referrals for Anaesthesia Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS53" id="totalREFERRALS53" name="total" readonly="readonly" title="In-Referrals for Anaesthesia (Total)" value="[ In-Referrals for Anaesthesia (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>44</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Oral Health</td>
+                        <td><input id="REFERRALS54-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Oral Health Within catchment area" value="[ In-Referrals for Oral Health Within catchment area ]" /></td>
+                        <td><input id="REFERRALS54-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Oral Health Outside catchment area" value="[ In-Referrals for Oral Health Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS54" id="totalREFERRALS54" name="total" readonly="readonly" title="In-Referrals for Oral Health (Total)" value="[ In-Referrals for Oral Health (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>45</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            VCT</td>
+                        <td><input id="REFERRALS55-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for VCT Within catchment area" value="[ In-Referrals for VCT Within catchment area ]" /></td>
+                        <td><input id="REFERRALS55-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for VCT Outside catchment area" value="[ In-Referrals for VCT Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS55" id="totalREFERRALS55" name="total" readonly="readonly" title="In-Referrals for VCT (Total)" value="[ In-Referrals for VCT (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>46</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Threatre(minor theatre)</td>
+                        <td><input id="REFERRALS56-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Threatre(minor Theatre) Within catchment area" value="[ In-Referrals for Threatre(minor Theatre) Within catchment area ]" /></td>
+                        <td><input id="REFERRALS56-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Threatre(minor Theatre) Outside catchment area" value="[ In-Referrals for Threatre(minor Theatre) Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS56" id="totalREFERRALS56" name="total" readonly="readonly" title="In-Referrals for Threatre(minor Theatre) (Total)" value="[ In-Referrals for Threatre(minor Theatre) (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>47</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            DCT</td>
+                        <td><input id="REFERRALS57-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for DCT Within catchment area" value="[ In-Referrals for DCT Within catchment area ]" /></td>
+                        <td><input id="REFERRALS57-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for DCT Outside catchment area" value="[ In-Referrals for DCT Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS57" id="totalREFERRALS57" name="total" readonly="readonly" title="In-Referrals for DCT (Total)" value="[ In-Referrals for DCT (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>48</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Spirometry</td>
+                        <td><input id="REFERRALS58-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Spirometry Within catchment area" value="[ In-Referrals for Spirometry Within catchment area ]" /></td>
+                        <td><input id="REFERRALS58-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Spirometry Outside catchment area" value="[ In-Referrals for Spirometry Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS58" id="totalREFERRALS58" name="total" readonly="readonly" title="In-Referrals for Spirometry (Total)" value="[ In-Referrals for Spirometry (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>49</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Psychology</td>
+                        <td><input id="REFERRALS59-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Psychology Within catchment area" value="[ In-Referrals for Psychology Within catchment area ]" /></td>
+                        <td><input id="REFERRALS59-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Psychology Outside catchment area" value="[ In-Referrals for Psychology Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS59" id="totalREFERRALS59" name="total" readonly="readonly" title="In-Referrals for Psychology (Total)" value="[ In-Referrals for Psychology (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>50</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Physician</td>
+                        <td><input id="REFERRALS60-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Physician Within catchment area" value="[ In-Referrals for Physician Within catchment area ]" /></td>
+                        <td><input id="REFERRALS60-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Physician Outside catchment area" value="[ In-Referrals for Physician Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS60" id="totalREFERRALS60" name="total" readonly="readonly" title="In-Referrals for Physician (Total)" value="[ In-Referrals for Physician (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>51</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Antenatal</td>
+                        <td><input id="REFERRALS61-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Antenatal Within catchment area" value="[ In-Referrals for Antenatal Within catchment area ]" /></td>
+                        <td><input id="REFERRALS61-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Antenatal Outside catchment area" value="[ In-Referrals for Antenatal Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS61" id="totalREFERRALS61" name="total" readonly="readonly" title="In-Referrals for Antenatal (Total)" value="[ In-Referrals for Antenatal (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>52</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Anticoagulant</td>
+                        <td><input id="REFERRALS62-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Anticoagulant Within catchment area" value="[ In-Referrals for Anticoagulant Within catchment area ]" /></td>
+                        <td><input id="REFERRALS62-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Anticoagulant Outside catchment area" value="[ In-Referrals for Anticoagulant Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS62" id="totalREFERRALS62" name="total" readonly="readonly" title="In-Referrals for Anticoagulant (Total)" value="[ In-Referrals for Anticoagulant (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>53</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Asthma (Pulmonology)</td>
+                        <td><input id="REFERRALS63-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Asthma (Pulmonology) Within catchment area" value="[ In-Referrals for Asthma (Pulmonology) Within catchment area ]" /></td>
+                        <td><input id="REFERRALS63-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Asthma (Pulmonology) Outside catchment area" value="[ In-Referrals for Asthma (Pulmonology) Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS63" id="totalREFERRALS63" name="total" readonly="readonly" title="In-Referrals for Asthma (Pulmonology) (Total)" value="[ In-Referrals for Asthma (Pulmonology) (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>54</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Endocrinology</td>
+                        <td><input id="REFERRALS64-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Endocrinology Within catchment area" value="[ In-Referrals for Endocrinology Within catchment area ]" /></td>
+                        <td><input id="REFERRALS64-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Endocrinology Outside catchment area" value="[ In-Referrals for Endocrinology Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS64" id="totalREFERRALS64" name="total" readonly="readonly" title="In-Referrals for Endocrinology (Total)" value="[ In-Referrals for Endocrinology (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>55</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Paediatric surgery</td>
+                        <td><input id="REFERRALS65-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Paediatric surgery Within catchment area" value="[ In-Referrals for Paediatric surgery Within catchment area ]" /></td>
+                        <td><input id="REFERRALS65-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Paediatric surgery Outside catchment area" value="[ In-Referrals for Paediatric surgery Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS65" id="totalREFERRALS65" name="total" readonly="readonly" title="In-Referrals for Paediatric surgery (Total)" value="[ In-Referrals for Paediatric surgery (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>56</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Paediatric neurology</td>
+                        <td><input id="REFERRALS66-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Paediatric neurology Within catchment area" value="[ In-Referrals for Paediatric neurology Within catchment area ]" /></td>
+                        <td><input id="REFERRALS66-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Paediatric neurology Outside catchment area" value="[ In-Referrals for Paediatric neurology Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS66" id="totalREFERRALS66" name="total" readonly="readonly" title="In-Referrals for Paediatric neurology (Total)" value="[ In-Referrals for Paediatric neurology (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>57</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Paediatric oncology</td>
+                        <td><input id="REFERRALS67-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Paediatric oncology Within catchment area" value="[ In-Referrals for Paediatric oncology Within catchment area ]" /></td>
+                        <td><input id="REFERRALS67-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Paediatric oncology Outside catchment area" value="[ In-Referrals for Paediatric oncology Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS67" id="totalREFERRALS67" name="total" readonly="readonly" title="In-Referrals for Paediatric oncology (Total)" value="[ In-Referrals for Paediatric oncology (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>58</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Plastic surgery</td>
+                        <td><input id="REFERRALS68-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Plastic surgery Within catchment area" value="[ In-Referrals for Plastic surgery Within catchment area ]" /></td>
+                        <td><input id="REFERRALS68-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Plastic surgery Outside catchment area" value="[ In-Referrals for Plastic surgery Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS68" id="totalREFERRALS68" name="total" readonly="readonly" title="In-Referrals for Plastic surgery (Total)" value="[ In-Referrals for Plastic surgery (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>59</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Postnatal</td>
+                        <td><input id="REFERRALS69-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Postnatal Within catchment area" value="[ In-Referrals for Postnatal Within catchment area ]" /></td>
+                        <td><input id="REFERRALS69-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Postnatal Outside catchment area" value="[ In-Referrals for Postnatal Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS69" id="totalREFERRALS69" name="total" readonly="readonly" title="In-Referrals for Postnatal (Total)" value="[ In-Referrals for Postnatal (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>60</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Rheumatology</td>
+                        <td><input id="REFERRALS70-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Rheumatology Within catchment area" value="[ In-Referrals for Rheumatology Within catchment area ]" /></td>
+                        <td><input id="REFERRALS70-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Rheumatology Outside catchment area" value="[ In-Referrals for Rheumatology Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS70" id="totalREFERRALS70" name="total" readonly="readonly" title="In-Referrals for Rheumatology (Total)" value="[ In-Referrals for Rheumatology (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>61</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Speech therapy</td>
+                        <td><input id="REFERRALS71-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Speech therapy Within catchment area" value="[ In-Referrals for Speech therapy Within catchment area ]" /></td>
+                        <td><input id="REFERRALS71-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Speech therapy Outside catchment area" value="[ In-Referrals for Speech therapy Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS71" id="totalREFERRALS71" name="total" readonly="readonly" title="In-Referrals for Speech therapy (Total)" value="[ In-Referrals for Speech therapy (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>62</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            SURG general</td>
+                        <td><input id="REFERRALS72-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for SURG general Within catchment area" value="[ In-Referrals for SURG general Within catchment area ]" /></td>
+                        <td><input id="REFERRALS72-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for SURG general Outside catchment area" value="[ In-Referrals for SURG general Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS72" id="totalREFERRALS72" name="total" readonly="readonly" title="In-Referrals for SURG general (Total)" value="[ In-Referrals for SURG general (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>63</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Well woman clinic</td>
+                        <td><input id="REFERRALS73-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Well woman clinic Within catchment area" value="[ In-Referrals for Well woman clinic Within catchment area ]" /></td>
+                        <td><input id="REFERRALS73-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Well woman clinic Outside catchment area" value="[ In-Referrals for Well woman clinic Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS73" id="totalREFERRALS73" name="total" readonly="readonly" title="In-Referrals for Well woman clinic (Total)" value="[ In-Referrals for Well woman clinic (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>64</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Gastroenterology</td>
+                        <td><input id="REFERRALS74-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Gastroenterology Within catchment area" value="[ In-Referrals for Gastroenterology Within catchment area ]" /></td>
+                        <td><input id="REFERRALS74-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Gastroenterology Outside catchment area" value="[ In-Referrals for Gastroenterology Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS74" id="totalREFERRALS74" name="total" readonly="readonly" title="In-Referrals for Gastroenterology (Total)" value="[ In-Referrals for Gastroenterology (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>65</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Haematology</td>
+                        <td><input id="REFERRALS75-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Haematology Within catchment area" value="[ In-Referrals for Haematology Within catchment area ]" /></td>
+                        <td><input id="REFERRALS75-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Haematology Outside catchment area" value="[ In-Referrals for Haematology Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS75" id="totalREFERRALS75" name="total" readonly="readonly" title="In-Referrals for Haematology (Total)" value="[ In-Referrals for Haematology (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>66</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Health-check</td>
+                        <td><input id="REFERRALS76-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Health-check Within catchment area" value="[ In-Referrals for Health-check Within catchment area ]" /></td>
+                        <td><input id="REFERRALS76-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Health-check Outside catchment area" value="[ In-Referrals for Health-check Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS76" id="totalREFERRALS76" name="total" readonly="readonly" title="In-Referrals for Health-check (Total)" value="[ In-Referrals for Health-check (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>67</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Hepatology</td>
+                        <td><input id="REFERRALS77-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Hepatology Within catchment area" value="[ In-Referrals for Hepatology Within catchment area ]" /></td>
+                        <td><input id="REFERRALS77-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Hepatology Outside catchment area" value="[ In-Referrals for Hepatology Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS77" id="totalREFERRALS77" name="total" readonly="readonly" title="In-Referrals for Hepatology (Total)" value="[ In-Referrals for Hepatology (Total) ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>68</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            HIV</td>
+                        <td><input id="REFERRALS78-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for HIV Within catchment area" value="[ In-Referrals for HIV Within catchment area ]" /></td>
+                        <td><input id="REFERRALS78-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for HIV Outside catchment area" value="[ In-Referrals for HIV Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS78" id="totalREFERRALS78" name="total" readonly="readonly" title="In-Referrals for HIV (Total)" value="[ In-Referrals for HIV (Total) ]" /></td>
+                    </tr>
+                    <tr>
+                        <td>69</td>
+                        <td>
+                            <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                            </style>
+                            Infectious Diseases</td>
+                        <td><input id="REFERRALS79-zu8Flq2HWxN-val" name="entryfield" title="In-Referrals for Infectious Diseases Within catchment area" value="[ In-Referrals for Infectious Diseases Within catchment area ]" /></td>
+                        <td><input id="REFERRALS79-nW6C55aJ7vT-val" name="entryfield" title="In-Referrals for Infectious Diseases Outside catchment area" value="[ In-Referrals for Infectious Diseases Outside catchment area ]" /></td>
+                        <td><input dataelementid="REFERRALS79" id="totalREFERRALS79" name="total" readonly="readonly" title="In-Referrals for Infectious Diseases (Total)" value="[ In-Referrals for Infectious Diseases (Total) ]" /></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Out referrals</h3>
+
+            <div id="out-referrals-div" style="height:auto !important;">
+                <table>
+                    <thead>
+                    <tr class="cde-greyfield">
+                        <th>Na</th>
+                        <th>
+                            <p>Taja hospital ndani ya nchi/nje</p>
+
+                            <p>nchi husika</p>
+                        </th>
+                        <th>Ugonjwa</th>
+                        <th>Sababu</th>
+                        <th>Idadi</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>1</td>
+                        <td class="out-referrals"><input id="WYlJDixwlsQ-Mr9QTJhtFrx-val" name="entryfield" title="Out referrals jina la hospitali (hospital name) namba moja" value="[ Out referrals jina la hospitali (hospital name) namba moja ]" /></td>
+                        <td class="out-referrals"><input id="nLsETpfWilL-Mr9QTJhtFrx-val" name="entryfield" title="Out referrals jina la ugonjwa (disease) namba moja" value="[ Out referrals jina la ugonjwa (disease) namba moja ]" /></td>
+                        <td class="out-referrals"><input id="Ffiuq4vUY1e-Mr9QTJhtFrx-val" name="entryfield" title="Out referrals sababu ya rufaa (referral's reason) namba moja" value="[ Out referrals sababu ya rufaa (referral's reason) namba moja ]" /></td>
+                        <td><input id="rQsWdKLUpGD-Mr9QTJhtFrx-val" name="entryfield" title="Out referrals idadi (No of referrals) namba moja" value="[ Out referrals idadi (No of referrals) namba moja ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>2</td>
+                        <td class="out-referrals"><input id="WYlJDixwlsQ-qZs8VeYtdQY-val" name="entryfield" title="Out referrals jina la hospitali (hospital name) namba mbili" value="[ Out referrals jina la hospitali (hospital name) namba mbili ]" /></td>
+                        <td class="out-referrals"><input id="nLsETpfWilL-qZs8VeYtdQY-val" name="entryfield" title="Out referrals jina la ugonjwa (disease) namba mbili" value="[ Out referrals jina la ugonjwa (disease) namba mbili ]" /></td>
+                        <td class="out-referrals"><input id="Ffiuq4vUY1e-qZs8VeYtdQY-val" name="entryfield" title="Out referrals sababu ya rufaa (referral's reason) namba mbili" value="[ Out referrals sababu ya rufaa (referral's reason) namba mbili ]" /></td>
+                        <td><input id="rQsWdKLUpGD-qZs8VeYtdQY-val" name="entryfield" title="Out referrals idadi (No of referrals) namba mbili" value="[ Out referrals idadi (No of referrals) namba mbili ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>3</td>
+                        <td class="out-referrals"><input id="WYlJDixwlsQ-jy0vVZYDuut-val" name="entryfield" title="Out referrals jina la hospitali (hospital name) namba tatu" value="[ Out referrals jina la hospitali (hospital name) namba tatu ]" /></td>
+                        <td class="out-referrals"><input id="nLsETpfWilL-jy0vVZYDuut-val" name="entryfield" title="Out referrals jina la ugonjwa (disease) namba tatu" value="[ Out referrals jina la ugonjwa (disease) namba tatu ]" /></td>
+                        <td class="out-referrals"><input id="Ffiuq4vUY1e-jy0vVZYDuut-val" name="entryfield" title="Out referrals sababu ya rufaa (referral's reason) namba tatu" value="[ Out referrals sababu ya rufaa (referral's reason) namba tatu ]" /></td>
+                        <td><input id="rQsWdKLUpGD-jy0vVZYDuut-val" name="entryfield" title="Out referrals idadi (No of referrals) namba tatu" value="[ Out referrals idadi (No of referrals) namba tatu ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>4</td>
+                        <td class="out-referrals"><input id="WYlJDixwlsQ-u0H2KAEbk5w-val" name="entryfield" title="Out referrals jina la hospitali (hospital name) namba nne" value="[ Out referrals jina la hospitali (hospital name) namba nne ]" /></td>
+                        <td class="out-referrals"><input id="nLsETpfWilL-u0H2KAEbk5w-val" name="entryfield" title="Out referrals jina la ugonjwa (disease) namba nne" value="[ Out referrals jina la ugonjwa (disease) namba nne ]" /></td>
+                        <td class="out-referrals"><input id="Ffiuq4vUY1e-u0H2KAEbk5w-val" name="entryfield" title="Out referrals sababu ya rufaa (referral's reason) namba nne" value="[ Out referrals sababu ya rufaa (referral's reason) namba nne ]" /></td>
+                        <td class="out-referrals"><input id="rQsWdKLUpGD-u0H2KAEbk5w-val" name="entryfield" title="Out referrals idadi (No of referrals) namba nne" value="[ Out referrals idadi (No of referrals) namba nne ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>5</td>
+                        <td class="out-referrals"><input id="WYlJDixwlsQ-mZHuUX7QjWg-val" name="entryfield" title="Out referrals jina la hospitali (hospital name) namba tano" value="[ Out referrals jina la hospitali (hospital name) namba tano ]" /></td>
+                        <td class="out-referrals"><input id="nLsETpfWilL-mZHuUX7QjWg-val" name="entryfield" title="Out referrals jina la ugonjwa (disease) namba tano" value="[ Out referrals jina la ugonjwa (disease) namba tano ]" /></td>
+                        <td class="out-referrals"><input id="Ffiuq4vUY1e-mZHuUX7QjWg-val" name="entryfield" title="Out referrals sababu ya rufaa (referral's reason) namba tano" value="[ Out referrals sababu ya rufaa (referral's reason) namba tano ]" /></td>
+                        <td><input id="rQsWdKLUpGD-mZHuUX7QjWg-val" name="entryfield" title="Out referrals idadi (No of referrals) namba tano" value="[ Out referrals idadi (No of referrals) namba tano ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>6</td>
+                        <td class="out-referrals"><input id="WYlJDixwlsQ-xJIDzrj6c2H-val" name="entryfield" title="Out referrals jina la hospitali (hospital name) namba sita" value="[ Out referrals jina la hospitali (hospital name) namba sita ]" /></td>
+                        <td class="out-referrals"><input id="nLsETpfWilL-xJIDzrj6c2H-val" name="entryfield" title="Out referrals jina la ugonjwa (disease) namba sita" value="[ Out referrals jina la ugonjwa (disease) namba sita ]" /></td>
+                        <td class="out-referrals"><input id="Ffiuq4vUY1e-xJIDzrj6c2H-val" name="entryfield" title="Out referrals sababu ya rufaa (referral's reason) namba sita" value="[ Out referrals sababu ya rufaa (referral's reason) namba sita ]" /></td>
+                        <td><input id="rQsWdKLUpGD-xJIDzrj6c2H-val" name="entryfield" title="Out referrals idadi (No of referrals) namba sita" value="[ Out referrals idadi (No of referrals) namba sita ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>7</td>
+                        <td class="out-referrals"><input id="WYlJDixwlsQ-U0z7AXZfgeR-val" name="entryfield" title="Out referrals jina la hospitali (hospital name) namba saba" value="[ Out referrals jina la hospitali (hospital name) namba saba ]" /></td>
+                        <td class="out-referrals"><input id="nLsETpfWilL-U0z7AXZfgeR-val" name="entryfield" title="Out referrals jina la ugonjwa (disease) namba saba" value="[ Out referrals jina la ugonjwa (disease) namba saba ]" /></td>
+                        <td class="out-referrals"><input id="Ffiuq4vUY1e-U0z7AXZfgeR-val" name="entryfield" title="Out referrals sababu ya rufaa (referral's reason) namba saba" value="[ Out referrals sababu ya rufaa (referral's reason) namba saba ]" /></td>
+                        <td><input id="rQsWdKLUpGD-U0z7AXZfgeR-val" name="entryfield" title="Out referrals idadi (No of referrals) namba saba" value="[ Out referrals idadi (No of referrals) namba saba ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>8</td>
+                        <td class="out-referrals"><input id="WYlJDixwlsQ-CDYitOpzUFU-val" name="entryfield" title="Out referrals jina la hospitali (hospital name) namba nane" value="[ Out referrals jina la hospitali (hospital name) namba nane ]" /></td>
+                        <td class="out-referrals"><input id="nLsETpfWilL-CDYitOpzUFU-val" name="entryfield" title="Out referrals jina la ugonjwa (disease) namba nane" value="[ Out referrals jina la ugonjwa (disease) namba nane ]" /></td>
+                        <td class="out-referrals"><input id="Ffiuq4vUY1e-CDYitOpzUFU-val" name="entryfield" title="Out referrals sababu ya rufaa (referral's reason) namba nane" value="[ Out referrals sababu ya rufaa (referral's reason) namba nane ]" /></td>
+                        <td><input id="rQsWdKLUpGD-CDYitOpzUFU-val" name="entryfield" title="Out referrals idadi (No of referrals) namba nane" value="[ Out referrals idadi (No of referrals) namba nane ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>9</td>
+                        <td class="out-referrals"><input id="WYlJDixwlsQ-vGdng2hsZaI-val" name="entryfield" title="Out referrals jina la hospitali (hospital name) namba tisa" value="[ Out referrals jina la hospitali (hospital name) namba tisa ]" /></td>
+                        <td class="out-referrals"><input id="nLsETpfWilL-vGdng2hsZaI-val" name="entryfield" title="Out referrals jina la ugonjwa (disease) namba tisa" value="[ Out referrals jina la ugonjwa (disease) namba tisa ]" /></td>
+                        <td class="out-referrals"><input id="Ffiuq4vUY1e-vGdng2hsZaI-val" name="entryfield" title="Out referrals sababu ya rufaa (referral's reason) namba tisa" value="[ Out referrals sababu ya rufaa (referral's reason) namba tisa ]" /></td>
+                        <td><input id="rQsWdKLUpGD-vGdng2hsZaI-val" name="entryfield" title="Out referrals idadi (No of referrals) namba tisa" value="[ Out referrals idadi (No of referrals) namba tisa ]" /></td>
+                    </tr>
+                    <tr class="CCBRT_LUGALO_KCMC_KIDH_MOI_MUHIMBILI_MIREMBE_MBEYA_JKCI_ORCI_MAMC_BUGANDO">
+                        <td>10</td>
+                        <td class="out-referrals"><input id="WYlJDixwlsQ-iPRwICPioAK-val" name="entryfield" title="Out referrals jina la hospitali (hospital name) namba kumi" value="[ Out referrals jina la hospitali (hospital name) namba kumi ]" /></td>
+                        <td class="out-referrals"><input id="nLsETpfWilL-iPRwICPioAK-val" name="entryfield" title="Out referrals jina la ugonjwa (disease) namba kumi" value="[ Out referrals jina la ugonjwa (disease) namba kumi ]" /></td>
+                        <td class="out-referrals"><input id="Ffiuq4vUY1e-iPRwICPioAK-val" name="entryfield" title="Out referrals sababu ya rufaa (referral's reason) namba kumi" value="[ Out referrals sababu ya rufaa (referral's reason) namba kumi ]" /></td>
+                        <td><input id="rQsWdKLUpGD-iPRwICPioAK-val" name="entryfield" title="Out referrals idadi (No of referrals) namba kumi" value="[ Out referrals idadi (No of referrals) namba kumi ]" /></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
