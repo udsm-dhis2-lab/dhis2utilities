@@ -1,0 +1,228 @@
+<!--<script src="jquery.min.js"></script>-->
+<!--<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">-->
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="/dhis-web-commons/javascripts/angular/angular.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.5.7/angular-sanitize.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ng-csv/0.3.6/ng-csv.min.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
+<script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.4/build/jquery.datetimepicker.full.js">
+
+<style>
+        span {
+            height: 10px; width: 10px;
+        }
+        .datepicker {
+            top: 200px !important;
+        }
+        #loader {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            z-index: 1;
+            width: 150px;
+            height: 150px;
+            margin: -75px 0 0 -75px;
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+
+        @-webkit-keyframes spin {
+            0% { -webkit-transform: rotate(0deg); }
+            100% { -webkit-transform: rotate(360deg); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Add animation to "page content" */
+        .animate-bottom {
+            position: relative;
+            -webkit-animation-name: animatebottom;
+            -webkit-animation-duration: 1s;
+            animation-name: animatebottom;
+            animation-duration: 1s
+        }
+
+        @-webkit-keyframes animatebottom {
+            from { bottom:-100px; opacity:0 }
+            to { bottom:0px; opacity:1 }
+        }
+
+        @keyframes animatebottom {
+            from{ bottom:-100px; opacity:0 }
+            to{ bottom:0; opacity:1 }
+        }
+
+        #myDiv {
+            display: none;
+            text-align: center;
+        }
+        td {
+            border: 1px solid #000000;
+        }
+    </style>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+angular.module("dqaReportApp", [])
+.value("DHIS2BASEURL", "/")
+.directive('compile', ['$compile', function ($compile) {
+    return function(scope, element, attrs) {
+        scope.$watch(
+            function(scope) {
+                return scope.$eval(attrs.compile);
+            },
+            function(value) {
+                element.html(value);
+                $compile(element.contents())(scope);
+            }
+        )};
+}])
+.controller("dqaReportAppCtrl", function ($scope, $http, DHIS2BASEURL, $location,$filter,$sce, $q, $window) {
+    $scope.error_occured = false;
+    $scope.loading = true;
+
+    $scope.loading_amount = 0;
+    $scope.loading_message = "Preparing Score card Information";
+    $http.get('https://dhis.hisptz.org/dhis/api/organisationUnits.json?fields=id,name,ancestors[id,name],children~size&filter=level:eq:3&paging=false').then(function (levelThreeCountsArr) {
+        $scope.error_occured = false;
+        $scope.levelThreeCountsArr = levelThreeCountsArr.data;
+        $scope.loading_message = "Get Organisation Units";
+        $('#start_date').val('2017-01-01');
+        $('#end_date').val('2017-12-31');
+        $scope.startDate = '2017-01-01';
+        $scope.endDate = '2017-12-31';
+        $scope.arr = [];
+        var checkStr = '';
+        levelThreeCountsArr.data.organisationUnits.forEach(function (val) {
+            if (checkStr.indexOf(val.ancestors[1].id + '.' + val.id) === -1) {
+                $scope.arr.push(val.ancestors[1].id + '.' + val.id);
+                checkStr += val.ancestors[1].id + '.' + val.id + ',';
+            }
+        });
+
+        $http.get("https://dhis.hisptz.org/dhis/api/sqlViews/rBpcZ9KVveF/data.json?var=startDate:" + $scope.startDate + "&var=endDate:" + $scope.endDate).then(function (assessedFacilities) {
+            $scope.dqaRes = assessedFacilities.data;
+            $scope.arr.forEach(function (ancestor) {
+                var serialNumber = 1;
+                $scope.levelThreeCountsArr.organisationUnits.forEach(function (val, index) {
+                    if(val.ancestors[1].id === ancestor.split('.')[0] && val.id === ancestor.split('.')[1]) {
+                        var count = 0;
+                        Object.keys($scope.dqaRes.rows).forEach(function (key) {
+                            if ($scope.dqaRes.rows[key][5] === val.id) {
+                                count ++;
+                            }
+                        });
+                        $scope.percentage = ((parseFloat(count)/parseFloat(val.children)) * 100).toFixed(2);
+                        $scope.dataRows = '<tr class="rows_added"><td>'+(index+1)+'</td><td>' + val.ancestors[1].name + '</td><td>' + val.name + '</td><td>' + count+'</td><td>' + val.children +'</td><td>' + $scope.percentage + '</td></tr>';
+                        console.log("The first Data Row" + $scope.dataRows);
+                        $('#tbodyId').append($scope.dataRows);
+                        serialNumber ++;
+                    }
+                });
+            });
+        });
+
+        $('#example').DataTable();
+
+        $(function () {
+            $(".datepicker").remove('style');
+            $(".datepicker").css('top', '170px');
+            $("#datepicker").datepicker();
+        });
+
+        var date_input = $('input[name="date"]'); //our date input has the name "date"
+        var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
+        var options = {
+            format: 'yyyy-mm-dd',
+            container: container,
+            todayHighlight: true,
+            autoclose: true,
+            orientation: "bottom auto"
+        };
+        date_input.datepicker(options);
+    }, function () {
+        $scope.error_occured = true;
+    });
+});
+</script>
+
+<div class="col-md-12" style="margin-bottom: 40px; display:none;"id="myDiv" class="animate-bottom">
+    <div class="row">
+        <div class="container">
+            <br />
+            <div class="row">
+                <div class="form-group"> <!-- Date input -->
+                    <div id="hidden-input"></div>
+                    <!--<div id="datepicker-div" style="position: relative;"><input id="datepicker"></div>-->
+                    <div style="display: inline-block"><label class="control-label">Start Date</label><input class="form-control" style="width: 150px;" height="25px" name="date" id="start_date" placeholder="YYYY-MM-DD" type="text"/></div>
+                    <div style="display: inline-block"><label class="control-label">End Date</label><input class="form-control" style="width: 150px;" height="25px" name="date" id="end_date" placeholder="YYYY-MM-DD" type="text"/></div>
+                    <div style="display: inline-block"><button class="btn" id="report-btn" name="submit">Change Date</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class='row'>
+        <div class='col-md-12' id="heading" style='text-align:center;font-weight:bolder;'></div>
+        <div class='col-md-12' id="icon">
+            <div class='row' style='text-align:center;'>
+                <div class='col-md-5'>
+                </div>
+                <div class='col-md-2'>
+                    <a href='#' class='thumbnail'
+                       style='width:50px!important;padding:10px;font-weight:bolder;position:relative;margin: auto;top: 0;left: 0;right: 0;bottom: 0;border: 0px solid #ffffff!important;border-radius: 0px!important;-webkit-box-shadow: 0 0px 0px rgba(0,0,0,.075)!important;box-shadow: 0 0px 0px rgba(0,0,0,.075)!important;'><img
+                            class=''
+                            src='https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Coat_of_arms_of_Tanzania.svg/30px-Coat_of_arms_of_Tanzania.svg.png'/></a>
+                </div>
+                <div class='col-md-5'>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div  class="row">
+        <button id="btnExport" class="pull-right" style="margin-right: 28px;">Download as Excel</button>
+    </div>
+    <div class='col-md-12' style="">
+        <div id="message">
+            {{ loading_message }}
+        </div>
+    </div>
+    <div class='col-md-12' style="" ng-app="dqaReportApp" ng-controller="dqaReportAppCtrl">
+        <div id="table_wrapper">
+            <table id="" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Region</th>
+                    <th>Council</th>
+                    <th>Assessed Facilities</th>
+                    <th>Total Facilities</th>
+                    <th>%</th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <th>#</th>
+                    <th>Region</th>
+                    <th>Council</th>
+                    <th>Assessed Facilities</th>
+                    <th>Total Facilities</th>
+                    <th>%</th>
+                </tr>
+                </tfoot>
+                <tbody id="tbodyId">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

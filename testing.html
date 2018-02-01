@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+<table>
+    <tr class="MUHIMBILI">
+        <td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td>
+    </tr>
+    <tr class="MUHIMBILI_MOI_KIDH">
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr class="MOI_KIDH">
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+    <tr>
+        <td></td><td></td><td></td><td></td><td></td><td></td>
+    </tr>
+</table>
+<script>
+    $(document).ready(function () {
+        $(function () {
+            var orgUnitIdsObj = {
+                "L3OnLgaVY3P": "CCBRT",
+                "yI1rweSuNPd": "MAMC",
+                "nPsRsAhjEIx": "LUGALO",
+                "y9DO43xRhsp": "MUHIMBILI",
+                "hZGbTy42NTH": "KCMC",
+                "av7cOiKhqPT": "ORCI",
+                "XcpYSq098gi": "JKCI",
+                "zgp2gPBVqyt": "BUGANDO",
+                "bAwoKsCXiT6": "MOI",
+                "P5mmWva2UdP": "KIDH"
+            };
+            Object.keys(orgUnitIdsObj).forEach(function (key) {
+                if (key === 'y9DO43xRhsp') {
+                    $('tr').each(function() {
+                        var theClass= $(this).attr('class');
+                        if (theClass !== undefined) {
+                            if (theClass.indexOf(orgUnitIdsObj[key]) >= 0) {
+                                console.log('TEST '+orgUnitIdsObj[key]);
+                                $('.'+$(this).attr('class')).hide()
+                            }
+                        }
+                    });
+                }
+            })
+        });
+    });
+
+</script>
+</body>
+</html>

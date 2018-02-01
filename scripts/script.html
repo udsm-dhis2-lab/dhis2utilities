@@ -64,8 +64,8 @@
                 });
 
                 if (newFormula !== undefined) {
-                    if (isNaN(eval("("+newFormula+")")) !== true) {
-                        $('#'+form.id).val(parseInt(eval("("+newFormula+")")));
+                    if (isNaN(eval("("+newFormula.split("# ").join("#").split(" -").join("-").replace("  ","").replace(/(?:\r\n|\r|\n)/g, '')+")")) !== true) {
+                        $('#'+form.id).val(parseInt(eval("("+newFormula.split("# ").join("#").split(" -").join("-").replace("  ","").replace(/(?:\r\n|\r|\n)/g, '')+")")));
                     } else {
                         $('#'+form.id).val(0);
                     }

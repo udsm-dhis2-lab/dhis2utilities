@@ -1,0 +1,926 @@
+<meta charset="UTF-8">
+<title></title>
+<script type="text/javascript">
+
+    dhis2.util.on('dhis2.de.event.formReady', function (event, ds) {
+        console.log('form is ready');
+        console.log(window.visitedTabsInMultipleForm);
+        //Reset all tabs
+        $('a[role="presentation"][class="ui-tabs-anchor"]').removeAttr('style');
+        //Initialize
+        var periodId = $('#selectedPeriodId').val();
+        var dataSetId = $('#selectedDataSetId').val();
+        var orgunitsSelected = dhis2.de.currentOrganisationUnitId;
+        var keyVal = orgunitsSelected + dataSetId + periodId;
+
+        if (window.visitedTabsInMultipleForm === undefined)
+            window.visitedTabsInMultipleForm = {};
+        if (window.visitedTabsInMultipleForm[keyVal] === undefined)
+            window.visitedTabsInMultipleForm[keyVal] = [];
+        //Find active tab and add it to list
+        $('li[role="tab"][aria-selected="true"]').find('a').each(function (anchorTagIndex, anchorTag) {
+            console.log('this is executed');
+            var anchorTagName = $(anchorTag).attr('href');
+            if ($.inArray(anchorTagName, window.visitedTabsInMultipleForm[keyVal]) == -1) {
+                // if(Object.keys(window.visitedTabsInMultipleForm[keyVal][0])===keyVal){
+                window.visitedTabsInMultipleForm[keyVal].push(anchorTagName);
+                // }
+            }
+        });
+
+        //Implement a function to id="id-grey-dark"  already visited tabs and color them for the first time
+        console.log('the first time contents');
+        console.log(window.visitedTabsInMultipleForm[keyVal])
+        $.each(window.visitedTabsInMultipleForm[keyVal], function (tabIndex, tabName) {
+            $("a[href=" + tabName + "]").css({"background-color": "yellow"});
+        });
+
+        //Implement event trigger for adding new tabs and changing colors
+        $('a[role="presentation"][class="ui-tabs-anchor"]').on("click", function () {
+            console.log('tab is clicked:');
+            console.log(window.visitedTabsInMultipleForm);
+            //Change color
+            $(this).css({"background-color": "yellow"});
+
+            //Add to our array list
+            var tabName = $(this).attr("href");
+            $.each(window.visitedTabsInMultipleForm, function (key, valueObj) {
+                if (key == keyVal && $.inArray(tabName, window.visitedTabsInMultipleForm[keyVal]) == -1) {
+                    console.log('visited tab is:' + tabName);
+                    console.log('all contents of array:');
+                    console.log(window.visitedTabsInMultipleForm[keyVal])
+                    console.log("matches" + key + " " + keyVal);
+                    window.visitedTabsInMultipleForm[key].push(tabName);
+                    console.log('after click');
+                    console.log(window.visitedTabsInMultipleForm[key]);
+                }
+            });
+
+        });
+
+    });
+
+    var tabsLayout = function(setting) {
+        if(typeof(setting)!=='undefined' && setting=='default') {
+            console.log('default selected',setting);
+            $( "#mod2_tabs" ).tabs();
+            $('#tabs-on').css({ 'background-color' : '#449d44', 'color' : '#fff', 'border-color' : '#449d44'});$('#listTabs').css({ 'display' : 'block'});
+            $('#tabs-off').css({ 'background-color' : '#fff', 'color' : '#333', 'border-color' : '#ccc'});$('#listTabs').css({ 'display' : 'block'});
+
+        }else if(typeof(setting)!=='undefined' && setting=='destroy') {
+            console.log('destroy selected',setting);
+            $( "#mod2_tabs" ).tabs('destroy');
+            $('#tabs-on').css({ 'background-color' : '#fff', 'color' : '#333', 'border-color' : '#ccc'});$('#listTabs').css({ 'display' : 'none'});
+            $('#tabs-off').css({ 'background-color' : '#449d44', 'color' : '#fff', 'border-color' : '#449d44'});$('#listTabs').css({ 'display' : 'none'});
+
+        }else {
+            console.log('couldnt match anything');
+
+        }
+
+    }
+
+    $(document).ready(function () {
+        $(function () {
+            $("#mod2_tabs").tabs();
+        });
+
+        dhis2.util.on( 'dhis2.de.event.formReady', function( event, ds ) {
+
+            function periodFormatter(period) {
+                var truePeriod = ''; var year = period.pe.substring(0,4);
+                var monthCheck = period.pe.substring(4);
+                if (monthCheck ==='01') {
+                    return 'January '+ year;
+                } else if (monthCheck ==='02') {
+                    return 'February '+ year;
+                } else if (monthCheck ==='03') {
+                    return 'March '+ year;
+                } else if (monthCheck ==='04') {
+                    return 'April '+ year;
+                } else if (monthCheck ==='05') {
+                    return 'May '+ year;
+                } else if (monthCheck ==='06') {
+                    return 'June '+ year;
+                } else if (monthCheck ==='07') {
+                    return 'July '+ year;
+                } else if (monthCheck ==='08') {
+                    return 'August '+ year;
+                } else if (monthCheck ==='09') {
+                    return 'September '+ year;
+                } else if (monthCheck ==='10') {
+                    return 'October '+ year;
+                } else if (monthCheck ==='11') {
+                    return 'November '+ year;
+                } else if (monthCheck ==='12') {
+                    return 'December '+ year;
+                }
+            }
+            var orgUnitId = dhis2.de.currentOrganisationUnitId;
+            var period = dhis2.de.api.getSelections();
+            $('#selectedPeriod').text(periodFormatter(period));
+            if ( orgUnitId === "L3OnLgaVY3P") { // CCBRT
+                $('.TOTALCCBRT').show();
+                $('.cde-greyfield').show();
+                $('.cde-greyfield2').hide();
+                $('.NON_ORCI').show();
+                $('.CCBRT').show();
+                $('.CCBRT_LUGALO').show();
+                $('.CCBRT_MUHIMBILI').show();
+                $('.CCBRT_LUGALO_MAMC_KCMC').show();
+                $('.CCBRT_LUGALO_MUHIMBILI').show();
+                $('.CCBRT_LUGALO_MUHIMBILI_MAMC').show();
+                $('.CCBRT_LUGALO_MUHIMBILI_KCMC').show();
+                $('.CCBRT_LUGALO_MUHIMBILI_MAMC_MC').show();
+                $('.MUHIMBILI_KCMC_LUGALO_ORCI_JKCI').hide();
+                $('.MUHIMBILI_KCMC_CCBRT').show();
+                $('.MUHIMBILI_KCMC_CCBRT_LUGALO_ORCI_JKCI').show();
+                $('.MUHIMBILI_KCMC_ORCI_JKCI').hide();
+                $('.MUHIMBILI_KCMC_MAMC_JKCI').hide();
+                $('.LUGALO_MAMC_KCMC_JKCI').hide();
+                $('.LUGALO_MUHIMBILI_MAMC_KCMC').hide();
+                $('.LUGALO_MUHIMBILI_MAMC').hide();
+                $('.LUGALO_MUHIMBILI_KCMC').hide();
+                $('.MUHIMBILI_ORCI_JKCI').hide();
+                $('.MUHIMBILI_JKCI').hide();
+                $('.MUHIMBILI_KCMC_MAMC').hide();
+                $('.MUHIMBILI_KCMC_JKCI').hide();
+                $('.LUGALO_MUHIMBILI').hide();
+                $('.MUHIMBILI_KCMC').hide();
+                $('.MUHIMBILI_JKCI').hide();
+                $('.LUGALO_MAMC_KCMC').hide();
+                $('.LUGALO').hide();
+                $('.MUHIMBILI').hide();
+                $('.MUHIMBILI_ORCI').hide();
+                $('.ORCI').hide();
+                $('.MAMC').hide();
+                $('.KCMC').hide();
+                $('.JKCI').hide();
+                $('.KCMC_JKCI').hide();
+                $('.MUHIMBILI').hide();
+                $('.LUGALO_MAMC').hide();
+                $('#CSJS7pawQZII').text('1.');
+                $('#vj5Oc4gpYWT').text('2.');
+                $('#BCHyK5KfPwz').text('3.');
+                $('#qA2CSOYmBOI').text('4.');
+                $('#VM0s7HWjIzg').text('5.');
+                $('#aFUZuV4SzUJ').text('6.');
+                $('#AyFBOJ6xJ89z').text('1.');
+                $('#N794dEavSVNz').text('2.');
+                $('#UICSbyoGsiuz').text('3.');
+            } else if(orgUnitId === 'yI1rweSuNPd') { // Mloganzila MAMC
+                $('.TOTALCCBRT').hide();
+                $('.cde-greyfield').show();
+                $('.cde-greyfield2').hide();
+                $('.MAMC').show();
+                $('.NON_ORCI').show();
+                $('.CCBRT_LUGALO_MAMC').show();
+                $('.LUGALO_MUHIMBILI_KCMC').hide();
+                $('.LUGALO_MAMC').show();
+                $('.LUGALO_MAMC_KCMC').show();
+                $('.CCBRT_LUGALO_MAMC_KCMC').show();
+                $('.LUGALO_MUHIMBILI_MAMC').show();
+                $('.MUHIMBILI_KCMC_MAMC').show();
+                $('.MUHIMBILI_KCMC_JKCI').hide()
+                $('.CCBRT_LUGALO_MUHIMBILI_MAMC').show();
+                $('.LUGALO_MAMC_KCMC_JKCI').show();
+                $('.LUGALO_MUHIMBILI_MAMC_KCMC').show();
+                $('.MUHIMBILI_KCMC_MAMC_JKCI').show();
+                $('.CCBRT_LUGALO_MUHIMBILI_MAMC_MC').show();
+                $('.MUHIMBILI_KCMC_CCBRT_LUGALO_ORCI_JKCI').hide();
+                $('.MUHIMBILI_KCMC_LUGALO_ORCI_JKCI').hide();
+                $('.MUHIMBILI_KCMC_ORCI_JKCI').hide();
+                $('.CCBRT_LUGALO_MUHIMBILI_KCMC').hide();
+                $('.CCBRT_LUGALO_MUHIMBILI').hide();
+                $('.LUGALO_MUHIMBILI').hide();
+                $('.MUHIMBILI_ORCI_JKCI').hide();
+                $('.MUHIMBILI_JKCI').hide();
+                $('.MUHIMBILI').hide();
+                $('.MUHIMBILI_ORCI').hide();
+                $('.ORCI').hide();
+                $('.JKCI').hide();
+                $('.MUHIMBILI_KCMC').hide();
+                $('.CCBRT_LUGALO').hide();
+                $('.LUGALO').hide();
+                $('.CCBRT').hide();
+                $('.MUHIMBILI_JKCI').hide();
+                $('.MUHIMBILI').hide();
+                $('.CCBRT_MUHIMBILI').hide();
+                $('.KCMC').hide();
+                $('#oHlfGi8Zkqzz').text('1.');
+                $('#x8bIWqRoFP8').text('2.');
+                $('#yyZr6rEBA4o').text('3.');
+                $('#CSJS7pawQZII').text('4.');
+                $('#HYlrCPTLwSJ').text('5.');
+                $('#SKkb2fQ9c3y').text('6.');
+                $('#tGHHiTnreiE').text('7.');
+                $('#VdX3UduYaZI').text('8.');
+                $('#ycPpKWpbuJ1').text('9.');
+                $('#BCHyK5KfPwz').text('10.');
+                $('#uzmo0KTW3KT').text('11.');
+                $('#Ghh3bXB0tQk').text('12.');
+                $('#s2XqVdUAIC0').text('13.');
+                $('#qA2CSOYmBOI').text('14.');
+                $('#s2x3kqW7mMX').text('15.');
+                $('#sJjWGsZc2u5').text('16.');
+                $('#Lw16CH0BT9R').text('17.');
+                $('#rFpaPz0M2dSz').text('7');
+                $('#O7vRuvnSxlTz').text('8.');
+                $('#ngBRmLLsRSOz').text('9.');
+                $('#QKI2iqAuUbCz').text('10');
+                $('#ieHQGEHaTJuz').text('11.');
+                $('#tsHTs0QRZFXz').text('12');
+            } else if(orgUnitId === 'nPsRsAhjEIx') { //Lugalo SPecialist
+                $('.ORCI').hide();
+                $('.cde-greyfield').show();
+                $('.cde-greyfield2').hide();
+                $('.NON_ORCI').show();
+                $('.TOTALCCBRT').hide();
+                $('.LUGALO').show();
+                $('.LUGALO_MUHIMBILI').show();
+                $('.LUGALO_MUHIMBILI_MAMC').show();
+                $('.LUGALO_MUHIMBILI_KCMC').show();
+                $('.LUGALO_MAMC_KCMC_JKCI').show();
+                $('.CCBRT_LUGALO_MUHIMBILI').show();
+                $('.MUHIMBILI_KCMC_MAMC').hide();
+                $('.MUHIMBILI_KCMC_JKCI').hide()
+                $('.CCBRT_LUGALO_MUHIMBILI_KCMC').show();
+                $('.CCBRT_LUGALO_MUHIMBILI_MAMC').show();
+                $('.LUGALO_MUHIMBILI_MAMC_KCMC').show();
+                $('.CCBRT_LUGALO_MUHIMBILI_MAMC_MC').show();
+                $('.MUHIMBILI_KCMC_LUGALO_ORCI_JKCI').show();
+                $('.MUHIMBILI_KCMC_CCBRT_LUGALO_ORCI_JKCI').show();
+                $('.MUHIMBILI_KCMC_ORCI_JKCI').hide();
+                $('.CCBRT_LUGALO').show();
+                $('.LUGALO_MAMC_KCMC').show();
+                $('.CCBRT_LUGALO_MAMC_KCMC').show();
+                $('.MUHIMBILI_KCMC_MAMC_JKCI').hide();
+                $('.CCBRT_MUHIMBILI').hide();
+                $('.MUHIMBILI_KCMC').hide();
+                $('.CCBRT').hide();
+                $('.MUHIMBILI_JKCI').hide();
+                $('.MUHIMBILI_ORCI_JKCI').hide();
+                $('.MUHIMBILI_JKCI').hide();
+                $('.MAMC').hide();
+                $('.KCMC_JKCI').hide();
+                $('.MUHIMBILI').hide();
+                $('.MUHIMBILI_ORCI').hide();
+                $('.KCMC').hide();
+                $('.JKCI').hide();
+                $('#O7vRuvnSxlTz').text('9.');
+                $('#ngBRmLLsRSOz').text('10.');
+                $('#UICSbyoGsiuz').text('11.');
+                $('.MUHIMBILI').hide();
+                $('#oHlfGi8Zkqz').text('CHILDREN CLINIC (Vaccination and weighing)');
+            } else if(orgUnitId === 'y9DO43xRhsp') { //Muhimbili N H
+                $('.TOTALCCBRT').hide();
+                $('.cde-greyfield').show();
+                $('.cde-greyfield2').hide();
+                $('.ORCI').hide();
+                $('.NON_ORCI').show();
+                $('.LUGALO_MUHIMBILI').show();
+                $('.CCBRT_LUGALO_MUHIMBILI').show();
+                $('.LUGALO_MUHIMBILI_MAMC').show();
+                $('.LUGALO_MUHIMBILI_KCMC').show();
+                $('.LUGALO_MAMC_KCMC_JKCI').hide();
+                $('.MUHIMBILI_KCMC_MAMC').show();
+                $('.MUHIMBILI_KCMC_JKCI').show();
+                $('.CCBRT_LUGALO_MUHIMBILI_MAMC').show();
+                $('.CCBRT_LUGALO_MUHIMBILI_KCMC').show();
+                $('.LUGALO_MUHIMBILI_MAMC_KCMC').show();
+                $('.MUHIMBILI_KCMC_LUGALO_ORCI_JKCI').show();
+                $('.MUHIMBILI_KCMC_CCBRT_LUGALO_ORCI_JKCI').show();
+                $('.CCBRT_LUGALO_MUHIMBILI_MAMC_MC').show();
+                $('.MUHIMBILI_KCMC_ORCI_JKCI').show();
+                $('.MUHIMBILI_KCMC_MAMC_JKCI').show();
+                $('.MUHIMBILI').show();
+                $('.CCBRT_MUHIMBILI').show();
+                $('.MUHIMBILI_KCMC').show();
+                $('.CCBRT_LUGALO_MAMC_KCMC').hide();
+                $('.MUHIMBILI_ORCI_JKCI').show();
+                $('.LUGALO_MAMC_KCMC').hide();
+                $('.CCBRT_LUGALO').hide();
+                $('.MUHIMBILI_ORCI').show();
+                $('.LUGALO_MAMC').hide();
+                $('.CCBRT').hide();
+                $('.MUHIMBILI_JKCI').show();
+                $('.KCMC_JKCI').hide();
+                $('.MAMC').hide();
+                $('.KCMC').hide();
+                $('.JKCI').hide();
+                $('.LUGALO').hide();
+                $('#tHjZGDj21vH').text('1.');
+                $('#j1u6Sg2ujOf').text('2.');
+                $('#cttAKJoGw9J').text('3.');
+                $('#npCgoeH6rW4').text('4.');
+                $('#oHlfGi8Zkqzz').text('5.');
+                $('#x8bIWqRoFP8').text('6.');
+                $('#hConrQye3w9').text('7.');
+                $('#yyZr6rEBA4o').text('8.');
+                $('#WPK7tLGd3dd').text('9.');
+                $('#UPPIktoiE1h').text('10.');
+                $('#CSJS7pawQZII').text('11.');
+                $('#EqwhLPIsznj').text('12.');
+                $('#HYlrCPTLwSJ').text('13.');
+                $('#SKkb2fQ9c3y').text('14.');
+                $('#Sa3kjGI6eP7').text('15.');
+                $('#IaCE2x2X2RF').text('16.');
+                $('#roeNHWmZ0dX').text('17.');
+                $('#FXOdiehq8xg').text('18.');
+                $('#fIKq9PUOZzX').text('19.');
+                $('#IvilsPYkxtZ').text('20.');
+
+                $('#KrzAu9HLtXa').text('21.');
+                $('#mJeL0zZsHIa').text('22.');
+                $('#tD3rjw7FqAM').text('23.');
+                $('#gmBtExh6uZ4').text('24.');
+                $('#BqPFQePU9HW').text('25.');
+                $('#W5hyvTX349p').text('26.');
+                $('#MkhdezfaJGu').text('27.');
+                $('#ZZl1iQcAOfu').text('28.');
+                $('#VK4sX1yXMJJ').text('29.');
+                $('#gU2aSkIeJde').text('30.');
+                $('#vj5Oc4gpYWT').text('31.');
+                $('#SpIrMfk0Ph3').text('32.');
+                $('#DOyNy8PauTF').text('33.');
+                $('#tGHHiTnreiE').text('34.');
+                $('#TIFcSz2RyNq').text('35.');
+                $('#VdX3UduYaZI').text('36.');
+                $('#YxX6MuWzcfp').text('37.');
+                $('#hoRrN2NleFM').text('38.');
+                $('#ycPpKWpbuJ1').text('39.');
+                $('#fR8hNR3xftC').text('40');
+                $('#qA2CSOYmBOI').text('41');
+            } else if(orgUnitId === 'hZGbTy42NTH') { //KCMC
+                $('.ORCI').hide();
+                $('.TOTALCCBRT').hide();
+                $('.cde-greyfield').show();
+                $('.cde-greyfield2').hide();
+                $('.NON_ORCI').show();
+                $('.KCMC').show();
+                $('.LUGALO_MAMC_KCMC').show();
+                $('.MUHIMBILI_KCMC_MAMC').show();
+                $('.MUHIMBILI_KCMC_JKCI').show();
+                $('.MUHIMBILI_KCMC').show();
+                $('.LUGALO_MAMC_KCMC_JKCI').show();
+                $('.LUGALO_MUHIMBILI_KCMC').show();
+                $('.CCBRT_LUGALO_MAMC_KCMC').show();
+                $('.CCBRT_LUGALO_MUHIMBILI_KCMC').show();
+                $('.LUGALO_MUHIMBILI_MAMC_KCMC').show();
+                $('.CCBRT_LUGALO_MUHIMBILI_MAMC_MC').show();
+                $('.MUHIMBILI_KCMC_LUGALO_ORCI_JKCI').show();
+                $('.MUHIMBILI_KCMC_CCBRT_LUGALO_ORCI_JKCI').show();
+                $('.MUHIMBILI_KCMC_ORCI_JKCI').show();
+                $('.MUHIMBILI_KCMC_MAMC_JKCI').show();
+                $('.LUGALO_MUHIMBILI').hide();
+                $('.CCBRT_LUGALO_MUHIMBILI').hide();
+                $('.LUGALO_MUHIMBILI_MAMC').hide();
+                $('.CCBRT_LUGALO_MUHIMBILI_MAMC').hide();
+                $('.MUHIMBILI').hide();
+                $('.CCBRT_MUHIMBILI').hide();
+                $('.MUHIMBILI_ORCI_JKCI').hide();
+                $('.MUHIMBILI_JKCI').hide();
+                $('.CCBRT_LUGALO').hide();
+                $('.LUGALO_MAMC').hide();
+                $('.MUHIMBILI_ORCI').hide();
+                $('.CCBRT').hide();
+                $('.MAMC').hide();
+                $('.JKCI').hide();
+                $('.KCMC_JKCI').show();
+                $('.LUGALO').hide();
+                $('#oHlfGi8Zkqzz').text('1.');
+                $('#x8bIWqRoFP8').text('2.');
+                $('#hConrQye3w9').text('3.');
+                $('#yyZr6rEBA4o').text('4.');
+                $('#UPPIktoiE1h').text('5.');
+                $('#CSJS7pawQZII').text('6.');
+                $('#HYlrCPTLwSJ').text('7.');
+                $('#mJeL0zZsHIa').text('8.');
+                $('#vj5Oc4gpYWT').text('9.');
+                $('#tGHHiTnreiE').text('10.');
+                $('#VdX3UduYaZI').text('11.');
+                $('#BCHyK5KfPwz').text('12.');
+                $('#Ghh3bXB0tQk').text('13.');
+                $('#qA2CSOYmBOI').text('14.');
+                $('#Lw16CH0BT9R').text('15.'); //
+                $('#Cm7n3iR4SSQz').text('16.');
+                $('#wnyVL0HBkYcz').text('17.');
+                $('#GUAsIcv6sV2z').text('18.');
+                $('#Jfmxl1fBq6Zz').text('19.');
+                $('#ViaAl7l2SW8z').text('20.');
+                $('#D19BotX9dTzz').text('21.');
+                $('#e8Gg5MivDYRz').text('22.');
+                $('#nFWUwRxIDhez').text('23.');
+                $('#ORCI-death-indicator').hide();
+                $('#KCMC-death-indicator').show();
+            } else if (orgUnitId === 'av7cOiKhqPT') { //ORCI
+                $('tr').hide();
+                $('.cde-greyfield').hide();
+                $('.cde-greyfield2').show();
+                $('.cde-greyfield-ipd').show();
+                $('.MUHIMBILI_ORCI_JKCI').show();
+                $('.MUHIMBILI_JKCI').hide();
+                $('.ORCI').show();
+                $('.JKCI').hide();
+                $('.MUHIMBILI').hide();
+                $('.MUHIMBILI_ORCI').show();
+                $('.MUHIMBILI_KCMC_MAMC').hide();
+                $('.MUHIMBILI_KCMC_JKCI').hide()
+                $('.MUHIMBILI_KCMC_MAMC_JKCI').hide();
+                $('.MUHIMBILI_KCMC_CCBRT_LUGALO_ORCI_JKCI').show();
+                $('#UICSbyoGsiuz').text('1');
+                $('#UICSbyoGsiu').text('VIP Rooms');
+                $('#jgjxBWFmtDxz').text('2');
+                $('#jgjxBWFmtDxzz').text('3');
+                $('#VrD9gjdI05Jz').text('4');
+                $('#ORCI-death-indicator').show();
+                $('#KCMC-death-indicator').hide();
+            } else if (orgUnitId === 'XcpYSq098gi') { // jakaya - JKCI
+                $('.TOTALCCBRT').hide();
+                $('.cde-greyfield').show();
+                $('.cde-greyfield2').hide();
+                $('.NON_ORCI').show();
+                $('.LUGALO_MAMC_KCMC_JKCI').show();
+                $('.KCMC_JKCI').show();
+                $('.MUHIMBILI_JKCI').show();
+                $('.MUHIMBILI_KCMC_LUGALO_ORCI_JKCI').show();
+                $('.MUHIMBILI_KCMC_CCBRT_LUGALO_ORCI_JKCI').show();
+                $('.JKCI').show();
+                $('.MUHIMBILI_KCMC_MAMC').hide();
+                $('.MUHIMBILI_KCMC_JKCI').show();
+
+                $('.CCBRT').hide();
+                $('.CCBRT_LUGALO').hide();
+                $('.CCBRT_LUGALO_MAMC').hide();
+                $('.CCBRT_MUHIMBILI').hide();
+                $('.CCBRT_LUGALO_MAMC_KCMC').hide();
+                $('.CCBRT_LUGALO_MUHIMBILI').hide();
+                $('.CCBRT_LUGALO_MUHIMBILI_MAMC').hide();
+                $('.MUHIMBILI_KCMC_ORCI_JKCI').show();
+                $('.CCBRT_LUGALO_MUHIMBILI_KCMC').hide();
+                $('.CCBRT_LUGALO_MUHIMBILI_MAMC_MC').hide();
+                $('.LUGALO_MUHIMBILI_MAMC_KCMC').hide();
+                $('.LUGALO_MUHIMBILI_MAMC').hide();
+                $('.LUGALO_MUHIMBILI_KCMC').hide();
+                $('.MUHIMBILI_KCMC_MAMC_JKCI').show();
+                $('.LUGALO_MUHIMBILI').hide();
+                $('.MUHIMBILI_KCMC').hide();
+                $('.LUGALO_MAMC_KCMC').hide();
+                $('.LUGALO').hide();
+                $('.MAMC').hide();
+                $('.KCMC').hide();
+                $('.MUHIMBILI_ORCI').hide();
+                $('.MUHIMBILI_ORCI_JKCI').show();
+                $('.MUHIMBILI_JKCI').show();
+                $('.ORCI').hide();
+                $('.MUHIMBILI').hide();
+                $('.LUGALO_MAMC').hide();
+                $('#gmBtExh6uZ4').text('1.');
+                $('#NUTRITION_gmBtExh6uZ4').text('NUTRITIONAL CLINIC');
+                $('#ZZl1iQcAOfu').text('2.');
+                $('#PAEDIATRIC_ZZl1iQcAOfu').text('PAEDIATRIC CLINIC');
+                $('#Lw16CH0BT9R').text('3.');
+                $('#CTC_Lw16CH0BT9R').text('ADULT CLINIC');
+                $('#Cm7n3iR4SSQz').text('4.');
+                $('#CARDIOLOGY_Cm7n3iR4SSQ').text('CARDIOVASCULAR SURGERY');
+                $('#NJ0YDbPAFNuz').text('1.');
+                $('#O7vRuvnSxlTz').text('2.');
+                $('#O7vRuvnSxlT').text('WARD TWO(SURGICAL WARD)')
+                $('#ngBRmLLsRSOz').text('3.');
+                $('#ngBRmLLsRSO').text('WARD THREE(PAEDIATRIC WARD)');
+                $('#UICSbyoGsiuz').text('4.');
+                $('#UICSbyoGsiu').text('WARD FOUR(PRIVATE/INSURANCE)');
+                $('#DhNdMJxCbEzz').text('5.');
+                $('#z6xtgXD7YWCz').text('6.');
+            }
+        } );
+    });
+</script><script>
+    if (dhis2.dsr){
+        function calculateReportIndicators() {
+            $('input[name="indicatorFormula"]').css('border','none'); $('input[name="indicatorFormula"]').css('background-color','#FFFFFF'); $('input[name="indicatorFormula"]').css('font-weight','500');
+            $('input[name ="indicatorFormula"]').each(function (i, form) {
+                var unReplacedFormula = $(this).attr('indicatorFormula');
+                var elementComboArr = unReplacedFormula.replace("/",",").split("(").join("").split(")").join("").split(",")[0].split("+")
+                var sum = 0;
+                for (var count = 0; count < elementComboArr.length; count++) {
+                    if (elementComboArr[count].length > 18) {
+                        var toReplace='';
+                        var elementCombo = elementComboArr[count].split(".");
+                        if (isNaN(parseInt($("span[data-co="+elementCombo[1].replace("}","")+"][data-de="+elementCombo[0].replace("#{","")+"]").text()))=== false) {
+                            sum += parseInt($("span[data-co="+elementCombo[1].replace("}","")+"][data-de="+elementCombo[0].replace("#{","")+"]").text());
+                            toReplace += elementCombo[0]+'.'+elementCombo[1];
+                        }
+                        unReplacedFormula = unReplacedFormula.replace(toReplace, sum);
+                    }
+                }
+                if (parseInt(eval(unReplacedFormula))){
+                    $('#'+form.id).val(parseInt(eval(unReplacedFormula)));
+                }
+            });
+        }
+        $(document).ready(function(){
+            calculateReportIndicators();
+        });
+    }else {
+        dhis2.util.on('dhis2.de.event.dataValuesLoaded', function () {
+            $('input[name="indicatorFormula"]').css('background-color','#FFFFFF'); $('input[name="indicatorFormula"]').css('font-weight','500'); $('input[name="indicatorFormula"]').css('border','1px grey solid'); $('input[name="indicatorFormula"]').css('text-align','center');
+            calculateIndicatorValue();
+            addListerners();
+        });
+
+        function addListerners(){
+            $('input[name ="entryfield"]').each(function (i) {
+                $(this).change(function () {
+                    //codes for on changes
+                    calculateIndicatorValue();
+                });
+            });
+        }
+
+        function calculateIndicatorValue() {
+            $('input[name ="indicatorFormula"]').each( function (i, form) {
+                var unReplacedFormula = $(this).attr('indicatorFormula');
+                var newFormula = unReplacedFormula;
+                unReplacedFormula.split("/").forEach(function(entryStr){
+                    if (entryStr.length > 18 && entryStr.length < 30 ) {
+                        if (entryStr.indexOf("*") > 1) {
+                            newFormula = newFormula.replace(entryStr.split("*")[0].split("(").join("").split(")").join(""), 'Number($("#'+entryStr.split("*")[0].split("(").join("").split(")").join("").split("#{").join("").split("}").join("").replace(".","-")+'-val").val())');
+                        } else {
+                            newFormula = newFormula.replace(entryStr.split("(").join("").split(")").join(""),'Number($("#'+entryStr.split("(").join("").split(")").join("").split("#{").join("").split("}").join("").replace(".","-")+'-val").val())');
+                        }
+                    } else if(entryStr.length > 30) {
+                        entryStr.split("+").forEach(function(entryStr2){
+                            if (entryStr2.indexOf("*") > 1) {
+                                newFormula = newFormula.replace(entryStr2.split("*")[0].split("(").join("").split(")").join(""), 'Number($("#'+entryStr2.split("*")[0].split("(").join("").split(")").join("").split("#{").join("").split("}").join("").replace(".","-")+'-val").val())');
+                            } else {
+                                newFormula = newFormula.replace(entryStr2.split("(").join("").split(")").join(""),'Number($("#'+entryStr2.split("(").join("").split(")").join("").split("#{").join("").split("}").join("").replace(".","-")+'-val").val())');
+                            }
+                        })
+                    }
+                });
+
+                if (newFormula !== undefined) {
+                    if (isNaN(eval("("+newFormula.split("# ").join("#").split(" -").join("-").replace("  ","").replace(/(?:\r\n|\r|\n)/g, '')+")")) !== true) {
+                        $('#'+form.id).val(parseInt(eval("("+newFormula.split("# ").join("#").split(" -").join("-").replace("  ","").replace(/(?:\r\n|\r|\n)/g, '')+")")));
+                    } else {
+                        $('#'+form.id).val(0);
+                    }
+                }
+            });
+        }
+    }
+</script>
+<p>
+    <style type="text/css">#cde table {
+        border-collapse: collapse;
+    }
+
+    #cde table, #cde th, #cde td {
+        border: 1px solid #c0c0c0;
+    }
+
+    #cde td, #cde th {
+        height: 30px;
+        padding: 10px;
+        margin: 10px;
+    }
+
+    .cde-greyfield, .cde-greyfield2, .cde-greyfield-ipd {
+        background-color: #e0e0e0;
+    }
+    #tableA-div input {
+        width: 3em;
+    }
+    #tableB-div input {
+        width: 7em;
+    }
+    #tableC-div input {
+        width: 10em;
+    }
+    #tableD-div input {
+        width: 10em;
+    }
+    #tableE-div input {
+        width: 7em;
+    }
+    disabled {
+        background-color: #FFFFFF;
+    }
+    .ui-widget-content {
+        border: 1px solid #FFFFFF;
+    }
+    </style>
+</p>
+
+<p><span style="font-size:20px;"><strong>HMIS Referral Hospital reporting templates</strong></span></p>
+
+<div class="toggle-buttons hideInPrint">
+    <div aria-label="Large button group" class="btn-group btn-group-lg" role="group"><span style="font-family:Arial,Helvetica,sans-serif;"><button class="btn btn-default" id="tabs-on" onclick="tabsLayout('default')" style="margin-right:-2px;background-color:#449d44;color:#fff;border-color:#449d44;border-top-right-radius: 0;border-bottom-right-radius: 0;" type="button">Tabs On</button><button class="btn btn-default" id="tabs-off" onclick="tabsLayout('destroy')" style="margin-left:-2px;background-color:#fff;color:#333;border-color:#ccc;border-top-right-radius: 0;border-bottom-right-radius: 0;" type="button">Tabs Off</button></span></div>
+</div>
+
+<div id="tableD-div">
+    <h1><span style="font-size:18px;">Taarifa za watu waliohudumiwa kwa exemption</span></h1>
+
+    <table border="1" cellpadding="0" cellspacing="0" width="800">
+        <tbody>
+        <tr class="cde-greyfield">
+            <th rowspan="2">SN</th>
+            <th>Table 13 (a): # of Clients</th>
+            <th rowspan="2">
+                <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                </style>
+                Total clients seen</th>
+            <th rowspan="2">
+                <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                </style>
+                Total # exempted</th>
+            <th colspan="3">Age group (years)</th>
+            <th rowspan="2">
+                <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                </style>
+                Cost (Tshs)</th>
+        </tr>
+        <tr>
+            <th>Service area/ unit</th>
+            <th>< 5</th>
+            <th>4 - 59</th>
+            <th>60 +</th>
+            <th></th>
+        </tr>
+        <tr class="MUHIMBILI_MAMC_KCMC_LUGALO_CCBRT_JKCI_ORCI">
+            <td>1</td>
+            <td style="width: 15em;">
+                <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                </style>
+                OPD - Consultation</td>
+            <td><input id="LeZnbeZz7wS-FHTDOZzSzAC-val" name="entryfield" title="OPD - Consultation Total clients seen" value="[ OPD - Consultation Total clients seen ]" /></td>
+            <td><input id="LeZnbeZz7wS-B1FaDJhseTl-val" name="entryfield" title="OPD - Consultation Total # exempted" value="[ OPD - Consultation Total # exempted ]" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><input id="LeZnbeZz7wS-kBuzAHM1YRl-val" name="entryfield" title="OPD - Consultation Cost (Tshs) " value="[ OPD - Consultation Cost (Tshs)  ]" /></td>
+        </tr>
+        <tr class="MUHIMBILI_MAMC_KCMC_LUGALO_CCBRT_JKCI_ORCI">
+            <td>2</td>
+            <td style="width: 15em;">
+                <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                </style>
+                IPD - Admissions</td>
+            <td><input id="J2FJxzez2D5-FHTDOZzSzAC-val" name="entryfield" title="IPD - Admissions Total clients seen" value="[ IPD - Admissions Total clients seen ]" /></td>
+            <td><input id="J2FJxzez2D5-B1FaDJhseTl-val" name="entryfield" title="IPD - Admissions Total # exempted" value="[ IPD - Admissions Total # exempted ]" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><input id="J2FJxzez2D5-kBuzAHM1YRl-val" name="entryfield" title="IPD - Admissions Cost (Tshs) " value="[ IPD - Admissions Cost (Tshs)  ]" /></td>
+        </tr>
+        <tr class="MUHIMBILI_MAMC_KCMC_LUGALO_CCBRT_JKCI">
+            <td>3</td>
+            <td style="width: 15em;">
+                <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                </style>
+                Surgery (minor)</td>
+            <td><input id="BasnJL7nW27-FHTDOZzSzAC-val" name="entryfield" title="Surgery (minor) Total clients seen" value="[ Surgery (minor) Total clients seen ]" /></td>
+            <td><input id="BasnJL7nW27-B1FaDJhseTl-val" name="entryfield" title="Surgery (minor) Total # exempted" value="[ Surgery (minor) Total # exempted ]" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><input id="BasnJL7nW27-kBuzAHM1YRl-val" name="entryfield" title="Surgery (minor) Cost (Tshs) " value="[ Surgery (minor) Cost (Tshs)  ]" /></td>
+        </tr>
+        <tr class="MUHIMBILI_MAMC_KCMC_LUGALO_CCBRT_JKCI">
+            <td>4</td>
+            <td style="width: 15em;">
+                <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                </style>
+                Surgery (major)</td>
+            <td><input id="ojkaapIfVPv-FHTDOZzSzAC-val" name="entryfield" title="Surgery (major) Total clients seen" value="[ Surgery (major) Total clients seen ]" /></td>
+            <td><input id="ojkaapIfVPv-B1FaDJhseTl-val" name="entryfield" title="Surgery (major) Total # exempted" value="[ Surgery (major) Total # exempted ]" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><input id="ojkaapIfVPv-kBuzAHM1YRl-val" name="entryfield" title="Surgery (major) Cost (Tshs) " value="[ Surgery (major) Cost (Tshs)  ]" /></td>
+        </tr>
+        <tr class="MUHIMBILI_MAMC_KCMC_LUGALO_CCBRT_JKCI">
+            <td>11</td>
+            <td style="width: 15em;">
+                <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                </style>
+                Labor &amp; Delivery</td>
+            <td><input id="twhYlVEVmKC-FHTDOZzSzAC-val" name="entryfield" title="Labor &amp; Delivery Total clients seen" value="[ Labor &amp; Delivery Total clients seen ]" /></td>
+            <td><input id="twhYlVEVmKC-B1FaDJhseTl-val" name="entryfield" title="Labor &amp; Delivery Total # exempted" value="[ Labor &amp; Delivery Total # exempted ]" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><input id="twhYlVEVmKC-kBuzAHM1YRl-val" name="entryfield" title="Labor &amp; Delivery Cost (Tshs) " value="[ Labor &amp; Delivery Cost (Tshs)  ]" /></td>
+        </tr>
+        <tr class="MUHIMBILI_MAMC_KCMC_LUGALO_CCBRT_JKCI">
+            <td>15</td>
+            <td style="width: 15em;">
+                <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                </style>
+                Physiotherapy</td>
+            <td><input id="adJF60nm4n1-FHTDOZzSzAC-val" name="entryfield" title="Physiotherapy exemption Total clients seen" value="[ Physiotherapy exemption Total clients seen ]" /></td>
+            <td><input id="adJF60nm4n1-B1FaDJhseTl-val" name="entryfield" title="Physiotherapy exemption Total # exempted" value="[ Physiotherapy exemption Total # exempted ]" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><input id="adJF60nm4n1-kBuzAHM1YRl-val" name="entryfield" title="Physiotherapy exemption Cost (Tshs) " value="[ Physiotherapy exemption Cost (Tshs)  ]" /></td>
+        </tr>
+        <tr class="MUHIMBILI_MAMC_KCMC_LUGALO_CCBRT_JKCI_ORCI">
+            <td>16</td>
+            <td style="width: 15em;">
+                <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                </style>
+                Histopathology</td>
+            <td><input id="YIe4ql1SvAr-FHTDOZzSzAC-val" name="entryfield" title="Histopathology Total clients seen" value="[ Histopathology Total clients seen ]" /></td>
+            <td><input id="YIe4ql1SvAr-B1FaDJhseTl-val" name="entryfield" title="Histopathology Total # exempted" value="[ Histopathology Total # exempted ]" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><input id="YIe4ql1SvAr-kBuzAHM1YRl-val" name="entryfield" title="Histopathology Cost (Tshs) " value="[ Histopathology Cost (Tshs)  ]" /></td>
+        </tr>
+        <tr class="MUHIMBILI_MAMC_KCMC_LUGALO_CCBRT_JKCI">
+            <td>17</td>
+            <td style="width: 15em;">
+                <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                </style>
+                <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                </style>
+                Abscondees</td>
+            <td><input id="se8L5lEtXec-FHTDOZzSzAC-val" name="entryfield" title="Abscondees Total clients seen" value="[ Abscondees Total clients seen ]" /></td>
+            <td><input id="se8L5lEtXec-B1FaDJhseTl-val" name="entryfield" title="Abscondees Total # exempted" value="[ Abscondees Total # exempted ]" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><input id="se8L5lEtXec-kBuzAHM1YRl-val" name="entryfield" title="Abscondees Cost (Tshs) " value="[ Abscondees Cost (Tshs)  ]" /></td>
+        </tr>
+        <tr>
+            <td colspan="8"></td>
+        </tr>
+
+<!--Table b-->
+        <tr class="cde-greyfield">
+            <th rowspan="2">SN</th>
+            <th>Table 13 (b): # of Services</th>
+            <th rowspan="2">
+                <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                </style>
+                Total clients Exempted (B)
+            </th>
+            <th rowspan="2">
+                <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                </style>
+                Total # of tests/ services exempted (C)
+            </th>
+            <th colspan="3">Age group (years)</th>
+            <th rowspan="2">
+                <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                </style>
+                Cost (Tshs)</th>
+        </tr>
+        <tr>
+            <th>Service area/ unit</th>
+            <th>< 5</th>
+            <th>4 - 59</th>
+            <th>60 +</th>
+            <th></th>
+        </tr>
+        <tr class="MUHIMBILI_MAMC_KCMC_LUGALO_CCBRT_JKCI_ORCI">
+            <td>5</td>
+            <td style="width: 15em;">
+                <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                </style>
+                <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                </style>
+                Laboratory</td>
+            <td><input id="qL918rxITUb-FHTDOZzSzAC-val" name="entryfield" title="Laboratory Total clients seen" value="[ Laboratory Total clients seen ]" /></td>
+            <td><input id="qL918rxITUb-B1FaDJhseTl-val" name="entryfield" title="Laboratory Total # exempted" value="[ Laboratory Total # exempted ]" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><input id="qL918rxITUb-kBuzAHM1YRl-val" name="entryfield" title="Laboratory Cost (Tshs) " value="[ Laboratory Cost (Tshs)  ]" /></td>
+        </tr>
+        <tr class="MUHIMBILI_MAMC_KCMC_LUGALO_CCBRT_JKCI_ORCI">
+            <td>6</td>
+            <td style="width: 15em;">
+                <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                </style>
+                <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                </style>
+                Radiology</td>
+            <td><input id="Ol2w6JcM1B3-FHTDOZzSzAC-val" name="entryfield" title="Radiology Total clients seen" value="[ Radiology Total clients seen ]" /></td>
+            <td><input id="Ol2w6JcM1B3-B1FaDJhseTl-val" name="entryfield" title="Radiology Total # exempted" value="[ Radiology Total # exempted ]" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><input id="Ol2w6JcM1B3-kBuzAHM1YRl-val" name="entryfield" title="Radiology Cost (Tshs) " value="[ Radiology Cost (Tshs)  ]" /></td>
+        </tr>
+        <tr class="MUHIMBILI_MAMC_KCMC_LUGALO_CCBRT_JKCI_ORCI">
+            <td>7</td>
+            <td style="width: 15em;">
+                <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                </style>
+                <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                </style>
+                Pharmacy</td>
+            <td><input id="b7dw7FrH2Yr-FHTDOZzSzAC-val" name="entryfield" title="Pharmacy Total clients seen" value="[ Pharmacy Total clients seen ]" /></td>
+            <td><input id="b7dw7FrH2Yr-B1FaDJhseTl-val" name="entryfield" title="Pharmacy Total # exempted" value="[ Pharmacy Total # exempted ]" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><input id="b7dw7FrH2Yr-kBuzAHM1YRl-val" name="entryfield" title="Pharmacy Cost (Tshs) " value="[ Pharmacy Cost (Tshs)  ]" /></td>
+        </tr>
+        <tr class="MUHIMBILI_MAMC_KCMC_LUGALO_CCBRT_JKCI_ORCI">
+            <td>12</td>
+            <td style="width: 15em;">
+                <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                </style>
+                Consumables</td>
+            <td><input id="xX46boSvU64-FHTDOZzSzAC-val" name="entryfield" title="Consumables Total clients seen" value="[ Consumables Total clients seen ]" /></td>
+            <td><input id="xX46boSvU64-B1FaDJhseTl-val" name="entryfield" title="Consumables Total # exempted" value="[ Consumables Total # exempted ]" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><input id="xX46boSvU64-kBuzAHM1YRl-val" name="entryfield" title="Consumables Cost (Tshs) " value="[ Consumables Cost (Tshs)  ]" /></td>
+        </tr>
+        <tr class="MUHIMBILI_MAMC_KCMC_LUGALO_CCBRT_JKCI">
+            <td>13</td>
+            <td style="width: 15em;">
+                <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                </style>
+                Medical oxygen</td>
+            <td><input id="GUHEAIDYhC1-FHTDOZzSzAC-val" name="entryfield" title="Medical oxygen Total clients seen" value="[ Medical oxygen Total clients seen ]" /></td>
+            <td><input id="GUHEAIDYhC1-B1FaDJhseTl-val" name="entryfield" title="Medical oxygen Total # exempted" value="[ Medical oxygen Total # exempted ]" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><input id="GUHEAIDYhC1-kBuzAHM1YRl-val" name="entryfield" title="Medical oxygen Cost (Tshs) " value="[ Medical oxygen Cost (Tshs)  ]" /></td>
+        </tr>
+        <tr class="MUHIMBILI_MAMC_KCMC_LUGALO_CCBRT_JKCI_ORCI">
+            <td>8</td>
+            <td style="width: 15em;">
+                <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                </style>
+                Speciality (Chemotherapy)</td>
+            <td><input id="yfLRLr8quBz-FHTDOZzSzAC-val" name="entryfield" title="Speciality (Chemotherapy) Total clients seen" value="[ Speciality (Chemotherapy) Total clients seen ]" /></td>
+            <td><input id="yfLRLr8quBz-B1FaDJhseTl-val" name="entryfield" title="Speciality (Chemotherapy) Total # exempted" value="[ Speciality (Chemotherapy) Total # exempted ]" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><input id="yfLRLr8quBz-kBuzAHM1YRl-val" name="entryfield" title="Speciality (Chemotherapy) Cost (Tshs) " value="[ Speciality (Chemotherapy) Cost (Tshs)  ]" /></td>
+        </tr>
+        <tr class="MUHIMBILI_MAMC_KCMC_LUGALO_CCBRT_JKCI_ORCI">
+            <td>9</td>
+            <td style="width: 15em;">
+                <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                </style>
+                Speciality (Radiotherapy)</td>
+            <td><input id="DICdEG9x0qf-FHTDOZzSzAC-val" name="entryfield" title="Speciality (Radiotherapy) Total clients seen" value="[ Speciality (Radiotherapy) Total clients seen ]" /></td>
+            <td><input id="DICdEG9x0qf-B1FaDJhseTl-val" name="entryfield" title="Speciality (Radiotherapy) Total # exempted" value="[ Speciality (Radiotherapy) Total # exempted ]" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><input id="DICdEG9x0qf-kBuzAHM1YRl-val" name="entryfield" title="Speciality (Radiotherapy) Cost (Tshs) " value="[ Speciality (Radiotherapy) Cost (Tshs)  ]" /></td>
+        </tr>
+        <tr class="MUHIMBILI_MAMC_KCMC_LUGALO_CCBRT_JKCI">
+            <td>10</td>
+            <td style="width: 15em;">
+                <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                </style>
+                Speciality (Dialysis)</td>
+            <td><input id="dDcmse1to5m-FHTDOZzSzAC-val" name="entryfield" title="Speciality (Dialysis) Total clients seen" value="[ Speciality (Dialysis) Total clients seen ]" /></td>
+            <td><input id="dDcmse1to5m-B1FaDJhseTl-val" name="entryfield" title="Speciality (Dialysis) Total # exempted" value="[ Speciality (Dialysis) Total # exempted ]" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><input id="dDcmse1to5m-kBuzAHM1YRl-val" name="entryfield" title="Speciality (Dialysis) Cost (Tshs) " value="[ Speciality (Dialysis) Cost (Tshs)  ]" /></td>
+        </tr>
+        <tr class="MUHIMBILI_MAMC_KCMC_LUGALO_CCBRT_JKCI_ORCI">
+            <td>14</td>
+            <td style="width: 15em;">
+                <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                </style>
+                Meals</td>
+            <td><input id="HtNh1xpBfXt-FHTDOZzSzAC-val" name="entryfield" title="Meals Total clients seen" value="[ Meals Total clients seen ]" /></td>
+            <td><input id="HtNh1xpBfXt-B1FaDJhseTl-val" name="entryfield" title="Meals Total # exempted" value="[ Meals Total # exempted ]" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><input id="HtNh1xpBfXt-kBuzAHM1YRl-val" name="entryfield" title="Meals Cost (Tshs) " value="[ Meals Cost (Tshs)  ]" /></td>
+        </tr>
+        <tr>
+            <td>18</td>
+            <td style="width: 15em;">
+                <style type="text/css"><!--td {border: 1px solid #ccc;}br {mso-data-placement:same-cell;}-->
+                </style>
+                Others&hellip;</td>
+            <td><input id="gWNO70rhCr4-FHTDOZzSzAC-val" name="entryfield" title="Others… Total clients seen" value="[ Others… Total clients seen ]" /></td>
+            <td><input id="gWNO70rhCr4-B1FaDJhseTl-val" name="entryfield" title="Others… Total # exempted" value="[ Others… Total # exempted ]" /></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><input id="gWNO70rhCr4-kBuzAHM1YRl-val" name="entryfield" title="Others… Cost (Tshs) " value="[ Others… Cost (Tshs)  ]" /></td>
+        </tr>
+        </tbody>
+    </table>
+</div>

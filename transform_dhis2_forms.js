@@ -5,7 +5,6 @@
 var URL = process.argv[2];
 var credentials = process.argv[3];
 var typeOfActivity = process.argv[4];
-var formNumberForBackup = process.argv[5];
 var request = require('request');
 var http = require('http');
 var https = require('https');
@@ -26,7 +25,6 @@ var headers2 = {
     'Content-Type': 'text/html',
     "Authorization": 'Basic ' + new Buffer(credentials).toString('base64')
 }
-
 
 // backup the forms
 if (typeOfActivity === 'backup') {
@@ -93,7 +91,7 @@ if (typeOfActivity === 'backup') {
                 }
             }
 
-            var path = '/api/dataSets.json?paging=false&fields=id,name,indicators[id,numerator,denominator,indicatorType[factor]],dataEntryForm[htmlCode]&filter=id:in:['+idsIncluded.substring(0, idsIncluded.length-1)+']';
+            var path = '/api/dataSets.json?paging=false&fields=id,name,indicators[id,name,numerator,denominator,indicatorType[factor]],dataEntryForm[htmlCode]&filter=id:in:['+idsIncluded.substring(0, idsIncluded.length-1)+']';
             var formArr = [];
             var Promise = require('promise');
             var promise = new Promise(function (resolve, reject) {
@@ -119,12 +117,12 @@ if (typeOfActivity === 'backup') {
                         }
                     })
             });
-            // all forms are downloaded
+            // all forms downloaded
             promise.then(function(formArr) {
                 formArr.forEach(function (form, index) {
                     var formName = form.name.replace(" ","").replace(" ","").replace("  ","").replace(" ","").replace(" ","").replace("/","").replace("  ","").replace("  ","").replace("  ","")
                     if (fs.existsSync('forms/'+ formName)) {
-                        console.log('The dataSet '+ form.name+' already in backup');
+                        // console.log('The dataSet '+ form.name+' already in backup');
                     } else {
                         formNamesArr.push(form.id+','+formName);
                         fs.mkdirSync('forms/'+ formName);
@@ -148,7 +146,6 @@ if (typeOfActivity === 'backup') {
                                                     var newEntryId = numComponents[numComponentsCount].replace("(","").replace(")","").replace("#{","").replace("}","").replace(" ","").replace(" ","");
                                                     if (field.attribs.id.split("-")[0] === newEntryId) {
                                                         newNumerator += "#{"+field.attribs.id.replace("-",".").replace("-val","").replace(" ","").replace("  ","")+"}+";
-                                                        console.log(indicator.id+": "+newNumerator+": "+numComponents)
                                                     }
                                                 });
                                             }
@@ -211,12 +208,54 @@ if (typeOfActivity === 'backup') {
                         fs.writeFile('forms/'+ formName + '/original.html', '<sectionelem>\r\n<script>\r\n\t var indicatorAggregations = '+JSON.stringify(indicatorsFoundObj)+';\r\n</script>\r\n'+form.dataEntryForm.htmlCode +'\r\n</sectionelem>', function (err) {
                             console.log('backup made for the form ' + form.name);
                         });
+
                         fs.writeFile('forms/'+ formName + '/indicators.json', JSON.stringify(form.indicators), function (err) {
                             // console.log('backup made for ' + form.name + ' indicators');
+                            // if (form.indicators.name.indexOf('X ') === 0) {
+                            //     console.log('found: '+form.indicators.name);
+                            // }
+
+                            function SaveDataToLocalStorage(data)
+                            {
+                                var a = [];
+                                a = JSON.parse(localStorage.getItem('indicators'));
+                                a.push(data);
+                                localStorage.setItem('indicators', JSON.stringify(a));
+                            }
+                            form.indicators.forEach(function (indicator) {
+                                if (indicator.name.indexOf('X ') === 0) {
+                                    data = {
+                                        'indicatorId': indicator.id,
+                                        'indicatorName': indicator.name
+                                    };
+                                    SaveDataToLocalStorage(data);
+                                    // localStorage.setItem('indicators', JSON.stringify(data));
+                                }
+                            })
                         });
                     }
                 });
             });
+        }
+    });
+} else if (typeOfActivity === 'get-indicators') {
+    var dataSetsArr = localStorage.getItem('formStore');
+    var indArr = localStorage.getItem('indicators');
+    fs.writeFile('X_indicators/indicators.json', indArr, function (err) {
+        console.log('indicators starting with X stored');
+    });
+    var str = '';
+    JSON.parse(indArr).forEach(function (val) {
+        str += val.indicatorId + ',';
+    });
+    fs.writeFile('X_indicators/indicatorsIds.json', str, function (err) {
+        console.log('indicators starting with X stored');
+    });
+    JSON.parse(dataSetsArr).forEach(function (dataSetName, index) {
+        fs.readFile('forms/' + dataSetName.split(',')[1] + '/indicators.json', 'utf8', getIndicators);
+        function getIndicators(error, data) {
+            $ = cheerio.load('' + data + '');
+            // console.log(data);
         }
     });
 } else if (typeOfActivity ==='transform') {
@@ -264,6 +303,7 @@ if (typeOfActivity === 'backup') {
                     $(val).removeAttr('dataelementid');
                     $(val).removeAttr('value');
                     $(val).attr('name', 'indicatorFormula');
+                    $(val).attr('disabled', 'disabled');
                 });
 
                 $('input[indicatorid]').each(function (index, val) {
@@ -278,10 +318,11 @@ if (typeOfActivity === 'backup') {
                     $(val).removeAttr('indicatorid');
                     $(val).removeAttr('value');
                     $(val).attr('name', 'indicatorFormula');
+                    $(val).attr('disabled', 'disabled');
                 });
                 var content = $.html(elem);
                 var calculatingScript = JSON.parse(localStorage.getItem('script'));
-                fs.writeFile('forms/'+dataSetName.split(',')[1]+'/new.html', '\r\n\t'+calculatingScript+'\r\n'+content.replace('<sectionelem>','').replace('</sectionelem>','')+'\r\n', function (err) {
+                fs.writeFile('forms/'+dataSetName.split(',')[1]+'/new.html', ''+calculatingScript+'\r\n'+content.replace('<sectionelem>','').replace('</sectionelem>','')+'', function (err) {
                     console.log('The dataSet '+ dataSetName+' transformed');
                 });
             });
