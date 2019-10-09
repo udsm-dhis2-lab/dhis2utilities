@@ -1,0 +1,1067 @@
+<p>
+    <style type="text/css">#cde table {
+        border-collapse: collapse;
+    }
+
+    #cde table, #cde th, #cde td {
+        border: 1px solid #c0c0c0;
+    }
+    #cde td, #cde th {
+        height: 30px;
+        padding: 10px;
+        margin: 10px;
+    }
+
+    .cde-greyfield {
+        background-color: #e0e0e0;
+    }
+    input {width:3.5em;}
+    </style>
+</p>
+<link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" rel="stylesheet" /><script>
+    dhis2.util.on('dhis2.de.event.formReady', function (event, ds) {
+        $('input#printButton').removeAttr('onclick').attr('onclick','printDataEntryForm()');
+        $('div#contentDiv table tr td:nth-child(4)').find('input').each(function(inputindex,inputfield){
+            $(inputfield).css('display','none');
+        });
+        $('div#contentDiv2').remove();
+        $('div#contentDiv').css('display','block');
+        var selectedPeriod=$("#selectedPeriodId").val();
+        var extractedMothOnly=selectedPeriod.slice(-2);
+        var extractedYear=selectedPeriod.substr(0,4);
+        var estimatingQuarterly=null;
+        var totalScore = 0;
+        var currentOrganisationUnitSelected=dhis2.de.getCurrentOrganisationUnit();
+        if(extractedMothOnly == 07 || extractedMothOnly == 10 || extractedMothOnly == 11 ){
+            estimatingQuarterly=Math.ceil(extractedMothOnly/4)+1;
+        }else{
+            estimatingQuarterly=Math.floor(extractedMothOnly/4)+1;
+        }
+        var quarterlyFormat="Q"+estimatingQuarterly;
+        var quartalTobeSelected=extractedYear+quarterlyFormat;
+        var datasetOne="Dp0VF7ssmcH";
+        var datasettwo="Hwcn7ajwZ1p";
+        var cc="D900sIRw2Ed";
+        var cp="JC7dyr95rbM";
+        $.get("../api/organisationUnits/"+currentOrganisationUnitSelected+".json?fields=id,name,parent[name]",function(data){
+            $('#parentOu').text(data.parent.name);
+        });
+        var paramsOne = {
+            periodId : selectedPeriod,
+            dataSetId : datasetOne,
+            organisationUnitId : currentOrganisationUnitSelected,
+            multiOrganisationUnit: 'false',
+            cc:cc,
+            cp:cp
+        };
+        var paramsTwo = {
+            periodId : quartalTobeSelected,
+            dataSetId : datasettwo,
+            organisationUnitId : currentOrganisationUnitSelected,
+            multiOrganisationUnit: 'false'
+        };
+        function insertDataValuesTofield( json ){
+            var dataValueMap = []; // Reset
+            dhis2.de.currentMinMaxValueMap = []; // Reset
+
+            if ( json.locked )
+            {
+                $( '#contentDiv input').attr( 'readonly', 'readonly' );
+                $( '.entryoptionset').autocomplete( 'disable' );
+                $( '.sectionFilter').removeAttr( 'disabled' );
+                $( '#completenessDiv' ).hide();
+                setHeaderDelayMessage( i18n_dataset_is_locked );
+            }
+            else
+            {
+                $( '.entryoptionset' ).autocomplete( 'enable' );
+                $( '#contentDiv input' ).removeAttr( 'readonly' );
+                $( '#completenessDiv' ).show();
+            }
+
+            // Set data values, works for selects too as data value=select value
+
+            $.safeEach( json.dataValues, function( i, value )
+            {
+                var fieldId = '#' + value.id + '-val';
+                var commentId = '#' + value.id + '-comment';
+
+                if ( $( fieldId ).length > 0 ) // Set values
+                {
+                    if ( $( fieldId ).attr( 'name' ) == 'entrytrueonly' && 'true' == value.val )
+                    {
+                        $( fieldId ).attr( 'checked', true );
+                    }
+                    else if ( $( fieldId ).attr( 'name' ) == 'entryoptionset' )
+                    {
+                        dhis2.de.setOptionNameInField( fieldId, value );
+                    }
+                    else if ( $( fieldId ).attr( 'class' ) == 'entryfileresource' )
+                    {
+                        var $field = $( fieldId );
+
+                        $field.find( 'input[class="entryfileresource-input"]' ).val( value.val );
+
+                        var split = dhis2.de.splitFieldId( value.id );
+
+                        var dvParams = {
+                            'de': split.dataElementId,
+                            'co': split.optionComboId,
+                            'ou': split.organisationUnitId,
+                            'pe': $( '#selectedPeriodId' ).val()
+                        };
+
+                        var name = "", size = "";
+
+                        if ( value.fileMeta )
+                        {
+                            name = value.fileMeta.name;
+                            size = '(' + filesize( value.fileMeta.size ) + ')';
+                        }
+                        else
+                        {
+                            name = i18n_loading_file_info_failed;
+                        }
+
+                        var $filename = $field.find( '.upload-fileinfo-name' );
+
+                        $( '<a>', {
+                            text: name,
+                            title: name,
+                            target: '_blank',
+                            href: "../api/dataValues/files?" + $.param( dvParams )
+                        } ).appendTo( $filename );
+
+                        $field.find( '.upload-fileinfo-size' ).text( size );
+                    }
+                    else
+                    {
+                        $( fieldId ).val( value.val );
+                    }
+                }
+
+                if ( 'true' == value.com ) // Set active comments
+                {
+                    if ( $( commentId ).length > 0 )
+                    {
+                        $( commentId ).attr( 'src', '../images/comment_active.png' );
+                    }
+                    else if ( $( fieldId ).length > 0 )
+                    {
+                        $( fieldId ).css( 'border-color', dhis2.de.cst.colorBorderActive )
+                    }
+                }
+
+                dataValueMap[value.id] = value.val;
+
+                dhis2.period.picker.updateDate(fieldId);
+            } );
+
+            // Set min-max values and colorize violation fields
+
+            if ( !json.locked )
+            {
+                $.safeEach( json.minMaxDataElements, function( i, value )
+                {
+                    var minId = value.id + '-min';
+                    var maxId = value.id + '-max';
+
+                    var valFieldId = '#' + value.id + '-val';
+
+                    var dataValue = dataValueMap[value.id];
+
+                    if ( dataValue && ( ( value.min && new Number( dataValue ) < new Number(
+                        value.min ) ) || ( value.max && new Number( dataValue ) > new Number( value.max ) ) ) )
+                    {
+                        $( valFieldId ).css( 'background-color', dhis2.de.cst.colorOrange );
+                    }
+
+                    dhis2.de.currentMinMaxValueMap[minId] = value.min;
+                    dhis2.de.currentMinMaxValueMap[maxId] = value.max;
+                } );
+            }
+
+            // Update indicator values in form
+
+            dhis2.de.updateIndicators();
+            dhis2.de.updateDataElementTotals();
+        }
+        function sendDataValue(){
+            $.ajax( {
+                url: 'getDataValues.action',
+                data: paramsOne,
+                dataType: 'json',
+                error: function() // offline
+                {
+                    $( '#completenessDiv' ).show();
+                    $( '#infoDiv' ).hide();
+                    var json = getOfflineDataValueJson( params );
+                    insertDataValuesTofield( json );
+                },
+                success: function( json ) // online
+                {
+                    insertDataValuesTofield( json );
+                },
+                complete: function()
+                {
+                    $( '.indicator' ).attr( 'readonly', 'readonly' );
+                    $( '.dataelementtotal' ).attr( 'readonly', 'readonly' );
+                    $( document ).trigger( dhis2.de.event.dataValuesLoaded, dhis2.de.currentDataSetId );
+                    $.ajax( {
+                        url: 'getDataValues.action',
+                        data: paramsTwo,
+                        dataType: 'json',
+                        error: function() // offline
+                        {
+                            $( '#completenessDiv' ).show();
+                            $( '#infoDiv' ).hide();
+                            var json = getOfflineDataValueJson( params );
+                            insertDataValuesTofield( json );
+                        },
+                        success: function( json ) // online
+                        {
+                            insertDataValuesTofield( json );
+                        },
+                        complete: function()
+                        {
+                            //Duplicate contents of #contentDiv to #contentDiv2 and hide #contentDiv
+                            //$('div#contentDiv').after('<div id="contentDiv2" style="display:none;">'+$('div#contentDiv').html()+'</div>');
+                            //$('div#contentDiv2').css('display','block');
+                            $('div#contentDiv').css('display','block');
+                            $( '.indicator' ).attr( 'readonly', 'readonly' );
+                            $( '.dataelementtotal' ).attr( 'readonly', 'readonly' );
+                            $( document ).trigger( dhis2.de.event.dataValuesLoaded, dhis2.de.currentDataSetId );
+                            $('div#contentDiv table tr td:nth-child(4)').find('label').each(function(inputindex,inputfield){
+                                $(inputfield).remove();
+                            });
+                            $('div#contentDiv table tr td:nth-child(4)').find('input').each(function(inputindex,inputfield){
+                                $(inputfield).val();$(inputfield).after('<label style="text-align: center;">'+$(inputfield).val()+'</label>');$(inputfield).css('display','none');;
+                            });
+                        }
+                    } );
+                }
+            } );
+        }
+        sendDataValue();
+        $('#orgunit_header').text($('input#selectedOrganisationUnit').val());
+        $('#datePrinted').text(JSON.stringify(Date()).replace('"','').replace('GMT+0300 (','').replace(')','').replace('"',''));
+
+        setTimeout(function() {
+            // will initialiaze score values to be displayed
+            initializeScoreOnLoad();
+        }, 4000);
+
+
+    });
+    printDataEntryForm = function() {
+        //Reduce form size
+        $('div#cde table tbody td').attr('style','padding:3px!important;line-height:1!important;font-size: 12px!important;');
+        $('div#cde table tbody th').attr('style','padding:3px!important;line-height:1!important;font-size: 12px!important;');
+        $('div#cde table tbody th h1').attr('style','padding:0px!important;line-height:1!important;font-size: 12px!important;;text-align:center');
+        $('#orgunit_header').attr('style','padding:0px!important;line-height:1!important;font-size: 12px!important;text-align:center');
+        $('div#completenessDiv').hide()
+        window.print()
+        //Restore form size
+        $('div#cde table tbody td').removeAttr('style');
+        $('div#cde table tbody th').removeAttr('style');
+        $('div#cde table tbody th h1').removeAttr('style');
+        $('#orgunit_header').removeAttr('style');
+        $('div#completenessDiv').show()
+    };
+    function printBlankForm() {
+        //Reduce form size
+        //$( '#contentDiv input, select' ).css( 'display', 'none' );
+        $('div#cde table tbody td').attr('style','padding:3px!important;line-height:1!important;font-size: 12px!important;');
+        $('div#cde table tbody th').attr('style','padding:3px!important;line-height:1!important;font-size: 12px!important;');
+        $('div#cde table tbody th h1').attr('style','padding:0px!important;line-height:1!important;font-size: 12px!important;;text-align:center');
+        $('#orgunit_header').attr('style','padding:0px!important;line-height:1!important;font-size: 12px!important;text-align:center');
+        $('div#completenessDiv').hide()
+        window.print();
+        //Restore form size
+        //$( '#contentDiv input, select' ).css( 'display', '' );
+        $('div#cde table tbody td').removeAttr('style');
+        $('div#cde table tbody th').removeAttr('style');
+        $('div#cde table tbody th h1').removeAttr('style');
+        $('#orgunit_header').removeAttr('style');
+        $('div#completenessDiv').show()
+    }
+
+
+    verifyScore = function(inputId1, inputId2, inputId3, inputId4, scoreId){
+        var value1 = $('#'+inputId1+'').val();
+        var value2 = document.getElementById(inputId2).value;
+        var value3 = document.getElementById(inputId3).value;
+        var value4 = document.getElementById(inputId4).value;
+
+        if(parseInt(value1)  == parseInt(value2) && parseInt(value3) == parseInt(value4) && parseInt(value1) == parseInt(value4)){
+            document.getElementById(scoreId).innerText = 1;
+            $('#'+scoreId+'icontick').show();
+            $('#'+scoreId+'iconcross').hide();
+        }else{
+            document.getElementById(scoreId).innerText = 0;
+            $('#'+scoreId+'icontick').hide();
+            $('#'+scoreId+'iconcross').show();
+        }
+
+        checkScoreTotal();
+    };
+
+
+    verifyScore3 = function(inputId1, inputId2, inputId3, scoreId){
+        var value1 = $('#'+inputId1+'').val();
+        var value2 = document.getElementById(inputId2).value;
+        var value3 = document.getElementById(inputId3).value;
+
+        if(parseInt(value1)  == parseInt(value2) && parseInt(value3) == parseInt(value2) ){
+            document.getElementById(scoreId).innerText = 1;
+            $('#'+scoreId+'icontick').show();
+            $('#'+scoreId+'iconcross').hide();
+        }else{
+            document.getElementById(scoreId).innerText = 0;
+            $('#'+scoreId+'icontick').hide();
+            $('#'+scoreId+'iconcross').show();
+        }
+
+        checkScoreTotal();
+    };
+
+
+    // this function calculates total of the score to be placed to the dataElement of score
+    checkScoreTotal = function(){
+        var total = 0;
+        var score1 = $('#result1').text();
+        var score2 = $('#result2').text();
+        var score3 = $('#result3').text();
+        var score4 = $('#result4').text();
+        var score5 = $('#result5').text();
+        var score6 = $('#result6').text();
+        var score7 = $('#result7').text();
+        var score8 = $('#result8').text();
+        var score9 = $('#result9').text();
+        var score10 = $('#result10').text();
+        var score11 = $('#result11').text();
+        var score12 = $('#result12').text();
+        var score13 = $('#result13').text();
+        var score14 = $('#result14').text();
+        var score15 = $('#result15').text();
+
+        score1 = (score1)? parseInt(score1) : 0;
+        score2 = (score2)? parseInt(score2) : 0;
+        score3 = (score3)? parseInt(score3) : 0;
+        score4 = (score4)? parseInt(score4) : 0;
+        score5 = (score5)? parseInt(score5) : 0;
+        score6 = (score6)? parseInt(score6) : 0;
+        score7 = (score7)? parseInt(score7) : 0;
+        score8 = (score8)? parseInt(score8) : 0;
+        score9 = (score9)? parseInt(score9) : 0;
+        score10 = (score10)? parseInt(score10) : 0;
+        score11 = (score11)? parseInt(score11) : 0;
+        score12 = (score12)? parseInt(score12) : 0;
+        score13 = (score13)? parseInt(score13) : 0;
+        score14 = (score14)? parseInt(score14) : 0;
+        score15 = (score15)? parseInt(score15) : 0;
+
+
+        total = score1 + score2 + score3 + score4 + score5 + score6 + score7 + score8 + score9 + score10 + score11 + score12 + score13 + score14 + score15 ;
+
+        $('#FI6KCkDhqDh-uGIJ6IdkP7Q-val').val(total);
+
+        uploadDataValueForScore(total);
+
+    };
+
+    // this function uploads score data value to the dataElement input
+    uploadDataValueForScore = function (value) {
+
+        var dataSetUid = dhis2.de.currentDataSetId;
+        var period = $( '#selectedPeriodId').val();
+        var orgunitId = dhis2.de.currentOrganisationUnitId;
+        var dataElementUid = 'FI6KCkDhqDh';
+
+        var param = 'de='+dataElementUid+'&co=uGIJ6IdkP7Q&ds='+dataSetUid+'&ou='+orgunitId+'&pe='+period+'&value='+value+'';
+
+        $.ajax( {
+            url: "../api/dataValues",
+            method:"POST",
+            contentType:"application/x-www-form-urlencoded; charset=UTF-8",
+            data: param,
+            success: function ( result ) {
+                console.log("Score total saved")
+            },
+            error:function(err){
+                console.log("Error:",err);
+            }
+        } );
+
+
+    }
+
+    // this function to be executed on document load so as to load the score values initialy
+    initializeScoreOnLoad = function (){
+
+        // hide this icons on load functions
+        $('#result16icontick').hide();
+        $('#result16iconcross').hide();
+
+        $('#result17icontick').hide();
+        $('#result17iconcross').hide();
+
+        var inputsUidcollection = [
+            {input1:"totalkLI4iGDbN3p", input2:"zGJFOiPn0Eh-uGIJ6IdkP7Q-val", input3:"Wi04TcVks3h-uGIJ6IdkP7Q-val",input4:"ZZpXBBzETFJ-uGIJ6IdkP7Q-val",input5:"result1"},
+            {input1:"totaluA7nNtZE8bv", input2:"SZAyDmdWM3m-uGIJ6IdkP7Q-val", input3:"jXEUqQSt4dx-uGIJ6IdkP7Q-val",input4:"DTBWEAWgqUc-uGIJ6IdkP7Q-val",input5:"result2"},
+            {input1:"totalyqA1CfsfBHQ", input2:"ir4VYuJYJOJ-uGIJ6IdkP7Q-val", input3:"MYO1slQ2Hyh-uGIJ6IdkP7Q-val",input4:"",input5:"result3"},
+            {input1:"totalZbmHzUkeJbQ", input2:"TH6WeXrey99-uGIJ6IdkP7Q-val", input3:"xD1aMIBl2I7-uGIJ6IdkP7Q-val",input4:"",input5:"result4"},
+            {input1:"totaltIs7rshvixe", input2:"SFsfVCemVPh-uGIJ6IdkP7Q-val", input3:"E3V32diLsB1-uGIJ6IdkP7Q-val",input4:"nyOhXy6g8NP-uGIJ6IdkP7Q-val",input5:"result5"},
+            {input1:"indicatorfhhtNMzdY5j", input2:"icRKuxRMJsa-uGIJ6IdkP7Q-val", input3:"R5zLV1L1AwG-uGIJ6IdkP7Q-val",input4:"",input5:"result6"},
+            {input1:"totalNd5BDnxVEP0", input2:"vSUGNwUzq9I-uGIJ6IdkP7Q-val", input3:"EKOoVR76QDf-uGIJ6IdkP7Q-val",input4:"",input5:"result7"},
+            {input1:"indicatortVMvfkCFREF", input2:"Mv82eKjwpCe-uGIJ6IdkP7Q-val", input3:"wF3wWw5YEo5-uGIJ6IdkP7Q-val",input4:"qOKAmTV6Ppz-uGIJ6IdkP7Q-val",input5:"result8"},
+            {input1:"indicatorVAcw4v9HnXu", input2:"vZZVleMx08Z-uGIJ6IdkP7Q-val", input3:"Tdj0yyC2qTy-uGIJ6IdkP7Q-val",input4:"lNlSf2d4Pyf-uGIJ6IdkP7Q-val",input5:"result9"},
+            {input1:"indicatortz3hHSQ13lN", input2:"YICpcRHCvKO-uGIJ6IdkP7Q-val", input3:"TVOTNWA5x9H-uGIJ6IdkP7Q-val",input4:"X8QiB00k9DJ-uGIJ6IdkP7Q-val",input5:"result10"},
+            {input1:"indicatordwVUMMRD3eN", input2:"PxI5VvEiXao-uGIJ6IdkP7Q-val", input3:"ydrsK20LBJD-uGIJ6IdkP7Q-val",input4:"dC4zqNLTgoB-uGIJ6IdkP7Q-val",input5:"result11"},
+            {input1:"totalNSYWPEpZBuY", input2:"Yp6630c5ZJh-uGIJ6IdkP7Q-val", input3:"XB3PYuOyUOe-uGIJ6IdkP7Q-val",input4:"bxeWT7dsAjD-uGIJ6IdkP7Q-val",input5:"result12"},
+            {input1:"totaleoZtkUbfrmF", input2:"sKcdWRV7Ciq-uGIJ6IdkP7Q-val", input3:"Enf7N2DmULY-uGIJ6IdkP7Q-val",input4:"tgg7EpAzvrp-uGIJ6IdkP7Q-val",input5:"result13"},
+            {input1:"indicatorI4coTMDMTZq", input2:"tUGw1hUYs8T-uGIJ6IdkP7Q-val", input3:"i8jYvLfzNVG-uGIJ6IdkP7Q-val",input4:"",input5:"result14"},
+            {input1:"totalItgPHCQ1hm6", input2:"SeH4cqfDK32-uGIJ6IdkP7Q-val", input3:"Yos0QGlxLBi-uGIJ6IdkP7Q-val",input4:"",input5:"result15"},
+            {input1:"totalItgPHCQ1hm6", input2:"SeH4cqfDK32-uGIJ6IdkP7Q-val", input3:"Yos0QGlxLBi-uGIJ6IdkP7Q-val",input4:"",input5:"result15"}
+        ];
+
+        $.each(inputsUidcollection , function(index,fields) {
+
+            if(fields.input4 == ""){
+                // console.log("fields : "+JSON.stringify(fields));
+                verifyScore3(fields.input1,fields.input2,fields.input3,fields.input5);
+            }else{
+                verifyScore(fields.input1,fields.input2,fields.input3,fields.input4,fields.input5);
+            }
+        });
+    }
+
+</script>
+<div id="cde">
+    <h2>Data Quality Verification Form</h2>
+
+    <table border="1" cellpadding="0" cellspacing="0" width="1000">
+        <tbody>
+        <tr class="cde-greyfield">
+            <th>#</th>
+            <th>Programme/ Service</th>
+            <th>Indicator</th>
+            <th>DHIS2<br />
+                Result</th>
+            <th>
+                <p>Facility&nbsp;</p>
+
+                <p>Summary<br />
+                    Form</p>
+            </th>
+            <th>Tally<br />
+                Sheet</th>
+            <th>MTUHA<br />
+                Register</th>
+            <th>Do&nbsp;results<br />
+                agree?</th>
+            <th>
+                <p>Score</p>
+
+                <p>(0&nbsp;or&nbsp;1)</p>
+            </th>
+            <th>Comments or<br />
+                reasons for non-<br />
+                agreement</th>
+        </tr>
+        <tr class="cde-greyfield">
+            <th colspan="10" style="text-align: left;">MONTH AND YEAR:</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Labor and Derivery</td>
+            <td># of women who delivered in a health facility</td>
+            <td><input dataelementid="kLI4iGDbN3p" id="totalkLI4iGDbN3p" name="total" readonly="readonly" style="width:3.5em;text-align:center;///" title="Waliojifungulia kituoni" value="[ Waliojifungulia kituoni ]" /></td>
+            <td><input id="zGJFOiPn0Eh-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="Labor and Derivery_Number of women who delivered in a health facility" value="[ Labor and Derivery_Number of women who delivered in a health facility ]" /></td>
+            <td><input id="Wi04TcVks3h-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="Labor and Derivery_Number of women who delivered in a health facility from tally sheet" value="[ Labor and Derivery_Number of women who delivered in a health facility from tally sheet ]" /></td>
+            <td><input id="ZZpXBBzETFJ-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="Labor and Derivery_Number of women who delivered in a health facility from mtuha" value="[ Labor and Derivery_Number of women who delivered in a health facility from mtuha ]" /></td>
+            <td>
+                <div style="display: block"><span style="line-height: 20.8px;">Y <i class="fas fa-check" id="result1icontick" style="color: forestgreen"> . </i> </span> <span style="line-height: 20.8px;margin-left: 15px;">N <i class="fas fa-times" id="result1iconcross" style="color: indianred"> . </i> </span></div>
+            </td>
+            <td>
+                <div id="result1">&nbsp;</div>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>PMTCT</td>
+            <td># of pregnant women who tested positive for HIV(First Test)</td>
+            <td><input dataelementid="uA7nNtZE8bv" id="totaluA7nNtZE8bv" name="total" readonly="readonly" style="width:3.5em;text-align:center;///" title="ANC Wajawazito waliokutwa na VVU (positive) kipimo cha kwanza" value="[ ANC Wajawazito waliokutwa na VVU (positive) kipimo cha kwanza ]" /></td>
+            <td><input id="SZAyDmdWM3m-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="PMTCT_Number of pregnant women who tested positive for HIV(First Test)" value="[ PMTCT_Number of pregnant women who tested positive for HIV(First Test) ]" /></td>
+            <td><input id="jXEUqQSt4dx-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="PMTCT_Number of pregnant women who tested positive for HIV(First Test) from tallysheet" value="[ PMTCT_Number of pregnant women who tested positive for HIV(First Test) from tallysheet ]" /></td>
+            <td><input id="DTBWEAWgqUc-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="PMTCT_Number of pregnant women who tested positive for HIV(First Test) from tallysheet from Mtuha" value="[ PMTCT_Number of pregnant women who tested positive for HIV(First Test) from tallysheet from Mtuha ]" /></td>
+            <td>
+                <div style="display: block"><span style="line-height: 20.8px;">Y <i class="fas fa-check" id="result2icontick" style="color: forestgreen"> . </i> </span> <span style="line-height: 20.8px;margin-left: 15px;">N <i class="fas fa-times" id="result2iconcross" style="color: indianred"> . </i> </span></div>
+            </td>
+            <td>
+                <div id="result2">&nbsp;</div>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>ANC</td>
+            <td># of pregnant women with at least 4 ANC visits</td>
+            <td><input dataelementid="yqA1CfsfBHQ" id="totalyqA1CfsfBHQ" name="total" readonly="readonly" style="width:3.5em;text-align:center;///" title="ANC Hudhurio la nne wajawazito wote" value="[ ANC Hudhurio la nne wajawazito wote ]" /></td>
+            <td><input id="ir4VYuJYJOJ-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="ANC_Number of pregnant women with at least 4 ANC visits" value="[ ANC_Number of pregnant women with at least 4 ANC visits ]" /></td>
+            <td><input id="MYO1slQ2Hyh-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="ANC_Number of pregnant women with at least 4 ANC visits from Tallysheets" value="[ ANC_Number of pregnant women with at least 4 ANC visits from Tallysheets ]" /></td>
+            <td class="cde-greyfield">&nbsp;</td>
+            <td>
+                <div style="display: block"><span style="line-height: 20.8px;">Y <i class="fas fa-check" id="result3icontick" style="color: forestgreen"> . </i> </span> <span style="line-height: 20.8px;margin-left: 15px;">N <i class="fas fa-times" id="result3iconcross" style="color: indianred"> . </i> </span></div>
+            </td>
+            <td>
+                <div id="result3">&nbsp;</div>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>ANC</td>
+            <td># of ANC attendees receiving adequate quantity of iron&nbsp;and folic acid tablet unitil next &nbsp;ANC visit</td>
+            <td><input dataelementid="ZbmHzUkeJbQ" id="totalZbmHzUkeJbQ" name="total" readonly="readonly" style="width:3.5em;text-align:center;///" title="ANC Waliopewa Iron/ Folic vidonge vya Kutosha" value="[ ANC Waliopewa Iron/ Folic vidonge vya Kutosha ]" /></td>
+            <td><input id="TH6WeXrey99-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="ANC_Number of ANC attendees receiving adequate quantity of iron and folic acid tablet unitil next  ANC visit" value="[ ANC_Number of ANC attendees receiving adequate quantity of iron and folic acid tablet unitil next  ANC visit ]" /></td>
+            <td><input id="xD1aMIBl2I7-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="ANC_Number of ANC attendees receiving adequate quantity of iron and folic acid tablet unitil next  ANC visit from TallySheets" value="[ ANC_Number of ANC attendees receiving adequate quantity of iron and folic acid tablet unitil next  ANC visit from TallySheets ]" /></td>
+            <td class="cde-greyfield">&nbsp;</td>
+            <td>
+                <div style="display: block"><span style="line-height: 20.8px;">Y <i class="fas fa-check" id="result4icontick" style="color: forestgreen"> . </i> </span> <span style="line-height: 20.8px;margin-left: 15px;">N <i class="fas fa-times" id="result4iconcross" style="color: indianred"> . </i> </span></div>
+            </td>
+            <td>
+                <div id="result4">&nbsp;</div>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>ANC/Malaria&nbsp;</td>
+            <td># of pregnant women who received two&nbsp;doses of IPT</td>
+            <td><input dataelementid="tIs7rshvixe" id="totaltIs7rshvixe" name="total" readonly="readonly" style="width:3.5em;text-align:center;///" title="ANC Waliopewa IPT2" value="[ ANC Waliopewa IPT2 ]" /></td>
+            <td><input id="SFsfVCemVPh-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="ANC/Malaria_Number of pregnant women who received two doses of IPT" value="[ ANC/Malaria_Number of pregnant women who received two doses of IPT ]" /></td>
+            <td><input id="E3V32diLsB1-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="ANC/Malaria_Number of pregnant women who received two doses of IPT from Tallysheets" value="[ ANC/Malaria_Number of pregnant women who received two doses of IPT from Tallysheets ]" /></td>
+            <td><input id="nyOhXy6g8NP-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="ANC/Malaria_Number of pregnant women who received two doses of IPT from Mtuha" value="[ ANC/Malaria_Number of pregnant women who received two doses of IPT from Mtuha ]" /></td>
+            <td>
+                <div style="display: block"><span style="line-height: 20.8px;">Y <i class="fas fa-check" id="result5icontick" style="color: forestgreen"> . </i> </span> <span style="line-height: 20.8px;margin-left: 15px;">N <i class="fas fa-times" id="result5iconcross" style="color: indianred"> . </i> </span></div>
+            </td>
+            <td>
+                <div id="result5">&nbsp;</div>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td>Immunization</td>
+            <td># of children immunized with 3rd dose of PENTA</td>
+            <td><input id="indicatorfhhtNMzdY5j" indicatorid="fhhtNMzdY5j" name="indicator" readonly="readonly" style="width:3.5em;text-align:center;///" title="X_Penta Watoto Waliochanjwa Penta for dose 3" value="[ X_Penta Watoto Waliochanjwa Penta for dose 3 ]" /></td>
+            <td><input id="icRKuxRMJsa-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="Immunization_Number of children immunized with 3rd dose of PENTA" value="[ Immunization_Number of children immunized with 3rd dose of PENTA ]" /></td>
+            <td><input id="R5zLV1L1AwG-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="Immunization_Number of children immunized with 3rd dose of PENTA from Tallysheets" value="[ Immunization_Number of children immunized with 3rd dose of PENTA from Tallysheets ]" /></td>
+            <td class="cde-greyfield">&nbsp;</td>
+            <td>
+                <div style="display: block"><span style="line-height: 20.8px;">Y <i class="fas fa-check" id="result6icontick" style="color: forestgreen"> . </i> </span> <span style="line-height: 20.8px;margin-left: 15px;">N <i class="fas fa-times" id="result6iconcross" style="color: indianred"> . </i> </span></div>
+            </td>
+            <td>
+                <div id="result6">&nbsp;</div>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td>Under 5</td>
+            <td># of children who received Vit A between&nbsp;12 months and 5 years of age</td>
+            <td><input dataelementid="Nd5BDnxVEP0" id="totalNd5BDnxVEP0" name="total" readonly="readonly" style="width:3.5em;text-align:center;///" title="Nyongeza ya Vitamin A Watoto umri zaidi ya mwaka 1 - 5" value="[ Nyongeza ya Vitamin A Watoto umri zaidi ya mwaka 1 - 5 ]" /></td>
+            <td><input id="vSUGNwUzq9I-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="Under 5_Number of children who received Vit A between 12 months and 5 years of age" value="[ Under 5_Number of children who received Vit A between 12 months and 5 years of age ]" /></td>
+            <td><input id="EKOoVR76QDf-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="Under 5_Number of children who received Vit A between 12 months and 5 years of age from tallySheets" value="[ Under 5_Number of children who received Vit A between 12 months and 5 years of age from tallySheets ]" /></td>
+            <td class="cde-greyfield">&nbsp;</td>
+            <td>
+                <div style="display: block"><span style="line-height: 20.8px;">Y <i class="fas fa-check" id="result7icontick" style="color: forestgreen"> . </i> </span> <span style="line-height: 20.8px;margin-left: 15px;">N <i class="fas fa-times" id="result7iconcross" style="color: indianred"> . </i> </span></div>
+            </td>
+            <td>
+                <div id="result7">&nbsp;</div>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td><strong>8</strong></td>
+            <td>Family&nbsp;Planing</td>
+            <td># of clients who chose injection for their&nbsp;first FP method</td>
+            <td>&nbsp;<input id="indicatortVMvfkCFREF" indicatorid="tVMvfkCFREF" name="indicator" readonly="readonly" style="width:3.5em;text-align:center;///" title="X-FP-Wateja wa sindano" value="[ X-FP-Wateja wa sindano ]" /></td>
+            <td><input id="Mv82eKjwpCe-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="FP_Number of clients who chose injection for their first FP method" value="[ FP_Number of clients who chose injection for their first FP method ]" /></td>
+            <td><input id="wF3wWw5YEo5-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="FP_Number of clients who chose injection for their first FP method from Tallysheets" value="[ FP_Number of clients who chose injection for their first FP method from Tallysheets ]" /></td>
+            <td><input id="qOKAmTV6Ppz-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="FP_Number of clients who chose injection for their first FP method from Mtuha" value="[ FP_Number of clients who chose injection for their first FP method from Mtuha ]" /></td>
+            <td>
+                <div style="display: block"><span style="line-height: 20.8px;">Y <i class="fas fa-check" id="result8icontick" style="color: forestgreen"> . </i> </span> <span style="line-height: 20.8px;margin-left: 15px;">N <i class="fas fa-times" id="result8iconcross" style="color: indianred"> . </i> </span></div>
+            </td>
+            <td>
+                <div id="result8">&nbsp;</div>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>9</td>
+            <td>HEI</td>
+            <td># of infants born to HIV-infected women</td>
+            <td><input id="indicatorVAcw4v9HnXu" indicatorid="VAcw4v9HnXu" name="indicator" readonly="readonly" style="width:3.5em;text-align:center;///" title="X_CH Watoto waliozaliwa na mama mwenye maambukizi ya VVU/ watoto wenye HEID " value="[ X_CH Watoto waliozaliwa na mama mwenye maambukizi ya VVU/ watoto wenye HEID  ]" /></td>
+            <td><input id="vZZVleMx08Z-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="HEI_Number of infants born to HIV-infected women" value="[ HEI_Number of infants born to HIV-infected women ]" /></td>
+            <td><input id="Tdj0yyC2qTy-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="HEI_Number of infants born to HIV-infected women from tallysheets" value="[ HEI_Number of infants born to HIV-infected women from tallysheets ]" /></td>
+            <td><input id="lNlSf2d4Pyf-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="HEI_Number of infants born to HIV-infected women from Mtuha" value="[ HEI_Number of infants born to HIV-infected women from Mtuha ]" /></td>
+            <td>
+                <div style="display: block"><span style="line-height: 20.8px;">Y <i class="fas fa-check" id="result9icontick" style="color: forestgreen"> . </i> </span> <span style="line-height: 20.8px;margin-left: 15px;">N <i class="fas fa-times" id="result9iconcross" style="color: indianred"> . </i> </span></div>
+            </td>
+            <td>
+                <div id="result9">&nbsp;</div>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>10</td>
+            <td>IPD</td>
+            <td># of IPD attendees</td>
+            <td><input id="indicatortz3hHSQ13lN" indicatorid="tz3hHSQ13lN" name="indicator" readonly="readonly" style="width:3.5em;text-align:center;///" title="X_IPD_Jumla ya Mahudhurio wodini" value="[ X_IPD_Jumla ya Mahudhurio wodini ]" /></td>
+            <td><input id="YICpcRHCvKO-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="IPD_Number of IPD attendees" value="[ IPD_Number of IPD attendees ]" /></td>
+            <td><input id="TVOTNWA5x9H-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="IPD_Number of IPD attendees from Tallysheests" value="[ IPD_Number of IPD attendees from Tallysheests ]" /></td>
+            <td><input id="X8QiB00k9DJ-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="IPD_Number of IPD attendees from Mtuha" value="[ IPD_Number of IPD attendees from Mtuha ]" /></td>
+            <td>
+                <div style="display: block"><span style="line-height: 20.8px;">Y <i class="fas fa-check" id="result10icontick" style="color: forestgreen"> . </i> </span> <span style="line-height: 20.8px;margin-left: 15px;">N <i class="fas fa-times" id="result10iconcross" style="color: indianred"> . </i> </span></div>
+            </td>
+            <td>
+                <div id="result10">&nbsp;</div>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>11</td>
+            <td>TB/OPD</td>
+            <td># of TB cases diagnosed</td>
+            <td><input id="indicatordwVUMMRD3eN" indicatorid="dwVUMMRD3eN" name="indicator" readonly="readonly" title="Total number of TB diagnoses from OPD" value="[ Total number of TB diagnoses from OPD ]" /></td>
+            <td><input id="PxI5VvEiXao-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="TB/OPD_Number of TB cases diagnosed" value="[ TB/OPD_Number of TB cases diagnosed ]" /></td>
+            <td><input id="ydrsK20LBJD-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="TB/OPD_Number of TB cases diagnosed from Mtuha" value="[ TB/OPD_Number of TB cases diagnosed from Mtuha ]" /></td>
+            <td><input id="dC4zqNLTgoB-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="TB/OPD_Number of TB cases diagnosed from Tallysheets" value="[ TB/OPD_Number of TB cases diagnosed from Tallysheets ]" /></td>
+            <td>
+                <div style="display: block"><span style="line-height: 20.8px;">Y <i class="fas fa-check" id="result11icontick" style="color: forestgreen"> . </i> </span> <span style="line-height: 20.8px;margin-left: 15px;">N <i class="fas fa-times" id="result11iconcross" style="color: indianred"> . </i> </span></div>
+            </td>
+            <td>
+                <div id="result11">&nbsp;</div>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>12</td>
+            <td>Malaria/OPD</td>
+            <td># of mRDT +ve</td>
+            <td><input dataelementid="NSYWPEpZBuY" id="totalNSYWPEpZBuY" name="total" readonly="readonly" style="width:3.5em;text-align:center;///" title="Malaria mRDT +ve" value="[ Malaria mRDT +ve ]" /></td>
+            <td><input id="Yp6630c5ZJh-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="Malaria/OPD_Number of mRDT +ve" value="[ Malaria/OPD_Number of mRDT +ve ]" /></td>
+            <td><input id="XB3PYuOyUOe-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="Malaria/OPD_Number of mRDT +ve from TallySheets" value="[ Malaria/OPD_Number of mRDT +ve from TallySheets ]" /></td>
+            <td><input id="bxeWT7dsAjD-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="Malaria/OPD_Number of mRDT +ve from Mtuha" value="[ Malaria/OPD_Number of mRDT +ve from Mtuha ]" /></td>
+            <td>
+                <div style="display: block"><span style="line-height: 20.8px;">Y <i class="fas fa-check" id="result12icontick" style="color: forestgreen"> . </i> </span> <span style="line-height: 20.8px;margin-left: 15px;">N <i class="fas fa-times" id="result12iconcross" style="color: indianred"> . </i> </span></div>
+            </td>
+            <td>
+                <div id="result12">&nbsp;</div>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>13</td>
+            <td>NCD/OPD</td>
+            <td># of hypertension diagnoses</td>
+            <td><input dataelementid="eoZtkUbfrmF" id="totaleoZtkUbfrmF" name="total" readonly="readonly" style="width:3.5em;text-align:center;///" title="Hypertension" value="[ Hypertension ]" /></td>
+            <td><input id="sKcdWRV7Ciq-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="NCD/OPD_Number of hypertension diagnoses" value="[ NCD/OPD_Number of hypertension diagnoses ]" /></td>
+            <td><input id="Enf7N2DmULY-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="NCD/OPD_Number of hypertension diagnoses from Tallysheest" value="[ NCD/OPD_Number of hypertension diagnoses from Tallysheest ]" /></td>
+            <td><input id="tgg7EpAzvrp-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="NCD/OPD_Number of hypertension diagnoses from Mtuha" value="[ NCD/OPD_Number of hypertension diagnoses from Mtuha ]" /></td>
+            <td>
+                <div style="display: block"><span style="line-height: 20.8px;">Y <i class="fas fa-check" id="result13icontick" style="color: forestgreen"> . </i> </span> <span style="line-height: 20.8px;margin-left: 15px;">N <i class="fas fa-times" id="result13iconcross" style="color: indianred"> . </i> </span></div>
+            </td>
+            <td>
+                <div id="result13">&nbsp;</div>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>14</td>
+            <td>PITC</td>
+            <td># of new clients (PITC register)</td>
+            <td><input id="indicatorI4coTMDMTZq" indicatorid="I4coTMDMTZq" name="indicator" readonly="readonly" style="width:3.5em;text-align:center;///" title="X HCT wateja wapya (MP)" value="[ X HCT wateja wapya (MP) ]" /></td>
+            <td><input id="tUGw1hUYs8T-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="PITC_Number of new clients (PITC register)" value="[ PITC_Number of new clients (PITC register) ]" /></td>
+            <td class="cde-greyfield">&nbsp;</td>
+            <td><input id="i8jYvLfzNVG-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="PITC_Number of new clients (PITC register) from Mtuha" value="[ PITC_Number of new clients (PITC register) from Mtuha ]" /></td>
+            <td>
+                <div style="display: block"><span style="line-height: 20.8px;">Y <i class="fas fa-check" id="result14icontick" style="color: forestgreen"> . </i> </span> <span style="line-height: 20.8px;margin-left: 15px;">N <i class="fas fa-times" id="result14iconcross" style="color: indianred"> . </i> </span></div>
+            </td>
+            <td>
+                <div id="result14">&nbsp;</div>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr class="cde-greyfield">
+            <th colspan="10" style="text-align: left;">QUARTER AND YEAR:</th>
+        </tr>
+        <tr>
+            <td>15</td>
+            <td>HIV/AIDS</td>
+            <td># of new clients initiated on ART (last full quarter)</td>
+            <td><input dataelementid="ItgPHCQ1hm6" id="totalItgPHCQ1hm6" name="total" readonly="readonly" style="width:3.5em;text-align:center;///" title="New Clients initiated on ART during reporting" value="[ New Clients initiated on ART during reporting ]" /></td>
+            <td><input id="SeH4cqfDK32-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="HIV/AIDS_Number of new clients initiated on ART (last full quarter)" value="[ HIV/AIDS_Number of new clients initiated on ART (last full quarter) ]" /></td>
+            <td class="cde-greyfield">&nbsp;</td>
+            <td><input id="Yos0QGlxLBi-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="HIV/AIDS_Number of new clients initiated on ART (last full quarter) from Mtuha" value="[ HIV/AIDS_Number of new clients initiated on ART (last full quarter) from Mtuha ]" /></td>
+            <td>
+                <div style="display: block"><span style="line-height: 20.8px;">Y <i class="fas fa-check" id="result15icontick" style="color: forestgreen"> . </i> </span> <span style="line-height: 20.8px;margin-left: 15px;">N <i class="fas fa-times" id="result15iconcross" style="color: indianred"> . </i> </span></div>
+            </td>
+            <td>
+                <div id="result15">&nbsp;</div>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr class="cde-greyfield">
+            <th colspan="10" style="text-align: left;">ADDITIONAL INDICATORS:</th>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>
+                <div style="display: block"><span style="line-height: 20.8px;">Y <i class="fas fa-check" id="result16icontick" style="color: forestgreen"> . </i> </span> <span style="line-height: 20.8px;margin-left: 15px;">N <i class="fas fa-times" id="result16iconcross" style="color: indianred"> . </i> </span></div>
+            </td>
+            <td>
+                <div id="result16">&nbsp;</div>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>
+                <div style="display: block"><span style="line-height: 20.8px;">Y <i class="fas fa-check" id="result17icontick" style="color: forestgreen"> . </i> </span> <span style="line-height: 20.8px;margin-left: 15px;">N <i class="fas fa-times" id="result17iconcross" style="color: indianred"> . </i> </span></div>
+            </td>
+            <td>&nbsp;
+                <div id="result17">&nbsp;</div>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="2">Name of facility:&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td id="orgunit_header">&nbsp;</td>
+            <td colspan="7" rowspan="1"><strong>Facility Data Quality Verification Score</strong></td>
+        </tr>
+        <tr>
+            <td colspan="2" rowspan="1">Council:</td>
+            <td id="parentOu">&nbsp;</td>
+            <td colspan="2" rowspan="1">Total score based on indicators assessed</td>
+            <td>[A]</td>
+            <td><input id="FI6KCkDhqDh-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="Total score based on indicators assessed [A]" value="[ Total score based on indicators assessed [A] ]" /></td>
+            <td colspan="2" rowspan="3">Percent score = [A]/[B]</td>
+            <td colspan="1" rowspan="3"><input id="indicatorMM8wnhblH9G" indicatorid="MM8wnhblH9G" name="indicator" readonly="readonly" style="width:3.5em;text-align:center;///" title="Percent score = [A]/[B]" value="[ Percent score = [A]/[B] ]" /></td>
+        </tr>
+        <tr>
+            <td colspan="2" rowspan="1">Date of Verification</td>
+            <td id="datePrinted">&nbsp;</td>
+            <td colspan="2" rowspan="2">Total number of indicators assessed</td>
+            <td>[B]</td>
+            <td colspan="1" rowspan="2"><input id="M3hkw4OqAv6-uGIJ6IdkP7Q-val" name="entryfield" style="width:3.5em;text-align:center;///" title="Total number of indicators assessed [B]" value="[ Total number of indicators assessed [B] ]" /></td>
+        </tr>
+        <tr>
+            <td colspan="3" rowspan="2">
+                <p>Team Names and Signatures:</p>
+
+                <p>&nbsp;</p>
+
+                <p>&nbsp;</p>
+
+                <p><strong>Please attach this form to the National Facility DQA tool</strong></p>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">&nbsp;</td>
+            <td colspan="1">&nbsp;</td>
+            <td colspan="2">&nbsp;</td>
+            <td colspan="1">&nbsp;</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<table border="1" cellpadding="1" cellspacing="1" style="width:500px;display:none">
+    <tbody>
+    <tr>
+        <td><input id="aLkNBpOZXnI-uGIJ6IdkP7Q-val" name="entryfield" title="ANC Clients started on ART at the beginning" value="[ ANC Clients started on ART at the beginning ]" /></td>
+        <td><input id="qd2ieeM9p9Y-uGIJ6IdkP7Q-val" name="entryfield" title="ANC Clients started on Isoniazid Preventive Therapy (IPT)" value="[ ANC Clients started on Isoniazid Preventive Therapy (IPT) ]" /></td>
+        <td><input id="eoZtkUbfrmF-uuidY4WdJml-val" name="entryfield" title="Hypertension Umri chini ya mwezi 1, KE, IPD" value="[ Hypertension Umri chini ya mwezi 1, KE, IPD ]" /></td>
+        <td><input id="eoZtkUbfrmF-Ak7SvGtlnWp-val" name="entryfield" title="Hypertension Umri chini ya mwezi 1, KE, OPD" value="[ Hypertension Umri chini ya mwezi 1, KE, OPD ]" /></td>
+        <td><input id="NSYWPEpZBuY-iaPGviZZIky-val" name="entryfield" title="Malaria mRDT +ve Umri mwezi 1 hadi umri chini ya mwaka 1, ME, IPD" value="[ Malaria mRDT +ve Umri mwezi 1 hadi umri chini ya mwaka 1, ME, IPD ]" /></td>
+        <td><input id="NSYWPEpZBuY-n15V8E7ZLT9-val" name="entryfield" title="Malaria mRDT +ve Umri mwezi 1 hadi umri chini ya mwaka 1, ME, OPD" value="[ Malaria mRDT +ve Umri mwezi 1 hadi umri chini ya mwaka 1, ME, OPD ]" /></td>
+        <td><input id="Nd5BDnxVEP0-MqMQnGOqLuY-val" name="entryfield" title="Nyongeza ya Vitamin A Watoto umri zaidi ya mwaka 1 - 5 KE" value="[ Nyongeza ya Vitamin A Watoto umri zaidi ya mwaka 1 - 5 KE ]" /></td>
+    </tr>
+    <tr>
+        <td><input id="eoZtkUbfrmF-oliDewHdUdd-val" name="entryfield" title="Hypertension Umri chini ya mwezi 1, ME, IPD" value="[ Hypertension Umri chini ya mwezi 1, ME, IPD ]" /></td>
+        <td><input id="eoZtkUbfrmF-xo7RVsgBkpT-val" name="entryfield" title="Hypertension Umri chini ya mwezi 1, ME, OPD" value="[ Hypertension Umri chini ya mwezi 1, ME, OPD ]" /></td>
+        <td><input id="eoZtkUbfrmF-awkJLkKHr7a-val" name="entryfield" title="Hypertension Umri miaka 5 hadi umri chini ya miaka 60, KE, IPD" value="[ Hypertension Umri miaka 5 hadi umri chini ya miaka 60, KE, IPD ]" /></td>
+        <td><input id="eoZtkUbfrmF-sgG28zSclZm-val" name="entryfield" title="Hypertension Umri miaka 5 hadi umri chini ya miaka 60, KE, OPD" value="[ Hypertension Umri miaka 5 hadi umri chini ya miaka 60, KE, OPD ]" /></td>
+        <td><input id="Nd5BDnxVEP0-X0Me7ygpiUT-val" name="entryfield" title="Nyongeza ya Vitamin A Watoto umri zaidi ya mwaka 1 - 5 ME" value="[ Nyongeza ya Vitamin A Watoto umri zaidi ya mwaka 1 - 5 ME ]" /></td>
+        <td><input id="mcVhgPQtLLX-uuidY4WdJml-val" name="entryfield" title="Typhoid Umri chini ya mwezi 1, KE, IPD" value="[ Typhoid Umri chini ya mwezi 1, KE, IPD ]" /></td>
+        <td><input id="mcVhgPQtLLX-Ak7SvGtlnWp-val" name="entryfield" title="Typhoid Umri chini ya mwezi 1, KE, OPD" value="[ Typhoid Umri chini ya mwezi 1, KE, OPD ]" /></td>
+    </tr>
+    <tr>
+        <td><input id="eoZtkUbfrmF-MQKsgFxCtJ7-val" name="entryfield" title="Hypertension Umri miaka 5 hadi umri chini ya miaka 60, ME, IPD" value="[ Hypertension Umri miaka 5 hadi umri chini ya miaka 60, ME, IPD ]" /></td>
+        <td><input id="eoZtkUbfrmF-ddmrU8qJa7L-val" name="entryfield" title="Hypertension Umri miaka 5 hadi umri chini ya miaka 60, ME, OPD" value="[ Hypertension Umri miaka 5 hadi umri chini ya miaka 60, ME, OPD ]" /></td>
+        <td><input id="eoZtkUbfrmF-ZU3sKDB9i2o-val" name="entryfield" title="Hypertension Umri miaka 60 au zaidi, KE, IPD" value="[ Hypertension Umri miaka 60 au zaidi, KE, IPD ]" /></td>
+        <td><input id="eoZtkUbfrmF-ayVLc9to6xY-val" name="entryfield" title="Hypertension Umri miaka 60 au zaidi, KE, OPD" value="[ Hypertension Umri miaka 60 au zaidi, KE, OPD ]" /></td>
+        <td><input id="mcVhgPQtLLX-oliDewHdUdd-val" name="entryfield" title="Typhoid Umri chini ya mwezi 1, ME, IPD" value="[ Typhoid Umri chini ya mwezi 1, ME, IPD ]" /></td>
+        <td><input id="mcVhgPQtLLX-xo7RVsgBkpT-val" name="entryfield" title="Typhoid Umri chini ya mwezi 1, ME, OPD" value="[ Typhoid Umri chini ya mwezi 1, ME, OPD ]" /></td>
+        <td><input id="mcVhgPQtLLX-awkJLkKHr7a-val" name="entryfield" title="Typhoid Umri miaka 5 hadi umri chini ya miaka 60, KE, IPD" value="[ Typhoid Umri miaka 5 hadi umri chini ya miaka 60, KE, IPD ]" /></td>
+    </tr>
+    <tr>
+        <td><input id="eoZtkUbfrmF-o9Oj5Cjekej-val" name="entryfield" title="Hypertension Umri miaka 60 au zaidi, ME, IPD" value="[ Hypertension Umri miaka 60 au zaidi, ME, IPD ]" /></td>
+        <td><input id="eoZtkUbfrmF-aYgz5mh2cbx-val" name="entryfield" title="Hypertension Umri miaka 60 au zaidi, ME, OPD" value="[ Hypertension Umri miaka 60 au zaidi, ME, OPD ]" /></td>
+        <td><input id="eoZtkUbfrmF-dtdut9EncYH-val" name="entryfield" title="Hypertension Umri mwaka 1 hadi umri chini ya miaka 5, KE, IPD" value="[ Hypertension Umri mwaka 1 hadi umri chini ya miaka 5, KE, IPD ]" /></td>
+        <td><input id="eoZtkUbfrmF-kSxbMW8Lmsd-val" name="entryfield" title="Hypertension Umri mwaka 1 hadi umri chini ya miaka 5, KE, OPD" value="[ Hypertension Umri mwaka 1 hadi umri chini ya miaka 5, KE, OPD ]" /></td>
+        <td><input id="mcVhgPQtLLX-sgG28zSclZm-val" name="entryfield" title="Typhoid Umri miaka 5 hadi umri chini ya miaka 60, KE, OPD" value="[ Typhoid Umri miaka 5 hadi umri chini ya miaka 60, KE, OPD ]" /></td>
+        <td><input id="mcVhgPQtLLX-MQKsgFxCtJ7-val" name="entryfield" title="Typhoid Umri miaka 5 hadi umri chini ya miaka 60, ME, IPD" value="[ Typhoid Umri miaka 5 hadi umri chini ya miaka 60, ME, IPD ]" /></td>
+        <td><input id="mcVhgPQtLLX-ddmrU8qJa7L-val" name="entryfield" title="Typhoid Umri miaka 5 hadi umri chini ya miaka 60, ME, OPD" value="[ Typhoid Umri miaka 5 hadi umri chini ya miaka 60, ME, OPD ]" /></td>
+    </tr>
+    <tr>
+        <td><input id="eoZtkUbfrmF-R33m4bJ5OcC-val" name="entryfield" title="Hypertension Umri mwaka 1 hadi umri chini ya miaka 5, ME, IPD" value="[ Hypertension Umri mwaka 1 hadi umri chini ya miaka 5, ME, IPD ]" /></td>
+        <td><input id="eoZtkUbfrmF-PSQ2DsGun8c-val" name="entryfield" title="Hypertension Umri mwaka 1 hadi umri chini ya miaka 5, ME, OPD" value="[ Hypertension Umri mwaka 1 hadi umri chini ya miaka 5, ME, OPD ]" /></td>
+        <td><input id="eoZtkUbfrmF-e0RdqwlP1Xj-val" name="entryfield" title="Hypertension Umri mwezi 1 hadi umri chini ya mwaka 1, KE, IPD" value="[ Hypertension Umri mwezi 1 hadi umri chini ya mwaka 1, KE, IPD ]" /></td>
+        <td><input id="eoZtkUbfrmF-R9Ka4Hd70Wh-val" name="entryfield" title="Hypertension Umri mwezi 1 hadi umri chini ya mwaka 1, KE, OPD" value="[ Hypertension Umri mwezi 1 hadi umri chini ya mwaka 1, KE, OPD ]" /></td>
+        <td><input id="mcVhgPQtLLX-ZU3sKDB9i2o-val" name="entryfield" title="Typhoid Umri miaka 60 au zaidi, KE, IPD" value="[ Typhoid Umri miaka 60 au zaidi, KE, IPD ]" /></td>
+        <td><input id="mcVhgPQtLLX-ayVLc9to6xY-val" name="entryfield" title="Typhoid Umri miaka 60 au zaidi, KE, OPD" value="[ Typhoid Umri miaka 60 au zaidi, KE, OPD ]" /></td>
+        <td><input id="mcVhgPQtLLX-o9Oj5Cjekej-val" name="entryfield" title="Typhoid Umri miaka 60 au zaidi, ME, IPD" value="[ Typhoid Umri miaka 60 au zaidi, ME, IPD ]" /></td>
+    </tr>
+    <tr>
+        <td><input id="eoZtkUbfrmF-iaPGviZZIky-val" name="entryfield" title="Hypertension Umri mwezi 1 hadi umri chini ya mwaka 1, ME, IPD" value="[ Hypertension Umri mwezi 1 hadi umri chini ya mwaka 1, ME, IPD ]" /></td>
+        <td><input id="eoZtkUbfrmF-n15V8E7ZLT9-val" name="entryfield" title="Hypertension Umri mwezi 1 hadi umri chini ya mwaka 1, ME, OPD" value="[ Hypertension Umri mwezi 1 hadi umri chini ya mwaka 1, ME, OPD ]" /></td>
+        <td><input id="NSYWPEpZBuY-uuidY4WdJml-val" name="entryfield" title="Malaria mRDT +ve Umri chini ya mwezi 1, KE, IPD" value="[ Malaria mRDT +ve Umri chini ya mwezi 1, KE, IPD ]" /></td>
+        <td><input id="NSYWPEpZBuY-Ak7SvGtlnWp-val" name="entryfield" title="Malaria mRDT +ve Umri chini ya mwezi 1, KE, OPD" value="[ Malaria mRDT +ve Umri chini ya mwezi 1, KE, OPD ]" /></td>
+        <td><input id="mcVhgPQtLLX-aYgz5mh2cbx-val" name="entryfield" title="Typhoid Umri miaka 60 au zaidi, ME, OPD" value="[ Typhoid Umri miaka 60 au zaidi, ME, OPD ]" /></td>
+        <td><input id="mcVhgPQtLLX-dtdut9EncYH-val" name="entryfield" title="Typhoid Umri mwaka 1 hadi umri chini ya miaka 5, KE, IPD" value="[ Typhoid Umri mwaka 1 hadi umri chini ya miaka 5, KE, IPD ]" /></td>
+        <td><input id="mcVhgPQtLLX-kSxbMW8Lmsd-val" name="entryfield" title="Typhoid Umri mwaka 1 hadi umri chini ya miaka 5, KE, OPD" value="[ Typhoid Umri mwaka 1 hadi umri chini ya miaka 5, KE, OPD ]" /></td>
+    </tr>
+    <tr>
+        <td><input id="NSYWPEpZBuY-oliDewHdUdd-val" name="entryfield" title="Malaria mRDT +ve Umri chini ya mwezi 1, ME, IPD" value="[ Malaria mRDT +ve Umri chini ya mwezi 1, ME, IPD ]" /></td>
+        <td><input id="NSYWPEpZBuY-xo7RVsgBkpT-val" name="entryfield" title="Malaria mRDT +ve Umri chini ya mwezi 1, ME, OPD" value="[ Malaria mRDT +ve Umri chini ya mwezi 1, ME, OPD ]" /></td>
+        <td><input id="NSYWPEpZBuY-awkJLkKHr7a-val" name="entryfield" title="Malaria mRDT +ve Umri miaka 5 hadi umri chini ya miaka 60, KE, IPD" value="[ Malaria mRDT +ve Umri miaka 5 hadi umri chini ya miaka 60, KE, IPD ]" /></td>
+        <td><input id="NSYWPEpZBuY-sgG28zSclZm-val" name="entryfield" title="Malaria mRDT +ve Umri miaka 5 hadi umri chini ya miaka 60, KE, OPD" value="[ Malaria mRDT +ve Umri miaka 5 hadi umri chini ya miaka 60, KE, OPD ]" /></td>
+        <td><input id="mcVhgPQtLLX-R33m4bJ5OcC-val" name="entryfield" title="Typhoid Umri mwaka 1 hadi umri chini ya miaka 5, ME, IPD" value="[ Typhoid Umri mwaka 1 hadi umri chini ya miaka 5, ME, IPD ]" /></td>
+        <td><input id="mcVhgPQtLLX-PSQ2DsGun8c-val" name="entryfield" title="Typhoid Umri mwaka 1 hadi umri chini ya miaka 5, ME, OPD" value="[ Typhoid Umri mwaka 1 hadi umri chini ya miaka 5, ME, OPD ]" /></td>
+        <td><input id="mcVhgPQtLLX-e0RdqwlP1Xj-val" name="entryfield" title="Typhoid Umri mwezi 1 hadi umri chini ya mwaka 1, KE, IPD" value="[ Typhoid Umri mwezi 1 hadi umri chini ya mwaka 1, KE, IPD ]" /></td>
+    </tr>
+    <tr>
+        <td><input id="NSYWPEpZBuY-MQKsgFxCtJ7-val" name="entryfield" title="Malaria mRDT +ve Umri miaka 5 hadi umri chini ya miaka 60, ME, IPD" value="[ Malaria mRDT +ve Umri miaka 5 hadi umri chini ya miaka 60, ME, IPD ]" /></td>
+        <td><input id="NSYWPEpZBuY-ddmrU8qJa7L-val" name="entryfield" title="Malaria mRDT +ve Umri miaka 5 hadi umri chini ya miaka 60, ME, OPD" value="[ Malaria mRDT +ve Umri miaka 5 hadi umri chini ya miaka 60, ME, OPD ]" /></td>
+        <td><input id="NSYWPEpZBuY-ZU3sKDB9i2o-val" name="entryfield" title="Malaria mRDT +ve Umri miaka 60 au zaidi, KE, IPD" value="[ Malaria mRDT +ve Umri miaka 60 au zaidi, KE, IPD ]" /></td>
+        <td><input id="NSYWPEpZBuY-ayVLc9to6xY-val" name="entryfield" title="Malaria mRDT +ve Umri miaka 60 au zaidi, KE, OPD" value="[ Malaria mRDT +ve Umri miaka 60 au zaidi, KE, OPD ]" /></td>
+        <td><input id="mcVhgPQtLLX-R9Ka4Hd70Wh-val" name="entryfield" title="Typhoid Umri mwezi 1 hadi umri chini ya mwaka 1, KE, OPD" value="[ Typhoid Umri mwezi 1 hadi umri chini ya mwaka 1, KE, OPD ]" /></td>
+        <td><input id="mcVhgPQtLLX-iaPGviZZIky-val" name="entryfield" title="Typhoid Umri mwezi 1 hadi umri chini ya mwaka 1, ME, IPD" value="[ Typhoid Umri mwezi 1 hadi umri chini ya mwaka 1, ME, IPD ]" /></td>
+        <td><input id="mcVhgPQtLLX-n15V8E7ZLT9-val" name="entryfield" title="Typhoid Umri mwezi 1 hadi umri chini ya mwaka 1, ME, OPD" value="[ Typhoid Umri mwezi 1 hadi umri chini ya mwaka 1, ME, OPD ]" /></td>
+    </tr>
+    <tr>
+        <td><input id="NSYWPEpZBuY-o9Oj5Cjekej-val" name="entryfield" title="Malaria mRDT +ve Umri miaka 60 au zaidi, ME, IPD" value="[ Malaria mRDT +ve Umri miaka 60 au zaidi, ME, IPD ]" /></td>
+        <td><input id="NSYWPEpZBuY-aYgz5mh2cbx-val" name="entryfield" title="Malaria mRDT +ve Umri miaka 60 au zaidi, ME, OPD" value="[ Malaria mRDT +ve Umri miaka 60 au zaidi, ME, OPD ]" /></td>
+        <td><input id="NSYWPEpZBuY-dtdut9EncYH-val" name="entryfield" title="Malaria mRDT +ve Umri mwaka 1 hadi umri chini ya miaka 5, KE, IPD" value="[ Malaria mRDT +ve Umri mwaka 1 hadi umri chini ya miaka 5, KE, IPD ]" /></td>
+        <td><input id="NSYWPEpZBuY-kSxbMW8Lmsd-val" name="entryfield" title="Malaria mRDT +ve Umri mwaka 1 hadi umri chini ya miaka 5, KE, OPD" value="[ Malaria mRDT +ve Umri mwaka 1 hadi umri chini ya miaka 5, KE, OPD ]" /></td>
+        <td><input id="yqA1CfsfBHQ-UVLU1Njotu4-val" name="entryfield" title="ANC Hudhurio la nne wajawazito wote &lt; 20" value="[ ANC Hudhurio la nne wajawazito wote &lt; 20 ]" /></td>
+        <td><input id="yqA1CfsfBHQ-lVnpcptMtAD-val" name="entryfield" title="ANC Hudhurio la nne wajawazito wote &gt;= 20" value="[ ANC Hudhurio la nne wajawazito wote &gt;= 20 ]" /></td>
+        <td><input id="tIs7rshvixe-UVLU1Njotu4-val" name="entryfield" title="ANC Waliopewa IPT2 &lt; 20" value="[ ANC Waliopewa IPT2 &lt; 20 ]" /></td>
+    </tr>
+    <tr>
+        <td><input id="NSYWPEpZBuY-R33m4bJ5OcC-val" name="entryfield" title="Malaria mRDT +ve Umri mwaka 1 hadi umri chini ya miaka 5, ME, IPD" value="[ Malaria mRDT +ve Umri mwaka 1 hadi umri chini ya miaka 5, ME, IPD ]" /></td>
+        <td><input id="NSYWPEpZBuY-PSQ2DsGun8c-val" name="entryfield" title="Malaria mRDT +ve Umri mwaka 1 hadi umri chini ya miaka 5, ME, OPD" value="[ Malaria mRDT +ve Umri mwaka 1 hadi umri chini ya miaka 5, ME, OPD ]" /></td>
+        <td><input id="NSYWPEpZBuY-e0RdqwlP1Xj-val" name="entryfield" title="Malaria mRDT +ve Umri mwezi 1 hadi umri chini ya mwaka 1, KE, IPD" value="[ Malaria mRDT +ve Umri mwezi 1 hadi umri chini ya mwaka 1, KE, IPD ]" /></td>
+        <td><input id="NSYWPEpZBuY-R9Ka4Hd70Wh-val" name="entryfield" title="Malaria mRDT +ve Umri mwezi 1 hadi umri chini ya mwaka 1, KE, OPD" value="[ Malaria mRDT +ve Umri mwezi 1 hadi umri chini ya mwaka 1, KE, OPD ]" /></td>
+        <td><input id="tIs7rshvixe-lVnpcptMtAD-val" name="entryfield" title="ANC Waliopewa IPT2 &gt;= 20" value="[ ANC Waliopewa IPT2 &gt;= 20 ]" /></td>
+        <td><input id="ZbmHzUkeJbQ-UVLU1Njotu4-val" name="entryfield" title="ANC Waliopewa Iron/ Folic vidonge vya Kutosha &lt; 20" value="[ ANC Waliopewa Iron/ Folic vidonge vya Kutosha &lt; 20 ]" /></td>
+        <td><input id="ZbmHzUkeJbQ-lVnpcptMtAD-val" name="entryfield" title="ANC Waliopewa Iron/ Folic vidonge vya Kutosha &gt;= 20" value="[ ANC Waliopewa Iron/ Folic vidonge vya Kutosha &gt;= 20 ]" /></td>
+    </tr>
+    <tr>
+        <td><input id="ZBAEsBgVrBd-UVLU1Njotu4-val" name="entryfield" title="Waliogundulika VVU Positive kutoka ANC &lt; 20" value="[ Waliogundulika VVU Positive kutoka ANC &lt; 20 ]" /></td>
+        <td><input id="ZBAEsBgVrBd-lVnpcptMtAD-val" name="entryfield" title="Waliogundulika VVU Positive kutoka ANC &gt;= 20" value="[ Waliogundulika VVU Positive kutoka ANC &gt;= 20 ]" /></td>
+        <td><input id="kLI4iGDbN3p-UVLU1Njotu4-val" name="entryfield" title="Waliojifungulia kituoni &lt; 20" value="[ Waliojifungulia kituoni &lt; 20 ]" /></td>
+        <td><input id="kLI4iGDbN3p-lVnpcptMtAD-val" name="entryfield" title="Waliojifungulia kituoni &gt;= 20" value="[ Waliojifungulia kituoni &gt;= 20 ]" /></td>
+        <td><input id="axYyuzZ1pua-UVLU1Njotu4-val" name="entryfield" title="ANC Waliopewa IPT4 &lt; 20" value="[ ANC Waliopewa IPT4 &lt; 20 ]" /></td>
+        <td><input id="axYyuzZ1pua-lVnpcptMtAD-val" name="entryfield" title="ANC Waliopewa IPT4 &gt;= 20" value="[ ANC Waliopewa IPT4 &gt;= 20 ]" /></td>
+        <td><input id="Ejy66fSepec-UVLU1Njotu4-val" name="entryfield" title="Waliozaliwa na mama wenye VVU  &lt; 20" value="[ Waliozaliwa na mama wenye VVU  &lt; 20 ]" /></td>
+    </tr>
+    <tr>
+        <td><input id="Ejy66fSepec-lVnpcptMtAD-val" name="entryfield" title="Waliozaliwa na mama wenye VVU  &gt;= 20" value="[ Waliozaliwa na mama wenye VVU  &gt;= 20 ]" /></td>
+        <td><input id="epPM7fO8CnH-RcgnLQy1MxN-val" name="entryfield" title="Wateja wa sindano FP-Marudio" value="[ Wateja wa sindano FP-Marudio ]" /></td>
+        <td><input id="epPM7fO8CnH-mqEq00QQzg1-val" name="entryfield" title="Wateja wa sindano Miaka 10-14 Wapya" value="[ Wateja wa sindano Miaka 10-14 Wapya ]" /></td>
+        <td><input id="epPM7fO8CnH-GXiGsCuYvyW-val" name="entryfield" title="Wateja wa sindano Miaka 15-19 Wapya" value="[ Wateja wa sindano Miaka 15-19 Wapya ]" /></td>
+        <td><input id="epPM7fO8CnH-l6gzEB6sxoO-val" name="entryfield" title="Wateja wa sindano Miaka 20 -24 Wapya" value="[ Wateja wa sindano Miaka 20 -24 Wapya ]" /></td>
+        <td><input id="epPM7fO8CnH-sZr8F1RY8Zn-val" name="entryfield" title="Wateja wa sindano Miaka 25 na Zaidi Wapya" value="[ Wateja wa sindano Miaka 25 na Zaidi Wapya ]" /></td>
+        <td><input id="V2ZzQl7dgVF-USFFdHPiMHX-val" name="entryfield" title="Watoto Waliochanjwa Penta Above 1, KE, Inside Service Area, Dose 0" value="[ Watoto Waliochanjwa Penta Above 1, KE, Inside Service Area, Dose 0 ]" /></td>
+    </tr>
+    <tr>
+        <td><input id="V2ZzQl7dgVF-stQnTPC3sGY-val" name="entryfield" title="Watoto Waliochanjwa Penta Above 1, KE, Inside Service Area, Dose 1" value="[ Watoto Waliochanjwa Penta Above 1, KE, Inside Service Area, Dose 1 ]" /></td>
+        <td><input id="V2ZzQl7dgVF-dLKzJyAjxEv-val" name="entryfield" title="Watoto Waliochanjwa Penta Above 1, KE, Inside Service Area, Dose 2" value="[ Watoto Waliochanjwa Penta Above 1, KE, Inside Service Area, Dose 2 ]" /></td>
+        <td><input id="V2ZzQl7dgVF-blVnNX60cr2-val" name="entryfield" title="Watoto Waliochanjwa Penta Above 1, KE, Inside Service Area, Dose 3" value="[ Watoto Waliochanjwa Penta Above 1, KE, Inside Service Area, Dose 3 ]" /></td>
+        <td><input id="V2ZzQl7dgVF-fJ0KkKDiOsT-val" name="entryfield" title="Watoto Waliochanjwa Penta Above 1, KE, Outside Service Area, Dose 0" value="[ Watoto Waliochanjwa Penta Above 1, KE, Outside Service Area, Dose 0 ]" /></td>
+        <td><input id="V2ZzQl7dgVF-iAWOHdNXR78-val" name="entryfield" title="Watoto Waliochanjwa Penta Above 1, KE, Outside Service Area, Dose 1" value="[ Watoto Waliochanjwa Penta Above 1, KE, Outside Service Area, Dose 1 ]" /></td>
+        <td><input id="V2ZzQl7dgVF-CaYd1chlDO2-val" name="entryfield" title="Watoto Waliochanjwa Penta Above 1, KE, Outside Service Area, Dose 2" value="[ Watoto Waliochanjwa Penta Above 1, KE, Outside Service Area, Dose 2 ]" /></td>
+        <td><input id="V2ZzQl7dgVF-SEVVkVmtPmv-val" name="entryfield" title="Watoto Waliochanjwa Penta Above 1, KE, Outside Service Area, Dose 3" value="[ Watoto Waliochanjwa Penta Above 1, KE, Outside Service Area, Dose 3 ]" /></td>
+    </tr>
+    <tr>
+        <td><input id="V2ZzQl7dgVF-i9QljzU0oxs-val" name="entryfield" title="Watoto Waliochanjwa Penta Above 1, ME, Inside Service Area, Dose 0" value="[ Watoto Waliochanjwa Penta Above 1, ME, Inside Service Area, Dose 0 ]" /></td>
+        <td><input id="V2ZzQl7dgVF-WC5421NUHK7-val" name="entryfield" title="Watoto Waliochanjwa Penta Above 1, ME, Inside Service Area, Dose 1" value="[ Watoto Waliochanjwa Penta Above 1, ME, Inside Service Area, Dose 1 ]" /></td>
+        <td><input id="V2ZzQl7dgVF-cjJCwxzcdsX-val" name="entryfield" title="Watoto Waliochanjwa Penta Above 1, ME, Inside Service Area, Dose 2" value="[ Watoto Waliochanjwa Penta Above 1, ME, Inside Service Area, Dose 2 ]" /></td>
+        <td><input id="V2ZzQl7dgVF-cSgsE8VZXrk-val" name="entryfield" title="Watoto Waliochanjwa Penta Above 1, ME, Inside Service Area, Dose 3" value="[ Watoto Waliochanjwa Penta Above 1, ME, Inside Service Area, Dose 3 ]" /></td>
+        <td><input id="V2ZzQl7dgVF-xj9CGbZJkJg-val" name="entryfield" title="Watoto Waliochanjwa Penta Above 1, ME, Outside Service Area, Dose 0" value="[ Watoto Waliochanjwa Penta Above 1, ME, Outside Service Area, Dose 0 ]" /></td>
+        <td><input id="V2ZzQl7dgVF-HIHeePiLndi-val" name="entryfield" title="Watoto Waliochanjwa Penta Above 1, ME, Outside Service Area, Dose 1" value="[ Watoto Waliochanjwa Penta Above 1, ME, Outside Service Area, Dose 1 ]" /></td>
+        <td><input id="V2ZzQl7dgVF-iwKKqMuakds-val" name="entryfield" title="Watoto Waliochanjwa Penta Above 1, ME, Outside Service Area, Dose 2" value="[ Watoto Waliochanjwa Penta Above 1, ME, Outside Service Area, Dose 2 ]" /></td>
+    </tr>
+    <tr>
+        <td><input id="V2ZzQl7dgVF-gxgrWHOgnPN-val" name="entryfield" title="Watoto Waliochanjwa Penta Above 1, ME, Outside Service Area, Dose 3" value="[ Watoto Waliochanjwa Penta Above 1, ME, Outside Service Area, Dose 3 ]" /></td>
+        <td><input id="V2ZzQl7dgVF-BY8xK7uTPEr-val" name="entryfield" title="Watoto Waliochanjwa Penta Under 1, KE, Inside Service Area, Dose 0" value="[ Watoto Waliochanjwa Penta Under 1, KE, Inside Service Area, Dose 0 ]" /></td>
+        <td><input id="V2ZzQl7dgVF-wO7Dim0ZDpa-val" name="entryfield" title="Watoto Waliochanjwa Penta Under 1, KE, Inside Service Area, Dose 1" value="[ Watoto Waliochanjwa Penta Under 1, KE, Inside Service Area, Dose 1 ]" /></td>
+        <td><input id="V2ZzQl7dgVF-aG7HTixUr97-val" name="entryfield" title="Watoto Waliochanjwa Penta Under 1, KE, Inside Service Area, Dose 2" value="[ Watoto Waliochanjwa Penta Under 1, KE, Inside Service Area, Dose 2 ]" /></td>
+        <td><input id="V2ZzQl7dgVF-m744Z2mKjbB-val" name="entryfield" title="Watoto Waliochanjwa Penta Under 1, KE, Inside Service Area, Dose 3" value="[ Watoto Waliochanjwa Penta Under 1, KE, Inside Service Area, Dose 3 ]" /></td>
+        <td><input id="V2ZzQl7dgVF-N8QXDXR8hYj-val" name="entryfield" title="Watoto Waliochanjwa Penta Under 1, KE, Outside Service Area, Dose 0" value="[ Watoto Waliochanjwa Penta Under 1, KE, Outside Service Area, Dose 0 ]" /></td>
+        <td><input id="V2ZzQl7dgVF-CXvTJFWe8Pd-val" name="entryfield" title="Watoto Waliochanjwa Penta Under 1, KE, Outside Service Area, Dose 1" value="[ Watoto Waliochanjwa Penta Under 1, KE, Outside Service Area, Dose 1 ]" /></td>
+    </tr>
+    <tr>
+        <td><input id="V2ZzQl7dgVF-OU9GynkMCcw-val" name="entryfield" title="Watoto Waliochanjwa Penta Under 1, KE, Outside Service Area, Dose 2" value="[ Watoto Waliochanjwa Penta Under 1, KE, Outside Service Area, Dose 2 ]" /></td>
+        <td><input id="V2ZzQl7dgVF-PrQ89ZQyNdN-val" name="entryfield" title="Watoto Waliochanjwa Penta Under 1, KE, Outside Service Area, Dose 3" value="[ Watoto Waliochanjwa Penta Under 1, KE, Outside Service Area, Dose 3 ]" /></td>
+        <td><input id="V2ZzQl7dgVF-loi8Cth8lY3-val" name="entryfield" title="Watoto Waliochanjwa Penta Under 1, ME, Inside Service Area, Dose 0" value="[ Watoto Waliochanjwa Penta Under 1, ME, Inside Service Area, Dose 0 ]" /></td>
+        <td><input id="V2ZzQl7dgVF-VHDAmCmomtX-val" name="entryfield" title="Watoto Waliochanjwa Penta Under 1, ME, Inside Service Area, Dose 1" value="[ Watoto Waliochanjwa Penta Under 1, ME, Inside Service Area, Dose 1 ]" /></td>
+        <td><input id="V2ZzQl7dgVF-M25t8zwJwpx-val" name="entryfield" title="Watoto Waliochanjwa Penta Under 1, ME, Inside Service Area, Dose 2" value="[ Watoto Waliochanjwa Penta Under 1, ME, Inside Service Area, Dose 2 ]" /></td>
+        <td><input id="V2ZzQl7dgVF-l0rjUkA87wd-val" name="entryfield" title="Watoto Waliochanjwa Penta Under 1, ME, Inside Service Area, Dose 3" value="[ Watoto Waliochanjwa Penta Under 1, ME, Inside Service Area, Dose 3 ]" /></td>
+        <td><input id="V2ZzQl7dgVF-BB2nWnoZZvG-val" name="entryfield" title="Watoto Waliochanjwa Penta Under 1, ME, Outside Service Area, Dose 0" value="[ Watoto Waliochanjwa Penta Under 1, ME, Outside Service Area, Dose 0 ]" /></td>
+    </tr>
+    <tr>
+        <td><input id="V2ZzQl7dgVF-s4R2q5UaAtn-val" name="entryfield" title="Watoto Waliochanjwa Penta Under 1, ME, Outside Service Area, Dose 1" value="[ Watoto Waliochanjwa Penta Under 1, ME, Outside Service Area, Dose 1 ]" /></td>
+        <td><input id="V2ZzQl7dgVF-WhEKXqGQCt7-val" name="entryfield" title="Watoto Waliochanjwa Penta Under 1, ME, Outside Service Area, Dose 2" value="[ Watoto Waliochanjwa Penta Under 1, ME, Outside Service Area, Dose 2 ]" /></td>
+        <td><input id="V2ZzQl7dgVF-s8796E20RH2-val" name="entryfield" title="Watoto Waliochanjwa Penta Under 1, ME, Outside Service Area, Dose 3" value="[ Watoto Waliochanjwa Penta Under 1, ME, Outside Service Area, Dose 3 ]" /></td>
+        <td><input id="Yut5amdi7iw-uuidY4WdJml-val" name="entryfield" title="Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri chini ya mwezi 1, KE, IPD" value="[ Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri chini ya mwezi 1, KE, IPD ]" /></td>
+        <td><input id="Yut5amdi7iw-Ak7SvGtlnWp-val" name="entryfield" title="Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri chini ya mwezi 1, KE, OPD" value="[ Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri chini ya mwezi 1, KE, OPD ]" /></td>
+        <td><input id="Yut5amdi7iw-oliDewHdUdd-val" name="entryfield" title="Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri chini ya mwezi 1, ME, IPD" value="[ Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri chini ya mwezi 1, ME, IPD ]" /></td>
+        <td><input id="Yut5amdi7iw-xo7RVsgBkpT-val" name="entryfield" title="Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri chini ya mwezi 1, ME, OPD" value="[ Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri chini ya mwezi 1, ME, OPD ]" /></td>
+    </tr>
+    <tr>
+        <td><input id="Yut5amdi7iw-awkJLkKHr7a-val" name="entryfield" title="Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri miaka 5 hadi umri chini ya miaka 60, KE, IPD" value="[ Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri miaka 5 hadi umri chini ya miaka 60, KE, IPD ]" /></td>
+        <td><input id="Yut5amdi7iw-sgG28zSclZm-val" name="entryfield" title="Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri miaka 5 hadi umri chini ya miaka 60, KE, OPD" value="[ Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri miaka 5 hadi umri chini ya miaka 60, KE, OPD ]" /></td>
+        <td><input id="Yut5amdi7iw-MQKsgFxCtJ7-val" name="entryfield" title="Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri miaka 5 hadi umri chini ya miaka 60, ME, IPD" value="[ Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri miaka 5 hadi umri chini ya miaka 60, ME, IPD ]" /></td>
+        <td><input id="Yut5amdi7iw-ddmrU8qJa7L-val" name="entryfield" title="Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri miaka 5 hadi umri chini ya miaka 60, ME, OPD" value="[ Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri miaka 5 hadi umri chini ya miaka 60, ME, OPD ]" /></td>
+        <td><input id="Yut5amdi7iw-ZU3sKDB9i2o-val" name="entryfield" title="Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri miaka 60 au zaidi, KE, IPD" value="[ Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri miaka 60 au zaidi, KE, IPD ]" /></td>
+        <td><input id="Yut5amdi7iw-ayVLc9to6xY-val" name="entryfield" title="Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri miaka 60 au zaidi, KE, OPD" value="[ Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri miaka 60 au zaidi, KE, OPD ]" /></td>
+        <td><input id="Yut5amdi7iw-o9Oj5Cjekej-val" name="entryfield" title="Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri miaka 60 au zaidi, ME, IPD" value="[ Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri miaka 60 au zaidi, ME, IPD ]" /></td>
+    </tr>
+    <tr>
+        <td><input id="Yut5amdi7iw-aYgz5mh2cbx-val" name="entryfield" title="Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri miaka 60 au zaidi, ME, OPD" value="[ Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri miaka 60 au zaidi, ME, OPD ]" /></td>
+        <td><input id="Yut5amdi7iw-dtdut9EncYH-val" name="entryfield" title="Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri mwaka 1 hadi umri chini ya miaka 5, KE, IPD" value="[ Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri mwaka 1 hadi umri chini ya miaka 5, KE, IPD ]" /></td>
+        <td><input id="Yut5amdi7iw-kSxbMW8Lmsd-val" name="entryfield" title="Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri mwaka 1 hadi umri chini ya miaka 5, KE, OPD" value="[ Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri mwaka 1 hadi umri chini ya miaka 5, KE, OPD ]" /></td>
+        <td><input id="Yut5amdi7iw-R33m4bJ5OcC-val" name="entryfield" title="Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri mwaka 1 hadi umri chini ya miaka 5, ME, IPD" value="[ Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri mwaka 1 hadi umri chini ya miaka 5, ME, IPD ]" /></td>
+        <td><input id="Yut5amdi7iw-PSQ2DsGun8c-val" name="entryfield" title="Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri mwaka 1 hadi umri chini ya miaka 5, ME, OPD" value="[ Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri mwaka 1 hadi umri chini ya miaka 5, ME, OPD ]" /></td>
+        <td><input id="Yut5amdi7iw-e0RdqwlP1Xj-val" name="entryfield" title="Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri mwezi 1 hadi umri chini ya mwaka 1, KE, IPD" value="[ Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri mwezi 1 hadi umri chini ya mwaka 1, KE, IPD ]" /></td>
+        <td><input id="Yut5amdi7iw-R9Ka4Hd70Wh-val" name="entryfield" title="Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri mwezi 1 hadi umri chini ya mwaka 1, KE, OPD" value="[ Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri mwezi 1 hadi umri chini ya mwaka 1, KE, OPD ]" /></td>
+    </tr>
+    <tr>
+        <td><input id="Yut5amdi7iw-iaPGviZZIky-val" name="entryfield" title="Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri mwezi 1 hadi umri chini ya mwaka 1, ME, IPD" value="[ Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri mwezi 1 hadi umri chini ya mwaka 1, ME, IPD ]" /></td>
+        <td><input id="Yut5amdi7iw-n15V8E7ZLT9-val" name="entryfield" title="Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri mwezi 1 hadi umri chini ya mwaka 1, ME, OPD" value="[ Mahudhurio ya kwanza/wagonjwa wapya (kwenye kituo husika kwa tatizo fulani la kiafya) Umri mwezi 1 hadi umri chini ya mwaka 1, ME, OPD ]" /></td>
+        <td><input id="Dm3ZBPCj7GR-p8FcvwlSZls-val" name="entryfield" title="HCT Idadi ya wateja wapya(MP) 1-4, KE" value="[ HCT Idadi ya wateja wapya(MP) 1-4, KE ]" /></td>
+        <td><input id="Dm3ZBPCj7GR-pONaYKcSv6T-val" name="entryfield" title="HCT Idadi ya wateja wapya(MP) 10-14, KE" value="[ HCT Idadi ya wateja wapya(MP) 10-14, KE ]" /></td>
+        <td><input id="Dm3ZBPCj7GR-U6OlnY7OmLl-val" name="entryfield" title="HCT Idadi ya wateja wapya(MP) 1-4, ME" value="[ HCT Idadi ya wateja wapya(MP) 1-4, ME ]" /></td>
+        <td><input id="Dm3ZBPCj7GR-r2r7fVyuiP3-val" name="entryfield" title="HCT Idadi ya wateja wapya(MP) 10-14, ME" value="[ HCT Idadi ya wateja wapya(MP) 10-14, ME ]" /></td>
+        <td><input id="Dm3ZBPCj7GR-YWSpHWl1IB3-val" name="entryfield" title="HCT Idadi ya wateja wapya(MP) 15 - 19, KE" value="[ HCT Idadi ya wateja wapya(MP) 15 - 19, KE ]" /></td>
+    </tr>
+    <tr>
+        <td><input id="Dm3ZBPCj7GR-F15za2kWprl-val" name="entryfield" title="HCT Idadi ya wateja wapya(MP) 15 - 19, ME" value="[ HCT Idadi ya wateja wapya(MP) 15 - 19, ME ]" /></td>
+        <td><input id="Dm3ZBPCj7GR-rEaPFAuHrHF-val" name="entryfield" title="HCT Idadi ya wateja wapya(MP) 20 - 24, KE" value="[ HCT Idadi ya wateja wapya(MP) 20 - 24, KE ]" /></td>
+        <td><input id="Dm3ZBPCj7GR-B8F0IpXyMBL-val" name="entryfield" title="HCT Idadi ya wateja wapya(MP) 20 - 24, ME" value="[ HCT Idadi ya wateja wapya(MP) 20 - 24, ME ]" /></td>
+        <td><input id="Dm3ZBPCj7GR-T34sQ3gdewR-val" name="entryfield" title="HCT Idadi ya wateja wapya(MP) 25-49, KE" value="[ HCT Idadi ya wateja wapya(MP) 25-49, KE ]" /></td>
+        <td><input id="Dm3ZBPCj7GR-psbitKGlmSe-val" name="entryfield" title="HCT Idadi ya wateja wapya(MP) 25-49, ME" value="[ HCT Idadi ya wateja wapya(MP) 25-49, ME ]" /></td>
+        <td><input id="Dm3ZBPCj7GR-Xcp84cDDdRK-val" name="entryfield" title="HCT Idadi ya wateja wapya(MP) &lt;1, KE" value="[ HCT Idadi ya wateja wapya(MP) &lt;1, KE ]" /></td>
+        <td><input id="Dm3ZBPCj7GR-E5yCz04KMnY-val" name="entryfield" title="HCT Idadi ya wateja wapya(MP) &lt;1, ME" value="[ HCT Idadi ya wateja wapya(MP) &lt;1, ME ]" /></td>
+    </tr>
+    <tr>
+        <td><input id="Dm3ZBPCj7GR-Ltmqwcmzn3e-val" name="entryfield" title="HCT Idadi ya wateja wapya(MP) &gt;=50, KE" value="[ HCT Idadi ya wateja wapya(MP) &gt;=50, KE ]" /></td>
+        <td><input id="Dm3ZBPCj7GR-szW8xVM7cqd-val" name="entryfield" title="HCT Idadi ya wateja wapya(MP) &gt;=50, ME" value="[ HCT Idadi ya wateja wapya(MP) &gt;=50, ME ]" /></td>
+        <td><input id="Dm3ZBPCj7GR-M6kbu6X08v6-val" name="entryfield" title="HCT Idadi ya wateja wapya(MP) Miaka 5-9, KE" value="[ HCT Idadi ya wateja wapya(MP) Miaka 5-9, KE ]" /></td>
+        <td><input id="Dm3ZBPCj7GR-SLPqZtBUVL0-val" name="entryfield" title="HCT Idadi ya wateja wapya(MP) Miaka 5-9, ME" value="[ HCT Idadi ya wateja wapya(MP) Miaka 5-9, ME ]" /></td>
+        <td><input dataelementid="Dm3ZBPCj7GR" id="totalDm3ZBPCj7GR" name="total" readonly="readonly" style="width:3.5em;text-align:center;///" title="HCT Idadi ya wateja wapya(MP)" value="[ HCT Idadi ya wateja wapya(MP) ]" /></td>
+        <td><input id="ItgPHCQ1hm6-KmmKuXofUzA-val" name="entryfield" title="New Clients initiated on ART during reporting KE" value="[ New Clients initiated on ART during reporting KE ]" /></td>
+        <td><input id="ItgPHCQ1hm6-YpFuX3wm6r8-val" name="entryfield" title="New Clients initiated on ART during reporting KE, 1-4" value="[ New Clients initiated on ART during reporting KE, 1-4 ]" /></td>
+    </tr>
+    <tr>
+        <td><input id="ItgPHCQ1hm6-cmlhcvPcdol-val" name="entryfield" title="New Clients initiated on ART during reporting KE, 10 -14" value="[ New Clients initiated on ART during reporting KE, 10 -14 ]" /></td>
+        <td><input id="ItgPHCQ1hm6-k3TqmSh7Iaw-val" name="entryfield" title="New Clients initiated on ART during reporting KE, 15 - 19" value="[ New Clients initiated on ART during reporting KE, 15 - 19 ]" /></td>
+        <td><input id="ItgPHCQ1hm6-IPlzO8n4mTM-val" name="entryfield" title="New Clients initiated on ART during reporting KE, 20 - 24" value="[ New Clients initiated on ART during reporting KE, 20 - 24 ]" /></td>
+        <td><input id="ItgPHCQ1hm6-RdYpP9qHk8Y-val" name="entryfield" title="New Clients initiated on ART during reporting KE, 25-49" value="[ New Clients initiated on ART during reporting KE, 25-49 ]" /></td>
+        <td><input id="ItgPHCQ1hm6-Wxh8aOJVrgt-val" name="entryfield" title="undefined" value="[ undefined ]" /></td>
+        <td><input id="ItgPHCQ1hm6-IR5epaaFjxT-val" name="entryfield" title="New Clients initiated on ART during reporting KE, &lt; 1" value="[ New Clients initiated on ART during reporting KE, &lt; 1 ]" /></td>
+        <td><input id="ItgPHCQ1hm6-pZgEhWO2R2W-val" name="entryfield" title="New Clients initiated on ART during reporting KE, Miaka 5-9" value="[ New Clients initiated on ART during reporting KE, Miaka 5-9 ]" /></td>
+    </tr>
+    <tr>
+        <td><input id="ItgPHCQ1hm6-OKxxCNhyCrd-val" name="entryfield" title="New Clients initiated on ART during reporting ME" value="[ New Clients initiated on ART during reporting ME ]" /></td>
+        <td><input id="ItgPHCQ1hm6-ttFf9vc6pnB-val" name="entryfield" title="New Clients initiated on ART during reporting ME, 1-4" value="[ New Clients initiated on ART during reporting ME, 1-4 ]" /></td>
+        <td><input id="ItgPHCQ1hm6-Xns0ysCNhcv-val" name="entryfield" title="New Clients initiated on ART during reporting ME, 10 -14" value="[ New Clients initiated on ART during reporting ME, 10 -14 ]" /></td>
+        <td><input id="ItgPHCQ1hm6-vWP9fZr7uhQ-val" name="entryfield" title="New Clients initiated on ART during reporting ME, 15 - 19" value="[ New Clients initiated on ART during reporting ME, 15 - 19 ]" /></td>
+        <td><input id="ItgPHCQ1hm6-aGBeRPJK1sS-val" name="entryfield" title="New Clients initiated on ART during reporting ME, 20 - 24" value="[ New Clients initiated on ART during reporting ME, 20 - 24 ]" /></td>
+        <td><input id="ItgPHCQ1hm6-eRJteTfX3mD-val" name="entryfield" title="New Clients initiated on ART during reporting ME, 25-49" value="[ New Clients initiated on ART during reporting ME, 25-49 ]" /></td>
+        <td><input id="ItgPHCQ1hm6-Kosck5RqyTX-val" name="entryfield" title="undefined" value="[ undefined ]" /></td>
+    </tr>
+    <tr>
+        <td><input id="ItgPHCQ1hm6-nehCW5s6Hx4-val" name="entryfield" title="New Clients initiated on ART during reporting ME, &lt; 1" value="[ New Clients initiated on ART during reporting ME, &lt; 1 ]" /></td>
+        <td><input id="ItgPHCQ1hm6-hXe7HBGnRa9-val" name="entryfield" title="New Clients initiated on ART during reporting ME, Miaka 5-9" value="[ New Clients initiated on ART during reporting ME, Miaka 5-9 ]" /></td>
+        <td><input id="xVbmMwUk5ug-uGIJ6IdkP7Q-val" name="entryfield" title="ANC New Clients initiated on ART during reporting" value="[ ANC New Clients initiated on ART during reporting ]" /></td>
+        <td><input id="ACM4BHrKZNQ-uuidY4WdJml-val" name="entryfield" title="Tuberculosis Umri chini ya mwezi 1, KE, IPD" value="[ Tuberculosis Umri chini ya mwezi 1, KE, IPD ]" /></td>
+        <td><input id="ACM4BHrKZNQ-oliDewHdUdd-val" name="entryfield" title="Tuberculosis Umri chini ya mwezi 1, ME, IPD" value="[ Tuberculosis Umri chini ya mwezi 1, ME, IPD ]" /></td>
+        <td><input id="ACM4BHrKZNQ-Ak7SvGtlnWp-val" name="entryfield" title="Tuberculosis Umri chini ya mwezi 1, KE, OPD" value="[ Tuberculosis Umri chini ya mwezi 1, KE, OPD ]" /></td>
+        <td><input id="ACM4BHrKZNQ-xo7RVsgBkpT-val" name="entryfield" title="Tuberculosis Umri chini ya mwezi 1, ME, OPD" value="[ Tuberculosis Umri chini ya mwezi 1, ME, OPD ]" /></td>
+    </tr>
+    <tr>
+        <td><input id="ACM4BHrKZNQ-awkJLkKHr7a-val" name="entryfield" title="Tuberculosis Umri miaka 5 hadi umri chini ya miaka 60, KE, IPD" value="[ Tuberculosis Umri miaka 5 hadi umri chini ya miaka 60, KE, IPD ]" /></td>
+        <td><input id="ACM4BHrKZNQ-sgG28zSclZm-val" name="entryfield" title="Tuberculosis Umri miaka 5 hadi umri chini ya miaka 60, KE, OPD" value="[ Tuberculosis Umri miaka 5 hadi umri chini ya miaka 60, KE, OPD ]" /></td>
+        <td><input id="ACM4BHrKZNQ-MQKsgFxCtJ7-val" name="entryfield" title="Tuberculosis Umri miaka 5 hadi umri chini ya miaka 60, ME, IPD" value="[ Tuberculosis Umri miaka 5 hadi umri chini ya miaka 60, ME, IPD ]" /></td>
+        <td><input id="ACM4BHrKZNQ-ddmrU8qJa7L-val" name="entryfield" title="Tuberculosis Umri miaka 5 hadi umri chini ya miaka 60, ME, OPD" value="[ Tuberculosis Umri miaka 5 hadi umri chini ya miaka 60, ME, OPD ]" /></td>
+        <td><input id="ACM4BHrKZNQ-ZU3sKDB9i2o-val" name="entryfield" title="Tuberculosis Umri miaka 60 au zaidi, KE, IPD" value="[ Tuberculosis Umri miaka 60 au zaidi, KE, IPD ]" /></td>
+        <td><input id="ACM4BHrKZNQ-ayVLc9to6xY-val" name="entryfield" title="Tuberculosis Umri miaka 60 au zaidi, KE, OPD" value="[ Tuberculosis Umri miaka 60 au zaidi, KE, OPD ]" /></td>
+        <td><input id="ACM4BHrKZNQ-o9Oj5Cjekej-val" name="entryfield" title="Tuberculosis Umri miaka 60 au zaidi, ME, IPD" value="[ Tuberculosis Umri miaka 60 au zaidi, ME, IPD ]" /></td>
+    </tr>
+    <tr>
+        <td><input id="ACM4BHrKZNQ-aYgz5mh2cbx-val" name="entryfield" title="Tuberculosis Umri miaka 60 au zaidi, ME, OPD" value="[ Tuberculosis Umri miaka 60 au zaidi, ME, OPD ]" /></td>
+        <td><input id="ACM4BHrKZNQ-dtdut9EncYH-val" name="entryfield" title="Tuberculosis Umri mwaka 1 hadi umri chini ya miaka 5, KE, IPD" value="[ Tuberculosis Umri mwaka 1 hadi umri chini ya miaka 5, KE, IPD ]" /></td>
+        <td><input id="ACM4BHrKZNQ-kSxbMW8Lmsd-val" name="entryfield" title="Tuberculosis Umri mwaka 1 hadi umri chini ya miaka 5, KE, OPD" value="[ Tuberculosis Umri mwaka 1 hadi umri chini ya miaka 5, KE, OPD ]" /></td>
+        <td><input id="ACM4BHrKZNQ-R33m4bJ5OcC-val" name="entryfield" title="Tuberculosis Umri mwaka 1 hadi umri chini ya miaka 5, ME, IPD" value="[ Tuberculosis Umri mwaka 1 hadi umri chini ya miaka 5, ME, IPD ]" /></td>
+        <td><input id="ACM4BHrKZNQ-PSQ2DsGun8c-val" name="entryfield" title="Tuberculosis Umri mwaka 1 hadi umri chini ya miaka 5, ME, OPD" value="[ Tuberculosis Umri mwaka 1 hadi umri chini ya miaka 5, ME, OPD ]" /></td>
+        <td><input id="ACM4BHrKZNQ-e0RdqwlP1Xj-val" name="entryfield" title="Tuberculosis Umri mwezi 1 hadi umri chini ya mwaka 1, KE, IPD" value="[ Tuberculosis Umri mwezi 1 hadi umri chini ya mwaka 1, KE, IPD ]" /></td>
+        <td><input id="ACM4BHrKZNQ-R9Ka4Hd70Wh-val" name="entryfield" title="Tuberculosis Umri mwezi 1 hadi umri chini ya mwaka 1, KE, OPD" value="[ Tuberculosis Umri mwezi 1 hadi umri chini ya mwaka 1, KE, OPD ]" /></td>
+    </tr>
+    <tr>
+        <td><input id="ACM4BHrKZNQ-iaPGviZZIky-val" name="entryfield" title="Tuberculosis Umri mwezi 1 hadi umri chini ya mwaka 1, ME, IPD" value="[ Tuberculosis Umri mwezi 1 hadi umri chini ya mwaka 1, ME, IPD ]" /></td>
+        <td><input id="ACM4BHrKZNQ-n15V8E7ZLT9-val" name="entryfield" title="Tuberculosis Umri mwezi 1 hadi umri chini ya mwaka 1, ME, OPD" value="[ Tuberculosis Umri mwezi 1 hadi umri chini ya mwaka 1, ME, OPD ]" /></td>
+        <td><input id="uA7nNtZE8bv-UVLU1Njotu4-val" name="entryfield" title="ANC Wajawazito waliokutwa na VVU (positive) kipimo cha kwanza &lt; 20" value="[ ANC Wajawazito waliokutwa na VVU (positive) kipimo cha kwanza &lt; 20 ]" /></td>
+        <td><input id="uA7nNtZE8bv-lVnpcptMtAD-val" name="entryfield" title="ANC Wajawazito waliokutwa na VVU (positive) kipimo cha kwanza &gt;= 20" value="[ ANC Wajawazito waliokutwa na VVU (positive) kipimo cha kwanza &gt;= 20 ]" /></td>
+        <td><input id="P1Umd06Ey8F-MqMQnGOqLuY-val" name="entryfield" title="Waliozaliwa na Mama Mwenye Maambukizi ya VVU KE" value="[ Waliozaliwa na Mama Mwenye Maambukizi ya VVU KE ]" /></td>
+        <td><input id="P1Umd06Ey8F-X0Me7ygpiUT-val" name="entryfield" title="Waliozaliwa na Mama Mwenye Maambukizi ya VVU ME" value="[ Waliozaliwa na Mama Mwenye Maambukizi ya VVU ME ]" /></td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+    </tr>
+    </tbody>
+</table>
+
+<p>&nbsp;</p>

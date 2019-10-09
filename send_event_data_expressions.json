@@ -1,0 +1,58 @@
+{
+    "RwVrL1Y8RTH": [
+        {
+            "indicatorId": "f0VAv7CxDZW.zwkm4wGMlrr",
+            "indicatorDefinition": {
+                "name": " D.1 Staffing Levels",
+                "expression": {
+                    "numerator": "#{f0VAv7CxDZW.FgI7p5jw4Ag}*1+ #{f0VAv7CxDZW.F6KGITGpuJT}*1",
+                    "denominator": {
+                        "expression": 2,
+                        "type": "CONSTANT"
+                    },
+                    "factor": 100
+                },
+                "filter": {
+                    "expression": "#{f0VAv7CxDZW.T0PFV95uBGU}",
+                    "expectedValue": "Yes"
+                }
+              }
+        },
+        {
+            "indicatorId": "f0VAv7CxDZW.Y1Q5K7OrSch",
+            "indicatorDefinition": {
+                "name": "D.2 Staff Training",
+                "expression": {
+                  "numerator": "#{f0VAv7CxDZW.cJxQzwelko7}*1+#{f0VAv7CxDZW.q6k72Dk52mx}*1",
+                  "denominator": {
+                    "expression": "#{f0VAv7CxDZW.KPaKQDlzL6B}*2",
+                    "type": "EXPRESSION"
+                  },
+                  "factor": 100
+                },
+                "filter": {
+                  "expression": ""
+                }
+              }
+        }
+    ],
+    "CT0TNl30rld": [
+        {
+            "indicatorId": "CR5Ht05zhWd.xc31kbvKQYA",
+            "indicatorDefinition": {
+                "name": "",
+                "expression": {
+                  "numerator": "#{CR5Ht05zhWd.JBk8vRjjzc7}*1+#{CR5Ht05zhWd.Kb7eIaCihPl}*1+#{CR5Ht05zhWd.B5KlIhmyCPi}*1+#{CR5Ht05zhWd.FoPlUXq85u1}*1",
+                  "denominator": {
+                    "expression": 4,
+                    "type": "CONSTANT"
+                  },
+                  "factor": 100
+                },
+                "filter": {
+                  "expression": ""
+                }
+              }
+        }
+    ]
+}
