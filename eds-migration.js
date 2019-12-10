@@ -1,4 +1,5 @@
 require("dotenv").config();
+const readXlsxFile = require("read-excel-file/node");
 const axios = require("axios");
 var async = require("async");
 const map = require("async/map");
@@ -22,32 +23,57 @@ let headerConfigsDestination = {
     Authorization: "Basic " + tokenDestination
   }
 };
+let mapping = {};
+let oldDataElementVsNewDataElementmrdt = {};
+
 const programs = [
   {
     id: "RwVrL1Y8RTH",
-    displayName: "MSDQI 1. OPD"
+    displayName: "MSDQI 1. OPD",
+    fileName: ""
   },
   {
     id: "CT0TNl30rld",
-    displayName: "MSDQI 2. mRDT"
+    displayName: "MSDQI 2. mRDT",
+    fileName: "mRDT-mapping.xlsx"
   },
   {
     id: "Z4szHfJebFL",
-    displayName: "MSDQI 3. RCH"
+    displayName: "MSDQI 3. RCH",
+    fileName: "RCH-mapping.xlsx"
   },
   {
     id: "jYsHdmTJNVh",
-    displayName: "MSDQI 4. IPD"
+    displayName: "MSDQI 4. IPD",
+    fileName: ""
   },
   {
     id: "go4MncVomkQ",
-    displayName: "MSDQI 5. Logistic Supply Chain"
+    displayName: "MSDQI 5. Logistic Supply Chain",
+    fileName: ""
   },
   {
     id: "R8APevjOH0o",
-    displayName: "MSDQI 6. Microscopy"
+    displayName: "MSDQI 6. Microscopy",
+    fileName: ""
   }
 ];
+
+programs.forEach(program => {
+  if (program.fileName != "") {
+    let oldDataElementVsNewDataElement = {};
+    readXlsxFile("./mapping/" + program.fileName).then(rows => {
+      // `rows` is an array of rows
+      // each row being an array of cells.
+      rows.forEach(row => {
+        if (row[0] && row[1]) {
+          oldDataElementVsNewDataElement[row[0]] = row[1];
+        }
+      });
+      mapping[program.id] = oldDataElementVsNewDataElement;
+    });
+  }
+});
 
 const referenceRegions = [
   {
@@ -220,8 +246,9 @@ async function processAndSaveData(dataArr) {
 
 async function processEvents(events, code) {
   let eventsData = [];
+  // console.log(mapping);
   asyncForEach(events, async event => {
-    await eventsData.push(formatEvents(event, code));
+    await eventsData.push(formatEvents(event, code, mapping));
   });
   return await eventsData;
 }
@@ -234,7 +261,7 @@ async function asyncForEach(array, callback) {
 
 async function saveEventsData(eventData) {
   const formattedUrl = "api/events.json";
-  if (eventData.dataValues.length > 10) {
+  if (eventData.dataValues && eventData.dataValues.length > 10) {
     try {
       const data = await axios.post(
         DESTINATION_BASE_URL + formattedUrl,
@@ -243,7 +270,7 @@ async function saveEventsData(eventData) {
           headers: headerConfigsDestination.headers
         }
       );
-      console.log("Sent ");
+      console.log("Sent ", eventData.event, eventData.orgUnit);
       return data;
     } catch (error) {
       // console.log("error ", error);
@@ -253,7 +280,7 @@ async function saveEventsData(eventData) {
   }
 }
 
-function formatEvents(event, code) {
+function formatEvents(event, code, mapping) {
   let eventData = {
     storedBy: "",
     dueDate: "",
@@ -285,6 +312,8 @@ function formatEvents(event, code) {
     dataValues = [];
     event["dataValues"].forEach(dataValue => {
       dataValue["storedBy"] = "josephatjulius";
+      // dataValue["dataElement"] =
+      //   mapping[event.program][dataValue["dataElement"]];
       dataValues.push(dataValue);
     });
     eventData.dataValues = dataValues;
