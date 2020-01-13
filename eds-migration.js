@@ -3,6 +3,9 @@ const readXlsxFile = require("read-excel-file/node");
 const axios = require("axios");
 var async = require("async");
 const map = require("async/map");
+const https = require("https");
+const http = require("http");
+var btoa = require("btoa");
 // const credentialsSource = process.argv[3];
 const tokenSource = new Buffer(process.env.CREDENTIALS_SOURCE).toString(
   "base64"
@@ -10,8 +13,14 @@ const tokenSource = new Buffer(process.env.CREDENTIALS_SOURCE).toString(
 const tokenDestination = new Buffer(
   process.env.CREDENTIALS_DESTINATION
 ).toString("base64");
+
+const tokenEDS = btoa(process.env.CREDENTIALS_EDS);
+//new Buffer(process.env.CREDENTIALS_EDS).toString("base64");
+console.log(tokenEDS);
+
 const SOURCE_BASE_URL = process.env.SOURCE_BASE_URL;
 const DESTINATION_BASE_URL = process.env.DESTINATION_BASE_URL;
+const EDS_BASE_URL = process.env.SOURCE_EDS_URL;
 let headerConfigsSource = {
   headers: {
     Authorization: "Basic " + tokenSource
@@ -23,6 +32,13 @@ let headerConfigsDestination = {
     Authorization: "Basic " + tokenDestination
   }
 };
+
+let headerEDS = {
+  headers: {
+    Authorization: "Basic " + tokenEDS
+  }
+};
+
 let mapping = {};
 let oldDataElementVsNewDataElementmrdt = {};
 
@@ -75,6 +91,65 @@ programs.forEach(program => {
   }
 });
 
+const referenceRegionEDS = [
+  {
+    name: "Geita Region",
+    id: "INI4Hp84Z0U"
+  },
+  {
+    name: "Iringa Region",
+    id: "juqdz73CGrm"
+  },
+  {
+    name: "Kagera Region",
+    id: "sen6B7qbcta"
+  },
+  {
+    name: "Kigoma Region",
+    id: "eu0E6qDoWsf"
+  },
+  {
+    name: "Lindi Region",
+    id: "zhQ4GgjafOa"
+  },
+  {
+    name: "Mara Region",
+    id: "CVKcM66aReQ"
+  },
+  {
+    name: "Morogoro Region",
+    id: "CzTcBeVD3O0"
+  },
+  {
+    name: "Mtwara Region",
+    id: "og0WOWG9XxV"
+  },
+  {
+    name: "Mwanza Region",
+    id: "yuWzqHuFcpm"
+  },
+  {
+    name: "Ruvuma Region",
+    id: "TFAeiGSlDND"
+  },
+  {
+    name: "Shinyanga Region",
+    id: "c8BCqZzP2Kz"
+  },
+  {
+    name: "Simiyu Region",
+    id: "HAEog3LreVI"
+  },
+  {
+    name: "Singida Region",
+    id: "i9J83767Z68"
+  },
+  {
+    name: "Tabora Region",
+    id: "DBi0gUi1EFV"
+  }
+];
+
 const referenceRegions = [
   {
     name: "Kigoma Region",
@@ -114,14 +189,39 @@ const referenceRegions = [
   }
 ];
 
+const getOrganisationUnits = async referenceRegion => {
+  const formattedUrl =
+    "api/organisationUnits/" +
+    referenceRegion.id +
+    ".json?fields=children[id,name,children[id,name,code]]";
+  try {
+    return await axios.get(EDS_BASE_URL + formattedUrl, headerEDS);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const getEventsData = async facility => {
+  const formattedUrl = "api/events.json?orgUnit=" + facility.id;
+  console.log("formattedUrl event url", EDS_BASE_URL + formattedUrl);
+  try {
+    return await axios.get(EDS_BASE_URL + formattedUrl, headerEDS);
+  } catch (error) {
+    // console.log("error ", error.Error);
+  }
+};
+
 async.map(
-  referenceRegions,
+  referenceRegionEDS,
   function(referenceRegion, callback) {
     if (!referenceRegion.id) {
       callback("Organisation unit is not valid", "");
     } else {
       const data = getOrganisationUnits(referenceRegion);
-      data.then(councils => callback("", councils));
+      data.then(ous => {
+        const councilsLoaded = ous["data"]["children"];
+        callback("", councilsLoaded);
+      });
     }
   },
   function(err, councilResults) {
@@ -130,11 +230,12 @@ async.map(
     } else {
       councilResults.forEach(councilResponse => {
         async.map(
-          councilResponse.children,
+          councilResponse,
           function(council, callback) {
             if (!council.id) {
               callback("Organisation unit is not valid", "");
             } else {
+              console.log("council ", council);
               callback("", council);
             }
           },
@@ -142,6 +243,7 @@ async.map(
             if (err) {
               console.log(err);
             } else {
+              // console.log("councilInfo ", councilInfo);
               councilInfo.forEach(council => {
                 async.map(
                   council.children,
@@ -150,9 +252,18 @@ async.map(
                       callback("Organisation unit is not valid", "");
                     } else {
                       // get facility data
+                      console.log("facility ", facility);
                       const eventsData = getEventsData(facility);
                       eventsData.then(eventsData => {
-                        callback("", { code: facility.code, data: eventsData });
+                        console.log("here ");
+                        // console.log(
+                        //   "eventsData ...............................................",
+                        //   JSON.stringify(eventsData)
+                        // );
+                        // callback("", {
+                        //   code: facility.code,
+                        //   data: eventsData
+                        // });
                       });
                     }
                   },
@@ -160,7 +271,7 @@ async.map(
                     if (err) {
                       console.log(err);
                     } else {
-                      processAndSaveData(eventsData);
+                      // processAndSaveData(eventsData);
                     }
                   }
                 );
@@ -172,33 +283,6 @@ async.map(
     }
   }
 );
-
-async function getOrganisationUnits(referenceRegion) {
-  const formattedUrl =
-    "api/organisationUnits/" +
-    referenceRegion.id +
-    ".json?fields=children[id,name,children[id,name,code]]";
-  try {
-    const data = await axios.get(DESTINATION_BASE_URL + formattedUrl, {
-      headers: headerConfigsDestination.headers
-    });
-    return data.data;
-  } catch (error) {
-    // console.log("error ", error.Error);
-  }
-}
-
-async function getEventsData(facility) {
-  const formattedUrl = "api/events.json?orgUnit=" + facility.id;
-  try {
-    const data = await axios.get(SOURCE_BASE_URL + formattedUrl, {
-      headers: headerConfigsSource.headers
-    });
-    return data.data;
-  } catch (error) {
-    // console.log("error ", error.Error);
-  }
-}
 
 async function processAndSaveData(dataArr) {
   async.map(
