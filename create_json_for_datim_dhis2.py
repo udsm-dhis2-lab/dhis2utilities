@@ -12,6 +12,7 @@ async def convert_to_json(hf_csv_row, hf_reference):
     hf = {
             "level": 7,
             "name": hf_csv_row[9],
+            "openingDate": "1970-01-01",
             "id": datim_id,
             "shortName": (hf_csv_row[9])[0:50],
             "attributeValues": [
@@ -37,8 +38,9 @@ async def convert_to_json(hf_csv_row, hf_reference):
         }
     if datim_id in hf_reference:
         hf['parent'] =  {
-                "id": hf_reference[datim_id]['id']
+                "id": hf_reference[datim_id]['parent']['id']
             }
+        hf['openingDate'] = hf_reference[datim_id]['openingDate'][0:10]
     else:
         missing_parent_hfs = []
         print("HF ID can not be found from DATIM reference json")
@@ -73,7 +75,7 @@ async def get_hf_reference_from_file(path):
         for region in data['children']:
             hfs = await get_hfs_from_hierarchy(region)
             for hf in hfs:
-                hf_parent_reference[hf['id']] = hf['parent']
+                hf_parent_reference[hf['id']] = hf
     return hf_parent_reference
 
 
