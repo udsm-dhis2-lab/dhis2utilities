@@ -8,28 +8,28 @@ all_hfs_missing_parents = [
     ['HFR_code',"DATIM_Id","Region", "District", "HF_DATIM_Name", "HF_MOH_Name"]
 ]
 async def convert_to_json(hf_csv_row, hf_reference):
-    datim_id = hf_csv_row[6]
+    datim_id = hf_csv_row[5]
     hf = {
             "level": 7,
-            "name": hf_csv_row[9],
+            "name": hf_csv_row[2],
             "openingDate": "1970-01-01",
             "id": datim_id,
-            "shortName": (hf_csv_row[9])[0:50],
+            "shortName": (hf_csv_row[2])[0:50],
             "attributeValues": [
                 {
-                    "value": hf_csv_row[3],
+                    "value": hf_csv_row[2],
                     "attribute": {
                     "id": "bv2eftIkSrm"
                     }
                 },
                 {
-                    "value": hf_csv_row[5],
+                    "value": hf_csv_row[4],
                     "attribute": {
                     "id": "XxZsKNpu4nB"
                     }
                 },
                 {
-                    "value": hf_csv_row[5],
+                    "value": hf_csv_row[4],
                     "attribute": {
                     "id": "jrZ74V1Lp2N"
                     }
@@ -40,18 +40,19 @@ async def convert_to_json(hf_csv_row, hf_reference):
         hf['parent'] =  {
                 "id": hf_reference[datim_id]['parent']['id']
             }
-        hf['openingDate'] = hf_reference[datim_id]['openingDate'][0:10]
+        if 'openingDate' in hf_reference[datim_id]:
+            hf['openingDate'] = hf_reference[datim_id]['openingDate'][0:10]
     else:
         missing_parent_hfs = []
         print("HF ID can not be found from DATIM reference json")
-        print(hf_csv_row[9])
-        print(hf_csv_row[5])
-        missing_parent_hfs.append(hf_csv_row[5])
+        print(hf_csv_row[8])
+        print(hf_csv_row[4])
+        missing_parent_hfs.append(hf_csv_row[4])
         missing_parent_hfs.append(datim_id)
+        missing_parent_hfs.append(hf_csv_row[6])
         missing_parent_hfs.append(hf_csv_row[7])
         missing_parent_hfs.append(hf_csv_row[8])
-        missing_parent_hfs.append(hf_csv_row[9])
-        missing_parent_hfs.append(hf_csv_row[3])
+        missing_parent_hfs.append(hf_csv_row[2])
         all_hfs_missing_parents.append(missing_parent_hfs)
     return hf
 
