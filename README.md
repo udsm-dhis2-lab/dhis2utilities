@@ -30,5 +30,5 @@ This activity involves aligning MoH PEPFAR indicators with DATIM data, matching 
 - Specify a file i.e., "create_json_for_datim_dhis2.py" leave space and specify what kind of file you want to run i.e., "py"
 - The file will run the containing script and output the result file in the specified file i.e., converted_json.json
 
-PS
+## Important
 - For any update in the datim_facilties CSV provided, simply replace the newly aligned facilities with the one's in the hfs.csv file, ensuring they follow the existing column arrangements
